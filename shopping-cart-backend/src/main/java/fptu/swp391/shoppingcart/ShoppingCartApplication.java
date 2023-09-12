@@ -1,4 +1,4 @@
-package fptu.swp.shoppingcart;
+package fptu.swp391.shoppingcart;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

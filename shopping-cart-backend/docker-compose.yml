@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  # mysql database
+  mysql-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shopping_cart
+    ports:
+      - "3306:3306"
+  # spring boot app
+  spring-boot-app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db

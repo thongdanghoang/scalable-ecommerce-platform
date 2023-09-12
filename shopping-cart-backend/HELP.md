@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'fptu.swp.shopping-cart' is invalid and this project uses 'fptu.swp.shoppingcart' instead.
+* The original package name 'fptu.swp391.shopping-cart' is invalid and this project uses 'fptu.swp391.shoppingcart' instead.
 
 # Getting Started
 
@@ -13,7 +13,6 @@ For further reference, please consider the following sections:
 * [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.7.15/maven-plugin/reference/html/#build-image)
 * [Spring Web](https://docs.spring.io/spring-boot/docs/2.7.15/reference/htmlsingle/index.html#web)
 * [Spring Security](https://docs.spring.io/spring-boot/docs/2.7.15/reference/htmlsingle/index.html#web.security)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.7.15/reference/htmlsingle/index.html#data.sql.jpa-and-spring-data)
 
 ### Guides
 The following guides illustrate how to use some features concretely:
@@ -25,5 +24,4 @@ The following guides illustrate how to use some features concretely:
 * [Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
 * [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
 * [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 
