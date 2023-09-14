@@ -1,0 +1,19 @@
+.background{
+    background-image: url("../../assets/img/backgroundShop.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
+}
+
+.gradient-custom-2 {
+    background: #28a5d6;
+}
+.customBtn button {
+    width: 100%;
+}
+.card {
+    opacity: 0.9;
+}
