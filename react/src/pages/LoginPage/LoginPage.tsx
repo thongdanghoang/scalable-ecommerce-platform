@@ -1,9 +1,9 @@
-import style from './login.module.css'
+import './login.css'
 import logo from '../../assets/img/logo.png'
 
 export default function LoginPage() {
   return (
-    <div className={`${style.background} h-100`}>
+    <div id='LoginPage' className='background h-100'>
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-xl-10"  >
@@ -33,7 +33,7 @@ export default function LoginPage() {
                         
                       </div>
     
-                      <div className={`text-center ${style.customBtn} pt-1 mb-5 pb-1`}>
+                      <div className={'text-center customBtn pt-1 mb-5 pb-1'}>
                         <button className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Log
                           in</button>
                         <a className="text-muted" href="#!">Forgot password?</a>
@@ -48,7 +48,7 @@ export default function LoginPage() {
     
                   </div>
                 </div>
-                <div className={`col-lg-6 d-flex align-items-center ${style['gradient-custom-2']}`} style={{borderRadius:"15px"}}>
+                <div className='col-lg-6 d-flex align-items-center gradient-custom-2' style={{borderRadius:"15px"}}>
                   <div className="text-white px-3 py-4 p-md-5 mx-md-4">
                     <h4 className="mb-4">We are more than just a company</h4>
                     <p className="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
