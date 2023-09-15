@@ -1,8 +1,8 @@
-package fptu.swp391.shoppingcart.authentication.service;
+package fptu.swp391.shoppingcart.user.authentication.service;
 
-import fptu.swp391.shoppingcart.authentication.entity.UserEntity;
-import fptu.swp391.shoppingcart.authentication.model.CustomUserDetails;
-import fptu.swp391.shoppingcart.authentication.repository.UserRepository;
+import fptu.swp391.shoppingcart.user.authentication.entity.UserEntity;
+import fptu.swp391.shoppingcart.user.authentication.model.CustomUserDetails;
+import fptu.swp391.shoppingcart.user.authentication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,6 +1,6 @@
-package fptu.swp391.shoppingcart.authentication.model;
+package fptu.swp391.shoppingcart.user.authentication.model;
 
-import fptu.swp391.shoppingcart.authentication.entity.UserEntity;
+import fptu.swp391.shoppingcart.user.authentication.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

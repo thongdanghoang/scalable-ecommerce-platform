@@ -1,6 +1,6 @@
-package fptu.swp391.shoppingcart.authentication.service;
+package fptu.swp391.shoppingcart.user.authentication.service;
 
-import fptu.swp391.shoppingcart.authentication.model.CustomUserDetails;
+import fptu.swp391.shoppingcart.user.authentication.model.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
