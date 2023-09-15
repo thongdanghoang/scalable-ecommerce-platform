@@ -1,6 +1,6 @@
-package fptu.swp391.shoppingcart.authentication.repository;
+package fptu.swp391.shoppingcart.user.authentication.repository;
 
-import fptu.swp391.shoppingcart.authentication.entity.UserEntity;
+import fptu.swp391.shoppingcart.user.authentication.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

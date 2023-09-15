@@ -1,4 +1,4 @@
-package fptu.swp391.shoppingcart.authentication.config;
+package fptu.swp391.shoppingcart.user.authentication.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

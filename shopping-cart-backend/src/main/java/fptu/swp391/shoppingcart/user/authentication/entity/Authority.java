@@ -1,4 +1,4 @@
-package fptu.swp391.shoppingcart.authentication.entity;
+package fptu.swp391.shoppingcart.user.authentication.entity;
 
 import lombok.Getter;
 import lombok.Setter;
