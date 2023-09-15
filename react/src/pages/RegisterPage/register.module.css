@@ -97,13 +97,13 @@ input[type='submit']:hover {
 
 .signup_link {
 	margin: 25px 0;
-	text-align: center;
+	text-align: center !important;
 	font-size: 16px;
 	color: #666666;
 }
 
 .signup_link a {
-	color: #2691d9;
+	color: #2647d9;
 	text-decoration: none;
 }
 
@@ -114,7 +114,5 @@ input[type='submit']:hover {
 .container{
 	background: #ffffffee;
 }
-.signup_link a {
-	color: #001cf1;
-}
+
 
