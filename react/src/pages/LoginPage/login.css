@@ -1,4 +1,4 @@
-.background{
+ .background{
     background-image: url("../../assets/img/backgroundShop.jpg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -8,12 +8,12 @@
     text-align: justify;
 }
 
-.gradient-custom-2 {
+#LoginPage .gradient-custom-2 {
     background: #28a5d6;
 }
-.customBtn button {
+#LoginPage .customBtn button {
     width: 100%;
 }
-.card {
+#LoginPage .card {
     opacity: 0.9;
 }
