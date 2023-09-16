@@ -1,5 +1,5 @@
 import React,{ useState } from 'react';
-import style from './register.module.css'
+import './register.css'
 //import { User } from '../../redux/slides/userSlide';
 
 export default function RegisterPage() {
@@ -18,11 +18,11 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className={style.background} style={{height:"100vh"}}>
-      <div className={style.container}>
+    <div id='RegisterPage' className='background' style={{height:"100vh"}}>
+      <div className='container'>
         <h1>Register</h1>
         <form onSubmit={handleSignUp}>
-          <div className={style[`form-control`]}>
+          <div className='form-control'>
             <input 
               required 
               type="text" 
@@ -35,7 +35,7 @@ export default function RegisterPage() {
             <span></span>
             <small></small>
           </div>
-          <div className={style[`form-control`]}>
+          <div className='form-control'>
             <input 
               required 
               type="email" 
@@ -48,7 +48,7 @@ export default function RegisterPage() {
             <span></span>
             <small></small>
           </div>
-          <div className={style[`form-control`]}>
+          <div className='form-control'>
             <input 
               required 
               type="password"
@@ -63,7 +63,7 @@ export default function RegisterPage() {
             <span></span>
             <small></small>
           </div>
-          <div className={style[`form-control`]}>
+          <div className='form-control'>
             <input
               required
               type="password"
