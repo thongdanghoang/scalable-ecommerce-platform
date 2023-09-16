@@ -1,7 +1,27 @@
 import './login.css'
 import logo from '../../assets/img/logo.png'
+import { useState } from 'react'
 
 export default function LoginPage() {
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  }
+  const validInput = () => {
+    if (formData.username.length != 0 && formData.password.length != 0 ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   return (
     <div id='LoginPage' className='background h-100'>
       <div className="container py-5 h-100">
@@ -22,19 +42,19 @@ export default function LoginPage() {
                       <p>Please login to your account</p>
     
                       <div className="form-outline mb-4">
-                        <input type="username" id="form2Example11" className="form-control"
-                          placeholder="User name" />
+                        <input type="username" id="form2Example11" className="form-control" name='username'
+                          placeholder="User name" value={formData.username} onChange={handleChange}/>
                     
                       </div>
     
                       <div className="form-outline mb-4">
-                        <input type="password" id="form2Example22" className="form-control"
-                        placeholder="Password" />
+                        <input type="password" id="form2Example22" className="form-control" name='password'
+                        placeholder="Password" value={formData.password} onChange={handleChange}/>
                         
                       </div>
     
                       <div className={'text-center customBtn pt-1 mb-5 pb-1'}>
-                        <button className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Log
+                        <button className={`btn btn-primary btn-block fa-lg gradient-custom-2 mb-3 ${validInput() ? '' : 'disabled'}`} type="button" >Log
                           in</button>
                         <a className="text-muted" href="#!">Forgot password?</a>
                       </div>
