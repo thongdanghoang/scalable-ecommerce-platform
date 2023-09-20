@@ -11,21 +11,12 @@ public class UserRegistrationValidator {
         if (userRegisterDTO.getUsername().isEmpty() || userRegisterDTO.getPassword().isEmpty() || userRegisterDTO.getEmail().isEmpty())
             throw new DataValidationException("Username, password and email must not be empty");
 
-        // PASSWORD just from 8 to 64 characters
-        if (userRegisterDTO.getPassword().length() < 8)
-            throw new DataValidationException("Password must be at least 8 characters");
-        if (userRegisterDTO.getPassword().length() > 64)
-            throw new DataValidationException("Password must be at most 64 characters");
-        // password should include a mix of upper and lowercase letters, numbers, and symbols
-        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).*$";
-        if (!userRegisterDTO.getPassword().matches(passwordRegex))
-            throw new DataValidationException("Password must include a mix of upper and lowercase letters, numbers, " +
-                    "and symbols");
+        checkPassword(userRegisterDTO.getPassword());
 
         // USERNAME from 6 to 20 characters
         if (userRegisterDTO.getUsername().length() < 6)
             throw new DataValidationException("Username must be at least 6 characters");
-        if(userRegisterDTO.getUsername().length() > 20)
+        if (userRegisterDTO.getUsername().length() > 20)
             throw new DataValidationException("Username must be at most 20 characters");
         // Usernames must only contain certain characters, such as letters, numbers, and underscores.
         String usernameRegex = "^\\w*$";
@@ -36,5 +27,18 @@ public class UserRegistrationValidator {
         String emailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
         if (!userRegisterDTO.getEmail().matches(emailRegex))
             throw new DataValidationException("Email is invalid");
+    }
+
+    public void checkPassword(String password) throws DataValidationException {
+        // PASSWORD just from 8 to 64 characters
+        if (password.length() < 8)
+            throw new DataValidationException("Password must be at least 8 characters");
+        if (password.length() > 64)
+            throw new DataValidationException("Password must be at most 64 characters");
+        // password should include a mix of upper and lowercase letters, numbers, and symbols
+        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).*$";
+        if (!password.matches(passwordRegex))
+            throw new DataValidationException("Password must include a mix of upper and lowercase letters, numbers, " +
+                    "and symbols");
     }
 }
