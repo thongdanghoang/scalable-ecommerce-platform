@@ -1,6 +1,6 @@
 package fptu.swp391.shoppingcart.user.authentication.model;
 
-import fptu.swp391.shoppingcart.user.authentication.entity.UserEntity;
+import fptu.swp391.shoppingcart.user.authentication.entity.UserAuthEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,10 +10,14 @@ import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails{
 
-    private final UserEntity user;
+    private final UserAuthEntity user;
 
-    public CustomUserDetails(UserEntity user) {
+    public CustomUserDetails(UserAuthEntity user) {
         this.user = user;
+    }
+
+    public UserAuthEntity getUser() {
+        return user;
     }
 
     @Override
