@@ -1,6 +1,6 @@
 package fptu.swp391.shoppingcart.user.authentication.service;
 
-import fptu.swp391.shoppingcart.user.authentication.entity.UserEntity;
+import fptu.swp391.shoppingcart.user.authentication.entity.UserAuthEntity;
 import fptu.swp391.shoppingcart.user.authentication.model.CustomUserDetails;
 import fptu.swp391.shoppingcart.user.authentication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class JpaUserDetailsService implements UserDetailsService {
         Supplier<UsernameNotFoundException> s =
                 () -> new UsernameNotFoundException("Problem during authentication!");
 
-        UserEntity u = userRepository.findUserByUsername(username).orElseThrow(s);
+        UserAuthEntity u = userRepository.findUserByUsername(username).orElseThrow(s);
 
         return new CustomUserDetails(u);
     }
