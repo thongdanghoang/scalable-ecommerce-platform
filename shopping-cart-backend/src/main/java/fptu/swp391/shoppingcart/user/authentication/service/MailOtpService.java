@@ -13,8 +13,8 @@ import java.io.InputStreamReader;
 
 @Service
 public class MailOtpService {
-    private static String YOUR_DOMAIN_NAME = "thongdanghoang.id.vn";
-    private final String API_KEY = "a0a4d367b09e2fb81a434b0be25045c5-4b98b89f-33f4604b";
+    private static String YOUR_DOMAIN_NAME = "*****************************";
+    private final String API_KEY = "***************************************";
 
     public JsonNode sendOtpTo(String email, String otp) throws UnirestException, IOException {
 
