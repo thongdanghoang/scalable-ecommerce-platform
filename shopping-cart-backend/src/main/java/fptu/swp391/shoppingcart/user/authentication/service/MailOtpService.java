@@ -4,6 +4,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -13,8 +14,11 @@ import java.io.InputStreamReader;
 
 @Service
 public class MailOtpService {
-    private static String YOUR_DOMAIN_NAME = "*****************************";
-    private final String API_KEY = "***************************************";
+    @Value("${mailgun.domain.name}")
+    private String YOUR_DOMAIN_NAME;
+
+    @Value("${mailgun.api.key}")
+    private String API_KEY;
 
     public JsonNode sendOtpTo(String email, String otp) throws UnirestException, IOException {
 
