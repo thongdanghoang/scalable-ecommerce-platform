@@ -38,27 +38,21 @@ import java.util.Set;
 @Transactional
 public class UserAuthService {
 
+    private final Random random = new Random();
     @Autowired
     private AuthenticationProvider authenticationProvider;
-
     @Autowired
     private EmailOtpRepository emailOtpRepository;
-
     @Autowired
     private MailOtpService mailOtpService;
-
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private UserMapper userMapper;
-
     @Autowired
     private ProfileRepository profileRepository;
-
     @Autowired
     private UserRegistrationValidator userRegistrationValidator;
 
@@ -70,7 +64,8 @@ public class UserAuthService {
         // Map to entity and manually set attributes
         UserAuthEntity register = userMapper.toEntity(userRegisterDTO);
         register.setPassword(bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
-        if (userRegisterDTO.getAuthorities().contains("ROLE_USER")) { // TODO: adjust this later
+        if (userRegisterDTO.getAuthorities().contains("ROLE_USER")) {
+            // temporary use role based mechanism
             Authority authority = new Authority("ROLE_USER");
             register.setAuthorities(Set.of(authority));
         }
@@ -191,14 +186,15 @@ public class UserAuthService {
         }
 
         emailOtpEntity.setStatus(OtpStatus.VERIFIED);
-        String secret = generateRandomSecret(64);
+        String secret = generateRandomSecret();
         emailOtpEntity.setToken(secret);
         emailOtpEntity.setCreateTime(java.time.LocalDateTime.now());
         emailOtpRepository.save(emailOtpEntity);
         return secret;
     }
 
-    public String resetPassword(String token, String newPassword) {
+    public String resetPassword(String token, String newPassword) throws DataValidationException {
+        userRegistrationValidator.checkPassword(newPassword);
         EmailOtpEntity otp = emailOtpRepository.findByToken(token)
                 .orElseThrow(() -> new RuntimeException("Bad credentials"));
         otp.getUser().setPassword(bCryptPasswordEncoder.encode(newPassword));
@@ -207,18 +203,16 @@ public class UserAuthService {
     }
 
     private String generateOtp() {
-        Random random = new Random();
         int otp = 100000 + random.nextInt(900000);
         return String.valueOf(otp);
     }
 
 
-    private String generateRandomSecret(int length) {
+    private String generateRandomSecret() {
         final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
-        StringBuilder stringBuilder = new StringBuilder(length);
+        StringBuilder stringBuilder = new StringBuilder(64);
 
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < 64; i++) {
             int randomIndex = random.nextInt(CHARACTERS.length());
             char randomChar = CHARACTERS.charAt(randomIndex);
             stringBuilder.append(randomChar);
