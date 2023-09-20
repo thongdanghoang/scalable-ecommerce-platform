@@ -1,9 +1,11 @@
 package fptu.swp391.shoppingcart.user.authentication.web;
 
-import fptu.swp391.shoppingcart.ErrorResponse;
+import fptu.swp391.shoppingcart.AbstractApplicationController;
 import fptu.swp391.shoppingcart.user.authentication.dto.ApiResponse;
 import fptu.swp391.shoppingcart.user.authentication.dto.UserRegisterDTO;
-import fptu.swp391.shoppingcart.user.authentication.exceptions.*;
+import fptu.swp391.shoppingcart.user.authentication.exceptions.DataValidationException;
+import fptu.swp391.shoppingcart.user.authentication.exceptions.EmailAlreadyLinked;
+import fptu.swp391.shoppingcart.user.authentication.exceptions.UsernameAlreadyExists;
 import fptu.swp391.shoppingcart.user.authentication.exceptions.otp.*;
 import fptu.swp391.shoppingcart.user.authentication.service.UserAuthService;
 import org.apache.logging.log4j.LogManager;
@@ -13,20 +15,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
 import java.util.Set;
 
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
+
 @RestController
-@RestControllerAdvice
 @RequestMapping("/api/user/auth")
-public class UserAuthController {
+public class UserAuthController extends AbstractApplicationController {
     private final Logger logger = LogManager.getLogger(UserAuthController.class);
 
     @Autowired
@@ -40,8 +41,7 @@ public class UserAuthController {
 
     @PostMapping("/reset-password")
     public ResponseEntity<ApiResponse<?>> resetPassword(@RequestParam String newPassword,
-                                                        HttpServletRequest request,
-                                                        HttpServletResponse response) {
+                                                        HttpServletRequest request) {
         try {
             // find reset token from cookie
             Cookie[] cookies = request.getCookies();
@@ -59,7 +59,7 @@ public class UserAuthController {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(body);
-        } catch (Exception e) {
+        } catch (DataValidationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
@@ -90,8 +90,8 @@ public class UserAuthController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (OtpMaxAttemptsExceededException e) {
             throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, e.getMessage());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        } catch (OtpVerifiedException e) {
+           throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 
@@ -122,7 +122,7 @@ public class UserAuthController {
             UserRegisterDTO data = userAuthService.register(userRegisterDTO);
             request.getSession(true)
                     .setAttribute(
-                            HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext()
+                            SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext()
                     );
 
             return ResponseEntity
@@ -137,32 +137,6 @@ public class UserAuthController {
         } catch (AuthenticationException e) { // bad credentials
             logger.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (Exception e) { // server error
-            // Log the exception for debugging and return a 500 Internal Server Error
-            logger.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred during registration. Please try again later.");
         }
-    }
-
-    // TODO : use AbstractApplicationController to avoid duplicate code
-    @ExceptionHandler(ResponseStatusException.class)
-    //We implement a @ControllerAdvice globally but also ResponseStatusExceptions locally
-    public ResponseEntity<ErrorResponse> handleResponseStatusException(ResponseStatusException ex) {
-        HttpStatus httpStatus = ex.getStatus();
-        String errorMessage = ex.getReason();
-
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setStatus(httpStatus.value());
-        errorResponse.setError(httpStatus.getReasonPhrase());
-        errorResponse.setMessage(errorMessage);
-        errorResponse.setTimestamp(LocalDateTime.now());
-
-        //Log the error
-        logger.error("ResponseStatusException: HTTP {} {}",
-                httpStatus.value(),
-                httpStatus.getReasonPhrase(),
-                ex);
-
-        return ResponseEntity.status(httpStatus).body(errorResponse);
     }
 }
