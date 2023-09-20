@@ -3,9 +3,8 @@ package fptu.swp391.shoppingcart.user.authentication.web;
 import fptu.swp391.shoppingcart.ErrorResponse;
 import fptu.swp391.shoppingcart.user.authentication.dto.ApiResponse;
 import fptu.swp391.shoppingcart.user.authentication.dto.UserRegisterDTO;
-import fptu.swp391.shoppingcart.user.authentication.exceptions.DataValidationException;
-import fptu.swp391.shoppingcart.user.authentication.exceptions.EmailAlreadyLinked;
-import fptu.swp391.shoppingcart.user.authentication.exceptions.UsernameAlreadyExists;
+import fptu.swp391.shoppingcart.user.authentication.exceptions.*;
+import fptu.swp391.shoppingcart.user.authentication.exceptions.otp.*;
 import fptu.swp391.shoppingcart.user.authentication.service.UserAuthService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +17,9 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -31,7 +32,85 @@ public class UserAuthController {
     @Autowired
     private UserAuthService userAuthService;
 
-    //register
+    // forgot password apis:
+    // 1. request otp api -> server generate otp and send to email
+    // 2. verify otp api -> verify otp and return a token
+    // 3. reset password api -> reset password with token
+    // service methods: generateOtp, verifyOtp, resetPassword
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse<?>> resetPassword(@RequestParam String newPassword,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) {
+        try {
+            // find reset token from cookie
+            Cookie[] cookies = request.getCookies();
+            String token = null;
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("reset")) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+
+            ApiResponse<?> body = new ApiResponse<>(
+                    userAuthService.resetPassword(token, newPassword), true, null);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(body);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<ApiResponse<?>> verifyOtp(@RequestParam String email, @RequestParam String otpCode,
+                                                    HttpServletResponse response) {
+        // Kiểm tra tính hợp lệ của OTP
+        try {
+            String token = userAuthService.verifyOtp(email, otpCode);
+
+            // Create a new HTTP-only cookie to store the token
+            Cookie resetPasswordToken = new Cookie("reset", token);
+            resetPasswordToken.setHttpOnly(true); // Make the cookie HTTP-only
+//            resetPasswordToken.setSecure(true); // Optional: Set to true if using HTTPS
+            resetPasswordToken.setPath("/"); // Set the path as needed
+            resetPasswordToken.setMaxAge(60 * 10); // 10 minutes =
+
+            // Add the cookie to the HTTP response
+            response.addCookie(resetPasswordToken);
+
+            ApiResponse<String> responseBody = new ApiResponse<>(
+                    "OTP verified successfully, please send new password in 10 minutes", true, null);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(responseBody);
+        }catch(OtpIncorrectException | OtpExpiredException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (OtpMaxAttemptsExceededException e) {
+            throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, e.getMessage());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ApiResponse<?>> forgotPassword(@RequestParam String email) {
+        try {
+            String responseMsg = userAuthService.sendOtp(email);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ApiResponse<>(responseMsg, true, null));
+        } catch (OtpMaxAttemptsExceededException e) {
+            throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, e.getMessage());
+        } catch (OtpStillActiveException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (OtpVerifiedException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<?>> register(@RequestBody UserRegisterDTO userRegisterDTO,
                                                    HttpServletRequest request) {
@@ -40,7 +119,7 @@ public class UserAuthController {
             // unique constraint
 
             userRegisterDTO.setAuthorities(Set.of("ROLE_USER"));
-            userAuthService.register(userRegisterDTO);
+            UserRegisterDTO data = userAuthService.register(userRegisterDTO);
             request.getSession(true)
                     .setAttribute(
                             HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext()
@@ -48,7 +127,7 @@ public class UserAuthController {
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>("User registered successfully", true, null));
+                    .body(new ApiResponse<>("User registered successfully", true, data));
         } catch (DataValidationException e) {
             logger.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -65,6 +144,7 @@ public class UserAuthController {
         }
     }
 
+    // TODO : use AbstractApplicationController to avoid duplicate code
     @ExceptionHandler(ResponseStatusException.class)
     //We implement a @ControllerAdvice globally but also ResponseStatusExceptions locally
     public ResponseEntity<ErrorResponse> handleResponseStatusException(ResponseStatusException ex) {
