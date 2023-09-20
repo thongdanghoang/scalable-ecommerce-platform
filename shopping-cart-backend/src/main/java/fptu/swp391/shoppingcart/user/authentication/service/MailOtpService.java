@@ -15,10 +15,10 @@ import java.io.InputStreamReader;
 @Service
 public class MailOtpService {
     @Value("${mailgun.domain.name}")
-    private String YOUR_DOMAIN_NAME;
+    private String mailgunDomainName;
 
     @Value("${mailgun.api.key}")
-    private String API_KEY;
+    private String apiKey;
 
     public JsonNode sendOtpTo(String email, String otp) throws UnirestException, IOException {
 
@@ -32,8 +32,8 @@ public class MailOtpService {
         htmlContent = htmlContent.replace("VERIFICATION_CODE", otp);
 
         HttpResponse<JsonNode> request = Unirest.post("https://api.mailgun.net/v3/"
-                        + YOUR_DOMAIN_NAME + "/messages")
-                .basicAuth("api", API_KEY)
+                        + mailgunDomainName + "/messages")
+                .basicAuth("api", apiKey)
                 .queryString("from", "Thống Đặng Hoàng<noreply@thongdanghoang.id.vn>")
                 .queryString("to", email)
                 .queryString("subject", "Your verification code")
