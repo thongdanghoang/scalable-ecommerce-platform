@@ -10,6 +10,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class AuthenticationProviderService implements AuthenticationProvider {
     @Autowired
@@ -25,10 +27,13 @@ public class AuthenticationProviderService implements AuthenticationProvider {
 
         CustomUserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
+        if (!userDetails.getUser().isEnabled() && (userDetails.getUser().getDisabledUntil().isAfter(LocalDateTime.now()))){
+                throw new BadCredentialsException("Account is disabled, please try again later until "
+                        + userDetails.getUser().getDisabledUntil());
+        }
         if (bCryptPasswordEncoder.matches(password, userDetails.getPassword())) {
             return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
         }
-
         throw new BadCredentialsException("Bad credentials");
     }
 
