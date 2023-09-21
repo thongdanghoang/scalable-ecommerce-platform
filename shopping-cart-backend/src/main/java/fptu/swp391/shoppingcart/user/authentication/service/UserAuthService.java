@@ -95,7 +95,7 @@ public class UserAuthService {
         return userMapper.toDTO(saved);
     }
 
-    public String sendOtp(String email) throws OtpMaxAttemptsExceededException, OtpStillActiveException, OtpVerifiedException {
+    public String sendOtp(String email) throws OtpMaxAttemptsExceededException, OtpStillActiveException, OtpVerifiedException, EmailNotFound {
         UserAuthEntity user = userRepository.findByProfileEmail(email)
                 .orElseThrow(() -> new EmailNotFound("Email not found"));
 
@@ -162,21 +162,18 @@ public class UserAuthService {
         }
 
         // in ACTIVE status below
-        if (emailOtpEntity.getWrongSubmit() >= 3) { // too many wrong submit
-            emailOtpEntity.setStatus(OtpStatus.WRONG_SUBMIT);
-            emailOtpEntity.setNextRequestTime(java.time.LocalDateTime.now().plusMinutes(10));
-            emailOtpRepository.save(emailOtpEntity);
-            throw new OtpMaxAttemptsExceededException("OTP is wrong more than 3 times. " +
-                    "Please wait 10 minutes and request other OTP");
-        }
-
-        // wrong otp
-        if (!emailOtpEntity.getOtp().equals(otp)) {
+        if (!emailOtpEntity.getOtp().equals(otp)) { // wrong otp
             emailOtpEntity.setWrongSubmit(emailOtpEntity.getWrongSubmit() + 1);
+            if (emailOtpEntity.getWrongSubmit() > 3) { // too many wrong submit
+                emailOtpEntity.setStatus(OtpStatus.WRONG_SUBMIT);
+                emailOtpEntity.setNextRequestTime(java.time.LocalDateTime.now().plusMinutes(10));
+                emailOtpRepository.save(emailOtpEntity);
+                throw new OtpMaxAttemptsExceededException("OTP is wrong more than 3 times. " +
+                        "Please wait 10 minutes and request other OTP");
+            }
             emailOtpRepository.save(emailOtpEntity);
             throw new OtpIncorrectException("OTP incorrect");
         }
-
 
         // expired
         if (emailOtpEntity.getCreateTime().plusMinutes(10).isBefore(java.time.LocalDateTime.now())) {
