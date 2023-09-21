@@ -1,6 +1,6 @@
 package fptu.swp391.shoppingcart.user.authentication.exceptions;
 
-public class EmailNotFound extends RuntimeException {
+public class EmailNotFound extends Exception {
 
     public EmailNotFound() {
         super();
