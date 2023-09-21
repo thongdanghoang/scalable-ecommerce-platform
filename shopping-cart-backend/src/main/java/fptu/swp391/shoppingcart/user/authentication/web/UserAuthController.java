@@ -5,6 +5,7 @@ import fptu.swp391.shoppingcart.user.authentication.dto.ApiResponse;
 import fptu.swp391.shoppingcart.user.authentication.dto.UserRegisterDTO;
 import fptu.swp391.shoppingcart.user.authentication.exceptions.DataValidationException;
 import fptu.swp391.shoppingcart.user.authentication.exceptions.EmailAlreadyLinked;
+import fptu.swp391.shoppingcart.user.authentication.exceptions.EmailNotFound;
 import fptu.swp391.shoppingcart.user.authentication.exceptions.UsernameAlreadyExists;
 import fptu.swp391.shoppingcart.user.authentication.exceptions.otp.*;
 import fptu.swp391.shoppingcart.user.authentication.service.UserAuthService;
@@ -65,11 +66,11 @@ public class UserAuthController extends AbstractApplicationController {
     }
 
     @PostMapping("/verify-otp")
-    public ResponseEntity<ApiResponse<?>> verifyOtp(@RequestParam String email, @RequestParam String otpCode,
+    public ResponseEntity<ApiResponse<?>> verifyOtp(@RequestParam String email, @RequestParam String code,
                                                     HttpServletResponse response) {
         // Kiểm tra tính hợp lệ của OTP
         try {
-            String token = userAuthService.verifyOtp(email, otpCode);
+            String token = userAuthService.verifyOtp(email, code);
 
             // Create a new HTTP-only cookie to store the token
             Cookie resetPasswordToken = new Cookie("reset", token);
@@ -108,6 +109,8 @@ public class UserAuthController extends AbstractApplicationController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (OtpVerifiedException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (EmailNotFound e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
