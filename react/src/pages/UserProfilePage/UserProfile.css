@@ -1,0 +1,243 @@
+
+
+#UserProfilePage .container {
+    margin-top: 50px;
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+#UserProfilePage .account--sidebar {
+    border-right: 1px solid #d9d9d9;
+    padding: 0 1rem;
+    box-sizing: border-box;
+  }
+#UserProfilePage .grid {
+    display: -webkit-flex;
+    -moz-flex-direction: row;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: -9px;
+    margin-right: -9px;
+    padding: 0;
+    position: relative;
+    float: none;
+  }
+#UserProfilePage .grid1 {
+    display: -webkit-flex;
+    -moz-flex-direction: row;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: -9px;
+    margin-right: -9px;
+    padding: 0;
+    position: relative;
+    float: none;
+    margin-bottom: 30px;
+    margin-top: 9px;
+  }
+#UserProfilePage .grid__column {
+    position: relative;
+    box-sizing: border-box;
+    min-height: 1px;
+    vertical-align: top;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 9px;
+  }
+  
+#UserProfilePage .four-twelfths {
+    width: 33.33%;
+  }
+  
+#UserProfilePage .title {
+    font-size: 30px;
+    font-weight: 700px;
+    font: 1.987em sans-serif;
+    margin: 2rem 0 1rem;
+    align-items: center;
+  }
+#UserProfilePage .account--sidebar-item:first-child {
+    background-color: #0fb6d3;
+    color: #fff;
+  }
+#UserProfilePage .account--sidebar-item:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+#UserProfilePage .account--sidebar-item {
+    width: 85%;
+    line-height: 40px;
+    height: 40px;
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 0 20px;
+    transition: all 0.2s;
+    display: block;
+    border-radius: 16px;
+  }
+  a {
+    text-decoration: none;
+    color: #000;
+    padding-top: 10px;
+    font-size: 20px;
+  }
+#UserProfilePage .eigth-twelfths {
+    width: 66.66%;
+  }
+#UserProfilePage .two-twelfths {
+    width: 20%;
+  }
+#UserProfilePage .three-twelfths1 {
+    width: 20%;
+  }
+#UserProfilePage .seven-twelfths1 {
+    width: 35%;
+  }
+#UserProfilePage .form-info-user {
+    display: flex;
+  }
+#UserProfilePage .avatar_icon {
+    background-color: rgb(240, 248, 255);
+    border-radius: 50%;
+    width: 112px;
+    height: 112px;
+    border: 4px solid rgb(194, 225, 255);
+    position: relative;
+    -webkit-box-pack: center;
+    justify-content: center;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+  }
+#UserProfilePage .avatar_icon > i {
+    font-size: 60px;
+  }
+#UserProfilePage .edit {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    color: #000;
+    border-radius: 12px;
+    right: 3px;
+    bottom: 5px;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    display: flex;
+  }
+#UserProfilePage .form-control {
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    border-radius: 16px;
+    height: 40px;
+    width: 100%;
+    padding: 5px 20px;
+    transition: 0.2s all;
+    margin-bottom: 10px;
+  }
+#UserProfilePage .form-control2 {
+    color: #fff;
+    background: #2f5acf;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    border-radius: 16px;
+    height: 40px;
+    width: 100%;
+    padding: 5px 20px;
+    transition: 0.2s all;
+    margin-bottom: 10px;
+  }
+#UserProfilePage .form-control1 {
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    border-radius: 16px;
+    height: 40px;
+    width: 100%;
+    padding: 5px 20px;
+    transition: 0.2s all;
+    margin-bottom: 35px;
+  }
+#UserProfilePage .hafl-hafl {
+    width: 50%;
+  }
+#UserProfilePage .three-twelfths {
+    width: 20%;
+    line-height: 38px;
+  }
+#UserProfilePage .seven-twelfths {
+    width: 60%;
+  }
+#UserProfilePage .custom-radio-label:not(:last-child) {
+    margin-right: 1rem;
+  }
+#UserProfilePage .seven-twelfths2 {
+    width: 22%;
+  }
+#UserProfilePage .bday-note {
+    color: #999;
+    font-size: 0.9rem;
+  }
+#UserProfilePage .grid--three-columns > .grid__column {
+    width: 36.3333333333%;
+  }
+#UserProfilePage .datetime-select .form-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+#UserProfilePage .twelfths4 {
+    width: 58.333%;
+  }
+#UserProfilePage .slider-group {
+    display: flex;
+  }
+#UserProfilePage .datetime-select {
+    position: relative;
+  }
+#UserProfilePage .datetime-select .form-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+  
+#UserProfilePage .date {
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
+    opacity: 0.66;
+  }
+#UserProfilePage .btn.btn-primary {
+    background-color: #2f5acf;
+    border: none;
+  }
+#UserProfilePage .btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    border-radius: 16px;
+    border: 2px solid #000;
+    background-color: #000;
+    color: #fff;
+    padding: 0 30px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+#UserProfilePage .three-twelfths1 {
+    width: 25%;
+  }
+#UserProfilePage .btn:hover {
+    background-color: #000;
+  }
+#UserProfilePage .btn1:hover {
+    cursor: pointer;
+    background-color: #000;
+  }

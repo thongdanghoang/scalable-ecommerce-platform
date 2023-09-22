@@ -3,6 +3,7 @@ import LoginPage from "../pages/LoginPage/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage/ResetPasswordPage";
+import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
 
 
 export const routes = [
@@ -25,6 +26,11 @@ export const routes = [
         path: '/reset-password',
         page: ResetPasswordPage,
         isShowHeader: false
+    },
+    {
+        path: '/profile-user',
+        page: UserProfilePage,
+        isShowHeader: true
     },
     {
         path: '*',

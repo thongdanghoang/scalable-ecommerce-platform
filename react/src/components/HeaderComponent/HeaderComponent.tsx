@@ -25,6 +25,7 @@ export default function HeaderComponent() {
         <div className="header-cart-account">
           <div className="header-account">
             <i className="header-cart-icon fa-solid fa-user"></i>
+            { }
           </div>
           <div className="header-cart">
             <i className="header-cart-icon fa-solid fa-cart-shopping"></i>
