@@ -1,3 +1,5 @@
+import { userRegister } from "../pages/RegisterPage/RegisterPage";
+
 export async function loginService(
   formLogin: URLSearchParams
 ): Promise<Response | null> {
@@ -17,6 +19,24 @@ export async function loginService(
     return response;
   } catch (e) {
     console.log(e);
+  }
+  return null;
+}
+
+export async function registerService(userRegister : userRegister) {
+  try {
+    const res = await fetch('https://thongdanghoang.id.vn/swp391-back/api/user/auth/register' , {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userRegister)
+      })
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error)
   }
   return null;
 }

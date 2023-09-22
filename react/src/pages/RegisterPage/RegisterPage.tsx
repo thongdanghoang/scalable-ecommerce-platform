@@ -1,21 +1,51 @@
 import React,{ useState } from 'react';
 import './register.css'
-//import { User } from '../../redux/slides/userSlide';
+import { useNavigate } from 'react-router-dom';
+import { registerService } from '../../services/userService';
+
+export interface userRegister {
+  username: string,
+  email: string,
+  password: string,
+  password2: string,
+}
 
 export default function RegisterPage() {
-  const [formData, setFormData] = useState({
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState<userRegister>({
     username: '',
     email: '',
     password: '',
     password2: '',
   });
 
+  const [error, setError] = useState({
+    isInvalid : false,
+    msg : ''
+  })
+
   console.log(formData)
 
-  const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+    if(formData.password !== formData.password2 && formData.password2 !== ''){
+      setError({
+        isInvalid : true,
+        msg : 'Confirm password is not matching'       
+      })
+    }else{
+      const data = await registerService(formData);
+      if(data?.success){
+        navigate('/')
+      }else{
+        setError({
+          isInvalid : true,
+          msg : data?.message        
+        })
+      }
+    }
   }
+
 
   return (
     <div id='RegisterPage' className='background' style={{height:"100vh"}}>
@@ -33,12 +63,11 @@ export default function RegisterPage() {
               onChange={e => setFormData({...formData,[e.target.name] : e.target.value})}
             />
             <span></span>
-            <small></small>
+            <small>{(error?.isInvalid && error?.msg.includes('Username')) ? error?.msg : ''}</small>
           </div>
           <div className='form-control'>
             <input 
               required 
-              type="email" 
               name="email"
               value={formData.email}
               id="email" 
@@ -46,7 +75,7 @@ export default function RegisterPage() {
               onChange={e => setFormData({...formData,[e.target.name] : e.target.value})}
             />
             <span></span>
-            <small></small>
+            <small>{(error?.isInvalid && error?.msg.includes('Email')) ? error?.msg : ''}</small>
           </div>
           <div className='form-control'>
             <input 
@@ -55,13 +84,11 @@ export default function RegisterPage() {
               name="password" 
               value={formData.password}
               id="password"
-              placeholder="Password" 
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
-              onInvalid={(e:React.ChangeEvent<HTMLInputElement>) => e.target.setCustomValidity('Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters')}              
+              placeholder="Password"               
               onChange={e => setFormData({...formData,[e.target.name] : e.target.value})}
             />
             <span></span>
-            <small></small>
+            <small>{(error?.isInvalid && error?.msg.includes('Password')) ? error?.msg : ''}</small>
           </div>
           <div className='form-control'>
             <input
@@ -70,13 +97,11 @@ export default function RegisterPage() {
               name="password2"
               value={formData.password2}
               id="password2"
-              pattern={`^${formData.password}$`}
-              onInvalid={(e:React.ChangeEvent<HTMLInputElement>) => e.target.setCustomValidity('Password confirm is not same password')}              
               placeholder="Confirm password"
               onChange={e => setFormData({...formData,[e.target.name] : e.target.value})}
             />
             <span></span>
-            <small></small>
+            <small>{(error?.isInvalid && error?.msg.includes('Confirm password')) ? error?.msg : ''}</small>
           </div>
           <input type='submit' value="Register" />
           <div className="signup_link">Already a member? <a href="#">Login</a></div>				

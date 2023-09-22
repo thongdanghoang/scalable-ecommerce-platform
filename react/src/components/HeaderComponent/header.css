@@ -1,0 +1,80 @@
+#header {
+    height: 100px;
+    background-color: #60dfcd;
+    background-image: linear-gradient(315deg, #1e9afe 0%, #60dfcd 74%);
+}
+#header .header_logo {
+    width: 100px;
+    height: 100px;
+    margin-left: 30px;
+}
+#header .header_logo:hover {
+    cursor: pointer;
+}
+
+#header .img1 {
+    display: block;
+    width: 100%;
+    height: auto;
+    transform: scale(1.45);
+    padding-top: 8px;
+    margin-left: 76px;
+}
+
+#header .header-with-search {
+    display: flex;
+    align-items: center;
+}
+
+#header .header_search {
+    height: 40px;
+    width: 300px;
+    background: #fff;
+    margin-left: 150px;
+    border-radius: 2px;
+    display: flex;
+    }
+#header .header-cart {
+    margin-left: 18px;
+    margin-right: 13px;
+}
+
+#header .header-cart-icon {
+    color: #fff;
+    font-size: 30px;
+    margin: 0 20px;
+}
+
+#header .header-cart-account {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#header .header-search_input {
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: black;
+    padding: 0 16px;
+}
+
+#header .header-search-btn {
+    background-color: #60dfcd;
+    height: 36px;
+    width: 76px;
+    margin-top: 2px;
+    margin-right: 2px;
+}
+
+#header .header-search-btn:hover {
+    cursor: pointer;
+}
+  
+#header .header-account:hover {
+    cursor: pointer;
+}
+
+#header .header-cart-icon:hover {
+    cursor: pointer;
+}
