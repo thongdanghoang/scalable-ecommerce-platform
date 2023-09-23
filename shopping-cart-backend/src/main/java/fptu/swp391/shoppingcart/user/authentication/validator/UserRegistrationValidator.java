@@ -32,13 +32,12 @@ public class UserRegistrationValidator {
     public void checkPassword(String password) throws DataValidationException {
         // PASSWORD just from 8 to 64 characters
         if (password.length() < 8)
-            throw new DataValidationException("Password must be at least 8 characters");
+            throw new DataValidationException("Password must be at least 6 characters");
         if (password.length() > 64)
             throw new DataValidationException("Password must be at most 64 characters");
-        // password should include a mix of upper and lowercase letters, numbers, and symbols
-        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).*$";
+        String passwordRegex = "^[A-Za-z\\d!@#$%^&*()-_+=]{6,}$";
         if (!password.matches(passwordRegex))
-            throw new DataValidationException("Password must include a mix of upper and lowercase letters, numbers, " +
-                    "and symbols");
+            throw new DataValidationException("Password must only contain certain characters, such as letters, numbers, " +
+                    "and special characters");
     }
 }
