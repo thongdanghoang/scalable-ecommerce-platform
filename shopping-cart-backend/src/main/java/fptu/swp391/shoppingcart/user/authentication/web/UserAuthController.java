@@ -48,7 +48,7 @@ public class UserAuthController extends AbstractApplicationController {
             Cookie[] cookies = request.getCookies();
             String token = null;
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("reset")) {
+                if (cookie.getName().equals("isMailOtpVerify")) {
                     token = cookie.getValue();
                     break;
                 }
@@ -73,7 +73,7 @@ public class UserAuthController extends AbstractApplicationController {
             String token = userAuthService.verifyOtp(email, code);
 
             // Create a new HTTP-only cookie to store the token
-            Cookie resetPasswordToken = new Cookie("reset", token);
+            Cookie resetPasswordToken = new Cookie("isMailOtpVerify", token);
             resetPasswordToken.setHttpOnly(true); // Make the cookie HTTP-only
 //            resetPasswordToken.setSecure(true); // Optional: Set to true if using HTTPS
             resetPasswordToken.setPath("/"); // Set the path as needed
