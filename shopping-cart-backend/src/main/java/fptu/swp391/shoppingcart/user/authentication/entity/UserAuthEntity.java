@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -48,10 +47,6 @@ public class UserAuthEntity extends BaseEntity implements Serializable {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ProfileEntity profile;
-
-
-    //TODO: one user has many payment methods
-
 
     public UserAuthEntity() {
         this.numberOfFailedLoginAttempts = 0;
