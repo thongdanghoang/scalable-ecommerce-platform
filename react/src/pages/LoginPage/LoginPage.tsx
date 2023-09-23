@@ -35,9 +35,9 @@ export default function LoginPage() {
 
     console.log(params.toString());
 
-    let response = await loginService(params);
+    const response = await loginService(params);
     if (response != null) {
-      let status = response.ok;
+      const status = response.ok;
       if (status) {
         window.location.replace("/");
       } else {
