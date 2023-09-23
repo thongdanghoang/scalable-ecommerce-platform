@@ -38,7 +38,7 @@ public class AuthenticationSuccessHandlerCustom implements AuthenticationSuccess
         // Serialize the ApiResponse to JSON and write it to the response
         try (PrintWriter writer = response.getWriter()) {
             writer.write(new ObjectMapper().writeValueAsString(
-                    new ApiResponse<>("Authentication successful", true, null)
+                    new ApiResponse<>("Authentication successful", true, authentication.getName())
             ));
             writer.flush();
         }
