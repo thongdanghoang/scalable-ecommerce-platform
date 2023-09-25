@@ -35,6 +35,7 @@ export default function RegisterPage() {
       })
     }else{
       const data = await registerService(formData);
+      console.log(data)
       if(data?.success){
         navigate('/')
       }else{

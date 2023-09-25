@@ -2,21 +2,31 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface User {
+  version : number,
   username: string,
-  password: string,
+  fullName: string,
   email: string,
   phone?: string,
-  address?: string,
-  city?: string
+  gender?: string,
+  birthday?: string,
+  weight?: number,
+  height?: number,
+  emailVerified : boolean,
+  phoneVerified : boolean,
 }
 
 const initialState: User = {
+  version : 0,
   username: '',
-  password: '',
+  fullName: '',
   email: '',
   phone: '',
-  address: '',
-  city: ''
+  gender: '',
+  birthday: '',
+  weight: 0,
+  height: 0,
+  emailVerified : false,
+  phoneVerified : false,
 }
 
 export const userSlice = createSlice({
@@ -25,19 +35,29 @@ export const userSlice = createSlice({
   reducers: {
     updateUser: (state, action: PayloadAction<User>) => {
       const {
+        version  = 0,
         username = '',
-        password = '',
+        fullName = '',
         email = '',
         phone = '',
-        address = '',
-        city = ''
+        gender = '',
+        birthday = '',
+        weight = 0,
+        height = 0,
+        emailVerified  = false,
+        phoneVerified  = false,
       } = action.payload
+      state.version = version ? version : state.version
       state.username = username ? username : state.username
-      state.password = password ? password : state.password
+      state.fullName = fullName ? fullName : state.fullName
       state.email = email ? email : state.email
       state.phone = phone ? phone : state.phone
-      state.address = address ? address : state.address
-      state.city = city ? city : state.city
+      state.gender = gender ? gender : state.gender
+      state.birthday = birthday ? birthday : state.birthday
+      state.weight = weight ? weight : state.weight
+      state.height = height ? height : state.height
+      state.emailVerified = emailVerified ? emailVerified : state.emailVerified
+      state.phoneVerified = phoneVerified ? phoneVerified : state.phoneVerified
     },
   },
 })

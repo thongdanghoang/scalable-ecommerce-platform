@@ -4,6 +4,10 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { loginService } from "../../services/userService";
+import {useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {updateUser } from "../../redux/slides/userSlide";
+import { RootState } from "../../redux/store";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -13,6 +17,9 @@ export default function LoginPage() {
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
+  const navigate = useNavigate();
+  const user = useSelector((state:RootState)=> state.user); console.log(user);
+  const dispatch = useDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,10 +43,11 @@ export default function LoginPage() {
     console.log(params.toString());
 
     const response = await loginService(params);
-    if (response != null) {
-      const status = response.ok;
-      if (status) {
-        window.location.replace("/");
+    if (response) {
+      console.log(response)
+      if (response?.success) {
+        dispatch(updateUser({...user, username : response?.data}));
+        navigate('/');
       } else {
         handleShow();
       }

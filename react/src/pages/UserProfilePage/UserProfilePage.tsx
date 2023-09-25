@@ -1,6 +1,24 @@
 import './UserProfile.css'
+import {useEffect , useState} from 'react'
+import { profileService } from "../../services/userService";
+import { User } from '../../redux/slides/userSlide';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 export default function UserProfilePage() {
+    const user = useSelector((state:RootState)=> state.user); console.log(user);
+    const [userProfile , setUserProfile] = useState<User>({...user});
+    console.log(userProfile)
+
+    useEffect(() => {
+        profileService().then(res => {
+            console.log(res)
+            // if(res?.success){
+            //     setUserProfile(res?.data)
+            // }
+        })
+    },[])
+
     return (
         <div id="UserProfilePage">
             <div className="container">
