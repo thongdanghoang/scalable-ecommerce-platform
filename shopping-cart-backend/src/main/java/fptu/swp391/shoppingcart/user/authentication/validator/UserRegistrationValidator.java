@@ -29,6 +29,16 @@ public class UserRegistrationValidator {
             throw new DataValidationException("Email is invalid");
     }
 
+    public void checkMail(String mail) throws DataValidationException {
+        if(mail == null){
+            throw new DataValidationException("Email must not be empty");
+        }
+        // RFC5322 standard for EMAIL address
+        String emailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+        if (!mail.matches(emailRegex))
+            throw new DataValidationException("Email is invalid");
+    }
+
     public void checkPassword(String password) throws DataValidationException {
         // PASSWORD just from 6 to 64 characters
         if (password.length() < 6)
@@ -38,7 +48,6 @@ public class UserRegistrationValidator {
         // any combination of uppercase letters, lowercase letters, digits, or the specified special characters
         String passwordRegex = "^[A-Za-z\\d!@#$%^&*()-_+=]{6,}$";
         if (!password.matches(passwordRegex))
-            throw new DataValidationException("Password must be contains uppercase letters, lowercase letters, digits, " +
-                    "or the specified special characters");
+            throw new DataValidationException("Password is invalid");
     }
 }

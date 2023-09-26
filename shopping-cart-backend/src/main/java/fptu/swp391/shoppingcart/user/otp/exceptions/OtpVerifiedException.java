@@ -1,4 +1,4 @@
-package fptu.swp391.shoppingcart.user.authentication.exceptions.otp;
+package fptu.swp391.shoppingcart.user.otp.exceptions;
 
 public class OtpVerifiedException extends Exception {
 
