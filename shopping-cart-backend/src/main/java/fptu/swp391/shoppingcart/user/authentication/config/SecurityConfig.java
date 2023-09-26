@@ -57,6 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .mvcMatchers("/admin").hasRole("ADMIN")
                     .mvcMatchers("/user").hasRole("USER")
+                    .mvcMatchers("/api/user/auth/verify-email").authenticated()
+                    .mvcMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
                     .mvcMatchers("/api/user/auth/**").permitAll()
                     .anyRequest().authenticated().and()
                 .formLogin()
