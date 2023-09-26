@@ -1,14 +1,18 @@
 import './UserProfile.css'
 import {useEffect , useState} from 'react'
-import { profileService } from "../../services/userService";
-import { User } from '../../redux/slides/userSlide';
-import { useSelector } from 'react-redux';
+import { profileService, updateProfileService } from "../../services/userService";
+import { updateUser } from '../../redux/slides/userSlide';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { User } from '../../model/UserModal';
+import { ToastContainer , toast } from 'react-toastify';
+
 
 export default function UserProfilePage() {
-    const user = useSelector((state:RootState)=> state.user); console.log(user);
+    const user = useSelector((state:RootState)=> state.user);
     const [userProfile , setUserProfile] = useState<User>({...user});
-    console.log(userProfile)
+    const dispatch = useDispatch();
+    console.log(userProfile);
 
     useEffect(() => {
         profileService().then(res => {
@@ -17,10 +21,55 @@ export default function UserProfilePage() {
                 setUserProfile(res?.data)
             }
         })
-    },[])
+    },[user])
+
+    const handleUpdateProfile = async () => {
+        const res = await updateProfileService({
+            version : userProfile.version,
+            username : userProfile.username,
+            fullName : userProfile.fullName,
+            gender : userProfile.gender.toUpperCase(),
+            birthday : userProfile.birthday.split('-').reverse().join('/'),
+            weight : userProfile.weight,
+            height : userProfile.height
+        })
+        console.log(res)
+        if(res?.success){
+            dispatch(updateUser(res?.data));
+            toast.success(<span style={{color: "#07bc0c"}}>{res?.message}</span>, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
+        }else{
+            toast.error(<span style={{color: "red"}}>{res?.message}</span>, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
+        }
+    }
+
+    const handleOnChangeProfile = (e : React.ChangeEvent<HTMLInputElement>) => {
+        setUserProfile({
+            ...userProfile,
+            [e.target.name] : e.target.value
+        })
+    }
 
     return (
         <div id="UserProfilePage">
+            <ToastContainer/>
             <div className="container">
                 <div className="account-page">
                     <div className="grid">
@@ -68,12 +117,15 @@ export default function UserProfilePage() {
                                                     value={userProfile.username}
                                                     placeholder="Username"
                                                     className="form-control1"
+                                                    onChange={handleOnChangeProfile}
                                                 />
                                                 <input
                                                     type="text"
-                                                    name="fullname"
+                                                    name="fullName"
+                                                    value={userProfile.fullName}
                                                     placeholder="Full name"
                                                     className="form-control"
+                                                    onChange={handleOnChangeProfile}
                                                 />
                                             </div>
                                         </div>
@@ -89,6 +141,7 @@ export default function UserProfilePage() {
                                                 value={userProfile.phone}
                                                 placeholder="Phone number"
                                                 className="form-control"
+                                                onChange={handleOnChangeProfile}
                                             />
                                         </div>
                                     </div>
@@ -106,8 +159,9 @@ export default function UserProfilePage() {
                                                 type="text"
                                                 name="email"
                                                 value={userProfile.email}
-                                                placeholder="Email"
+                                                placeholder="email"
                                                 className="form-control"
+                                                onChange={handleOnChangeProfile}
                                             />
                                         </div>
                                     </div>
@@ -124,21 +178,42 @@ export default function UserProfilePage() {
                                         <div className="form-group flex" style={{ marginTop: '9px', fontSize: '18px' }}>
                                             <label htmlFor="male" className="custom-radio-label">
                                                 <span className="custom-radio">
-                                                    <input type="radio" value="male" id="male" />
+                                                    <input 
+                                                        type="radio" 
+                                                        name="gender"
+                                                        value="male" 
+                                                        id="male" 
+                                                        checked={userProfile.gender?.toLowerCase() === 'male'}
+                                                        onChange={handleOnChangeProfile}
+                                                    />
                                                     <span className="checkmark"></span>
                                                 </span>
                                                 <span className="label">Nam</span>
                                             </label>
                                             <label htmlFor="female " className="custom-radio-label">
                                                 <span className="custom-radio">
-                                                    <input type="radio" value="female" id="female" />
+                                                    <input 
+                                                        type="radio" 
+                                                        name="gender"
+                                                        value="female" 
+                                                        id="female"
+                                                        checked={userProfile.gender?.toLowerCase() === 'female'}
+                                                        onChange={handleOnChangeProfile} 
+                                                    />
                                                     <span className="checkmark"></span>
                                                 </span>
                                                 <span className="label">Nữ</span>
                                             </label>
                                             <label htmlFor="others" className="custom-radio-label">
                                                 <span className="custom-radio">
-                                                    <input type="radio" value="others" id="others" />
+                                                    <input 
+                                                        type="radio" 
+                                                        name="gender"
+                                                        value="other" 
+                                                        id="other"
+                                                        checked={userProfile.gender?.toLowerCase() === 'other'}
+                                                        onChange={handleOnChangeProfile} 
+                                                    />
                                                 </span>
                                                 <span className="label">Others</span>
                                             </label>
@@ -159,8 +234,9 @@ export default function UserProfilePage() {
                                                         <div className="grid__column">
                                                             <div className="datetime-select">
                                                                 <div className="form-control">
-                                                                    <input className="date" type="date" name="begin"
-                                                                        placeholder="dd-mm-yyyy" value=""
+                                                                    <input className="date" type="date" name="birthday"
+                                                                        placeholder="dd-mm-yyyy" value={userProfile.birthday.split('/').reverse().join('-')}
+                                                                        onChange={handleOnChangeProfile}
                                                                         min="1997-01-01" max="2030-12-31" />
                                                                 </div>
                                                             </div>
@@ -176,10 +252,12 @@ export default function UserProfilePage() {
                                     <div className="grid__column seven-twelfths2 ">
                                         <div className="form-group">
                                             <input
-                                                type="text"
+                                                type="number"
                                                 name="height"
+                                                value={userProfile.height}
                                                 placeholder="cm"
                                                 className="form-control"
+                                                onChange={handleOnChangeProfile}
                                             />
                                         </div>
                                     </div>
@@ -189,17 +267,19 @@ export default function UserProfilePage() {
                                     <div className="grid__column seven-twelfths2 ">
                                         <div className="form-group">
                                             <input
-                                                type="text"
+                                                type="number"
                                                 name="weight"
+                                                value={userProfile.weight}
                                                 placeholder="kg"
                                                 className="form-control"
+                                                onChange={handleOnChangeProfile}
                                             />
                                         </div>
                                     </div>
                                 </div>
                                 <div className="grid">
                                     <div className="grid__column flex align--center">
-                                        <button className="btn btn-primary btn-block-sm">Cập nhật tài khoản</button>
+                                        <button onClick={handleUpdateProfile} className="btn btn-primary btn-block-sm">Cập nhật tài khoản</button>
                                     </div>
                                 </div>
                             </div>

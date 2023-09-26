@@ -1,10 +1,11 @@
 import './header.css'
 import {OverlayTrigger, Popover} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { RootState } from '../../redux/store';
 import { logoutService } from "../../services/userService";
 import { resetUser } from '../../redux/slides/userSlide';
+import { useEffect, useState } from 'react';
 
 
 
@@ -12,7 +13,12 @@ export default function HeaderComponent() {
   const navigate = useNavigate();
   const user = useSelector((state:RootState)=> state.user); console.log(user);
   const dispatch = useDispatch();
-  //const location = useLocation();
+  const [isOpenPopover, setIsOpenPopover] = useState(false)
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsOpenPopover(false);
+  },[location.pathname])
 
   const handleProfile = async () => {
     navigate('/profile-user');
@@ -27,7 +33,7 @@ export default function HeaderComponent() {
   }
 
   const MyPopover = (
-    <Popover id="avatar-popover">
+    <Popover onMouseLeave={() => setIsOpenPopover(false)} id="avatar-popover">
       <Popover.Body className='custome-popover-body'>
           {user?.username ? (
             <div>
@@ -36,7 +42,7 @@ export default function HeaderComponent() {
             </div>
           ) : (
             <div>
-              <div className='menu-item' onClick={() => navigate('/sign-up')}>Login</div>
+              <div className='menu-item' onClick={() => navigate('/sign-in')}>Login</div>
               <div className='menu-item' onClick={() => navigate('/sign-up')}>Register</div>
             </div>
           )}
@@ -81,16 +87,19 @@ export default function HeaderComponent() {
               </div>
               <div className="col-md-5">
                 <div className="header-components">
-                  <div className="header-home">
+                  <div onClick={() => navigate('/')} className="header-home">
                     <i className="header-cart-icon fa-solid fa-house"></i>
                   </div>
                   <div className="header-account">
                     <OverlayTrigger
-                      trigger={['click', 'focus']} // hoặc "hover" hoặc "focus" tùy theo sự kiện bạn muốn kích hoạt popover
                       placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
                       overlay={MyPopover}
+                      show={isOpenPopover}
                     > 
-                      <div className="header-account__content">
+                      <div 
+                        className="header-account__content"
+                        onMouseEnter={() => setIsOpenPopover(true)}
+                      >
                         <i className="header-cart-icon fa-solid fa-user"></i>
                       </div>             
                     </OverlayTrigger>

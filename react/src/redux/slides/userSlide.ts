@@ -1,19 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-
-export interface User {
-  version : number,
-  username: string,
-  fullName: string,
-  email: string,
-  phone?: string,
-  gender?: string,
-  birthday?: string,
-  weight?: number,
-  height?: number,
-  emailVerified : boolean,
-  phoneVerified : boolean,
-}
+import { User } from '../../model/UserModal'
 
 const initialState: User = {
   version : 0,

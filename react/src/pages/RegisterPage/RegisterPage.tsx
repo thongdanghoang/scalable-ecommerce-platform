@@ -5,13 +5,7 @@ import { registerService } from '../../services/userService';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../redux/slides/userSlide';
 import { RootState } from '../../redux/store';
-
-export interface userRegister {
-  username: string,
-  email: string,
-  password: string,
-  password2: string,
-}
+import { userRegister } from '../../model/UserModal';
 
 export default function RegisterPage() {
   const navigate = useNavigate();

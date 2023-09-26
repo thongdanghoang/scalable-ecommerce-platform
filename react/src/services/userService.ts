@@ -1,4 +1,4 @@
-import { userRegister } from "../pages/RegisterPage/RegisterPage";
+import { UserProfileUpdated, userRegister } from "../model/UserModal";
 
 export async function loginService(
   formLogin: URLSearchParams
@@ -70,6 +70,25 @@ export async function logoutService() {
         headers: {
           'Content-Type': 'application/json'
         },
+      })
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+  }
+  return null;
+}
+
+export async function updateProfileService(UserProfileUpdated : UserProfileUpdated) {
+  try {
+    const res = await fetch('https://thongdanghoang.id.vn/swp391-back/api/user/profile/basic' , {
+        method: 'PUT', 
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(UserProfileUpdated)
       })
 
     const data = await res.json();
