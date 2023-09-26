@@ -57,18 +57,18 @@ public class ProfileService {
         ProfileEntity updated = mapper.toEntity(profileDTO);
 
         // set advanced fields
-        updated.setId(existsProfile.getId());
-        updated.setPhone(existsProfile.getPhone());
-        updated.setPhoneVerified(existsProfile.isPhoneVerified());
-        updated.setEmail(existsProfile.getEmail());
-        updated.setEmailVerified(existsProfile.isEmailVerified());
+        existsProfile.setGender(updated.getGender());
+        existsProfile.setHeight(updated.getHeight());
+        existsProfile.setWeight(updated.getWeight());
+        existsProfile.setBirthday(updated.getBirthday());
+        existsProfile.setFullName(updated.getFullName());
 
         try {
-            ProfileEntity result = profileRepository.save(updated);
+            ProfileEntity result = profileRepository.save(existsProfile);
             ProfileDTO resultDto = mapper.toDTO(result);
             resultDto.setUsername(profileDTO.getUsername());
             return resultDto;
-        } catch (ObjectOptimisticLockingFailureException oolfe) {
+        } catch (ObjectOptimisticLockingFailureException e) {
             throw new ConcurrentUpdateException(
                     String.format("User profile with username %s has been updated by another user",
                             profileDTO.getUsername()));
