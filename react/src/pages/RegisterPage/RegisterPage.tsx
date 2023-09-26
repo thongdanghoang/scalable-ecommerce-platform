@@ -2,6 +2,9 @@ import React,{ useState } from 'react';
 import './register.css'
 import { useNavigate } from 'react-router-dom';
 import { registerService } from '../../services/userService';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '../../redux/slides/userSlide';
+import { RootState } from '../../redux/store';
 
 export interface userRegister {
   username: string,
@@ -18,6 +21,8 @@ export default function RegisterPage() {
     password: '',
     password2: '',
   });
+  const user = useSelector((state:RootState)=> state.user); console.log(user);
+  const dispatch = useDispatch();
 
   const [error, setError] = useState({
     isInvalid : false,
@@ -34,14 +39,15 @@ export default function RegisterPage() {
         msg : 'Confirm password is not matching'       
       })
     }else{
-      const data = await registerService(formData);
-      console.log(data)
-      if(data?.success){
+      const res = await registerService(formData);
+      console.log(res)
+      if(res?.success){
         navigate('/')
+        dispatch(updateUser({...user , username : res?.data}))
       }else{
         setError({
           isInvalid : true,
-          msg : data?.message        
+          msg : res?.message        
         })
       }
     }

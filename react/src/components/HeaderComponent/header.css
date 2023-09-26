@@ -1,55 +1,53 @@
 #header {
-    height: 100px;
-    background-color: #60dfcd;
-    background-image: linear-gradient(315deg, #1e9afe 0%, #60dfcd 74%);
+    height: 75px;
+    background-color: #231f20;
 }
+
+#header .header {
+    height: 75px;
+    background-color: #231f20;
+  }
 #header .header_logo {
-    width: 100px;
-    height: 100px;
-    margin-left: 30px;
-}
+    font-family: "Dancing Script", cursive;
+    font-size: 45px;
+    line-height: 75px;
+  }
+#header .header_item {
+    color: #fff;
+    font-size: 20px;
+    line-height: 75px;
+  }
+#header .header_item > a {
+    text-decoration: none;
+    color: #fff;
+  }
+  
 #header .header_logo:hover {
     cursor: pointer;
-}
-
-#header .img1 {
-    display: block;
-    width: 100%;
-    height: auto;
-    transform: scale(1.45);
-    padding-top: 8px;
-    margin-left: 76px;
-}
-
-#header .header-with-search {
-    display: flex;
-    align-items: center;
-}
-
+  }
+#header .header_logo {
+    color: #fff;
+  }
 #header .header_search {
     height: 40px;
     width: 300px;
     background: #fff;
-    margin-left: 150px;
     border-radius: 2px;
     display: flex;
-    }
-#header .header-cart {
-    margin-left: 18px;
-    margin-right: 13px;
-}
-
+    margin: 17.5px;
+  }
+  
 #header .header-cart-icon {
     color: #fff;
     font-size: 30px;
     margin: 0 20px;
-}
-
-#header .header-cart-account {
+  }
+#header .header-components {
     display: flex;
-    justify-content: flex-end;
-}
-
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
 #header .header-search_input {
     height: 100%;
     width: 100%;
@@ -57,24 +55,47 @@
     outline: none;
     color: black;
     padding: 0 16px;
-}
-
+    border-radius: 5px;
+  }
 #header .header-search-btn {
-    background-color: #60dfcd;
+    background-color: #000;
     height: 36px;
     width: 76px;
     margin-top: 2px;
     margin-right: 2px;
-}
-
+    border-radius: 5px;
+  }
+#header .header-search-btn-icon {
+    color: #fff;
+  }
 #header .header-search-btn:hover {
     cursor: pointer;
-}
+  }
   
 #header .header-account:hover {
     cursor: pointer;
-}
-
+  }
 #header .header-cart-icon:hover {
     cursor: pointer;
+  }
+#header .header_item:hover {
+    cursor: pointer;
+  }
+
+#avatar-popover .custome-popover-body{
+    padding: 1rem 0;
+    width: 150px;
+}
+
+#avatar-popover .menu-item{
+    cursor: pointer;
+    padding: 7px 10px;
+    color: rgb(39, 39, 42);
+    font-size: 14px;
+    line-height: 150%;
+    font-weight: 400;
+}
+
+#avatar-popover .menu-item:hover{
+    background: #cdcdcd;
 }

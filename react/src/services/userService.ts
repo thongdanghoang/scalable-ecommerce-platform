@@ -8,7 +8,7 @@ export async function loginService(
       "https://thongdanghoang.id.vn/swp391-back/login",
       {
         method: "POST",
-        //credentials: 'include',
+        credentials: 'include',
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           //'Access-Control-Allow-Origin':'*',
@@ -29,6 +29,7 @@ export async function registerService(userRegister : userRegister) {
   try {
     const res = await fetch('https://thongdanghoang.id.vn/swp391-back/api/user/auth/register' , {
         method: 'POST', 
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -47,6 +48,25 @@ export async function profileService() {
   try {
     const res = await fetch('https://thongdanghoang.id.vn/swp391-back/api/user/profile' , {
         method: 'GET', 
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+  }
+  return null;
+}
+
+export async function logoutService() {
+  try {
+    const res = await fetch('https://thongdanghoang.id.vn/swp391-back/logout' , {
+        method: 'GET', 
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         },

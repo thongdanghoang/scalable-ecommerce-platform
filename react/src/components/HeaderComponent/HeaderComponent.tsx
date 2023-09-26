@@ -1,59 +1,106 @@
 import './header.css'
-import logo from '../../assets/img/logo.png'
 import {OverlayTrigger, Popover} from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
+import { RootState } from '../../redux/store';
+import { logoutService } from "../../services/userService";
+import { resetUser } from '../../redux/slides/userSlide';
+
 
 
 export default function HeaderComponent() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const user = useSelector((state:RootState)=> state.user); console.log(user);
+  const dispatch = useDispatch();
+  //const location = useLocation();
 
   const handleProfile = async () => {
     navigate('/profile-user');
   }
 
+  const handleLogout = async () => {
+    const res = await logoutService();
+    if(res?.status == 401){
+      navigate('/sign-in');
+    }
+    dispatch(resetUser());
+  }
+
   const MyPopover = (
     <Popover id="avatar-popover">
-      <Popover.Body>
-        <div>
-          <div onClick={handleProfile}>User Profile</div>
-          <div>Logout</div>
-        </div>
+      <Popover.Body className='custome-popover-body'>
+          {user?.username ? (
+            <div>
+              <div className='menu-item' onClick={handleProfile}>User Profile</div>
+              <div className='menu-item' onClick={handleLogout}>Logout</div>
+            </div>
+          ) : (
+            <div>
+              <div className='menu-item' onClick={() => navigate('/sign-up')}>Login</div>
+              <div className='menu-item' onClick={() => navigate('/sign-up')}>Register</div>
+            </div>
+          )}
       </Popover.Body>
     </Popover>
   );
 
   return (
     <div id="header">
-      <div className="header-with-search">
-        <div className="header_logo">
-          <img
-            className="img1"
-            src={logo}
-            alt=""
-          />
-        </div>
-        <div className="header_search">
-          <input
-            type="text"
-            className="header-search_input"
-            placeholder="Nhập để tìm kiếm sản phẩm "
-          />
-          <button className="header-search-btn">
-            <i className="header-search-btn-icon fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div>
-        <div className="header-cart-account">
-          <div className="header-account">
-            <OverlayTrigger
-              trigger="click" // hoặc "hover" hoặc "focus" tùy theo sự kiện bạn muốn kích hoạt popover
-              placement="bottom" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
-              overlay={MyPopover}
-            >              
-              <i className="header-cart-icon fa-solid fa-user"></i>
-            </OverlayTrigger>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6">
+            <div className="row">
+              <div className="col-md-3 header_logo">TTNTK</div>
+              <div className="col-md-2 header_item text-center">
+                <a href="">MEN</a>
+              </div>
+              <div className="col-md-2 header_item text-center">
+                <a href="">WOMEN</a>
+              </div>
+              <div className="col-md-3 header_item text-center">
+                <a href="">BEST SELLER</a>
+              </div>
+              <div className="col-md-2 header_item text-center"></div>
+            </div>
           </div>
-          <div className="header-cart">
-            <i className="header-cart-icon fa-solid fa-cart-shopping"></i>
+          <div className="col-md-6">
+            <div className="row">
+              <div className="col-md-7">
+                <div className="header_search">
+                  <input
+                    type="text"
+                    className="header-search_input"
+                    placeholder="Nhập để tìm kiếm sản phẩm "
+                  />
+                  <button className="header-search-btn">
+                    <i
+                      className="header-search-btn-icon fa-solid fa-magnifying-glass"
+                    ></i>
+                  </button>
+                </div>
+              </div>
+              <div className="col-md-5">
+                <div className="header-components">
+                  <div className="header-home">
+                    <i className="header-cart-icon fa-solid fa-house"></i>
+                  </div>
+                  <div className="header-account">
+                    <OverlayTrigger
+                      trigger={['click', 'focus']} // hoặc "hover" hoặc "focus" tùy theo sự kiện bạn muốn kích hoạt popover
+                      placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
+                      overlay={MyPopover}
+                    > 
+                      <div className="header-account__content">
+                        <i className="header-cart-icon fa-solid fa-user"></i>
+                      </div>             
+                    </OverlayTrigger>
+                  </div>
+                  <div className="header-cart">
+                    <i className="header-cart-icon fa-solid fa-cart-shopping"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

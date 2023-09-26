@@ -59,10 +59,14 @@ export const userSlice = createSlice({
       state.emailVerified = emailVerified ? emailVerified : state.emailVerified
       state.phoneVerified = phoneVerified ? phoneVerified : state.phoneVerified
     },
+    resetUser: (state) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      Object.assign(state, initialState);
+    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { updateUser } = userSlice.actions
+export const { updateUser , resetUser} = userSlice.actions
 
 export default userSlice.reducer

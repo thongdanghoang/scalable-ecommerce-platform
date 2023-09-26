@@ -147,6 +147,7 @@ export default function LoginPage() {
                         <button
                           type="button"
                           className="btn btn-outline-danger"
+                          onClick={() => navigate('/sign-up')}
                         >
                           Create new
                         </button>

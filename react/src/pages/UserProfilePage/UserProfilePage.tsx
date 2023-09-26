@@ -13,9 +13,9 @@ export default function UserProfilePage() {
     useEffect(() => {
         profileService().then(res => {
             console.log(res)
-            // if(res?.success){
-            //     setUserProfile(res?.data)
-            // }
+            if(res?.success){
+                setUserProfile(res?.data)
+            }
         })
     },[])
 
@@ -65,6 +65,7 @@ export default function UserProfilePage() {
                                                 <input
                                                     type="text"
                                                     name="username"
+                                                    value={userProfile.username}
                                                     placeholder="Username"
                                                     className="form-control1"
                                                 />
@@ -85,6 +86,7 @@ export default function UserProfilePage() {
                                             <input
                                                 type="text"
                                                 name="phone"
+                                                value={userProfile.phone}
                                                 placeholder="Phone number"
                                                 className="form-control"
                                             />
@@ -103,6 +105,7 @@ export default function UserProfilePage() {
                                             <input
                                                 type="text"
                                                 name="email"
+                                                value={userProfile.email}
                                                 placeholder="Email"
                                                 className="form-control"
                                             />
