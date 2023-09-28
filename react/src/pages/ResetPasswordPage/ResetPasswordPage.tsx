@@ -1,9 +1,9 @@
+import EmailInputPart from "./EmailInputPart/EmailInputPart"
 
-import './ResetPassword.css'
-
-export default function ResetPasswordPage() {
-  return (
-    <div id="ResetPasswordPage">
+// import './ResetPassword.css'
+const a = () => {
+    return (
+        <div id="ResetPasswordPage">
         <div className="card text-center" style={{width: '300px'}}>
             <div
                 className="card-header h5 text-white bg-primary border-radius-top"
@@ -27,5 +27,10 @@ export default function ResetPasswordPage() {
             </div>
         </div>
     </div>
+    )
+}
+export default function ResetPasswordPage() {
+  return (
+    <EmailInputPart/>
   )
 }

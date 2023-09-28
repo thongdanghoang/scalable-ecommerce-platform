@@ -1,0 +1,8 @@
+#email-input {
+    height: 100vh;
+    background-image: url(../../../assets/img/backgroundShop.jpg);
+}
+#email-input-form {
+    width: 25%;
+    margin: auto auto;
+}

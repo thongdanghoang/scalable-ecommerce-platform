@@ -1,0 +1,40 @@
+#otp-form {
+  height: 100vh;
+  background-color: whitesmoke;
+}
+#otp-form > div {
+  height: 50%;
+  background-color: white;
+}
+
+#otp-form .otp-input-container {
+  background-color: cyan;
+  font-size: 5rem;
+}
+#otp-form .otp-input {
+  border: none;
+  background: "transparent";
+}
+/* Chrome, Safari, Edge, Opera */
+#otp-form input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  /* margin: 0; */
+}
+
+/* Firefox */
+#otp-form input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+#otp-form .otp-input {
+    width: 20% !important;
+    aspect-ratio: 1;
+    border-radius: 1rem;
+    background-color: whitesmoke;
+}
+#otp-form button {
+    display: block;
+    font-size: 1.2rem;
+
+}
