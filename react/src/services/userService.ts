@@ -116,3 +116,18 @@ export async function verifyEmailService(email:string , code:string) {
   }
   return null;
 }
+
+export async function sendEmailOTPForgetPassword(email: string): Promise<any> {
+  let emailParam = new URLSearchParams({email: email});
+  console.log(emailParam.toString())
+  try {
+    const res = await fetch(`https://thongdanghoang.id.vn/swp391-back/api/user/auth/forgot-password?${emailParam.toString()}` , {
+        method: 'POST', 
+      });
+    return res.json();
+  } catch (error) {
+    console.log(error);
+    
+  }
+  return null;
+}
