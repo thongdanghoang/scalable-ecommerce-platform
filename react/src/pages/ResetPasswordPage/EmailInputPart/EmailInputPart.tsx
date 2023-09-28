@@ -82,7 +82,7 @@ export default function EmailInputPart() {
   };
 
   let [CurrentForm, setCurrentForm] = useState(() => {
-    return <OTPPart />;
+    return <EmailForm />;
   });
 
   return CurrentForm;
