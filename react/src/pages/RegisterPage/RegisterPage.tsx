@@ -105,7 +105,7 @@ export default function RegisterPage() {
             <small>{(error?.isInvalid && error?.msg.includes('Confirm password')) ? error?.msg : ''}</small>
           </div>
           <input type='submit' value="Register" />
-          <div className="signup_link">Already a member? <a href="#">Login</a></div>				
+          <div className="signup_link">Already a member? <a href="#" onClick={() => navigate('/sign-in')}>Login</a></div>				
         </form>
       </div>
     </div>

@@ -25,13 +25,23 @@ export const routes = [
     {
         path: '/reset-password',
         page: ResetPasswordPage,
-        isShowHeader: false
+        isShowHeader: false,
     },
     {
         path: '/profile-user',
         page: UserProfilePage,
         isShowHeader: true
     },
+    // {
+    //     path: '/profile-user/information-user',
+    //     page: InforUserComponent,
+    //     isShowHeader: true
+    // },
+    // {
+    //     path: '/profile-user/order-user',
+    //     page: OrderHistoryComponent,
+    //     isShowHeader: true
+    // },
     {
         path: '*',
         page: NotFoundPage

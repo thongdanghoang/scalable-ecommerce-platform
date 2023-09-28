@@ -21,7 +21,7 @@ export default function HeaderComponent() {
   },[location.pathname])
 
   const handleProfile = async () => {
-    navigate('/profile-user');
+    navigate('/profile-user/information-user');
   }
 
   const handleLogout = async () => {
