@@ -1,6 +1,7 @@
 import EmailInputPart from "./EmailInputPart/EmailInputPart"
 
 // import './ResetPassword.css'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const a = () => {
     return (
         <div id="ResetPasswordPage">

@@ -101,7 +101,7 @@ export async function updateProfileService(UserProfileUpdated : UserProfileUpdat
 
 export async function verifyEmailService(email:string , code:string) {
   try {
-    const res = await fetch(`https://thongdanghoang.id.vn/swp391-back/api/user/auth/verify-email?mail=${email}&code=${code}` , {
+    const res = await fetch(`https://thongdanghoang.id.vn/swp391-back/api/user/auth/verify-email?mail=${email}`+(code ? `&code=${code}` : '') , {
         method: 'POST', 
         credentials: 'include',
         headers: {

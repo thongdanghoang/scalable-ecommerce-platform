@@ -1,5 +1,5 @@
 import '../../pages/UserProfilePage/UserProfile.css'
-import {useEffect , useState} from 'react'
+import {useEffect , useRef, useState} from 'react'
 import { profileService, updateProfileService, verifyEmailService } from "../../services/userService";
 import { updateUser } from '../../redux/slides/userSlide';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,12 +7,17 @@ import { RootState } from '../../redux/store';
 import { User } from '../../model/UserModal';
 import { ToastContainer , toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import OTPInput, {} from 'react-otp-input'
+import { Button, Modal } from 'react-bootstrap';
 
 export default function InforUserComponent() {
     const user = useSelector((state:RootState)=> state.user);
     const [userProfile , setUserProfile] = useState<User>({...user});
     const dispatch = useDispatch();
     console.log(userProfile);
+    const [otp, setOtp] = useState('');
+    const [isOpenModal , setIsOpenModal] = useState(false);
+    //const spanEle = useRef<HTMLElement | null>(null)
 
     useEffect(() => {
         profileService().then(res => {
@@ -67,9 +72,44 @@ export default function InforUserComponent() {
         })
     }
 
-    const handleVerifyEmail = async () => {
+    const handleSendOTPEmail = async () => {
+        setIsOpenModal(true)
         const res = await verifyEmailService(userProfile?.email,'');
-        console.log(res);
+        console.log(res)
+    }
+
+    const handleCloseOTPForm = () => {
+        setIsOpenModal(false);
+        setOtp('')
+    }
+
+    const handleVerifyEmail = async () => {
+        const res = await verifyEmailService(userProfile?.email , otp);
+        if(res?.success){
+            toast.success(<span style={{color: "#07bc0c"}}>{res?.message}</span>, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            dispatch(updateUser({...user, emailVerified : true}));
+            handleCloseOTPForm();
+        }else{
+            toast.error(<span style={{color: "red"}}>{res?.message}</span>, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
     }
 
     return (
@@ -134,7 +174,7 @@ export default function InforUserComponent() {
                 </div>
                 <div className="grid__column two-twelfths1">
                     <div className="form-group">
-                        <button onClick={handleVerifyEmail} type="submit" className="btn1 form-control2">Update</button>
+                        <button type="submit" className="btn1 form-control2">Update</button>
                     </div>
                 </div>
             </div>
@@ -143,6 +183,7 @@ export default function InforUserComponent() {
                 <div className="grid__column seven-twelfths ">
                     <div className="form-group">
                         <input
+                            disabled={userProfile.emailVerified}
                             type="text"
                             name="email"
                             value={userProfile.email}
@@ -153,9 +194,13 @@ export default function InforUserComponent() {
                     </div>
                 </div>
                 <div className="grid__column two-twelfths1">
-                    <div className="form-group">
-                        <button type="submit" className="btn1 form-control2">Update</button>
-                    </div>
+                    {userProfile.emailVerified ? (
+                        <div>Đã xác thực</div>
+                    ) : (
+                        <div className="form-group">
+                            <button onClick={handleSendOTPEmail} type="submit" className="btn1 form-control2">Update</button>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -222,7 +267,7 @@ export default function InforUserComponent() {
                                         <div className="datetime-select">
                                             <div className="form-control">
                                                 <input className="date" type="date" name="birthday"
-                                                    placeholder="dd-mm-yyyy" value={userProfile.birthday.split('/').reverse().join('-')}
+                                                    placeholder="dd-mm-yyyy" value={userProfile.birthday?.split('/').reverse().join('-')}
                                                     onChange={handleOnChangeProfile}
                                                     min="1997-01-01" max="2030-12-31" />
                                             </div>
@@ -269,6 +314,41 @@ export default function InforUserComponent() {
                     <button onClick={handleUpdateProfile} className="btn btn-primary btn-block-sm">Cập nhật tài khoản</button>
                 </div>
             </div>
+            <Modal
+                show={isOpenModal}
+                onHide={handleCloseOTPForm}
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Enter OTP Email</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>{`To verify the email is yours, enter the 6-digit verification code just sent to ${userProfile.email}`}</p>
+                    <OTPInput
+                        containerStyle={{justifyContent:"center"}}
+                        value={otp}
+                        onChange={setOtp}
+                        numInputs={6}
+                        renderSeparator={<span>-</span>}
+                        renderInput={(props) => <input {...props} />}
+                        inputType='number'
+                        inputStyle={{
+                            width: '3rem',
+                            height: '3rem',
+                            margin: '0 5px',
+                            fontSize: '2rem',
+                            borderRadius: '4px',
+                            border: '1px solid rgba(0,0,0,.3)'
+                        }}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button style={{width:"100%"}} variant="danger" onClick={handleVerifyEmail}>
+                        Confirm
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }
