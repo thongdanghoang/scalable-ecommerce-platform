@@ -1,21 +1,21 @@
 import { useState } from "react";
 import "./email-input.css";
-// import { sendEmailResetPassword } from "../../../services/userService";
 import { OTPPart } from "../OTPPart/OTPPart";
-import { sendEmailOTPForgetPassword } from "../../../services/userService";
+import { forgetPasswordByMail } from "../../../services/userService";
 
 
 export default function EmailInputPart() {
+
   const handleAPI = async (email: string): Promise<string | null> => {
-    console.log(email);
-    let response = await sendEmailOTPForgetPassword(email);
+    let response = await forgetPasswordByMail(email);
     if (response != null) {
-      if (response.status == undefined) {
+      if (response.status == 200) {
         setCurrentForm(() => {
           return <OTPPart email={email} />;
         });
       } else {
-        return response.message;
+        let errMess = await response.json();
+        return errMess.message;
       }
     }
     return null;
@@ -87,3 +87,4 @@ export default function EmailInputPart() {
 
   return CurrentForm;
 }
+
