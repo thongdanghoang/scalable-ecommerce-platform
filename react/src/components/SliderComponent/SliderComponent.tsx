@@ -1,33 +1,28 @@
 import Slider from "react-slick";
 
-export default function SliderComponent() {
+interface PropsSlider {
+    slidesToShow : number,
+    listItems : Array<any>,
+}
+
+export default function SliderComponent(props : PropsSlider) {
+    const {
+      slidesToShow = 1,
+      listItems = []
+    } = props
+
     var settings = {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 1,
+        slidesToShow,
         slidesToScroll: 1
       };
       return (
         <Slider {...settings}>
-          <div>
-            <h3>1</h3>
-          </div>
-          <div>
-            <h3>2</h3>
-          </div>
-          <div>
-            <h3>3</h3>
-          </div>
-          <div>
-            <h3>4</h3>
-          </div>
-          <div>
-            <h3>5</h3>
-          </div>
-          <div>
-            <h3>6</h3>
-          </div>
+          {listItems?.map(item => (
+            <div>{item}</div>
+          ))}
         </Slider>
       );
 }
