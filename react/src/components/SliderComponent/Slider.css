@@ -1,13 +1,23 @@
 .slick-slider {
-  width: 80%; /* Adjust the width as needed */
+  width: 98%; /* Adjust the width as needed */
   margin: 0 auto; /* Center the carousel */
   height: 3%;
 }
-.carousel-image {
-  width: 100%; /* Adjust the width as needed */
-  height: 30%; /* Maintain aspect ratio */
+.slick-arrow,
+.slick-prev {
+  color: #fff;
+  background-color: black;
+}
+.slick-arrow:hover,
+.slick-prev:hover {
+  color: #fff;
+  background-color: black;
 }
 .slider img {
-  width: 200px;
-  height: 100px;
+  width: 1300x;
+  height: 385px;
+}
+.slider {
+  margin-top: 30px;
+  margin-bottom: 30px;
 }

@@ -1,3 +1,4 @@
+import "./Footer.css";
 export default function FooterComponent() {
   return (
     <div id="FooterComponent">
