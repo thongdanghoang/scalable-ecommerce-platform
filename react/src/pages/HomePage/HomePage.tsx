@@ -1,6 +1,6 @@
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
-import { OverlayTrigger, Popover } from "react-bootstrap";
 import "./HomePage.css";
+import CardComponent from "../../components/CardComponent/CardComponent";
 
 export default function HomePage() {
   return (
@@ -13,6 +13,7 @@ export default function HomePage() {
           "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/slider_4.jpg?1696059235970",
           "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/slider_5.jpg?1696059235970",
         ]}
+        nameSlider={'imagesBackground'}
       />
       <div className="header-preview">
         <div className="content">
