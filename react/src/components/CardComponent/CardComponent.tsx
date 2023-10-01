@@ -1,9 +1,22 @@
 import { Card } from "antd";
 
-export default function CardComponent() {
+interface PropsCard {
+  image: string;
+  name: string;
+  price: string;
+}
+
+export default function CardComponent(props: PropsCard) {
+  const { image, name, price } = props;
+
   return (
-    <Card>
-      
+    <Card
+      hoverable
+      style={{ width: 200 }}
+      cover={<img alt="example" src={image} />}
+    >
+      <div>{name}</div>
+      <div>{price}</div>
     </Card>
-  )
+  );
 }

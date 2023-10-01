@@ -1,0 +1,13 @@
+.slick-slider {
+  width: 80%; /* Adjust the width as needed */
+  margin: 0 auto; /* Center the carousel */
+  height: 3%;
+}
+.carousel-image {
+  width: 100%; /* Adjust the width as needed */
+  height: 30%; /* Maintain aspect ratio */
+}
+.slider img {
+  width: 200px;
+  height: 100px;
+}
