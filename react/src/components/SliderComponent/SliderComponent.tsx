@@ -5,10 +5,11 @@ import "./Slider.css";
 interface PropsSlider {
   slidesToShow: number;
   listItems: Array<any>;
+  nameSlider: string;
 }
 
 export default function SliderComponent(props: PropsSlider) {
-  const { slidesToShow = 1, listItems = [] } = props;
+  const { slidesToShow = 1, listItems = [], nameSlider } = props;
 
   var settings = {
     dots: true,
@@ -17,6 +18,7 @@ export default function SliderComponent(props: PropsSlider) {
     slidesToShow: slidesToShow,
     slidesToScroll: 1,
   };
+
   return (
     <Slider className="slider" {...settings}>
       {listItems?.map((item) => (

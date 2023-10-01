@@ -10,11 +10,7 @@ export default function CardComponent(props: PropsCard) {
   const { image, name, price } = props;
 
   return (
-    <Card
-      hoverable
-      style={{ width: 200 }}
-      cover={<img alt="example" src={image} />}
-    >
+    <Card hoverable style={{ width: 200 }} cover={<img alt="" src={image} />}>
       <div>{name}</div>
       <div>{price}</div>
     </Card>
