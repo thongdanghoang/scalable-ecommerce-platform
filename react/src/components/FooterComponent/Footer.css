@@ -1,6 +1,10 @@
 #FooterComponent .footer {
   height: 365px;
-  background-color: black;
+  background: linear-gradient(
+    178.6deg,
+    rgb(124, 143, 161) 11.8%,
+    rgb(20, 36, 50) 83.8%
+  );
   margin-top: 30px;
 }
 #FooterComponent .row {

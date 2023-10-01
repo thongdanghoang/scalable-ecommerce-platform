@@ -1,22 +1,9 @@
-.slick-slider {
+.slider-header > .slick-slider {
   width: 98%; /* Adjust the width as needed */
   margin: 0 auto; /* Center the carousel */
   height: 3%;
 }
-.slick-arrow,
-.slick-prev {
-  color: #fff;
-  background-color: black;
-}
-.slick-arrow:hover,
-.slick-prev:hover {
-  color: #fff;
-  background-color: black;
-}
-.slider img {
-  width: 1300x;
-  height: 385px;
-}
+
 .slider {
   margin-top: 30px;
   margin-bottom: 30px;
