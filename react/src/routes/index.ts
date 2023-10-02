@@ -4,7 +4,7 @@ import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage/ResetPasswordPage";
 import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
-
+import ProductPage from "../pages/ProductPage/ProductPage";
 
 export const routes = [
     {
@@ -30,6 +30,11 @@ export const routes = [
     {
         path: '/profile-user',
         page: UserProfilePage,
+        isShowHeader: true
+    },
+    {
+        path: '/product',
+        page: ProductPage,
         isShowHeader: true
     },
     // {

@@ -57,9 +57,11 @@ export function ResetPasswordPart() {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
+    console.log(password.newPassword)
     let response = await resetPassword(password.newPassword);
     if (response != null) {
       if (response.status == 200) {
+        console.log(await response.json())
         handleShowModal();
       } else {
         console.log(await response.json())

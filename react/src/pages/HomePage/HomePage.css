@@ -64,3 +64,29 @@
 .women > a:hover {
   color: gray;
 }
+#homepage #card {
+  width: 200px;
+  height: 420px;
+}
+#homepage #card .name {
+  margin-top: 8px;
+  font-weight: 500;
+  padding: 2px 2px;
+}
+#homepage #card .price {
+  font-weight: 700;
+  font-size: medium;
+}
+#homepage #card .ant-card-body {
+  padding: 2px;
+}
+#homepage #card img {
+  transform: scale(1);
+  transition: all 0.5s;
+}
+#homepage #card img:hover {
+  transform: scale(1.1);
+}
+#homepage .ant-card {
+  overflow: hidden;
+}
