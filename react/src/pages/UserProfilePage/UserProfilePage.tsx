@@ -1,7 +1,10 @@
+import { constantMenuProfile } from '../../utils/utils'
 import './UserProfile.css'
-import { Link, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import {useState} from 'react'
 
 export default function UserProfilePage() {
+    const location = useLocation();
 
     return (
         <div id="UserProfilePage">
@@ -14,15 +17,18 @@ export default function UserProfilePage() {
                                     Nguyễn Trần Duy Thái
                                 </div>
                                 <div className="account--sidebar-items">
-                                    <Link to="/profile-user/information-user" className="account--sidebar-item">Account information</Link>
-                                    <Link to="/profile-user/address-ship-user" className="account--sidebar-item">Address Shipping</Link>
-                                    <Link to="/profile-user/order-user" className="account--sidebar-item">Order History</Link>
-                                    <Link to="/profile-user/bank-user" className="account--sidebar-item">Linked Bank Acount</Link>
+                                    <NavLink to="/profile-user/information-user" className="account--sidebar-item">Information User</NavLink>
+                                    <NavLink to="/profile-user/address-ship-user" className="account--sidebar-item">Address Shipping</NavLink>
+                                    <NavLink to="/profile-user/order-user" className="account--sidebar-item">Order History</NavLink>
+                                    <NavLink to="/profile-user/bank-user" className="account--sidebar-item">Linked Bank Acount</NavLink>
                                 </div>
                             </div>
                         </div>
                         <div className="grid__column eigth-twelfths">
-                            <Outlet/>
+                            <div id="infotab">
+                                <div className="title">{constantMenuProfile(location.pathname)}</div>
+                                <Outlet/>
+                            </div>
                         </div>
                     </div>
                 </div>
