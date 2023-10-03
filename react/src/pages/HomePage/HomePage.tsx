@@ -27,6 +27,11 @@ export default function HomePage() {
           <div className="underline"></div>
         </div>
       </div>
+      <SliderComponent
+        slidesToShow={8}
+        listItems={[]}
+        nameSlider={"menu"}
+      ></SliderComponent>
       <div className="header-preview">
         <div className="content">
           <a href="">Top Sellers</a>

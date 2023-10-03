@@ -31,7 +31,7 @@
 }
 .product > .slick-slider {
   margin: 0 25px;
-  width: 83%;
+  width: 84.5%;
 }
 #homepage .product {
   display: flex;
@@ -42,6 +42,7 @@
 .gender {
   display: flex;
   justify-content: center;
+  margin-bottom: 30px;
 }
 .men,
 .women {
