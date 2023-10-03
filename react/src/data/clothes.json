@@ -1,0 +1,21 @@
+
+{
+    "name" : "Áo ABC vai rộng",
+    "size" : "L",
+    "gender" : "Nữ",
+    "category" : "Áo thun",
+    "price" : "123000",
+    "discount" : "20%",
+    "quantityInStock" : 10,
+    "describe" : {
+        "outstandingFeatures" : "",
+        "productDetails" : ""
+    },
+    "imageByColor" : [
+        {
+            "url": "image.jpg",
+            "color": "vàng"
+        }
+    ],
+    "rating" : "80%"
+}
