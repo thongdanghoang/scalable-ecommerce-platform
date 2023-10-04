@@ -1,5 +1,6 @@
 package fptu.swp391.shoppingcart.user.authentication.validator;
 
+import fptu.swp391.shoppingcart.user.address.dto.AddressDto;
 import fptu.swp391.shoppingcart.user.authentication.dto.UserRegisterDTO;
 import fptu.swp391.shoppingcart.user.authentication.exceptions.DataValidationException;
 import org.springframework.stereotype.Component;
@@ -59,5 +60,24 @@ public class UserValidator {
         String phoneRegex = "^\\+[1-9]\\d{1,14}$";
         if (!phone.matches(phoneRegex))
             throw new DataValidationException("Phone number is invalid");
+    }
+
+    public void checkAddress(AddressDto address) throws DataValidationException{
+        checkPhoneNumberE164(address.getPhone());
+        if(address.getFullName() == null || address.getFullName().isEmpty()){
+            throw new DataValidationException("Full name must not be empty");
+        }
+        if(address.getAddressDetail() == null || address.getAddressDetail().isEmpty()){
+            throw new DataValidationException("Address detail must not be empty");
+        }
+        if(address.getProvince() == null || address.getProvince().isEmpty()){
+            throw new DataValidationException("City must not be empty");
+        }
+        if(address.getDistrict() == null || address.getDistrict().isEmpty()){
+            throw new DataValidationException("District must not be empty");
+        }
+        if(address.getWard() == null || address.getWard().isEmpty()){
+            throw new DataValidationException("Ward must not be empty");
+        }
     }
 }
