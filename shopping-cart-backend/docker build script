@@ -1,0 +1,6 @@
+docker buildx create --use
+docker buildx build \
+--platform linux/amd64,linux/arm64 \
+-t thongdh3401/swp391-shopping-cart-back:multi \
+. \
+--push
