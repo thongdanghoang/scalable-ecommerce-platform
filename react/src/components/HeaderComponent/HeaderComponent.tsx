@@ -7,9 +7,13 @@ import { logoutService } from "../../services/userService";
 import { resetUser } from '../../redux/slides/userSlide';
 import { useEffect, useState } from 'react';
 
+interface propsHeader {
+  isShowMenu ?: boolean,
+  isShowSearch ?: boolean,
+  isShowCart ?: boolean
+}
 
-
-export default function HeaderComponent() {
+export default function HeaderComponent({isShowMenu = true , isShowSearch = true , isShowCart = true} : propsHeader) {
   const navigate = useNavigate();
   const user = useSelector((state:RootState)=> state.user); console.log(user);
   const dispatch = useDispatch();
@@ -57,33 +61,39 @@ export default function HeaderComponent() {
           <div className="col-md-6">
             <div className="row">
               <div className="col-md-3 header_logo">TTNTK</div>
-              <div className="col-md-2 header_item text-center">
-                <a href="">MEN</a>
-              </div>
-              <div className="col-md-2 header_item text-center">
-                <a href="">WOMEN</a>
-              </div>
-              <div className="col-md-3 header_item text-center">
-                <a href="">BEST SELLER</a>
-              </div>
-              <div className="col-md-2 header_item text-center"></div>
+              {isShowMenu && (
+                <>
+                  <div className="col-md-2 header_item text-center">
+                    <a href="">MEN</a>
+                  </div>
+                  <div className="col-md-2 header_item text-center">
+                    <a href="">WOMEN</a>
+                  </div>
+                  <div className="col-md-3 header_item text-center">
+                    <a href="">BEST SELLER</a>
+                  </div>
+                  <div className="col-md-2 header_item text-center"></div>
+                </>
+              )}
             </div>
           </div>
           <div className="col-md-6">
-            <div className="row">
+            <div className="row" style={{height:"100%"}}>
               <div className="col-md-7">
-                <div className="header_search">
-                  <input
-                    type="text"
-                    className="header-search_input"
-                    placeholder="Nhập để tìm kiếm sản phẩm "
-                  />
-                  <button className="header-search-btn">
-                    <i
-                      className="header-search-btn-icon fa-solid fa-magnifying-glass"
-                    ></i>
-                  </button>
-                </div>
+                {isShowSearch && (
+                  <div className="header_search">
+                    <input
+                      type="text"
+                      className="header-search_input"
+                      placeholder="Nhập để tìm kiếm sản phẩm "
+                    />
+                    <button className="header-search-btn">
+                      <i
+                        className="header-search-btn-icon fa-solid fa-magnifying-glass"
+                      ></i>
+                    </button>
+                  </div>
+                )}
               </div>
               <div className="col-md-5">
                 <div className="header-components">
@@ -104,9 +114,11 @@ export default function HeaderComponent() {
                       </div>             
                     </OverlayTrigger>
                   </div>
-                  <div className="header-cart">
-                    <i className="header-cart-icon fa-solid fa-cart-shopping"></i>
-                  </div>
+                  {isShowCart && (
+                    <div className="header-cart">
+                      <i className="header-cart-icon fa-solid fa-cart-shopping"></i>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
