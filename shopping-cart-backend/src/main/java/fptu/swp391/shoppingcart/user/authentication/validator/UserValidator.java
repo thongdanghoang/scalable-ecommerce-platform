@@ -5,8 +5,8 @@ import fptu.swp391.shoppingcart.user.authentication.exceptions.DataValidationExc
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserRegistrationValidator {
-    public void validate(UserRegisterDTO userRegisterDTO) throws DataValidationException {
+public class UserValidator {
+    public void validateRegisterDto(UserRegisterDTO userRegisterDTO) throws DataValidationException {
         // empty check
         if (userRegisterDTO.getUsername().isEmpty() || userRegisterDTO.getPassword().isEmpty() || userRegisterDTO.getEmail().isEmpty())
             throw new DataValidationException("Username, password and email must not be empty");
@@ -49,5 +49,15 @@ public class UserRegistrationValidator {
         String passwordRegex = "^[A-Za-z\\d!@#$%^&*()-_+=]{6,}$";
         if (!password.matches(passwordRegex))
             throw new DataValidationException("Password is invalid");
+    }
+
+    public void checkPhoneNumberE164(String phone) throws DataValidationException {
+        if(phone == null){
+            throw new DataValidationException("Phone number must not be empty");
+        }
+        // PHONE NUMBER must be in E.164 format
+        String phoneRegex = "^\\+[1-9]\\d{1,14}$";
+        if (!phone.matches(phoneRegex))
+            throw new DataValidationException("Phone number is invalid");
     }
 }

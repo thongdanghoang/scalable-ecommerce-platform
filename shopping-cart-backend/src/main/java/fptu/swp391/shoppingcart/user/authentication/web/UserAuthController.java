@@ -1,7 +1,6 @@
 package fptu.swp391.shoppingcart.user.authentication.web;
 
-import fptu.swp391.shoppingcart.user.authentication.dto.ApiResponse;
-import fptu.swp391.shoppingcart.user.authentication.dto.UserRegisterDTO;
+import fptu.swp391.shoppingcart.user.authentication.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,15 +14,18 @@ public interface UserAuthController {
                                             HttpServletRequest request,
                                             HttpServletResponse response);
 
-    ResponseEntity<ApiResponse<?>> resetPassword(@RequestParam String newPassword,
-                                                 @CookieValue("verificationResetPassword") String verificationToken,
+    ResponseEntity<ApiResponse<?>> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto,
+                                                 @CookieValue(value = "verificationResetPassword", required = false) String verificationToken,
                                                  HttpServletRequest request,
                                                  HttpServletResponse response);
 
-    ResponseEntity<ApiResponse<?>> verifyMail(@RequestParam String mail,
-                                              @RequestParam(required = false) String code);
+    ResponseEntity<ApiResponse<?>> verifyMail(@RequestBody EmailOtpDto emailOtpDto);
 
-    ResponseEntity<ApiResponse<?>> forgotPasswordByMail(@RequestParam String email,
-                                                        @RequestParam(required = false) String code,
+    ResponseEntity<ApiResponse<?>> forgotPasswordByMail(@RequestBody EmailOtpDto emailOtpDto,
+                                                        HttpServletResponse response);
+
+    ResponseEntity<ApiResponse<?>> verifyPhone(@RequestBody PhoneOtpDto phoneOtpDto);
+
+    ResponseEntity<ApiResponse<?>> forgotPasswordByPhone(@RequestBody PhoneOtpDto phoneOtpDto,
                                                         HttpServletResponse response);
 }

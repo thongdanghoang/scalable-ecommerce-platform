@@ -1,4 +1,4 @@
-package fptu.swp391.shoppingcart.user.authentication.exceptions;
+package fptu.swp391.shoppingcart.user.otp.exceptions;
 
 public class OtpSentException extends Exception {
 
