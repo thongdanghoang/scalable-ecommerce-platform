@@ -1,7 +1,7 @@
 package fptu.swp391.shoppingcart.user.authentication.entity;
 
 import fptu.swp391.shoppingcart.BaseEntity;
-import fptu.swp391.shoppingcart.user.address.entity.AddressEntity;
+import fptu.swp391.shoppingcart.user.address.model.entity.AddressEntity;
 import fptu.swp391.shoppingcart.user.profile.entity.ProfileEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,9 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -43,7 +41,7 @@ public class UserAuthEntity extends BaseEntity implements Serializable {
     // one user has many addresses
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "USER_ID")
-    private Set<AddressEntity> addresses = new LinkedHashSet<>();
+    private List<AddressEntity> addresses = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ProfileEntity profile;

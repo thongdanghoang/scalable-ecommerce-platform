@@ -14,12 +14,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.Cookie;
@@ -199,5 +198,29 @@ public class UserAuthControllerImpl extends AbstractApplicationController implem
         cookie.setMaxAge(600);
         response.addCookie(cookie);
     }
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<?>> login(@RequestParam String username, @RequestParam String password,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) {
+        Authentication authentication = authenticationProviderService.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        request.getSession(true)
+                .setAttribute(
+                        SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext()
+                );
+        ApiResponse<?> apiResponse = new ApiResponse<>("Login successfully", true, username);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(apiResponse);
+    }
 
+    @GetMapping("/logout")
+    public ResponseEntity<ApiResponse<?>> logout(){
+        SecurityContextHolder.clearContext();
+        ApiResponse<?> apiResponse = new ApiResponse<>("Logout successfully", true, null);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(apiResponse);
+    }
 }

@@ -1,4 +1,4 @@
-package fptu.swp391.shoppingcart.user.address.entity;
+package fptu.swp391.shoppingcart.user.address.model.entity;
 
 import fptu.swp391.shoppingcart.BaseEntity;
 import lombok.Getter;
@@ -20,8 +20,8 @@ public class AddressEntity extends BaseEntity implements Serializable {
     @Column(name = "PHONE")
     private String phone;
 
-    @Column(name = "ADDRESS")
-    private String address;//   Tên đường, toà nhà, số nhà
+    @Column(name = "ADDRESS_DETAIL")
+    private String addressDetail;//   Tên đường, toà nhà, số nhà
     @Column(name = "PROVINCE")
     private String province;//    Tỉnh/Thành phố    ->  Province/City
     @Column(name = "DISTRICT")
