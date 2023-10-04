@@ -1,13 +1,9 @@
+#UserProfilePage{
+  background: aliceblue;
+}
 
-
-#UserProfilePage .container {
-    margin-top: 50px;
-    padding-left: 64px;
-    padding-right: 64px;
-  }
 #UserProfilePage .account--sidebar {
     border-right: 1px solid #d9d9d9;
-    padding: 0 1rem;
     box-sizing: border-box;
   }
 #UserProfilePage .grid {
@@ -55,10 +51,14 @@
     margin: 2rem 0 1rem;
     align-items: center;
   }
-#UserProfilePage .account--sidebar-item:first-child {
-    background-color: #0fb6d3;
+
+#UserProfilePage  a[aria-current="page"] {
+  background-color: #0fb6d3;
     color: #fff;
-  }
+}
+#UserProfilePage .account--sidebar-item.active-menu{
+  
+}
 #UserProfilePage .account--sidebar-item:not(:last-child) {
     margin-bottom: 1rem;
   }

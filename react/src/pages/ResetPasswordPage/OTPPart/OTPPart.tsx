@@ -9,8 +9,7 @@ export function OTPPart({ email }: any) {
   const handleAPI = async (otp: string): Promise<string | null> => {
     let response = await forgetPasswordByMail(email, otp);
     if (response != null) {
-      console.log("qqertrwsfs");
-      console.log(response)
+      console.log(await response.json())
       if (response.status == 200) {
         setCurrentForm(() => {
           return <ResetPasswordPart />;

@@ -113,10 +113,9 @@ export default function InforUserComponent() {
     }
 
     return (
-        <div id="infotab">
-            <ToastContainer/>
-            <div className="title">Thông tin tài khoản</div>
+        <>
             <div className="form-info">
+                <ToastContainer />
                 <div className="grid">
                     <div className="grid__column two-twelfths">
                         <div className="form-info-user">
@@ -326,7 +325,7 @@ export default function InforUserComponent() {
                 <Modal.Body>
                     <p>{`To verify the email is yours, enter the 6-digit verification code just sent to ${userProfile.email}`}</p>
                     <OTPInput
-                        containerStyle={{justifyContent:"center"}}
+                        containerStyle={{ justifyContent: "center" }}
                         value={otp}
                         onChange={setOtp}
                         numInputs={6}
@@ -344,11 +343,11 @@ export default function InforUserComponent() {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button style={{width:"100%"}} variant="danger" onClick={handleVerifyEmail}>
+                    <Button style={{ width: "100%" }} variant="danger" onClick={handleVerifyEmail}>
                         Confirm
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </>
     )
 }
