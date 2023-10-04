@@ -45,6 +45,11 @@ public class AddressServiceImpl implements AddressService {
         validator.checkAddress(addressDto);
 
         userRepository.findUserByUsername(username).ifPresent(user -> {
+
+            if(user.getAddresses().isEmpty()) {
+                addressDto.setDefault(true);
+            }
+
             if (addressDto.isDefault()) {
                 user.getAddresses().forEach(AddressServiceImpl::setOthersAddressToNotDefault);
             }
