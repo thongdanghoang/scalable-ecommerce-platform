@@ -31,7 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
-/docker_build_multi_platform_shell_script
 
 # sensetive data
 docker-compose.yml
+
+# scripts
+/docker_build_multi_platform_shell_script
