@@ -1,51 +1,120 @@
-import './header.css'
-import {OverlayTrigger, Popover} from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom'
-import { RootState } from '../../redux/store';
+import "./header.css";
+import { OverlayTrigger, Popover } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { RootState } from "../../redux/store";
 import { logoutService } from "../../services/userService";
-import { resetUser } from '../../redux/slides/userSlide';
-import { useEffect, useState } from 'react';
-
-
+import { resetUser } from "../../redux/slides/userSlide";
+import { useEffect, useState } from "react";
 
 export default function HeaderComponent() {
   const navigate = useNavigate();
-  const user = useSelector((state:RootState)=> state.user); console.log(user);
+  const user = useSelector((state: RootState) => state.user);
+  console.log(user);
   const dispatch = useDispatch();
-  const [isOpenPopover, setIsOpenPopover] = useState(false)
+  const [isOpenPopover, setIsOpenPopover] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     setIsOpenPopover(false);
-  },[location.pathname])
+  }, [location.pathname]);
 
   const handleProfile = async () => {
-    navigate('/profile-user/information-user');
-  }
+    navigate("/profile-user/information-user");
+  };
 
   const handleLogout = async () => {
     const res = await logoutService();
-    if(res?.status == 401){
-      navigate('/sign-in');
+    if (res?.status == 401) {
+      navigate("/sign-in");
     }
     dispatch(resetUser());
-  }
+  };
 
   const MyPopover = (
     <Popover onMouseLeave={() => setIsOpenPopover(false)} id="avatar-popover">
-      <Popover.Body className='custome-popover-body'>
-          {user?.username ? (
-            <div>
-              <div className='menu-item' onClick={handleProfile}>User Profile</div>
-              <div className='menu-item' onClick={handleLogout}>Logout</div>
+      <Popover.Body className="custome-popover-body">
+        {user?.username ? (
+          <div>
+            <div className="menu-item" onClick={handleProfile}>
+              User Profile
             </div>
-          ) : (
-            <div>
-              <div className='menu-item' onClick={() => navigate('/sign-in')}>Login</div>
-              <div className='menu-item' onClick={() => navigate('/sign-up')}>Register</div>
+            <div className="menu-item" onClick={handleLogout}>
+              Logout
             </div>
-          )}
+          </div>
+        ) : (
+          <div>
+            <div className="menu-item" onClick={() => navigate("/sign-in")}>
+              Login
+            </div>
+            <div className="menu-item" onClick={() => navigate("/sign-up")}>
+              Register
+            </div>
+          </div>
+        )}
+      </Popover.Body>
+    </Popover>
+  );
+  const MyCardPopover = (
+    <Popover onMouseLeave={() => setIsOpenPopover(false)} id="avatar-popover">
+      <Popover.Body className="custome-card-popover-body ">
+        {
+          <>
+            <div className="header-card-product">
+              <div className="header-card-image-product">
+                <a href="">
+                  <img
+                    src="https://bizweb.dktcdn.net/thumb/compact/100/438/408/products/qam3127-nau-2-1796c057-5e70-467f-aaf7-5290b1b6fbb1.jpg"
+                    style={{ width: "83px", height: "124px" }}
+                    alt=""
+                  />
+                </a>
+              </div>
+              <div className="header-card-content-product">
+                <div className="header-card-product-info">
+                  <div className="header-card-product-info-detail">
+                    <a href="">
+                      Quần Âu Nam Cao Cấp Giữ Phom, Co Giãn Thoải Mái
+                    </a>
+
+                    <div className="card-product-price">
+                      <span>998.000đ</span>
+                    </div>
+
+                    <div className="card-product-color">
+                      <span>Nâu/L</span>
+                    </div>
+                  </div>
+                  <div className="product-delete-button">
+                    <i className="fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <div className="header-card-product-select">
+                  <div className="product-select-btn">
+                    <button className="button">-</button>
+                    <input
+                      className="input"
+                      value={"1"}
+                      placeholder=""
+                      type="text"
+                      style={{ textAlign: "center" }}
+                    />
+                    <button className="button">+</button>
+                  </div>
+                  <div className="product-select-total">
+                    <h6>
+                      Tổng cộng :<span className="highlight">998.000đ</span>
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="addToCard-button">
+              <button>Thêm vào giỏ hàng</button>
+            </div>
+          </>
+        }
       </Popover.Body>
     </Popover>
   );
@@ -79,15 +148,13 @@ export default function HeaderComponent() {
                     placeholder="Nhập để tìm kiếm sản phẩm "
                   />
                   <button className="header-search-btn">
-                    <i
-                      className="header-search-btn-icon fa-solid fa-magnifying-glass"
-                    ></i>
+                    <i className="header-search-btn-icon fa-solid fa-magnifying-glass"></i>
                   </button>
                 </div>
               </div>
               <div className="col-md-5">
                 <div className="header-components">
-                  <div onClick={() => navigate('/')} className="header-home">
+                  <div onClick={() => navigate("/")} className="header-home">
                     <i className="header-cart-icon fa-solid fa-house"></i>
                   </div>
                   <div className="header-account">
@@ -95,17 +162,25 @@ export default function HeaderComponent() {
                       placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
                       overlay={MyPopover}
                       show={isOpenPopover}
-                    > 
-                      <div 
+                    >
+                      <div
                         className="header-account__content"
                         onMouseEnter={() => setIsOpenPopover(true)}
                       >
                         <i className="header-cart-icon fa-solid fa-user"></i>
-                      </div>             
+                      </div>
                     </OverlayTrigger>
                   </div>
                   <div className="header-cart">
-                    <i className="header-cart-icon fa-solid fa-cart-shopping"></i>
+                    <OverlayTrigger
+                      placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
+                      overlay={MyCardPopover}
+                      show={true}
+                    >
+                      <div className="header-account__content">
+                        <i className="header-cart-icon fa-solid fa-cart-shopping"></i>
+                      </div>
+                    </OverlayTrigger>
                   </div>
                 </div>
               </div>
@@ -114,5 +189,5 @@ export default function HeaderComponent() {
         </div>
       </div>
     </div>
-  )
+  );
 }
