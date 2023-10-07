@@ -1,9 +1,10 @@
 import { UserProfileUpdated, userRegister } from "../model/UserModal";
+import {API_URL} from '../utils/constants'
 
 export async function loginService(formLogin: URLSearchParams) {
   try {
     const response = await fetch(
-      "https://thongdanghoang.id.vn/swp391-back/login",
+      `${API_URL}/login`,
       {
         method: "POST",
         credentials: "include",
@@ -26,7 +27,7 @@ export async function loginService(formLogin: URLSearchParams) {
 export async function registerService(userRegister: userRegister) {
   try {
     const res = await fetch(
-      "https://thongdanghoang.id.vn/swp391-back/api/user/auth/register",
+      `${API_URL}/api/user/auth/register`,
       {
         method: "POST",
         credentials: "include",
@@ -48,7 +49,7 @@ export async function registerService(userRegister: userRegister) {
 export async function profileService() {
   try {
     const res = await fetch(
-      "https://thongdanghoang.id.vn/swp391-back/api/user/profile",
+      `${API_URL}/api/user/profile`,
       {
         method: "GET",
         credentials: "include",
@@ -68,7 +69,7 @@ export async function profileService() {
 
 export async function logoutService() {
   try {
-    const res = await fetch("https://thongdanghoang.id.vn/swp391-back/logout", {
+    const res = await fetch(`${API_URL}/logout`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -89,7 +90,7 @@ export async function updateProfileService(
 ) {
   try {
     const res = await fetch(
-      "https://thongdanghoang.id.vn/swp391-back/api/user/profile/basic",
+      `${API_URL}/api/user/profile/basic`,
       {
         method: "PUT",
         credentials: "include",
@@ -111,7 +112,7 @@ export async function updateProfileService(
 export async function verifyEmailService(email: string, code: string) {
   try {
     const res = await fetch(
-      `https://thongdanghoang.id.vn/swp391-back/api/user/auth/verify-email?mail=${email}` +
+      `${API_URL}/api/user/auth/verify-email?mail=${email}` +
         (code ? `&code=${code}` : ""),
       {
         method: "POST",
@@ -142,7 +143,7 @@ export async function forgetPasswordByMail(
   }
   try {
     const res = await fetch(
-      `https://thongdanghoang.id.vn/swp391-back/api/user/auth/forgot-password-by-mail?${requestParam.toString()}`,
+      `${API_URL}/api/user/auth/forgot-password-by-mail?${requestParam.toString()}`,
       {
         method: "POST",
         credentials: "include",

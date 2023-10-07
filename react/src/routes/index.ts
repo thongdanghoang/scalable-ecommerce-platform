@@ -6,6 +6,7 @@ import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage/ResetPasswordPage";
 import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
 import ProductPage from "../pages/ProductPage/ProductPage";
+import AdminPage from "../pages/AdminPage/AdminPage";
 
 export const routes = [
   {
@@ -42,6 +43,11 @@ export const routes = [
     path: "/product",
     page: ProductPage,
     isShowHeader: true,
+  },
+  {
+    path: "/system/admin",
+    page: AdminPage,
+    isShowHeader: false,
   },
   // {
   //     path: '/profile-user/information-user',

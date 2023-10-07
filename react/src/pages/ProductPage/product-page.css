@@ -1,6 +1,5 @@
 
 #product-list #card {
-	width: 90%;
 	margin: 1em auto;
 	aspect-ratio: 8/10;
 }
@@ -10,8 +9,7 @@
 	/* object-position: 100% 0; */
 }
 #product-list .selection {
-	width: 22.5%;
-	margin-left: 76.25%;
+	width: 100%;
 }
 #product-list .product-spin {
   text-align: center;
