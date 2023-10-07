@@ -3,10 +3,6 @@
   justify-content: space-between;
   margin: 30px 0;
 }
-.slider-header > .slick-slider {
-  margin: 30px 0px;
-  width: 100%;
-}
 #homepage .header-preview a:hover {
   color: #000;
 }
@@ -24,21 +20,22 @@
   padding: 0 10px;
 }
 #homepage .banner {
-  padding-top: 0px;
+  width: 20%;
 }
 #homepage .banner > img {
   border-radius: 10px;
+  height: 100%;
 }
 .product > .slick-slider {
-  margin: 0 25px;
-  width: 84.5%;
+  margin: 0 20px;
+  width: 76%;
 }
 #homepage .product {
   display: flex;
 }
-.banner {
+/* .banner {
   margin-right: 40px;
-}
+} */
 .gender {
   display: flex;
   justify-content: center;
@@ -65,29 +62,7 @@
 .women > a:hover {
   color: gray;
 }
-#homepage #card {
-  width: 200px;
-  height: 420px;
-}
-#homepage #card .name {
-  margin-top: 8px;
-  font-weight: 500;
-  padding: 2px 2px;
-}
-#homepage #card .price {
-  font-weight: 700;
-  font-size: medium;
-}
-#homepage #card .ant-card-body {
-  padding: 2px;
-}
-#homepage #card img {
-  transform: scale(1);
-  transition: all 0.5s;
-}
-#homepage #card img:hover {
-  transform: scale(1.1);
-}
-#homepage .ant-card {
-  overflow: hidden;
+
+.custome-card-home-page{
+  width: 90% !important;
 }

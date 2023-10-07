@@ -3,6 +3,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CardComponent from "../CardComponent/CardComponent";
 import "../SliderComponent/Slider.css";
+import leftArrow from '../../assets/icons/left-arrow.svg'
+import rightArrow from '../../assets/icons/right-arrow.svg'
+
 interface PropsSlider {
   slidesToShow: number;
   listItems: Array<any>;
@@ -91,19 +94,42 @@ const typeCagetories = [
 export default function SliderComponent(props: PropsSlider) {
   const { slidesToShow = 1, listItems = [], nameSlider } = props;
 
+  const arrowCustome = () => {
+    switch (nameSlider) {
+        case 'imagesBackground':
+            return {
+                prevArrow : <img alt="" src='https://icones.pro/wp-content/uploads/2021/06/symbole-fleche-gauche-gris.png' />,
+                nextArrow : <img alt="" src='https://icones.pro/wp-content/uploads/2021/06/symbole-fleche-droite-grise.png'/>,
+            }
+        case 'card':
+            return {
+                prevArrow : <img src={leftArrow} />,
+                nextArrow : <img src={rightArrow} />
+            }
+        default:
+            return {
+                prevArrow : <img src={leftArrow} />,
+                nextArrow : <img src={rightArrow} />
+            }
+    }
+  }
+
   var settings = {
     dots: false,
     infinite: true,
     speed: 500,
     slidesToShow,
     slidesToScroll: 1,
+    // autoplay : true,
+    // autoplaySpeed : 3000,
+    ...arrowCustome()
   };
 
   const renderSlider = () => {
     switch (nameSlider) {
       case "imagesBackground":
         return (
-          <Slider {...settings} className="slider-header">
+          <Slider {...settings} className="slider-img-bg">
             {listItems?.map((item) => (
               <img src={item} alt="" width={500} height={385} />
             ))}
@@ -111,33 +137,37 @@ export default function SliderComponent(props: PropsSlider) {
         );
       case "card":
         return (
-          <Slider {...settings} className="top-seller">
+          <Slider {...settings} className="slider-arrow-custome">
             {products?.map((item) => (
-              <CardComponent
-                name={item.name}
-                price={item.price}
-                image={item.image}
-              />
+              <div className="custome-card-home-page" style={{width:250}}>
+                <CardComponent
+                  name={item.name}
+                  price={item.price}
+                  image={item.image}
+                />
+              </div>
             ))}
           </Slider>
         );
       case "menu":
         return (
-          <Slider className="menu" {...settings}>
-            {typeCagetories?.map((item) => (
-              <div className="typeCagetories">
-                <img src={item.image} alt="" />
-                <div className="title">{item.name}</div>
-              </div>
-            ))}
-          </Slider>
+          <div className="slider-cate">
+            <Slider className="slider-arrow-custome" {...settings}>
+              {typeCagetories?.map((item) => (
+                <div className="typeCagetories">
+                  <img src={item.image} alt="" />
+                  <div className="title">{item.name}</div>
+                </div>
+              ))}
+            </Slider>
+          </div>
         );
       case "image":
         return (
-          <Slider className="menu" {...settings}>
+          <Slider className="slider-arrow-custome" {...settings}>
             {listItems?.map((item) => (
               <div className="image">
-                <img src={item} alt="" width={400} height={535} />
+                <img src={item} alt=""/>
               </div>
             ))}
           </Slider>

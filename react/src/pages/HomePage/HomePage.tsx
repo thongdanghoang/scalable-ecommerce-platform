@@ -1,11 +1,10 @@
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
 import "./HomePage.css";
-import CardComponent from "../../components/CardComponent/CardComponent";
 
 export default function HomePage() {
   return (
     <div className="container" id="homepage">
-      <div className="slider-header">
+      <div>
         <SliderComponent
           slidesToShow={1}
           listItems={[
@@ -31,7 +30,7 @@ export default function HomePage() {
         slidesToShow={8}
         listItems={[]}
         nameSlider={"menu"}
-      ></SliderComponent>
+      />
       <div className="header-preview">
         <div className="content">
           <a href="">Top Sellers</a>
@@ -42,12 +41,12 @@ export default function HomePage() {
         </div>
       </div>
       <div className="product">
-        <a className="banner" href="">
+        <div className="banner">
           <img
             src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_preivew_sanpham_3_image_desktop.jpg?1696059235970"
             alt=""
           />
-        </a>
+        </div>
         <SliderComponent
           slidesToShow={4}
           listItems={[{}]}
@@ -64,12 +63,12 @@ export default function HomePage() {
         </div>
       </div>
       <div className="product">
-        <a className="banner" href="">
+        <div className="banner">
           <img
             src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_preivew_sanpham_2_image_desktop.jpg?1696128283734"
             alt=""
           />
-        </a>
+        </div>
         <SliderComponent
           slidesToShow={4}
           listItems={[{}]}
@@ -86,12 +85,12 @@ export default function HomePage() {
         </div>
       </div>
       <div className="product">
-        <a className="banner" href="">
+        <div className="banner">
           <img
             src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_preivew_sanpham_5_image_desktop.jpg?1696128283734"
             alt=""
           />
-        </a>
+        </div>
         <SliderComponent
           slidesToShow={4}
           listItems={[{}]}

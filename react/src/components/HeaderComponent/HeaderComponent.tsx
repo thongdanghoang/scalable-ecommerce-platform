@@ -7,7 +7,13 @@ import { logoutService } from "../../services/userService";
 import { resetUser } from "../../redux/slides/userSlide";
 import { useEffect, useState } from "react";
 
-export default function HeaderComponent() {
+interface propsHeader {
+  isShowMenu ?: boolean,
+  isShowSearch ?: boolean,
+  isShowCart ?: boolean
+}
+
+export default function HeaderComponent({isShowMenu = true , isShowSearch = true , isShowCart = true} : propsHeader) {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   console.log(user);
@@ -31,7 +37,7 @@ export default function HeaderComponent() {
     dispatch(resetUser());
   };
 
-  const MyPopover = (
+  const MyAccountPopover = (
     <Popover onMouseLeave={() => setIsOpenPopover(false)} id="avatar-popover">
       <Popover.Body className="custome-popover-body">
         {user?.username ? (
@@ -141,16 +147,20 @@ export default function HeaderComponent() {
           <div className="col-md-6">
             <div className="row">
               <div className="col-md-7">
-                <div className="header_search">
-                  <input
-                    type="text"
-                    className="header-search_input"
-                    placeholder="Nhập để tìm kiếm sản phẩm "
-                  />
-                  <button className="header-search-btn">
-                    <i className="header-search-btn-icon fa-solid fa-magnifying-glass"></i>
-                  </button>
-                </div>
+                {isShowSearch && (
+                  <div className="header_search">
+                    <input
+                      type="text"
+                      className="header-search_input"
+                      placeholder="Nhập để tìm kiếm sản phẩm "
+                    />
+                    <button className="header-search-btn">
+                      <i
+                        className="header-search-btn-icon fa-solid fa-magnifying-glass"
+                      ></i>
+                    </button>
+                  </div>
+                )}
               </div>
               <div className="col-md-5">
                 <div className="header-components">
@@ -160,7 +170,7 @@ export default function HeaderComponent() {
                   <div className="header-account">
                     <OverlayTrigger
                       placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
-                      overlay={MyPopover}
+                      overlay={MyAccountPopover}
                       show={isOpenPopover}
                     >
                       <div
@@ -171,17 +181,19 @@ export default function HeaderComponent() {
                       </div>
                     </OverlayTrigger>
                   </div>
-                  <div className="header-cart">
-                    <OverlayTrigger
-                      placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
-                      overlay={MyCardPopover}
-                      show={true}
-                    >
-                      <div className="header-account__content">
-                        <i className="header-cart-icon fa-solid fa-cart-shopping"></i>
-                      </div>
-                    </OverlayTrigger>
-                  </div>
+                  {isShowCart && (
+                    <div className="header-cart">
+                      <OverlayTrigger
+                        placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
+                        overlay={MyCardPopover}
+                        show={true}
+                      >
+                        <div className="header-account__content">
+                          <i className="header-cart-icon fa-solid fa-cart-shopping"></i>
+                        </div>
+                      </OverlayTrigger>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { Card } from "antd";
-// import "./Card.css";
+import "./Card.css";
 interface PropsCard {
   image: string;
   name: string;
@@ -13,7 +13,7 @@ export default function CardComponent(props: PropsCard) {
     <Card
       id="card"
       hoverable
-      cover={<img alt="" src={image} />}
+      cover={<img height={'100%'} alt="" src={image} />}
     >
       <div className="name">{name}</div>
       <div className="price">{price}</div>
