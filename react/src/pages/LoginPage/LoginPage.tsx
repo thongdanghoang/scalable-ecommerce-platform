@@ -130,16 +130,16 @@ export default function LoginPage() {
 
                       <div className={"text-center customBtn pt-1 mb-5 pb-1"}>
                         <button
-                          className={`btn btn-primary btn-block fa-lg gradient-custom-2 mb-3 ${
+                          className={`btn btn-primary ${
                             validInput() ? "" : "disabled"
                           }`}
                           type="submit"
                         >
                           Log in
                         </button>
-                        <a className="text-muted" href="#!">
+                        <div className="text-muted mt-3">
                           Forgot password?
-                        </a>
+                        </div>
                       </div>
 
                       <div className="d-flex align-items-center justify-content-center pb-4">

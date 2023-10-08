@@ -3,7 +3,7 @@ import "./ProductDetail.css";
 
 export default function ProductDetailPage() {
   return (
-    <>
+    
       <div className="container">
         <div className="row image-product">
           <div className="col-md-5">
@@ -158,6 +158,6 @@ export default function ProductDetailPage() {
           </div>
         </div>
       </div>
-    </>
+    
   );
 }
