@@ -67,7 +67,7 @@ export default function HeaderComponent({
     </Popover>
   );
   const MyCardPopover = (
-    <Popover onMouseLeave={() => setIsOpenPopover(false)} id="card-popover">
+    <Popover onMouseLeave={() => setIsOpenPopover(false)} id="avatar-popover">
       <Popover.Body className="custome-card-popover-body ">
         {
           <>
@@ -188,7 +188,7 @@ export default function HeaderComponent({
                       <OverlayTrigger
                         placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
                         overlay={MyCardPopover}
-                        show={isOpenPopover}
+                        show={false}
                       >
                         <div className="header-account__content">
                           <i className="header-cart-icon fa-solid fa-cart-shopping"></i>
