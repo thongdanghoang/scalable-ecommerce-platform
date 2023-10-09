@@ -3,8 +3,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CardComponent from "../CardComponent/CardComponent";
 import "../SliderComponent/Slider.css";
-import leftArrow from '../../assets/icons/left-arrow.svg'
-import rightArrow from '../../assets/icons/right-arrow.svg'
+import leftArrow from "../../assets/icons/left-arrow.svg";
+import rightArrow from "../../assets/icons/right-arrow.svg";
 
 interface PropsSlider {
   slidesToShow: number;
@@ -96,23 +96,33 @@ export default function SliderComponent(props: PropsSlider) {
 
   const arrowCustome = () => {
     switch (nameSlider) {
-        case 'imagesBackground':
-            return {
-                prevArrow : <img alt="" src='https://icones.pro/wp-content/uploads/2021/06/symbole-fleche-gauche-gris.png' />,
-                nextArrow : <img alt="" src='https://icones.pro/wp-content/uploads/2021/06/symbole-fleche-droite-grise.png'/>,
-            }
-        case 'card':
-            return {
-                prevArrow : <img src={leftArrow} />,
-                nextArrow : <img src={rightArrow} />
-            }
-        default:
-            return {
-                prevArrow : <img src={leftArrow} />,
-                nextArrow : <img src={rightArrow} />
-            }
+      case "imagesBackground":
+        return {
+          prevArrow: (
+            <img
+              alt=""
+              src="https://icones.pro/wp-content/uploads/2021/06/symbole-fleche-gauche-gris.png"
+            />
+          ),
+          nextArrow: (
+            <img
+              alt=""
+              src="https://icones.pro/wp-content/uploads/2021/06/symbole-fleche-droite-grise.png"
+            />
+          ),
+        };
+      case "card":
+        return {
+          prevArrow: <img src={leftArrow} />,
+          nextArrow: <img src={rightArrow} />,
+        };
+      default:
+        return {
+          prevArrow: <img src={leftArrow} />,
+          nextArrow: <img src={rightArrow} />,
+        };
     }
-  }
+  };
 
   var settings = {
     dots: false,
@@ -122,7 +132,7 @@ export default function SliderComponent(props: PropsSlider) {
     slidesToScroll: 1,
     // autoplay : true,
     // autoplaySpeed : 3000,
-    ...arrowCustome()
+    ...arrowCustome(),
   };
 
   const renderSlider = () => {
@@ -139,7 +149,7 @@ export default function SliderComponent(props: PropsSlider) {
         return (
           <Slider {...settings} className="slider-arrow-custome">
             {products?.map((item) => (
-              <div className="custome-card-home-page" style={{width:250}}>
+              <div className="custome-card-home-page" style={{ width: 250 }}>
                 <CardComponent
                   name={item.name}
                   price={item.price}
@@ -149,7 +159,7 @@ export default function SliderComponent(props: PropsSlider) {
             ))}
           </Slider>
         );
-      case "menu":
+      case "typeCagetories":
         return (
           <div className="slider-cate">
             <Slider className="slider-arrow-custome" {...settings}>
@@ -167,7 +177,7 @@ export default function SliderComponent(props: PropsSlider) {
           <Slider className="slider-arrow-custome" {...settings}>
             {listItems?.map((item) => (
               <div className="image">
-                <img src={item} alt=""/>
+                <img src={item} alt="" />
               </div>
             ))}
           </Slider>

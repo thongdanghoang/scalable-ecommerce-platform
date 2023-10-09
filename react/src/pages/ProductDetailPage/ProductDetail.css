@@ -92,3 +92,17 @@
 #productDetail .product-describe {
   margin-top: 30px;
 }
+#productDetail .product-variation-quantity {
+  width: 40px;
+  min-height: 2.125rem;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.8);
+  text-align: left;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  background: #fff;
+  outline: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

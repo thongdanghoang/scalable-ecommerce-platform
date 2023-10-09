@@ -29,7 +29,7 @@ export default function HomePage() {
       <SliderComponent
         slidesToShow={8}
         listItems={[]}
-        nameSlider={"menu"}
+        nameSlider={"typeCagetories"}
       />
       <div className="header-preview">
         <div className="content">

@@ -124,14 +124,18 @@ export default function ProductDetailPage() {
             </section>
           </div>
           <div className="product-quantity">
-            <h5>Số Lượng:</h5>
-            <button
-              className="product-variation"
-              aria-label="M"
-              aria-disabled="false"
-            >
-              M
-            </button>
+            <div className="product-select-btn">
+              <h5>Số Lượng</h5>
+              <button className="product-variation-quantity">-</button>
+              <input
+                className="product-variation-quantity"
+                value={"1"}
+                placeholder=""
+                type="text"
+                style={{ textAlign: "center" }}
+              />
+              <button className="product-variation-quantity">+</button>
+            </div>
           </div>
           <div className="product-submit">
             <button type="button" className="btn btn-primary">

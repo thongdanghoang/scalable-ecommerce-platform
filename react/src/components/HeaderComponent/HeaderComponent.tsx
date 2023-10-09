@@ -8,12 +8,16 @@ import { resetUser } from "../../redux/slides/userSlide";
 import { useEffect, useState } from "react";
 
 interface propsHeader {
-  isShowMenu ?: boolean,
-  isShowSearch ?: boolean,
-  isShowCart ?: boolean
+  isShowMenu?: boolean;
+  isShowSearch?: boolean;
+  isShowCart?: boolean;
 }
 
-export default function HeaderComponent({isShowMenu = true , isShowSearch = true , isShowCart = true} : propsHeader) {
+export default function HeaderComponent({
+  isShowMenu = true,
+  isShowSearch = true,
+  isShowCart = true,
+}: propsHeader) {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   console.log(user);
@@ -63,7 +67,7 @@ export default function HeaderComponent({isShowMenu = true , isShowSearch = true
     </Popover>
   );
   const MyCardPopover = (
-    <Popover onMouseLeave={() => setIsOpenPopover(false)} id="avatar-popover">
+    <Popover onMouseLeave={() => setIsOpenPopover(false)} id="card-popover">
       <Popover.Body className="custome-card-popover-body ">
         {
           <>
@@ -155,9 +159,7 @@ export default function HeaderComponent({isShowMenu = true , isShowSearch = true
                       placeholder="Nhập để tìm kiếm sản phẩm "
                     />
                     <button className="header-search-btn">
-                      <i
-                        className="header-search-btn-icon fa-solid fa-magnifying-glass"
-                      ></i>
+                      <i className="header-search-btn-icon fa-solid fa-magnifying-glass"></i>
                     </button>
                   </div>
                 )}
@@ -186,7 +188,7 @@ export default function HeaderComponent({isShowMenu = true , isShowSearch = true
                       <OverlayTrigger
                         placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
                         overlay={MyCardPopover}
-                        show={false}
+                        show={isOpenPopover}
                       >
                         <div className="header-account__content">
                           <i className="header-cart-icon fa-solid fa-cart-shopping"></i>

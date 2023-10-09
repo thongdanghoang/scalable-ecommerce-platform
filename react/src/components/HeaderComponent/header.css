@@ -120,9 +120,8 @@
   justify-content: space-between;
 }
 
-.button,
+#card-popover .button,
 .input {
-  border-radius: 0;
   border: 1px solid #7a7a9d;
   color: #222;
   line-height: 24px;
