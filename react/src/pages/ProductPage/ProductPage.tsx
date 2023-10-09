@@ -66,31 +66,42 @@ function App(): React.ReactElement {
     <>
       <div className="container" id="product-list">
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-          <Col xs={12} md={16} lg={18}></Col>
-          <Col xs={12} md={8} lg={6} className="">
-            <Select
-              className="selection"
-              defaultValue="1"
-              onChange={handleChange}
-              options={[
-                { value: "1", label: "One" },
-                { value: "2", label: "Two" },
-                { value: "3", label: "Three" },
-                { value: "4", label: "Four" },
-                { value: "5", label: "Five" },
-                { value: "6", label: "Six" },
-                { value: "7", label: "Seven" },
-                { value: "8", label: "Eight" },
-                { value: "9", label: "Nine" },
-                { value: "10", label: "Ten" },
-              ]}
-            />
+          <Col md={6} style={{ background: "cyan" }}></Col>
+
+          {/* product selection */}
+          <Col md={18}>
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+              <Col xs={12} md={16} lg={18}></Col>
+              <Col xs={12} md={8} lg={6} className="">
+                <Select
+                  className="selection"
+                  defaultValue="1"
+                  onChange={handleChange}
+                  options={[
+                    { value: "1", label: "One" },
+                    { value: "2", label: "Two" },
+                    { value: "3", label: "Three" },
+                    { value: "4", label: "Four" },
+                    { value: "5", label: "Five" },
+                    { value: "6", label: "Six" },
+                    { value: "7", label: "Seven" },
+                    { value: "8", label: "Eight" },
+                    { value: "9", label: "Nine" },
+                    { value: "10", label: "Ten" },
+                  ]}
+                />
+              </Col>
+            </Row>
+
+            {/* product list */}
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+              {productRender}
+            </Row>
           </Col>
         </Row>
-        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>{productRender}</Row>
         <div className="d-flex justify-content-center p-5">
           <Pagination
-          className="font-weight-normal"
+            className="font-weight-normal"
             onChange={(event) => console.log(event)}
             showSizeChanger={false}
             pageSize={10}

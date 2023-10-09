@@ -28,4 +28,7 @@
 .ant-card-cover {
   overflow: hidden;
 }
+.ant-card {
+	overflow: hidden;
+}
 
