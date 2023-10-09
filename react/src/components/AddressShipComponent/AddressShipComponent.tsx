@@ -1,6 +1,6 @@
 import {AiOutlinePlus , AiOutlineCheckCircle , AiTwotoneEdit} from 'react-icons/ai'
 import './Address.css'
-import { Button, Input, Modal, Select , Form, Checkbox } from 'antd'
+import { Button, Input, Modal, Select , Form, Checkbox, Radio } from 'antd'
 import { useEffect, useState } from 'react'
 import { getListDistricts, getListProvincesCity, getListWards } from '../../utils/utils';
 
@@ -15,18 +15,25 @@ export default function AddressShipComponent() {
   const [listProvinces , setListProvinces] = useState([]);
   const [listDistricts , setListDistricts] = useState([]); 
   const [listWards , setListWards] = useState([]); 
+  const [form] = Form.useForm();
   const [addressShipping , setAddressShipping] = useState({
     fullName : '',
-    city : '',
+    phone : '',
+    province : '',
     district : '',
     ward : '',
-    address : '',
+    addressDetail : '',
+    type : '',
+    default : ''
   })
 
   console.log(addressShipping)
 
   const handleCancelModal = () => {
     setIsOpenModal(false);
+    form.resetFields();
+    setListDistricts([]);
+    setListWards([]);
   }
 
   useEffect(() => {
@@ -37,16 +44,27 @@ export default function AddressShipComponent() {
     fetchProvincesCity();
   },[])
 
+  const handleOnChangeInput = (e : any) => {
+    setAddressShipping({
+      ...addressShipping,
+      [e.target.name] : e.target.name !== "default" ? e.target.value : e.target.checked
+    })
+  }
+
   const handleOnChangeProvince = async (nameCity : string, value : any) => {
     setAddressShipping({
       ...addressShipping ,
-      city : nameCity,
+      province : nameCity,
       district : '',
       ward : ''
     })
     if(nameCity){
       setListDistricts([]);
-      setListWards([])
+      setListWards([]);
+      form.setFieldsValue({
+        district : "",
+        ward : ""
+      })
     }
     setListDistricts(await getListDistricts(value.key))
   }
@@ -57,9 +75,19 @@ export default function AddressShipComponent() {
       district : nameDistrict
     })
     if(nameDistrict){
-      setListWards([])
+      setListWards([]);
+      form.setFieldsValue({
+        ward : ""
+      })
     }
     setListWards(await getListWards(value.key))
+  }
+
+  const handleOnChangeWard = async (nameWard : string) => {
+    setAddressShipping({
+      ...addressShipping,
+      ward : nameWard
+    })
   }
 
   return (
@@ -94,6 +122,7 @@ export default function AddressShipComponent() {
       <Modal title="Thêm địa chỉ mới" open={isModalOpen} footer={null} onCancel={handleCancelModal}>
         <Form
           name="wrap"
+          form={form}
           labelCol={{ flex: '130px' }}
           labelAlign="left"
           labelWrap
@@ -102,10 +131,14 @@ export default function AddressShipComponent() {
           style={{ maxWidth: 600 }}
         >
           <Form.Item label="Họ và tên" name="fullName" rules={[{ required: true }]}>
-            <Input />
+            <Input placeholder='Nhập Họ và tên' name='fullName' value={addressShipping.fullName} onChange={handleOnChangeInput}/>
           </Form.Item>
 
-          <Form.Item label="Province/city" name="city" rules={[{ required: true }]}>
+          <Form.Item label="Số điện thoại" name="phone" rules={[{ required: true }]}>
+            <Input placeholder='Nhập Số điện thoại' name='phone' value={addressShipping.phone} onChange={handleOnChangeInput}/>
+          </Form.Item>
+
+          <Form.Item label="Province/city" name="province" rules={[{ required: true }]}>
             <Select
               defaultValue={'---Choice Province/city---'}
               onChange={handleOnChangeProvince}
@@ -119,7 +152,7 @@ export default function AddressShipComponent() {
 
           <Form.Item label="District" name="district" rules={[{ required: true }]}>
             <Select
-              value={addressShipping.district}
+              //value={addressShipping.district}
               disabled = {listDistricts.length === 0}
               defaultValue={'---Choice District---'}
               onChange={handleOnChangeDistrict}
@@ -131,25 +164,38 @@ export default function AddressShipComponent() {
             </Select>
           </Form.Item>
 
-          <Form.Item label="Wards" name="wards" rules={[{ required: true }]}>
+          <Form.Item label="Wards" name="ward" rules={[{ required: true }]}>
             <Select
-              value={addressShipping.ward || '---Choice District---'}
               disabled = {listWards.length === 0}
               defaultValue={'---Choice Ward---'}
+              onChange={handleOnChangeWard}
             >
-              <Select.Option>---Choice Ward---</Select.Option>
+              <Select.Option value={""}>---Choice Ward---</Select.Option>
               {listWards.map(w => (
                 <Select.Option key={w["ward_id"]} value={w["ward_name"]}>{w["ward_name"]}</Select.Option>
               ))}
             </Select>
           </Form.Item>
 
-          <Form.Item label="Address" name="address" rules={[{ required: true }]}>
-            <Input.TextArea />
+          <Form.Item label="Address" name="addressDetail" rules={[{ required: true }]}>
+            <Input.TextArea 
+              placeholder='ví dụ : 52 Trần Hưng Đạo ...' 
+              name='addressDetail'
+              value={addressShipping.addressDetail}
+              onChange={handleOnChangeInput}
+            />
           </Form.Item>
 
-          <Form.Item label=" " name="address">
-            <Checkbox >Checkbox</Checkbox>
+          <Form.Item label="Loại địa chỉ" name="type">
+            <Radio.Group name="type" onChange={handleOnChangeInput} value={addressShipping.type}>
+              <Radio value={"HOME"}>HOME</Radio>
+              <Radio value={"WORK"}>WORK</Radio>
+              <Radio value={"OTHER"}>OTHER</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item label=" " name="default">
+            <Checkbox name="default" onChange={handleOnChangeInput} value={addressShipping.default}/>
             Set as default address
           </Form.Item>
 
