@@ -186,7 +186,7 @@ export default function HeaderComponent({isShowMenu = true , isShowSearch = true
                       <OverlayTrigger
                         placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
                         overlay={MyCardPopover}
-                        show={true}
+                        show={false}
                       >
                         <div className="header-account__content">
                           <i className="header-cart-icon fa-solid fa-cart-shopping"></i>
