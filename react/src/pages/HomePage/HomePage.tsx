@@ -1,7 +1,38 @@
+import { useEffect, useState } from "react";
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
+import { getAllClothes} from "../../services/clothesService";
 import "./HomePage.css";
 
+interface product {
+  id: string;
+  image: any;
+  name: string;
+  price: number;
+}
+
+async function getProductsList(): Promise<product[]> {
+  let response = await getAllClothes();
+  if (response != null) {
+    let jsonList = (await response.json()).products as product[];
+    jsonList.forEach((product) => {
+        product.image = "http://localhost:8080/api/products/images/"+ product.image;
+    });
+    console.table(jsonList);
+    return jsonList;
+  }
+  return [];
+}
+
 export default function HomePage() {
+
+  const [productList, setProductList] = useState([] as product[]);
+  useEffect(() => {
+    const run = async () => {
+      setProductList(await getProductsList());
+    }
+    run();
+  },[])
+
   return (
     <div className="container" id="homepage">
       <div>
@@ -49,7 +80,7 @@ export default function HomePage() {
         </div>
         <SliderComponent
           slidesToShow={4}
-          listItems={[{}]}
+          listItems={productList}
           nameSlider={"card"}
         />
       </div>
@@ -71,7 +102,7 @@ export default function HomePage() {
         </div>
         <SliderComponent
           slidesToShow={4}
-          listItems={[{}]}
+          listItems={productList}
           nameSlider={"card"}
         />
       </div>
@@ -93,7 +124,7 @@ export default function HomePage() {
         </div>
         <SliderComponent
           slidesToShow={4}
-          listItems={[{}]}
+          listItems={productList}
           nameSlider={"card"}
         />
       </div>

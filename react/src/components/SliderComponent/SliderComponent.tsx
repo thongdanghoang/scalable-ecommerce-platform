@@ -148,7 +148,7 @@ export default function SliderComponent(props: PropsSlider) {
       case "card":
         return (
           <Slider {...settings} className="slider-arrow-custome">
-            {products?.map((item) => (
+            {listItems?.map((item) => (
               <div className="custome-card-home-page" style={{ width: 250 }}>
                 <CardComponent
                   name={item.name}
