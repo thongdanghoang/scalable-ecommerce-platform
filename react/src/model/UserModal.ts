@@ -28,3 +28,15 @@ export interface UserProfileUpdated {
     weight : number,
     height : number
 }
+
+export interface AddressShipping {
+    id ?: number
+    fullName : string,
+    phone : string,
+    province : string,
+    district : string,
+    ward : string,
+    addressDetail : string,
+    type : string,
+    default : boolean
+}

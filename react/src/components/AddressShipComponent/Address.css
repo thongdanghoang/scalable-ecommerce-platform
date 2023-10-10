@@ -4,7 +4,7 @@
     font-size: 15px;
     height: 60px;
     border: 1px dashed rgb(216, 216, 216);
-    margin: 0px 0px 10px;
+    margin: 0px 0px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,6 +26,7 @@
     background-color: #fff;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 #AddressShipComponent .address-ship .info .name{
@@ -54,4 +55,8 @@
     margin-right: 5px;
     position: relative;
     top: -2px;
+}
+
+#AddressShipComponent .address-ship .action {
+    cursor: pointer;
 }

@@ -1,4 +1,4 @@
-import { UserProfileUpdated, userRegister } from "../model/UserModal";
+import { UserProfileUpdated, userRegister , AddressShipping } from "../model/UserModal";
 import {API_URL} from '../utils/constants'
 
 export async function loginService(formLogin: URLSearchParams) {
@@ -183,3 +183,89 @@ export async function resetPassword(
   }
   return null;
 }
+
+export async function createAddressShip(
+  addressShip : AddressShipping
+) {
+  try {
+    const res = await fetch(
+      `http://localhost:8080/api/user/address`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(addressShip),
+      }
+    );
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+  return null;
+}
+
+export async function getAddressShipsByUser(){
+  try {
+    const res = await fetch(
+      `http://localhost:8080/api/user/address`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }
+    );
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+  return null;
+}
+
+export async function updateAddressShip(
+  addressShip : AddressShipping
+){
+  try {
+    const res = await fetch(
+      `http://localhost:8080/api/user/address/update`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body : JSON.stringify(addressShip)
+      }
+    );
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+  return null;
+}
+
+export async function deleteAddressShip(
+  idAddressShip : number
+){
+  try {
+    const res = await fetch(
+      `http://localhost:8080/api/user/address`,
+      {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body : JSON.stringify({id : idAddressShip})
+      }
+    );
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+  return null;
+}
+

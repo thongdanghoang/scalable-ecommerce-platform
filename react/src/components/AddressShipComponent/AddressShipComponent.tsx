@@ -1,14 +1,13 @@
-import {AiOutlinePlus , AiOutlineCheckCircle , AiTwotoneEdit} from 'react-icons/ai'
+import {AiOutlinePlus , AiOutlineCheckCircle , AiTwotoneEdit , AiFillDelete} from 'react-icons/ai'
 import './Address.css'
 import { Button, Input, Modal, Select , Form, Checkbox, Radio } from 'antd'
 import { useEffect, useState } from 'react'
-import { getListDistricts, getListProvincesCity, getListWards } from '../../utils/utils';
-
-// const addressShipping = [
-//   {
-//     city :
-//   }
-// ]
+import { getListDistricts, getListProvincesCity, getListWards} from '../../utils/utils';
+import { getAddressShipsByUser , createAddressShip, updateAddressShip, deleteAddressShip } from '../../services/userService';
+import { AddressShipping } from '../../model/UserModal';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { ToastContainer , toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddressShipComponent() {
   const [isModalOpen , setIsOpenModal] = useState(false);
@@ -16,7 +15,7 @@ export default function AddressShipComponent() {
   const [listDistricts , setListDistricts] = useState([]); 
   const [listWards , setListWards] = useState([]); 
   const [form] = Form.useForm();
-  const [addressShipping , setAddressShipping] = useState({
+  const [addressShipping , setAddressShipping] = useState<AddressShipping>({
     fullName : '',
     phone : '',
     province : '',
@@ -24,8 +23,9 @@ export default function AddressShipComponent() {
     ward : '',
     addressDetail : '',
     type : '',
-    default : ''
+    default : false
   })
+  const [isFormEdit , setIsFormEdit] = useState(false)
 
   console.log(addressShipping)
 
@@ -90,36 +90,153 @@ export default function AddressShipComponent() {
     })
   }
 
+  // handle get address ship by user
+
+  const fetchGetAddressShipByUser = async () => {
+    const res = await getAddressShipsByUser();
+    return res.data
+  }
+
+  const queryAddressShip = useQuery({queryKey : ['addresses-ship-by-user'] , queryFn:fetchGetAddressShipByUser })
+  const {data : listAddressShip} = queryAddressShip
+  console.log(listAddressShip)
+
+  // handle create new address ship
+
+  const mutationCreateAddress = useMutation(
+    async (data : AddressShipping) => {
+      const res = await createAddressShip(data)
+      return res
+    }
+  )
+
+  const {data : responseCreate , isSuccess : isSuccessCreate} = mutationCreateAddress;
+
+  useEffect(() => {
+    if(isSuccessCreate && responseCreate?.success){
+      toast.success(responseCreate?.message,{
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+      handleCancelModal();
+    }
+  },[isSuccessCreate])
+
+  const handleCreateAddressShip = () => {
+    mutationCreateAddress.mutate({
+      ...addressShipping,
+    } , {
+      onSettled : () => {
+        queryAddressShip.refetch();
+      }
+    })
+  }
+
+  // handle edit address ship
+
+  const mutationEditAddress = useMutation(
+    async (data : AddressShipping) => {
+      const res = await updateAddressShip(data);
+      return res
+    }
+  )
+
+  const {data : responseUpdate , isSuccess : isSuccessUpdate} = mutationCreateAddress;
+
+  useEffect(() => {
+    if(isSuccessUpdate && responseUpdate?.success){
+      toast.success(responseUpdate?.message,{
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+      handleCancelModal();
+    }
+  },[isSuccessUpdate])
+
+  const handleEditAddressShip = async (address : AddressShipping) => {
+    setIsOpenModal(true);
+    form.setFieldsValue({
+      ...address
+    })
+    setIsFormEdit(true);
+    const province : any = listProvinces.find((province : any) => province['province_name'] === address.province);
+    setListDistricts(await getListDistricts(province['province_id']));
+    mutationEditAddress.mutate(address)
+  }
+
+  const mutationDeleteAddress = useMutation(
+    async (data : number) => await deleteAddressShip(data)
+  )
+
+  const handleDeleteAddressShip = async (idAddressShip : number) => {
+    if(confirm('Sure Delete this address ship')){
+      mutationDeleteAddress.mutate(idAddressShip, {
+        onSettled : () => {
+          queryAddressShip.refetch();
+        }
+      })
+    }
+  }
+
+  // useEffect(() => {
+  //   const district : any = listDistricts.filter((district : any) => district['district_name'] === address.district);
+  //   setListWards(await getListWards(district['district_id']));
+  // })
   return (
     <div id='AddressShipComponent'>
+      <ToastContainer/>
       <div className="add-address" onClick={() => setIsOpenModal(true)}>
         <AiOutlinePlus />
         <span>Add new address</span>
       </div>
-      <div className="address-ship">
-        <div className="info">
-          <div className="name">
-            Kim Tan Lê
-            <span>
-              <AiOutlineCheckCircle />
-              <span className='ms-2'>Default address</span>
-            </span>
+      {listAddressShip && listAddressShip?.map((address : AddressShipping) => (
+        <div className="address-ship">
+          <div className="info">
+            <div className="name">
+              {address.fullName}
+              {address.default && (
+                <span>
+                  <AiOutlineCheckCircle />
+                  <span className='ms-2'>Default address</span>
+                </span>
+              )}
+            </div>
+            <div className="address" style={{marginBottom:5}}>
+              <span>Address: </span>
+              {address.addressDetail}
+            </div>
+            <div className="phone">
+              <span>Phone: </span>
+              {address.phone}
+            </div>
           </div>
-          <div className="address" style={{marginBottom:5}}>
-            <span>Address: </span>
-            52 Lê Lợi
-          </div>
-          <div className="phone">
-            <span>Phone: </span>
-            0935187859
+          <div className="action">
+            <div className='act-edit' onClick={() => handleEditAddressShip(address)}>
+              <AiTwotoneEdit/>
+              Edit
+            </div>
+            {!address.default && (
+              <div className='act-delete' onClick={() => handleDeleteAddressShip(address.id || 0)}>
+                <AiFillDelete/>
+                Delete
+              </div>
+            )}
           </div>
         </div>
-        <div className="action">
-          <AiTwotoneEdit/>
-          Edit
-        </div>
-      </div>
-      <Modal title="Thêm địa chỉ mới" open={isModalOpen} footer={null} onCancel={handleCancelModal}>
+      ))}
+      <Modal title={isFormEdit ? "Chỉnh sửa địa chỉ" : "Thêm địa chỉ mới"} open={isModalOpen} footer={null} onCancel={handleCancelModal}>
         <Form
           name="wrap"
           form={form}
@@ -128,7 +245,8 @@ export default function AddressShipComponent() {
           labelWrap
           wrapperCol={{ flex: 1 }}
           colon={false}
-          style={{ maxWidth: 600 }}
+          style={{ maxWidth: 600 }}         
+          onFinish={handleCreateAddressShip}
         >
           <Form.Item label="Họ và tên" name="fullName" rules={[{ required: true }]}>
             <Input placeholder='Nhập Họ và tên' name='fullName' value={addressShipping.fullName} onChange={handleOnChangeInput}/>

@@ -1,7 +1,6 @@
 import { constantMenuProfile } from '../../utils/utils'
 import './UserProfile.css'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import {useState} from 'react'
 
 export default function UserProfilePage() {
     const location = useLocation();

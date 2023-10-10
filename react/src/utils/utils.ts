@@ -1,4 +1,5 @@
 import type { MenuProps } from 'antd';
+import { ToastOptions } from 'react-toastify';
 
 export function constantMenuProfile(url : string){
     const comsUrl = url.split('/');
@@ -94,3 +95,34 @@ export const convertDateAndTime = (isoDateString : any, num = 0) => {
         time: `${hours}:${minutes}`
     }
 }
+
+// interface toastObject {
+//     position : string
+//     autoClose : number
+//     hideProgressBar : boolean
+//     closeOnClick : boolean
+//     pauseOnHover : boolean
+//     draggable : boolean
+//     progress : undefined
+//     theme : string
+// }
+
+// export const toastMSGObject : ToastOptions = (
+//     position = "top-right",
+//     autoClose = 2000,
+//     hideProgressBar = false,
+//     closeOnClick = true,
+//     pauseOnHover = true,
+//     draggable = true,
+//     progress = undefined,
+//     theme = "colored",
+// ) => ({
+//   position,
+//   autoClose,
+//   hideProgressBar,
+//   closeOnClick,
+//   pauseOnHover,
+//   draggable,
+//   progress,
+//   theme
+// })
