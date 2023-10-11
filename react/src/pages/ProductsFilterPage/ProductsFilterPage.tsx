@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Card, Select, Spin, Badge, Pagination } from "antd";
-import "./product-page.css";
+import { Col, Row, Select, Spin, Badge, Pagination } from "antd";
+import "./ProductsFilter.css";
 import CardComponent from "../../components/CardComponent/CardComponent";
-interface product {
-  id: string;
-  image: string;
-  name: string;
-  price: number;
-}
+import { clothes } from "../../model/ClothesModal";
 
 // NOTE: test API
 async function getProductList(selectPage: string) {
@@ -17,8 +12,8 @@ async function getProductList(selectPage: string) {
     `https://picsum.photos/v2/list?${param.toString()}`
   );
   let dataList = await response.json();
-  let productList: product[] = dataList.map(
-    (item: any): product => ({
+  let productList: clothes[] = dataList.map(
+    (item: any): clothes => ({
       id: item.id,
       image: item.download_url,
       name: item.author,
@@ -29,7 +24,7 @@ async function getProductList(selectPage: string) {
 }
 
 // TODO: implement pagination
-function App(): React.ReactElement {
+function ClothesFilterPage(): React.ReactElement {
   const LoadingSpin = (
     <Col className="text-center p-5" span={24}>
       <Spin size="large" />
@@ -51,6 +46,7 @@ function App(): React.ReactElement {
         <Col xs={24} sm={12} md={8} lg={6}>
           <Badge.Ribbon text="new" color="cyan">
             <CardComponent
+              id={item.id}
               image={item.image}
               name={item.name}
               price={item.price.toString()}
@@ -114,4 +110,4 @@ function App(): React.ReactElement {
   );
 }
 
-export default App;
+export default ClothesFilterPage;

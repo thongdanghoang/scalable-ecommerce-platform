@@ -1,5 +1,5 @@
 import '../../pages/UserProfilePage/UserProfile.css'
-import {useEffect , useRef, useState} from 'react'
+import {useEffect , useState} from 'react'
 import { profileService, updateProfileService, verifyEmailService } from "../../services/userService";
 import { updateUser } from '../../redux/slides/userSlide';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import { ToastContainer , toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import OTPInput, {} from 'react-otp-input'
 import { Button, Modal } from 'react-bootstrap';
+import './InforUser.css'
 
 export default function InforUserComponent() {
     const user = useSelector((state:RootState)=> state.user);
@@ -194,7 +195,9 @@ export default function InforUserComponent() {
                 </div>
                 <div className="grid__column two-twelfths1">
                     {userProfile.emailVerified ? (
-                        <div>Đã xác thực</div>
+                        <div className='has-verified'>
+                            <p>Đã xác thực</p>
+                        </div>
                     ) : (
                         <div className="form-group">
                             <button onClick={handleSendOTPEmail} type="submit" className="btn1 form-control2">Update</button>

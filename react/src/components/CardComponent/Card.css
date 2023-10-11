@@ -3,10 +3,16 @@
   height: 100%;
 }
 #card .name {
-  margin-top: 8px;
   font-weight: 500;
-  padding: 2px 2px;
+  /* padding: 2px 2px; */
+  /* height: 68px; */
+  white-space: break-spaces;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
+
 #card .price {
   font-weight: 700;
   font-size: medium;

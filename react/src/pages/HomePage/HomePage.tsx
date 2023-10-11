@@ -2,18 +2,12 @@ import { useEffect, useState } from "react";
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
 import { getAllClothes} from "../../services/clothesService";
 import "./HomePage.css";
+import { clothes } from "../../model/ClothesModal";
 
-interface product {
-  id: string;
-  image: any;
-  name: string;
-  price: number;
-}
-
-async function getProductsList(): Promise<product[]> {
+async function getProductsList(): Promise<clothes[]> {
   let response = await getAllClothes();
   if (response != null) {
-    let jsonList = (await response.json()).products as product[];
+    let jsonList = (await response.json()).products as clothes[];
     jsonList.forEach((product) => {
         product.image = "http://localhost:8080/api/products/images/"+ product.image;
     });
@@ -25,10 +19,12 @@ async function getProductsList(): Promise<product[]> {
 
 export default function HomePage() {
 
-  const [productList, setProductList] = useState([] as product[]);
+  const [productList, setProductList] = useState([] as clothes[]);
+  
   useEffect(() => {
     const run = async () => {
-      setProductList(await getProductsList());
+      const list1 = await getProductsList()
+      setProductList([...list1,...list1,...list1]);
     }
     run();
   },[])
@@ -81,7 +77,7 @@ export default function HomePage() {
         <SliderComponent
           slidesToShow={4}
           listItems={productList}
-          nameSlider={"card"}
+          nameSlider={"clothesFilter"}
         />
       </div>
       <div className="header-preview">
@@ -103,7 +99,7 @@ export default function HomePage() {
         <SliderComponent
           slidesToShow={4}
           listItems={productList}
-          nameSlider={"card"}
+          nameSlider={"clothesFilter"}
         />
       </div>
       <div className="header-preview">
@@ -125,7 +121,7 @@ export default function HomePage() {
         <SliderComponent
           slidesToShow={4}
           listItems={productList}
-          nameSlider={"card"}
+          nameSlider={"clothesFilter"}
         />
       </div>
     </div>

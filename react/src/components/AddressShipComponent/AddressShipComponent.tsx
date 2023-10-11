@@ -1,6 +1,6 @@
 import {AiOutlinePlus , AiOutlineCheckCircle , AiTwotoneEdit , AiFillDelete} from 'react-icons/ai'
 import './Address.css'
-import { Button, Input, Modal, Select , Form, Checkbox, Radio } from 'antd'
+import { Button, Input, Modal, Select , Form, Checkbox, Radio, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { getListDistricts, getListProvincesCity, getListWards} from '../../utils/utils';
 import { getAddressShipsByUser , createAddressShip, updateAddressShip, deleteAddressShip } from '../../services/userService';
@@ -15,6 +15,7 @@ export default function AddressShipComponent() {
   const [listDistricts , setListDistricts] = useState([]); 
   const [listWards , setListWards] = useState([]); 
   const [form] = Form.useForm();
+  const [isDisableCheckBox , setIsDisableCheckBox] = useState(false);
   const [addressShipping , setAddressShipping] = useState<AddressShipping>({
     fullName : '',
     phone : '',
@@ -54,7 +55,7 @@ export default function AddressShipComponent() {
   const handleOnChangeProvince = async (nameCity : string, value : any) => {
     setAddressShipping({
       ...addressShipping ,
-      province : nameCity,
+      province : nameCity + '-' + value.key,
       district : '',
       ward : ''
     })
@@ -72,7 +73,7 @@ export default function AddressShipComponent() {
   const handleOnChangeDistrict = async (nameDistrict : string, value : any) => {
     setAddressShipping({
       ...addressShipping ,
-      district : nameDistrict
+      district : nameDistrict + '-' + value.key
     })
     if(nameDistrict){
       setListWards([]);
@@ -131,6 +132,7 @@ export default function AddressShipComponent() {
   const handleCreateAddressShip = () => {
     mutationCreateAddress.mutate({
       ...addressShipping,
+      phone : `+84${addressShipping.phone}`
     } , {
       onSettled : () => {
         queryAddressShip.refetch();
@@ -147,7 +149,7 @@ export default function AddressShipComponent() {
     }
   )
 
-  const {data : responseUpdate , isSuccess : isSuccessUpdate} = mutationCreateAddress;
+  const {data : responseUpdate , isSuccess : isSuccessUpdate} = mutationEditAddress;
 
   useEffect(() => {
     if(isSuccessUpdate && responseUpdate?.success){
@@ -165,16 +167,35 @@ export default function AddressShipComponent() {
     }
   },[isSuccessUpdate])
 
-  const handleEditAddressShip = async (address : AddressShipping) => {
-    setIsOpenModal(true);
-    form.setFieldsValue({
-      ...address
+  const handleEditAddressShip = () => {
+    mutationEditAddress.mutate({
+      ...addressShipping,
+      phone : `${addressShipping.phone}`
+    } , {
+      onSettled : () => {
+        queryAddressShip.refetch();
+      }
     })
-    setIsFormEdit(true);
-    const province : any = listProvinces.find((province : any) => province['province_name'] === address.province);
-    setListDistricts(await getListDistricts(province['province_id']));
-    mutationEditAddress.mutate(address)
   }
+
+  const handleShowMoreAddressShip = async (address : AddressShipping) => {
+    setIsFormEdit(true);
+    setIsOpenModal(true);
+    const [province_name , province_id] = address.province.split('-');
+    const [district_name , district_id] = address.district.split('-');
+    form.setFieldsValue({
+      ...address,
+      phone : address.phone.slice(3),
+      province : province_name,
+      district : district_name
+    })
+    setIsDisableCheckBox(address.default)
+    setAddressShipping({...address})
+    setListDistricts(await getListDistricts(province_id))
+    setListWards(await getListWards(district_id))
+  }
+
+  // handle Delete address ship
 
   const mutationDeleteAddress = useMutation(
     async (data : number) => await deleteAddressShip(data)
@@ -190,10 +211,15 @@ export default function AddressShipComponent() {
     }
   }
 
-  // useEffect(() => {
-  //   const district : any = listDistricts.filter((district : any) => district['district_name'] === address.district);
-  //   setListWards(await getListWards(district['district_id']));
-  // })
+  const showTextToolTip = () => {
+    return listAddressShip?.length === 0 ? `
+      Địa chỉ đầu tiên của bạn được cài đặt làm Địa Chỉ Mặc Định. 
+      Vui lòng thêm địa chỉ thứ hai để có thể thay đổi cài đặt này.
+    ` : `
+      Mỗi tài khoản phải có 1 địa chỉ mặc định.
+    `
+  }
+
   return (
     <div id='AddressShipComponent'>
       <ToastContainer/>
@@ -219,11 +245,11 @@ export default function AddressShipComponent() {
             </div>
             <div className="phone">
               <span>Phone: </span>
-              {address.phone}
+              {address.phone.slice(3)}
             </div>
           </div>
           <div className="action">
-            <div className='act-edit' onClick={() => handleEditAddressShip(address)}>
+            <div className='act-edit' onClick={() => handleShowMoreAddressShip(address)}>
               <AiTwotoneEdit/>
               Edit
             </div>
@@ -246,7 +272,7 @@ export default function AddressShipComponent() {
           wrapperCol={{ flex: 1 }}
           colon={false}
           style={{ maxWidth: 600 }}         
-          onFinish={handleCreateAddressShip}
+          onFinish={isFormEdit ? handleEditAddressShip : handleCreateAddressShip}
         >
           <Form.Item label="Họ và tên" name="fullName" rules={[{ required: true }]}>
             <Input placeholder='Nhập Họ và tên' name='fullName' value={addressShipping.fullName} onChange={handleOnChangeInput}/>
@@ -313,8 +339,28 @@ export default function AddressShipComponent() {
           </Form.Item>
 
           <Form.Item label=" " name="default">
-            <Checkbox name="default" onChange={handleOnChangeInput} value={addressShipping.default}/>
-            Set as default address
+            {listAddressShip?.lenght === 0 || isDisableCheckBox ? (
+              <Tooltip title={showTextToolTip()}>
+                <Checkbox 
+                  className={'disable-checkbox'}
+                  disabled
+                  name="default" 
+                  onChange={handleOnChangeInput} 
+                  checked={addressShipping.default}
+                >
+                  Set as default address
+                </Checkbox>                
+              </Tooltip>
+            ) : (
+              <Checkbox 
+                disabled
+                name="default" 
+                onChange={handleOnChangeInput} 
+                checked={addressShipping.default}
+              >
+                Set as default address
+              </Checkbox>
+            )}
           </Form.Item>
 
           <Form.Item label=" " >

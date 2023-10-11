@@ -232,7 +232,7 @@ export async function updateAddressShip(
     const res = await fetch(
       `http://localhost:8080/api/user/address/update`,
       {
-        method: "GET",
+        method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",

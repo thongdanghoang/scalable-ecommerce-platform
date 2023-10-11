@@ -60,3 +60,8 @@
 #AddressShipComponent .address-ship .action {
     cursor: pointer;
 }
+
+.disable-checkbox{
+    cursor: no-drop;
+    opacity: .35;
+}

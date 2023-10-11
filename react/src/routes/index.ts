@@ -5,8 +5,9 @@ import ProductDetailPage from "../pages/ProductDetailPage/ProductDetailPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage/ResetPasswordPage";
 import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
-import ProductPage from "../pages/ProductPage/ProductPage";
+import ProductsFilterPage from "../pages/ProductsFilterPage/ProductsFilterPage";
 import AdminPage from "../pages/AdminPage/AdminPage";
+import OrderPage from "../pages/OrderPage/OrderPage";
 
 export const routes = [
   {
@@ -35,13 +36,18 @@ export const routes = [
     isShowHeader: true,
   },
   {
-    path: "/product-detail",
+    path: "/product-detail/:name",
     page: ProductDetailPage,
     isShowHeader: true,
   },
   {
     path: "/product",
-    page: ProductPage,
+    page: ProductsFilterPage,
+    isShowHeader: true,
+  },
+  {
+    path: "/order",
+    page: OrderPage,
     isShowHeader: true,
   },
   {

@@ -1,5 +1,5 @@
-#productDetail .image-product {
-  margin-top: 30px;
+#productDetail .slick-next{
+  right: 26px;
 }
 #productDetail .row {
   margin-top: 30px;
@@ -73,6 +73,12 @@
   align-items: center;
   justify-content: center;
 }
+
+#productDetail .product-variation:hover {
+  color: #fff;
+  background: #fcaf17;
+}
+
 #productDetail .product-color {
   margin-top: 10px;
 }
@@ -105,4 +111,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+#productDetail .active-size{
+  color: #fff;
+  background: #fcaf17;
 }

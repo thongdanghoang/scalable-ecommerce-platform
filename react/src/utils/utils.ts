@@ -126,3 +126,24 @@ export const convertDateAndTime = (isoDateString : any, num = 0) => {
 //   progress,
 //   theme
 // })
+
+export function convertToSlug(text : string) {
+    return text
+      .toLowerCase()
+      .replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, "a")
+      .replace(/[éèẻẽẹêếềểễệ]/g, "e")
+      .replace(/[íìỉĩị]/g, "i")
+      .replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, "o")
+      .replace(/[úùủũụưứừửữự]/g, "u")
+      .replace(/[ýỳỷỹỵ]/g, "y")
+      .replace(/[^a-z0-9-]/g, "-")  // Loại bỏ các ký tự không hợp lệ
+      .replace(/-+/g, "-");        // Loại bỏ các dấu gạch ngang liên tiếp
+}
+
+export function convertToShortNumber(number : number) {
+    if (number >= 1000) {
+      return (number / 1000).toFixed(1) + "k";
+    } else {
+      return number.toString();
+    }
+}

@@ -97,6 +97,7 @@ export default function SliderComponent(props: PropsSlider) {
   const arrowCustome = () => {
     switch (nameSlider) {
       case "imagesBackground":
+      case "imagesClothes":
         return {
           prevArrow: (
             <img
@@ -111,7 +112,7 @@ export default function SliderComponent(props: PropsSlider) {
             />
           ),
         };
-      case "card":
+      case "clothesFilter":
         return {
           prevArrow: <img src={leftArrow} />,
           nextArrow: <img src={rightArrow} />,
@@ -145,12 +146,13 @@ export default function SliderComponent(props: PropsSlider) {
             ))}
           </Slider>
         );
-      case "card":
+      case "clothesFilter":
         return (
           <Slider {...settings} className="slider-arrow-custome">
             {listItems?.map((item) => (
               <div className="custome-card-home-page" style={{ width: 250 }}>
                 <CardComponent
+                  id = {item.id}
                   name={item.name}
                   price={item.price}
                   image={item.image}
@@ -172,9 +174,9 @@ export default function SliderComponent(props: PropsSlider) {
             </Slider>
           </div>
         );
-      case "image":
+      case "imagesClothes":
         return (
-          <Slider className="slider-arrow-custome" {...settings}>
+          <Slider className="slider-img-bg" {...settings}>
             {listItems?.map((item) => (
               <div className="image">
                 <img src={item} alt="" />

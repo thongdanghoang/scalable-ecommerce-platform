@@ -1,30 +1,65 @@
+import { useLocation, useParams } from "react-router-dom";
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
 import "./ProductDetail.css";
+import { useQuery } from "@tanstack/react-query";
+import { getClothesById } from "../../services/clothesService";
+import { convertPrice, convertToShortNumber } from "../../utils/utils";
+import {useState , useEffect, useMemo} from 'react'
 
 export default function ProductDetailPage() {
+
+  const [listSizes , setListSizes] = useState([]);
+  const [listImages , setListImages] = useState([]);
+  const [activeSize , setActiveSize] = useState(0);
+  const { state : id }  = useLocation();
+
+  const fetchGetProductById = async (context : any) => {
+    const res = await getClothesById(context?.queryKey[1]);
+    return res
+  }
+
+  const { data : productDetail , isSuccess} = useQuery(['product-detail',id] , fetchGetProductById)
+  console.log(productDetail);
+
+  const handleConvertSizeByColor = (classify : any , index : number) => {
+    setActiveSize(index);
+    const sizes = classify?.quantities.map((quantity : any) => quantity.size);
+    setListSizes(sizes);
+    const images = classify?.images.map((img : string) => `http://localhost:8080/api/products/images/${img}`)
+    setListImages(images);
+  }
+
+  useEffect(() => {
+    if(productDetail && isSuccess){
+      const firstClassify = productDetail.classifyClothes.shift();
+      handleConvertSizeByColor(firstClassify,activeSize);
+    }
+  },[productDetail,isSuccess])
+
+  const priceRest = useMemo(() => {
+    return productDetail?.price - productDetail?.price * productDetail?.discount
+  },[productDetail])
+
   return (
     <div className="container" id="productDetail">
-      <div className="row ">
-        <div className="col-md-5 image-product">
+      <div className="row justify-content-between">
+        <div className="col-md-4 image-product">
           <SliderComponent
             slidesToShow={1}
-            listItems={[
-              "https://bizweb.dktcdn.net/100/438/408/products/spm5005-den-ao-so-mi-nam-yody-1.jpg?v=1688723412400",
-              "https://bizweb.dktcdn.net/100/438/408/products/spm5005-tra-7.jpg?v=1690163742317",
-            ]}
-            nameSlider={"image"}
+            listItems={listImages}
+            nameSlider={"imagesClothes"}
           ></SliderComponent>
         </div>
 
         <div className="col-md-7">
           <div className="box-divider">
             <h2 className="title-head mb-1">
-              Áo Sơ Mi Nam Tay Dài Thoáng Khí Siêu Mát
+              {productDetail?.name}
             </h2>
             <div className="product-top">
               <div className="product-sold">
                 Đã bán:
-                <span className="number-product-sold">32.7K</span>
+                <span className="number-product-sold"> {productDetail?.numberOfSold && convertToShortNumber(productDetail?.numberOfSold)}</span>
               </div>
               <div className="divider"></div>
               <div className="product-review">
@@ -37,16 +72,21 @@ export default function ProductDetailPage() {
             </div>
             <div className="price">
               <div className="special-price">
-                <span>290.000đ</span>
+                <span>{convertPrice(priceRest)}</span>
               </div>
-              <div className="old-price">
-                <span>300.000đ</span>
-              </div>
-              <div className="discount-price">
-                <span>-10%</span>
-              </div>
+              {productDetail?.discount !== 0 && (
+                <>
+                  <div className="old-price">
+                    <span>{convertPrice(productDetail?.price)}</span>
+                  </div>
+                  <div className="discount-price">
+                    <span>{`-${productDetail?.discount}%`}</span>
+                  </div>                
+                </>
+              )}
             </div>
           </div>
+          
           <div className="product-color ">
             <section className="flex items-center">
               <div className="color">
@@ -54,34 +94,16 @@ export default function ProductDetailPage() {
               </div>
 
               <div className="flex items-center">
-                <button
-                  className="product-variation"
-                  aria-label="Đen"
-                  aria-disabled="false"
-                >
-                  Đen
-                </button>
-                <button
-                  className="product-variation"
-                  aria-label="Đen"
-                  aria-disabled="false"
-                >
-                  Xám
-                </button>
-                <button
-                  className="product-variation"
-                  aria-label="Đen"
-                  aria-disabled="false"
-                >
-                  Trắng
-                </button>
-                <button
-                  className="product-variation"
-                  aria-label="Đen"
-                  aria-disabled="false"
-                >
-                  Đỏ
-                </button>
+                {productDetail?.classifyClothes?.map((classify : any , index : number) => (
+                  <button
+                    className={`product-variation ${activeSize === index ? 'active-size' : ''}`}
+                    aria-label="Đen"
+                    aria-disabled="false"
+                    onClick={() => handleConvertSizeByColor(classify , index)}
+                  >
+                    {classify?.color}
+                  </button>              
+                ))}
               </div>
             </section>
           </div>
@@ -92,34 +114,15 @@ export default function ProductDetailPage() {
               </div>
 
               <div className="flex items-center">
-                <button
-                  className="product-variation"
-                  aria-label="M"
-                  aria-disabled="false"
-                >
-                  M
-                </button>
-                <button
-                  className="product-variation"
-                  aria-label="L"
-                  aria-disabled="false"
-                >
-                  L
-                </button>
-                <button
-                  className="product-variation"
-                  aria-label="XL"
-                  aria-disabled="false"
-                >
-                  XL
-                </button>
-                <button
-                  className="product-variation"
-                  aria-label="2Xl"
-                  aria-disabled="false"
-                >
-                  2XL
-                </button>
+                {listSizes?.map((size : string) => (
+                  <button
+                    className="product-variation"
+                    aria-label={size}
+                    aria-disabled="false"
+                  >
+                    {size}
+                  </button>
+                ))}
               </div>
             </section>
           </div>
@@ -142,7 +145,7 @@ export default function ProductDetailPage() {
               <i className="fa-solid fa-cart-plus "></i>
               Thêm vào giỏ hàng
             </button>
-            <button type="button" className="btn btn-primary">
+            <button type="button" className="btn btn-secondary">
               Mua ngay
             </button>
           </div>

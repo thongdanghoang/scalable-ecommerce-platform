@@ -12,3 +12,16 @@ export async function getAllClothes(): Promise<Response | null> {
     }
     return null;
 }
+
+export async function getClothesById(idClothes : number){
+    try {
+        const response = await fetch(`${API_URL}/api/products/${idClothes}`,
+        {
+            method: "GET",
+        });
+        return await response.json();
+    } catch (error) {
+        
+    }
+    return null;
+}
