@@ -152,7 +152,7 @@ export default function SliderComponent(props: PropsSlider) {
             {listItems?.map((item) => (
               <div className="custome-card-home-page" style={{ width: 250 }}>
                 <CardComponent
-                  id = {item.id}
+                  id={item.id}
                   name={item.name}
                   price={item.price}
                   image={item.image}
