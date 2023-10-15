@@ -1,5 +1,4 @@
 import "./header.css";
-import { OverlayTrigger, Popover } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store";
@@ -7,7 +6,14 @@ import { logoutService } from "../../services/userService";
 import { resetUser } from "../../redux/slides/userSlide";
 import { useEffect, useState } from "react";
 import CardHeaderComponent from "../CardHeaderComponent/CardHeaderComponent";
-import { Badge } from "antd";
+import { Badge, Popover } from "antd";
+import { CartContext, CartContextType } from '../DefaultComponent/DefaultComponent'
+import {useContext} from 'react'
+import { AiOutlineProfile } from "react-icons/ai";
+import { BiLogOut } from "react-icons/bi";
+import { cloneOrder, resetOrder } from "../../redux/slides/orderSlide";
+import { updateListOrder } from "../../redux/slides/listOrdersSlide";
+
 
 interface propsHeader {
   isShowMenu?: boolean;
@@ -21,15 +27,18 @@ export default function HeaderComponent({
   isShowCart = true,
 }: propsHeader) {
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.user);
-  console.log(user);
+  const user = useSelector((state: RootState) => state.user); console.log(user);
+  const order = useSelector((state:RootState) => state.order); console.log(order);
+  const listOrder = useSelector((state:RootState) => state.listOrder); console.log(listOrder);
   const dispatch = useDispatch();
-  const [isOpenPopover, setIsOpenPopover] = useState(false);
-  const location = useLocation();
+  const cartContext = useContext(CartContext);
+  const {isHiddenCart , setIsHiddenCart}  = cartContext as CartContextType;
 
+  // update listOrderUnpaid
   useEffect(() => {
-    setIsOpenPopover(false);
-  }, [location.pathname]);
+    console.log(order)
+    dispatch(updateListOrder(order));
+  }, [order.totalQuantity]);
 
   const handleProfile = async () => {
     navigate("/profile-user/information-user");
@@ -41,39 +50,36 @@ export default function HeaderComponent({
       navigate("/sign-in");
     }
     dispatch(resetUser());
+    dispatch(resetOrder());
   };
 
   const MyAccountPopover = (
-    <Popover onMouseLeave={() => setIsOpenPopover(false)} id="avatar-popover">
-      <Popover.Body className="custome-popover-body">
-        {user?.username ? (
-          <div>
-            <div className="menu-item" onClick={handleProfile}>
-              User Profile
-            </div>
-            <div className="menu-item" onClick={handleLogout}>
-              Logout
-            </div>
+    <>
+      {user?.username ? (
+        <div>
+          <div className="menu-item" onClick={handleProfile}>
+            <AiOutlineProfile />
+            User Profile
           </div>
-        ) : (
-          <div>
-            <div className="menu-item" onClick={() => navigate("/sign-in")}>
-              Login
-            </div>
-            <div className="menu-item" onClick={() => navigate("/sign-up")}>
-              Register
-            </div>
+          <div className="menu-item" onClick={handleLogout}>
+            <BiLogOut/>
+            Logout
           </div>
-        )}
-      </Popover.Body>
-    </Popover>
+        </div>
+      ) : (
+        <div>
+          <div className="menu-item" onClick={() => navigate("/sign-in")}>
+            Login
+          </div>
+          <div className="menu-item" onClick={() => navigate("/sign-up")}>
+            Register
+          </div>
+        </div>
+      )}   
+    </>      
   );
   const MyCardPopover = (
-    <Popover onMouseLeave={() => setIsOpenPopover(false)} id="card-popover">
-      <Popover.Body className="custome-card-popover-body ">
-        <CardHeaderComponent/>
-      </Popover.Body>
-    </Popover>
+    <CardHeaderComponent/>
   );
 
   return (
@@ -120,32 +126,37 @@ export default function HeaderComponent({
                     <i className="fa-solid fa-house"></i>
                   </div>
                   <div className="header-account">
-                    <OverlayTrigger
-                      placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
-                      overlay={MyAccountPopover}
-                      show={isOpenPopover}
+                    <Popover
+                      id="avatar-popover"
+                      placement='bottomRight'
+                      content={MyAccountPopover} 
+                      trigger={"hover"}
                     >
-                      <div
-                        className="header-icon"
-                        onMouseEnter={() => setIsOpenPopover(true)}
-                      >
+                      <div className="header-icon">
                         <i className="fa-solid fa-user"></i>
                       </div>
-                    </OverlayTrigger>
+                    </Popover>                   
                   </div>
                   {isShowCart && (
                     <div className="header-cart">
-                      <OverlayTrigger
-                        placement="bottom-end" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
-                        overlay={MyCardPopover}
-                        show={true}
+                      <Popover
+                        placement="bottomRight" // Vị trí hiển thị popover ("top", "bottom", "left", "right", vv.)
+                        content={MyCardPopover}
+                        trigger={"hover"}
+                        visible = {isHiddenCart}
+                        onVisibleChange={setIsHiddenCart}
+
                       >                       
-                        <div className="header-icon">
-                          <Badge count={2}>
+                        <div 
+                          className="header-icon"
+                          onMouseEnter={() => setIsHiddenCart(true)}
+                          onClick={() => navigate('/order')}
+                        >
+                          <Badge count={order.totalQuantity}>
                             <i className="fa-solid fa-cart-shopping"></i>
                           </Badge>
                         </div>
-                      </OverlayTrigger>
+                      </Popover>
                     </div>
                   )}
                 </div>

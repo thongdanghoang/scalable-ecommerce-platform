@@ -1,3 +1,4 @@
+
 #homepage .header-preview {
   display: flex;
   justify-content: space-between;
@@ -6,17 +7,15 @@
 #homepage .header-preview a:hover {
   color: #000;
 }
-.content {
-  margin-left: 12px;
-}
-.more {
+
+#homepage .more {
   margin-right: 4px;
 }
-.content:hover,
-.more:hover {
+#homepage .content:hover,
+#homepage .more:hover {
   filter: opacity(0.5);
 }
-.fa-chevron-right {
+#homepage .fa-chevron-right {
   padding: 0 10px;
 }
 #homepage .banner {
@@ -31,38 +30,37 @@
   width: 76%;
 }
 #homepage .product {
+  line-height: 0 !important;
   display: flex;
 }
 /* .banner {
   margin-right: 40px;
 } */
-.gender {
+#homepage .gender {
   display: flex;
   justify-content: center;
   margin-bottom: 30px;
 }
-.men,
-.women {
-  margin: 0px 100px;
+
+#homepage .gender .gender-item{
+  height: 64px;
+  width: 220px;
+  justify-content: center;
+  display: flex;
+  align-items: end;
+  margin-right: 50px;
+  padding-bottom: 19px;
+  border-bottom: 2px solid #97A0AD;
+  cursor: pointer;
+  text-transform: uppercase;
 }
-.underline {
-  margin-top: 30px;
-  border-bottom: 2px solid black;
-  width: 400px;
-}
-.men > a {
-  padding-left: 175px;
-}
-.women > a {
-  padding-left: 163px;
-}
-.men > a:hover {
-  color: gray;
-}
-.women > a:hover {
-  color: gray;
+
+#homepage .gender .gender-item:hover{
+  border-bottom: 2px solid #FCAF17;
+  color: #FCAF17;
 }
 
 .custome-card-home-page{
   width: 90% !important;
+  height: 450px;
 }

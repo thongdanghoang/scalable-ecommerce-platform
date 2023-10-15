@@ -47,7 +47,6 @@ export const userSlice = createSlice({
       state.phoneVerified = phoneVerified ? phoneVerified : state.phoneVerified
     },
     resetUser: (state) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.assign(state, initialState);
     }
   },

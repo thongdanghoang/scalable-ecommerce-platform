@@ -109,17 +109,39 @@ export async function updateProfileService(
   return null;
 }
 
-export async function verifyEmailService(email: string, code: string) {
+export async function verifyEmailService(email: string, code: string | null) {
   try {
     const res = await fetch(
-      `${API_URL}/api/user/auth/verify-email?mail=${email}` +
-        (code ? `&code=${code}` : ""),
+      `${API_URL}/api/user/auth/verify-email`,
       {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
+        body : JSON.stringify(code ? {email,code} : {email})
+      }
+    );
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+  return null;
+}
+
+export async function verifyPhoneService(phone: string, code: string | null) {
+  try {
+    const res = await fetch(
+      `${API_URL}/api/user/auth/verify-phone`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(code ? {phone,code} : {phone})
       }
     );
 

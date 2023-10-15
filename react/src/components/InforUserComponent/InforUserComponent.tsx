@@ -1,6 +1,6 @@
 import '../../pages/UserProfilePage/UserProfile.css'
 import {useEffect , useState} from 'react'
-import { profileService, updateProfileService, verifyEmailService } from "../../services/userService";
+import { profileService, updateProfileService, verifyEmailService, verifyPhoneService } from "../../services/userService";
 import { updateUser } from '../../redux/slides/userSlide';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import OTPInput, {} from 'react-otp-input'
 import { Button, Modal } from 'react-bootstrap';
 import './InforUser.css'
+import { formatVietnamesePhone, toastMSGObject } from '../../utils/utils';
 
 export default function InforUserComponent() {
     const user = useSelector((state:RootState)=> state.user);
@@ -17,12 +18,12 @@ export default function InforUserComponent() {
     const dispatch = useDispatch();
     console.log(userProfile);
     const [otp, setOtp] = useState('');
+    const [verifyField , setVerifyField] = useState('');
     const [isOpenModal , setIsOpenModal] = useState(false);
     //const spanEle = useRef<HTMLElement | null>(null)
 
     useEffect(() => {
         profileService().then(res => {
-            console.log(res)
             if(res?.success){
                 setUserProfile(res?.data)
             }
@@ -42,27 +43,9 @@ export default function InforUserComponent() {
         console.log(res)
         if(res?.success){
             dispatch(updateUser(res?.data));
-            toast.success(<span style={{color: "#07bc0c"}}>{res?.message}</span>, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                });
+            toast.success(res?.message, toastMSGObject() );
         }else{
-            toast.error(<span style={{color: "red"}}>{res?.message}</span>, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                });
+            toast.error(res?.message, toastMSGObject());
         }
     }
 
@@ -73,10 +56,36 @@ export default function InforUserComponent() {
         })
     }
 
-    const handleSendOTPEmail = async () => {
-        setIsOpenModal(true)
-        const res = await verifyEmailService(userProfile?.email,'');
-        console.log(res)
+    // get OTP from email and verify Email
+
+    const handleSendOTP = async (verifyField : string) => {
+        setVerifyField(verifyField)
+        let res : any = {};
+        switch (verifyField) {
+            case 'EMAIL':
+                if(userProfile?.email){
+                    res = await verifyEmailService(userProfile?.email, null);
+                }else{
+                    toast.error('Email is not empty', toastMSGObject())
+                }
+                break;
+            case 'PHONE':
+                if(userProfile?.phone){
+                    console.log(userProfile.phone)
+                    res = await verifyPhoneService(formatVietnamesePhone(userProfile?.phone), null);
+                }else{
+                    toast.error('Phone is not empty', toastMSGObject())
+                }
+                break;
+            default:
+                break;
+        }
+        if(res?.success){
+            setIsOpenModal(true);
+            toast.success(res?.message , toastMSGObject())
+        }else{
+            toast.error(res?.message , toastMSGObject())
+        }
     }
 
     const handleCloseOTPForm = () => {
@@ -84,32 +93,27 @@ export default function InforUserComponent() {
         setOtp('')
     }
 
-    const handleVerifyEmail = async () => {
-        const res = await verifyEmailService(userProfile?.email , otp);
+    const handleVerify = async () => {
+        let res : any = {}
+        switch (verifyField) {
+            case 'EMAIL':
+                res = await verifyEmailService(userProfile?.email,otp);
+                break;
+            case 'PHONE':
+                res = await verifyPhoneService(formatVietnamesePhone(userProfile?.phone),otp);
+                break;
+            default:
+                break;
+        }
+
         if(res?.success){
-            toast.success(<span style={{color: "#07bc0c"}}>{res?.message}</span>, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-            dispatch(updateUser({...user, emailVerified : true}));
+            toast.success(res?.message, toastMSGObject());
+            dispatch(updateUser(
+                verifyField === "EMAIL" ? {...user, emailVerified : true} : {...user, phoneVerified : true}
+            ));
             handleCloseOTPForm();
         }else{
-            toast.error(<span style={{color: "red"}}>{res?.message}</span>, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            toast.error(res?.message, toastMSGObject());
         }
     }
 
@@ -163,9 +167,9 @@ export default function InforUserComponent() {
                 <div className="grid__column seven-twelfths ">
                     <div className="form-group">
                         <input
-                            type="text"
+                            type="number"
                             name="phone"
-                            value={userProfile.phone}
+                            value={userProfile?.phone?.replace('+84','0')}
                             placeholder="Phone number"
                             className="form-control"
                             onChange={handleOnChangeProfile}
@@ -173,9 +177,15 @@ export default function InforUserComponent() {
                     </div>
                 </div>
                 <div className="grid__column two-twelfths1">
-                    <div className="form-group">
-                        <button type="submit" className="btn1 form-control2">Update</button>
-                    </div>
+                    {userProfile.phoneVerified ? (
+                        <div className='has-verified'>
+                            <p>Verified</p>
+                        </div>
+                    ) : (
+                        <div className="form-group">
+                            <button onClick={() => handleSendOTP('PHONE')} type="submit" className="btn1 form-control2">Update</button>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="grid">
@@ -196,11 +206,11 @@ export default function InforUserComponent() {
                 <div className="grid__column two-twelfths1">
                     {userProfile.emailVerified ? (
                         <div className='has-verified'>
-                            <p>Đã xác thực</p>
+                            <p>Verified</p>
                         </div>
                     ) : (
                         <div className="form-group">
-                            <button onClick={handleSendOTPEmail} type="submit" className="btn1 form-control2">Update</button>
+                            <button onClick={() => handleSendOTP('EMAIL')} type="submit" className="btn1 form-control2">Update</button>
                         </div>
                     )}
                 </div>
@@ -256,8 +266,8 @@ export default function InforUserComponent() {
             </div>
             <div className="grid mgb--20">
                 <div className="grid__column three-twelfths flex align-center">
-                    <div className="bday-label">Ngày sinh
-                        <div className="bday-note">(ngày/tháng/năm)</div>
+                    <div className="bday-label">Gender
+                        <div className="bday-note">(day/month/year)</div>
                     </div>
                 </div>
                 <div className="grid__column seven-twelfths ">
@@ -313,7 +323,7 @@ export default function InforUserComponent() {
             </div>
             <div className="grid">
                 <div className="grid__column flex align--center">
-                    <button onClick={handleUpdateProfile} className="btn btn-primary btn-block-sm">Cập nhật tài khoản</button>
+                    <button onClick={handleUpdateProfile} className="btn btn-primary btn-block-sm">Update Profile</button>
                 </div>
             </div>
             <Modal
@@ -323,10 +333,14 @@ export default function InforUserComponent() {
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Enter OTP Email</Modal.Title>
+                    <Modal.Title>{`Enter OTP ${verifyField.toLowerCase()}`}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>{`To verify the email is yours, enter the 6-digit verification code just sent to ${userProfile.email}`}</p>
+                    <p>{
+                        `To verify the ${verifyField.toLowerCase()} is yours, 
+                        enter the 6-digit verification code just sent to 
+                        ${verifyField === 'EMAIL' ? userProfile.email : userProfile.phone}`
+                    }</p>
                     <OTPInput
                         containerStyle={{ justifyContent: "center" }}
                         value={otp}
@@ -346,7 +360,7 @@ export default function InforUserComponent() {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button style={{ width: "100%" }} variant="danger" onClick={handleVerifyEmail}>
+                    <Button style={{ width: "100%" }} variant="danger" onClick={handleVerify}>
                         Confirm
                     </Button>
                 </Modal.Footer>

@@ -4,10 +4,15 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { loginService } from "../../services/userService";
-import {useNavigate } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {updateUser } from "../../redux/slides/userSlide";
 import { RootState } from "../../redux/store";
+import {toast , ToastContainer } from "react-toastify";
+import {useEffect} from 'react'
+import { toastMSGObject } from "../../utils/utils";
+import { addOrderToList } from "../../redux/slides/listOrdersSlide";
+import { cloneOrder } from "../../redux/slides/orderSlide";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -19,7 +24,16 @@ export default function LoginPage() {
   const handleShow = () => setShowModal(true);
   const navigate = useNavigate();
   const user = useSelector((state:RootState)=> state.user); console.log(user);
+  const order = useSelector((state:RootState)=> state.order);
+  const listOrder = useSelector((state:RootState)=> state.listOrder);
   const dispatch = useDispatch();
+  const {state : msgAuthen} = useLocation();
+
+  useEffect(() => {
+    if(msgAuthen){
+      toast.error(msgAuthen, toastMSGObject())
+    }
+  },[msgAuthen])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,6 +42,7 @@ export default function LoginPage() {
       [name]: value,
     });
   };
+
   const validInput = () => {
     if (formData.username.length != 0 && formData.password.length != 0) {
       return true;
@@ -47,6 +62,13 @@ export default function LoginPage() {
       console.log(response)
       if (response?.success) {
         dispatch(updateUser({...user, username : response?.data}));
+        const findOrderUnpaid = listOrder.ordersUnpaid.find(order => order.username === response?.data)
+        if(findOrderUnpaid){
+          dispatch(cloneOrder(findOrderUnpaid))
+        }else{
+          dispatch(addOrderToList({...order , username : response?.data}))
+          dispatch(cloneOrder({...order , username : response?.data}))
+        }
         navigate('/');
       } else {
         handleShow();
@@ -89,6 +111,7 @@ export default function LoginPage() {
   return (
     <div id="LoginPage" className="background h-100">
       <LoginModal />
+      <ToastContainer/>
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-xl-10">

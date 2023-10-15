@@ -1,5 +1,6 @@
 #UserProfilePage{
   background: aliceblue;
+  min-height: 90vh;
 }
 
 #UserProfilePage .account--sidebar {
@@ -53,8 +54,8 @@
   }
 
 #UserProfilePage  a[aria-current="page"] {
-  background-color: #0fb6d3;
-    color: #fff;
+  background-color: #0fb6d3 !important;
+  color: #fff !important;
 }
 #UserProfilePage .account--sidebar-item.active-menu{
   
@@ -62,8 +63,8 @@
 #UserProfilePage .account--sidebar-item:not(:last-child) {
     margin-bottom: 1rem;
   }
-#UserProfilePage .account--sidebar-item {
-    width: 85%;
+#UserProfilePage a.account--sidebar-item {
+    margin-right: 25px;
     line-height: 40px;
     height: 40px;
     background-color: #fff;
@@ -72,13 +73,15 @@
     transition: all 0.2s;
     display: block;
     border-radius: 16px;
-  }
-  a {
     text-decoration: none;
     color: #000;
-    padding-top: 10px;
     font-size: 20px;
   }
+
+#UserProfilePage a.account--sidebar-item svg{
+  margin: 0 7px 7px 0;
+}
+
 #UserProfilePage .eigth-twelfths {
     width: 66.66%;
   }

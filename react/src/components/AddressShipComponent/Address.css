@@ -10,6 +10,11 @@
     align-items: center;
 }
 
+#AddressShipComponent .add-address svg,
+#AddressShipComponent .add-address span{
+    cursor: pointer;   
+}
+
 #AddressShipComponent .add-address svg{
     color: rgb(120, 120, 120);
     font-size: 28px;
@@ -59,6 +64,11 @@
 
 #AddressShipComponent .address-ship .action {
     cursor: pointer;
+    min-width: 67px;
+}
+
+#AddressShipComponent .address-ship .action .act-delete{
+    color: rgb(254, 43, 43);
 }
 
 .disable-checkbox{

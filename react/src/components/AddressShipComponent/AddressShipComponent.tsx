@@ -2,7 +2,7 @@ import {AiOutlinePlus , AiOutlineCheckCircle , AiTwotoneEdit , AiFillDelete} fro
 import './Address.css'
 import { Button, Input, Modal, Select , Form, Checkbox, Radio, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
-import { getListDistricts, getListProvincesCity, getListWards} from '../../utils/utils';
+import { formatVietnamesePhone, getListDistricts, getListProvincesCity, getListWards} from '../../utils/utils';
 import { getAddressShipsByUser , createAddressShip, updateAddressShip, deleteAddressShip } from '../../services/userService';
 import { AddressShipping } from '../../model/UserModal';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -170,7 +170,7 @@ export default function AddressShipComponent() {
   const handleEditAddressShip = () => {
     mutationEditAddress.mutate({
       ...addressShipping,
-      phone : `${addressShipping.phone}`
+      phone : formatVietnamesePhone(addressShipping.phone)
     } , {
       onSettled : () => {
         queryAddressShip.refetch();
@@ -185,7 +185,7 @@ export default function AddressShipComponent() {
     const [district_name , district_id] = address.district.split('-');
     form.setFieldsValue({
       ...address,
-      phone : address.phone.slice(3),
+      phone : address.phone.replace('+84','0'),
       province : province_name,
       district : district_name
     })
@@ -245,7 +245,7 @@ export default function AddressShipComponent() {
             </div>
             <div className="phone">
               <span>Phone: </span>
-              {address.phone.slice(3)}
+              {address.phone.replace('+84','0')}
             </div>
           </div>
           <div className="action">
@@ -353,7 +353,6 @@ export default function AddressShipComponent() {
               </Tooltip>
             ) : (
               <Checkbox 
-                disabled
                 name="default" 
                 onChange={handleOnChangeInput} 
                 checked={addressShipping.default}

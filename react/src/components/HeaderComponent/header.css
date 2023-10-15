@@ -99,9 +99,14 @@
   cursor: pointer;
   padding: 7px 10px;
   color: rgb(39, 39, 42);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 150%;
   font-weight: 400;
+}
+
+#avatar-popover .menu-item svg{
+  font-size: 18px;
+  margin: 0px 5px 5px 0;
 }
 
 #avatar-popover .menu-item:hover {

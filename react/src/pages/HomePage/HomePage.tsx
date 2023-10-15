@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
 import { getAllClothes} from "../../services/clothesService";
-import "./HomePage.css";
+import "./Home.css";
 import { clothes } from "../../model/ClothesModal";
 
 async function getProductsList(): Promise<clothes[]> {
@@ -23,8 +23,7 @@ export default function HomePage() {
   
   useEffect(() => {
     const run = async () => {
-      const list1 = await getProductsList()
-      setProductList([...list1,...list1,...list1]);
+      setProductList(await getProductsList());
     }
     run();
   },[])
@@ -44,13 +43,15 @@ export default function HomePage() {
         />
       </div>
       <div className="gender">
-        <div className="men">
-          <a href="">MEN</a>
-          <div className="underline"></div>
+        <div className="gender-item">
+          <div className="gender-item__value">
+            MEN
+          </div>
         </div>
-        <div className="women">
-          <a href="">WOMEN</a>
-          <div className="underline"></div>
+        <div className="gender-item">
+          <div className="gender-item__value">
+            WOMEN
+          </div>
         </div>
       </div>
       <SliderComponent

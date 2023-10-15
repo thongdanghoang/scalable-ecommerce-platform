@@ -8,7 +8,14 @@ export interface clothes {
 export interface clothesOrder extends clothes{
     category: string;
     discount: number;
-    color: string;
     size: string;
     amountBuy: number;
+    classifyClothes: {
+        color : string;
+        images : string;
+        quantities : {
+            size : string;
+            quantity : number;
+        } 
+    }
 }

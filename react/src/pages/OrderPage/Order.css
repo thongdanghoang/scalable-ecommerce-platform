@@ -34,7 +34,7 @@ body {
   border-radius: 2px;
 }
 #order-page .total-cart {
-  margin-left: 30px;
+  margin-left: 10px;
   color: #7a7a9d;
   font-family: "SVN-Gilroy";
   font-weight: 500;
@@ -52,12 +52,15 @@ body {
   width: 60%;
 }
 #order-page .cart-item-price,
-.cart-qty,
-.cart-total-item-price {
+#order-page .cart-qty,
+#order-page .cart-total-item-price {
   width: 20%;
   text-align: center;
 }
 #order-page .cart-total-item-price {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   text-align: right;
 }
 
@@ -72,8 +75,20 @@ body {
   display: flex;
 }
 
+#order-page .cart-select-button button.btn-left{
+  border-radius: 13px 0 0 13px;
+}
+
+#order-page .cart-select-button button.btn-right{
+  border-radius: 0 13px 13px 0;
+}
+
+#order-page .cart-select-button button:disabled{
+  color: #D9D9D9;
+}
+
 #order-page .cart-select-button button,
-.cart-select-button input {
+#order-page .cart-select-button input {
   border: 1px solid #7a7a9d;
   color: #222;
   line-height: 24px;
@@ -83,6 +98,7 @@ body {
   float: left;
   text-align: center;
 }
+
 #order-page .cart-select {
   margin-left: 15px;
 }

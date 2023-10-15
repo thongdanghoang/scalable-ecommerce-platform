@@ -1,17 +1,29 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
 import "./ProductDetail.css";
 import { useQuery } from "@tanstack/react-query";
 import { getClothesById } from "../../services/clothesService";
-import { convertPrice, convertToShortNumber } from "../../utils/utils";
+import { convertPrice, convertToShortNumber, handleChangeAmountBuy, toastMSGObject } from "../../utils/utils";
 import {useState , useEffect, useMemo} from 'react'
+import { ToastContainer , toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector} from "react-redux";
+import { addProductToOrder } from "../../redux/slides/orderSlide";
+import { CartContext, CartContextType } from '../../components/DefaultComponent/DefaultComponent'
+import {useContext} from 'react'
+import { RootState } from "../../redux/store";
 
 export default function ProductDetailPage() {
 
-  const [listSizes , setListSizes] = useState([]);
-  const [listImages , setListImages] = useState([]);
-  const [activeSize , setActiveSize] = useState(0);
+  const [activeSize , setActiveSize] = useState<any>({});
+  const [activeColor , setActiveColor] = useState<any>({});
   const { state : id }  = useLocation();
+  const [amountBuy , setAmountBuy] = useState<number>(1);
+  const dispatch = useDispatch();
+  const cartContext = useContext(CartContext);
+  const {setIsHiddenCart}  = cartContext as CartContextType;
+  const user = useSelector((state: RootState) => state.user);
+  const navigate = useNavigate();
 
   const fetchGetProductById = async (context : any) => {
     const res = await getClothesById(context?.queryKey[1]);
@@ -21,18 +33,17 @@ export default function ProductDetailPage() {
   const { data : productDetail , isSuccess} = useQuery(['product-detail',id] , fetchGetProductById)
   console.log(productDetail);
 
-  const handleConvertSizeByColor = (classify : any , index : number) => {
-    setActiveSize(index);
-    const sizes = classify?.quantities.map((quantity : any) => quantity.size);
-    setListSizes(sizes);
-    const images = classify?.images.map((img : string) => `http://localhost:8080/api/products/images/${img}`)
-    setListImages(images);
+  const handleGetSizesByColor = (classify : any) => {
+    setActiveColor({
+      ...classify,
+      images : classify?.images.map((img : string) => `http://localhost:8080/api/products/images/${img}`),      
+    });
   }
 
   useEffect(() => {
     if(productDetail && isSuccess){
-      const firstClassify = productDetail.classifyClothes.shift();
-      handleConvertSizeByColor(firstClassify,activeSize);
+      const firstClassify = productDetail.classifyClothes[0];
+      handleGetSizesByColor(firstClassify);
     }
   },[productDetail,isSuccess])
 
@@ -40,13 +51,52 @@ export default function ProductDetailPage() {
     return productDetail?.price - productDetail?.price * productDetail?.discount
   },[productDetail])
 
+  const handleSetAmountProduct = (action : string , amountChange : number) => {
+    const amount = handleChangeAmountBuy(action , amountChange , activeSize?.quantity as number);
+    if(amount){
+      setAmountBuy(amount)
+    }
+  }
+
+  const handleAddProductToOrder = () => {
+    if(!user.username){
+      navigate('/sign-in' , {state : 'Vui lòng đăng nhập trước khi tạo giỏ hàng'})
+    }else if(JSON.stringify(activeSize) === '{}'){
+      toast('Please choose size clothes' , toastMSGObject({ theme : 'dark'}));
+    }else{
+      setIsHiddenCart(true);
+      dispatch(addProductToOrder({
+        ...productDetail,
+        classifyClothes : {
+          ...activeColor,
+          quantities : {
+            ...activeSize
+          }
+        },
+        amountBuy
+      }))
+      // console.log({
+      //   ...productDetail,
+      //   classifyClothes : {
+      //     ...activeColor,
+      //     quantities : {
+      //       ...activeSize
+      //     }
+      //   },
+      //   amountBuy
+      // })
+    }
+  }
+
   return (
+    
     <div className="container" id="productDetail">
+      <ToastContainer/>
       <div className="row justify-content-between">
         <div className="col-md-4 image-product">
           <SliderComponent
             slidesToShow={1}
-            listItems={listImages}
+            listItems={activeColor?.images}
             nameSlider={"imagesClothes"}
           ></SliderComponent>
         </div>
@@ -94,12 +144,12 @@ export default function ProductDetailPage() {
               </div>
 
               <div className="flex items-center">
-                {productDetail?.classifyClothes?.map((classify : any , index : number) => (
+                {productDetail?.classifyClothes?.map((classify : any) => (
                   <button
-                    className={`product-variation ${activeSize === index ? 'active-size' : ''}`}
+                    className={`product-variation ${activeColor?.color === classify?.color ? 'active' : ''}`}
                     aria-label="Đen"
                     aria-disabled="false"
-                    onClick={() => handleConvertSizeByColor(classify , index)}
+                    onClick={() => handleGetSizesByColor(classify)}
                   >
                     {classify?.color}
                   </button>              
@@ -114,34 +164,48 @@ export default function ProductDetailPage() {
               </div>
 
               <div className="flex items-center">
-                {listSizes?.map((size : string) => (
+                {activeColor?.quantities?.map((q : any) => ( // q gồm size và quantity
                   <button
-                    className="product-variation"
-                    aria-label={size}
+                    className={`product-variation ${activeSize?.size === q.size ? 'active' : ''}`}
+                    aria-label={q.size}
                     aria-disabled="false"
+                    onClick={() => setActiveSize(q)}
                   >
-                    {size}
+                    {q.size}
                   </button>
                 ))}
               </div>
             </section>
           </div>
           <div className="product-quantity">
+            <h5>Số Lượng</h5>
             <div className="product-select-btn">
-              <h5>Số Lượng</h5>
-              <button className="product-variation-quantity">-</button>
+              <button 
+                disabled={amountBuy<=1} 
+                onClick={() => handleSetAmountProduct('DECREASE',amountBuy-1) } 
+                className="product-variation-quantity"
+              >
+                -
+              </button>
               <input
                 className="product-variation-quantity"
-                value={"1"}
+                value={amountBuy}
                 placeholder=""
-                type="text"
+                type="number"
                 style={{ textAlign: "center" }}
+                onChange={(e) => handleSetAmountProduct('INPUT',+e.target.value)}
               />
-              <button className="product-variation-quantity">+</button>
+              <button 
+                disabled={amountBuy>=999} 
+                onClick={() => handleSetAmountProduct('INCREASE',amountBuy+1)} 
+                className="product-variation-quantity"
+              >
+                +
+              </button>
             </div>
           </div>
           <div className="product-submit">
-            <button type="button" className="btn btn-primary">
+            <button onClick={handleAddProductToOrder} type="button" className="btn btn-primary">
               <i className="fa-solid fa-cart-plus "></i>
               Thêm vào giỏ hàng
             </button>

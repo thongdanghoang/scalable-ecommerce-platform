@@ -1,5 +1,39 @@
+import { useDispatch, useSelector } from "react-redux";
 import "./Order.css";
+import { RootState } from "../../redux/store";
+import { calculatePriceFinal, convertPrice, handleChangeAmountBuy, toastMSGObject } from "../../utils/utils";
+import { changeAmount, removeProduct } from "../../redux/slides/orderSlide";
+import { clothesOrder } from "../../model/ClothesModal";
+import { toast } from 'react-toastify'
+import { useNavigate } from "react-router-dom";
+
 export default function OrderPage() {
+
+  const order = useSelector((state:RootState) => state.order); console.log(order);
+  const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSetAmountProduct = (action : string , amountChange : number , orderItem : clothesOrder ) => {
+    const amount = handleChangeAmountBuy(action , amountChange , orderItem.classifyClothes.quantities.quantity,);
+    if(amount){
+      dispatch(changeAmount({
+        amountChange : amount,
+        orderItem 
+      }))
+    }
+  }
+
+  const handleRemoveProductOutCart = (proRemove : clothesOrder) => {
+    dispatch(removeProduct(proRemove))
+  }
+
+  const handleRedirectPayment = () => {
+    if(!user.username){
+      navigate('/sign-in' , {state : 'Vui lòng đăng nhập trước khi thanh toán'})
+    }
+  }
+
   return (
     <div className="container" id="order-page">
       <div className="row">
@@ -8,7 +42,7 @@ export default function OrderPage() {
             <p className="cart-title">
               <span className="cart-text">GIỎ HÀNG </span>
               <span className="total-cart">
-                (<span className="count-item">2</span>)Sản phẩm
+                (<span className="count-item">{order.totalQuantity}</span>) Sản phẩm
               </span>
             </p>
             <div className="cart-header-info">
@@ -17,56 +51,86 @@ export default function OrderPage() {
               <div>Số lượng</div>
               <div>Tổng tiền</div>
             </div>
-            <div className="items-available">
-              <div className="cart-item">
-                <div className="cart-product">
-                  <div className="cart-image">
-                    <a href="">
+            {order.orderItems.map((item) => (
+              <div className="items-available">
+                <div className="cart-item">
+                  <div className="cart-product">
+                    <div className="cart-image">
                       <img
-                        src="https://bizweb.dktcdn.net/thumb/compact/100/438/408/products/qam3127-nau-2-1796c057-5e70-467f-aaf7-5290b1b6fbb1.jpg"
+                        src={item.classifyClothes.images}
                         alt=""
                       />
-                    </a>
-                  </div>
-                  <div className="cart-info">
-                    <div className="cart-name">
-                      <a href="">
-                        Quần Âu Nam Cao Cấp Giữ Phom, Co Giãn Thoải Mái
-                      </a>
-                      <div className="spacer"></div>
-                      <span>Nâu / L</span>
                     </div>
-                    <div className="cart-item-price">
-                      <span className="price">499.000đ</span>
-                    </div>
-                    <div className="cart-qty">
-                      <div className="cart-select">
-                        <div className="cart-select-button">
-                          <button type="button">-</button>
-                          <input type="text" />
-                          <button type="button">+</button>
+                    <div className="cart-info">
+                      <div className="cart-name">
+                        <a href="">
+                          {item.name}
+                        </a>
+                        <div className="spacer"></div>
+                        <span>{`${item.classifyClothes.color}/${item.classifyClothes.quantities.size}`}</span>
+                      </div>
+                      <div className="cart-item-price">
+                        <span className="price">{convertPrice(calculatePriceFinal(item.price , item.discount))}</span>
+                      </div>
+                      <div className="cart-qty">
+                        <div className="cart-select">
+                          <div className="cart-select-button">
+                            <button 
+                              type="button" 
+                              className="btn-left"
+                              disabled={item.amountBuy<=1}
+                              onClick={() => handleSetAmountProduct(
+                                  'DECREASE',
+                                  item.amountBuy - 1,
+                                  item
+                              )} 
+                            >
+                              -
+                            </button>
+                            <input 
+                              type="number"
+                              value={item.amountBuy} 
+                              onChange={e => handleSetAmountProduct(
+                                'INPUT',
+                                +e.target.value,
+                                item
+                              )}
+                            />
+                            <button 
+                              type="button" 
+                              className="btn-right"
+                              disabled={item.amountBuy>=999}
+                              onClick={() => handleSetAmountProduct(
+                                  'INCREASE',
+                                  item.amountBuy + 1,
+                                  item
+                              )}
+                            >
+                              +
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="cart-total-item-price">
-                      <span>499.000đ</span>
-                      <div className="spacer"></div>
-                      <p className="remove-cart">
-                        <i className="fa-solid fa-trash-can"></i>
-                      </p>
+                      <div className="cart-total-item-price">
+                        <span>{convertPrice(calculatePriceFinal(item.price , item.discount) * item.amountBuy)}</span>
+                        <div className="remove-cart" onClick={() => handleRemoveProductOutCart(item)}>
+                          <i className="fa-solid fa-trash-can"></i>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
+            
           </div>
         </div>
         <div className="col-md-4">
           <div className="total-all">
             <div className="total-bill">
-              Tổng đơn: <span>499.000đ</span>
+              Tổng đơn: <span>{convertPrice(order.totalPrice)}</span>
             </div>
-            <button type="button">Thanh Toán</button>
+            <button type="button" onClick={handleRedirectPayment}>Thanh Toán</button>
           </div>
         </div>
       </div>

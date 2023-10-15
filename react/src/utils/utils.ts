@@ -1,5 +1,6 @@
 import type { MenuProps } from 'antd';
-import { ToastOptions } from 'react-toastify';
+import { Theme, ToastOptions, ToastPosition, toast } from 'react-toastify';
+
 
 export function constantMenuProfile(url : string){
     const comsUrl = url.split('/');
@@ -107,25 +108,25 @@ export const convertDateAndTime = (isoDateString : any, num = 0) => {
 //     theme : string
 // }
 
-// export const toastMSGObject : ToastOptions = (
-//     position = "top-right",
-//     autoClose = 2000,
-//     hideProgressBar = false,
-//     closeOnClick = true,
-//     pauseOnHover = true,
-//     draggable = true,
-//     progress = undefined,
-//     theme = "colored",
-// ) => ({
-//   position,
-//   autoClose,
-//   hideProgressBar,
-//   closeOnClick,
-//   pauseOnHover,
-//   draggable,
-//   progress,
-//   theme
-// })
+export const toastMSGObject = ({
+    position = "top-right" as ToastPosition,
+    autoClose = 2000,
+    hideProgressBar = false,
+    closeOnClick = true,
+    pauseOnHover = true,
+    draggable = true,
+    progress = undefined,
+    theme = "colored" as Theme,
+} = {}): ToastOptions<{}> => ({
+  position,
+  autoClose,
+  hideProgressBar,
+  closeOnClick,
+  pauseOnHover,
+  draggable,
+  progress,
+  theme
+})
 
 export function convertToSlug(text : string) {
     return text
@@ -145,5 +146,52 @@ export function convertToShortNumber(number : number) {
       return (number / 1000).toFixed(1) + "k";
     } else {
       return number.toString();
+    }
+}
+
+export function formatVietnamesePhone(phoneNumber : string) {
+    // Loại bỏ tất cả các ký tự không phải số từ số điện thoại
+    const cleanedPhoneNumber = phoneNumber.replace(/\D/g, '');
+    
+    // Kiểm tra nếu số điện thoại bắt đầu bằng "0", thêm "84" vào đầu số điện thoại
+    if (cleanedPhoneNumber.startsWith('0')) {
+      return `+84${cleanedPhoneNumber.slice(1)}`;
+    }
+    
+    // Nếu không bắt đầu bằng "0", thêm "+" vào đầu số điện thoại
+    return `+${cleanedPhoneNumber}`;
+}
+
+export function calculatePriceFinal ( firstPrice : number , discount : number) {
+    return discount === 0 ? firstPrice : firstPrice - (firstPrice * discount) / 100
+}
+
+export const handleChangeAmountBuy = (action : string , amountChange : number , amountRemain : number) => {
+    console.log(amountChange)
+    if(amountChange){
+      switch (action) {
+          case 'INCREASE':
+              if(amountRemain < amountChange){
+                toast.error(`Sản phẩm này chỉ còn lại ${amountRemain} cái`)
+              }else{
+                return (amountChange);
+              }
+              break;
+          case 'DECREASE':           
+              return (amountChange);            
+          case 'INPUT':
+              if(amountChange >=1 && amountChange <=999){
+                return (amountChange);
+              }else if(amountRemain < amountChange){
+                toast.error(`Sản phẩm này chỉ còn lại ${amountRemain} cái`)
+              }else{
+                return (+(amountChange+'').slice(0,-1));
+              }
+              break;
+          default:
+              break;
+      }
+    }else{
+      return 1;
     }
 }
