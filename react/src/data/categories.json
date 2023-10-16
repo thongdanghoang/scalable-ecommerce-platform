@@ -1,12 +1,92 @@
 [
     {
-        "idCate" : "CA001",
-        "name" : "Áo phong",
-        "image" : ""
+        "idCate" : "CA0001",
+        "name" : "Áo thun",
+        "gender" : "woman",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_2_image.png"
     },
     {
-        "idCate" : "CA001",
-        "name" : "Áo phong",
-        "image" : ""
+        "idCate" : "CA0009",
+        "name" : "Áo thun",
+        "gender" : "man",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_2_image.png"
+    },
+    {
+        "idCate" : "CA0002",
+        "name" : "Áo Polo",
+        "gender" : "woman",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_3_image.png"
+    },
+    {
+        "idCate" : "CA0010",
+        "name" : "Áo Polo",
+        "gender" : "man",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_3_image.png"
+    },
+    {
+        "idCate" : "CA0003",
+        "name" : "Áo sơ mi",
+        "gender" : "woman",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_9_image.png"
+    },
+    {
+        "idCate" : "CA0011",
+        "name" : "Áo sơ mi",
+        "gender" : "man",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_6_image.png"
+    },
+    {
+        "idCate" : "CA0004",
+        "name" : "Áo khoác",
+        "gender" : "woman",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_1_image.png"
+    },
+    {
+        "idCate" : "CA0012",
+        "name" : "Áo khoác",
+        "gender" : "man",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_1_image.png"
+    },
+    {
+        "idCate" : "CA005",
+        "name" : "Quần bò",
+        "gender" : "woman",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_5_image.png"
+    },
+    {
+        "idCate" : "CA0013",
+        "name" : "Quần bò",
+        "gender" : "man",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_8_image.png"
+    },
+    {
+        "idCate" : "CA006",
+        "name" : "Quần âu",
+        "gender" : "woman",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_7_image.png"
+    },
+    {
+        "idCate" : "CA0014",
+        "name" : "Quần âu",
+        "gender" : "man",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_9_image.png"
+    },
+    {
+        "idCate" : "CA007",
+        "name" : "Váy đầm",
+        "gender" : "woman",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_8_image.png"
+    },
+    {
+        "idCate" : "CA008",
+        "name" : "Quần đùi",
+        "gender" : "woman",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_11_image.png"
+    },
+    {
+        "idCate" : "CA0015",
+        "name" : "Quần đùi",
+        "gender" : "woman",
+        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_10_image.png"
     }
 ]
