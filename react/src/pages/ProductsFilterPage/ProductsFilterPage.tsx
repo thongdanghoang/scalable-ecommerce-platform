@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Select, Spin, Badge, Pagination } from "antd";
+import {
+  Col,
+  Row,
+  Select,
+  Spin,
+  Badge,
+  Pagination,
+  Collapse,
+  Button,
+  Space,
+} from "antd";
 import "./ProductsFilter.css";
 import CardComponent from "../../components/CardComponent/CardComponent";
 import { clothes } from "../../model/ClothesModal";
@@ -9,7 +19,7 @@ async function getProductList(selectPage: string) {
   let param = new URLSearchParams({ page: selectPage });
   console.log(param.toString());
   let response = await fetch(
-    `https://picsum.photos/v2/list?${param.toString()}`
+    `https://picsum.photos/v2/list?${param.toString()}`,
   );
   let dataList = await response.json();
   let productList: clothes[] = dataList.map(
@@ -18,7 +28,7 @@ async function getProductList(selectPage: string) {
       image: item.download_url,
       name: item.author,
       price: item.width,
-    })
+    }),
   );
   return productList;
 }
@@ -30,6 +40,7 @@ function ClothesFilterPage(): React.ReactElement {
       <Spin size="large" />
     </Col>
   );
+
   let [productRender, setProductRender] = useState([LoadingSpin]);
   const [select, setSelect] = useState("first");
   const handleChange = (value: string) => {
@@ -38,6 +49,7 @@ function ClothesFilterPage(): React.ReactElement {
       return value;
     });
   };
+
   useEffect(() => {
     setProductRender([LoadingSpin]);
     const productItems = async () => {
@@ -58,14 +70,254 @@ function ClothesFilterPage(): React.ReactElement {
     };
     productItems();
   }, [select]);
+
+  // INFO: this part below contains filter components
+  const [sizeButtonActivated, setSizeButtonActivated] = useState({
+    XS: false,
+    S: false,
+    M: false,
+    L: false,
+    XL: false,
+    XXL: false,
+    size28: false,
+    size29: false,
+    size30: false,
+  });
+  type ButtonSizeName =
+    | "XS"
+    | "S"
+    | "M"
+    | "L"
+    | "XL"
+    | "XXL"
+    | "size28"
+    | "size29"
+    | "size30";
+
+  const [colorButtonActivated, setColorButtonActivated] = useState({
+    red: false,
+    orange: false,
+    yellow: false,
+    green: false,
+    cyan: false,
+    blue: false,
+    purple: false,
+  });
+
+  type ButtonColorName =
+    | "red"
+    | "orange"
+    | "yellow"
+    | "green"
+    | "cyan"
+    | "blue"
+    | "purple";
+  const handleClickSizeButton = (button: ButtonSizeName) => {
+    setSizeButtonActivated((prev) => {
+      let current = {
+        XS: false,
+        S: false,
+        M: false,
+        L: false,
+        XL: false,
+        XXL: false,
+        size28: false,
+        size29: false,
+        size30: false,
+      };
+      current[button] = true;
+      return current;
+    });
+  };
+
+  const handleClickColorButton = (button: ButtonColorName) => {
+    setColorButtonActivated((prev) => {
+      let current = {
+        red: false,
+        orange: false,
+        yellow: false,
+        green: false,
+        cyan: false,
+        blue: false,
+        purple: false,
+      };
+      current[button] = true;
+      return current;
+    });
+  };
+  const FilterArea = () => {
+    let listSizeButton = [
+      {
+        key: "size",
+        label: "Kích thước",
+        children: (
+          <>
+            <Space wrap>
+              <Button
+                size="small"
+                type={sizeButtonActivated.XS ? "primary" : "dashed"}
+                onClick={() => handleClickSizeButton("XS")}
+              >
+                XS
+              </Button>
+              <Button
+                size="small"
+                type={sizeButtonActivated.S ? "primary" : "dashed"}
+                onClick={() => handleClickSizeButton("S")}
+              >
+                S
+              </Button>
+              <Button
+                size="small"
+                type={sizeButtonActivated.M ? "primary" : "dashed"}
+                onClick={() => handleClickSizeButton("M")}
+              >
+                M
+              </Button>
+              <Button
+                size="small"
+                type={sizeButtonActivated.L ? "primary" : "dashed"}
+                onClick={() => handleClickSizeButton("L")}
+              >
+                L
+              </Button>
+              <Button
+                size="small"
+                type={sizeButtonActivated.XL ? "primary" : "dashed"}
+                onClick={() => handleClickSizeButton("XL")}
+              >
+                XL
+              </Button>
+              <Button
+                size="small"
+                type={sizeButtonActivated.XXL ? "primary" : "dashed"}
+                onClick={() => handleClickSizeButton("XXL")}
+              >
+                XXL
+              </Button>
+              <Button
+                size="small"
+                type={sizeButtonActivated.size28 ? "primary" : "dashed"}
+                onClick={() => handleClickSizeButton("size28")}
+              >
+                28
+              </Button>
+              <Button
+                size="small"
+                type={sizeButtonActivated.size29 ? "primary" : "dashed"}
+                onClick={() => handleClickSizeButton("size29")}
+              >
+                29
+              </Button>
+              <Button
+                size="small"
+                type={sizeButtonActivated.size30 ? "primary" : "dashed"}
+                onClick={() => handleClickSizeButton("size30")}
+              >
+                30
+              </Button>
+            </Space>
+          </>
+        ),
+      },
+    ];
+
+    let listColorButton = [
+      {
+        key: "color",
+        label: "Màu sắc",
+        children: (
+          <>
+            <Space wrap>
+              <Button
+                size="small"
+                type={colorButtonActivated.red ? "primary" : "dashed"}
+                onClick={() => handleClickColorButton("red")}
+              >
+                Đỏ
+              </Button>
+              <Button
+                size="small"
+                type={colorButtonActivated.orange ? "primary" : "dashed"}
+                onClick={() => handleClickColorButton("orange")}
+              >
+                Cam
+              </Button>
+              <Button
+                size="small"
+                type={colorButtonActivated.yellow ? "primary" : "dashed"}
+                onClick={() => handleClickColorButton("yellow")}
+              >
+                Vàng
+              </Button>
+              <Button
+                size="small"
+                type={colorButtonActivated.green ? "primary" : "dashed"}
+                onClick={() => handleClickColorButton("green")}
+              >
+                Xanh lục
+              </Button>
+              <Button
+                size="small"
+                type={colorButtonActivated.cyan ? "primary" : "dashed"}
+                onClick={() => handleClickColorButton("cyan")}
+              >
+                Xanh da trời
+              </Button>
+              <Button
+                size="small"
+                type={colorButtonActivated.blue ? "primary" : "dashed"}
+                onClick={() => handleClickColorButton("blue")}
+              >
+                Xanh dương
+              </Button>
+              <Button
+                size="small"
+                type={colorButtonActivated.purple ? "primary" : "dashed"}
+                onClick={() => handleClickColorButton("purple")}
+              >
+                Tím
+              </Button>
+            </Space>
+          </>
+        ),
+      },
+    ];
+    return (
+      <>
+        <Row>
+          <Col span={24}>
+            <Collapse
+              ghost
+              className="col-12"
+              defaultActiveKey={["size"]}
+              items={listSizeButton}
+            />
+          </Col>
+          <Col span={24}>
+            <Collapse
+              ghost
+              defaultActiveKey={["color"]}
+              items={listColorButton}
+            />
+          </Col>
+        </Row>
+      </>
+    );
+  };
+
+  // NOTE: render page
   return (
     <>
       <div className="container" id="product-list">
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-          <Col md={6} style={{ background: "cyan" }}></Col>
+          {/* Filter part*/}
+          <Col lg={6}>
+            <FilterArea />
+          </Col>
 
           {/* product selection */}
-          <Col md={18}>
+          <Col lg={18}>
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
               <Col xs={12} md={16} lg={18}></Col>
               <Col xs={12} md={8} lg={6} className="">
