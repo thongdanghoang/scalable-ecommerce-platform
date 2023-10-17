@@ -72,6 +72,8 @@ function ClothesFilterPage(): React.ReactElement {
   }, [select]);
 
   // INFO: this part below contains filter components
+
+  // Size
   const [sizeButtonActivated, setSizeButtonActivated] = useState({
     XS: false,
     S: false,
@@ -94,6 +96,12 @@ function ClothesFilterPage(): React.ReactElement {
     | "size29"
     | "size30";
 
+  type FilterSize = {
+    name: ButtonSizeName;
+    display: string;
+  };
+
+  // Color
   const [colorButtonActivated, setColorButtonActivated] = useState({
     red: false,
     orange: false,
@@ -112,6 +120,10 @@ function ClothesFilterPage(): React.ReactElement {
     | "cyan"
     | "blue"
     | "purple";
+  type FilterColor = {
+    name: ButtonColorName;
+    display: string;
+  };
   const handleClickSizeButton = (button: ButtonSizeName) => {
     setSizeButtonActivated((prev) => {
       let current = {
@@ -146,138 +158,66 @@ function ClothesFilterPage(): React.ReactElement {
     });
   };
   const FilterArea = () => {
-    let listSizeButton = [
+    let listSizeMapping: FilterSize[] = [
+      { name: "XS", display: "XS" },
+      { name: "S", display: "S" },
+      { name: "M", display: "M" },
+      { name: "L", display: "L" },
+      { name: "XL", display: "L" },
+      { name: "XXL", display: "XXL" },
+      { name: "size28", display: "28" },
+      { name: "size29", display: "29" },
+      { name: "size30", display: "30" },
+    ];
+    let sizeButtonComponent = [
       {
         key: "size",
         label: "Kích thước",
         children: (
           <>
             <Space wrap>
-              <Button
-                size="small"
-                type={sizeButtonActivated.XS ? "primary" : "dashed"}
-                onClick={() => handleClickSizeButton("XS")}
-              >
-                XS
-              </Button>
-              <Button
-                size="small"
-                type={sizeButtonActivated.S ? "primary" : "dashed"}
-                onClick={() => handleClickSizeButton("S")}
-              >
-                S
-              </Button>
-              <Button
-                size="small"
-                type={sizeButtonActivated.M ? "primary" : "dashed"}
-                onClick={() => handleClickSizeButton("M")}
-              >
-                M
-              </Button>
-              <Button
-                size="small"
-                type={sizeButtonActivated.L ? "primary" : "dashed"}
-                onClick={() => handleClickSizeButton("L")}
-              >
-                L
-              </Button>
-              <Button
-                size="small"
-                type={sizeButtonActivated.XL ? "primary" : "dashed"}
-                onClick={() => handleClickSizeButton("XL")}
-              >
-                XL
-              </Button>
-              <Button
-                size="small"
-                type={sizeButtonActivated.XXL ? "primary" : "dashed"}
-                onClick={() => handleClickSizeButton("XXL")}
-              >
-                XXL
-              </Button>
-              <Button
-                size="small"
-                type={sizeButtonActivated.size28 ? "primary" : "dashed"}
-                onClick={() => handleClickSizeButton("size28")}
-              >
-                28
-              </Button>
-              <Button
-                size="small"
-                type={sizeButtonActivated.size29 ? "primary" : "dashed"}
-                onClick={() => handleClickSizeButton("size29")}
-              >
-                29
-              </Button>
-              <Button
-                size="small"
-                type={sizeButtonActivated.size30 ? "primary" : "dashed"}
-                onClick={() => handleClickSizeButton("size30")}
-              >
-                30
-              </Button>
+              {listSizeMapping.map((sizeName) => (
+                <Button
+                  size="small"
+                  type={
+                    sizeButtonActivated[sizeName.name] ? "primary" : "dashed"
+                  }
+                  onClick={() => handleClickSizeButton(sizeName.name)}
+                >
+                  {sizeName.display}
+                </Button>
+              ))}
             </Space>
           </>
         ),
       },
     ];
 
-    let listColorButton = [
+    let listColorMapping: FilterColor[] = [
+      { name: "red", display: "Đỏ" },
+      { name: "orange", display: "Cam" },
+      { name: "yellow", display: "Vàng" },
+      { name: "green", display: "Xanh lục" },
+      { name: "cyan", display: "Xanh da trời" },
+      { name: "blue", display: "Xanh dương" },
+      { name: "purple", display: "Tím" },
+    ];
+    let colorButtonComponent = [
       {
         key: "color",
         label: "Màu sắc",
         children: (
           <>
             <Space wrap>
-              <Button
-                size="small"
-                type={colorButtonActivated.red ? "primary" : "dashed"}
-                onClick={() => handleClickColorButton("red")}
-              >
-                Đỏ
-              </Button>
-              <Button
-                size="small"
-                type={colorButtonActivated.orange ? "primary" : "dashed"}
-                onClick={() => handleClickColorButton("orange")}
-              >
-                Cam
-              </Button>
-              <Button
-                size="small"
-                type={colorButtonActivated.yellow ? "primary" : "dashed"}
-                onClick={() => handleClickColorButton("yellow")}
-              >
-                Vàng
-              </Button>
-              <Button
-                size="small"
-                type={colorButtonActivated.green ? "primary" : "dashed"}
-                onClick={() => handleClickColorButton("green")}
-              >
-                Xanh lục
-              </Button>
-              <Button
-                size="small"
-                type={colorButtonActivated.cyan ? "primary" : "dashed"}
-                onClick={() => handleClickColorButton("cyan")}
-              >
-                Xanh da trời
-              </Button>
-              <Button
-                size="small"
-                type={colorButtonActivated.blue ? "primary" : "dashed"}
-                onClick={() => handleClickColorButton("blue")}
-              >
-                Xanh dương
-              </Button>
-              <Button
-                size="small"
-                type={colorButtonActivated.purple ? "primary" : "dashed"}
-                onClick={() => handleClickColorButton("purple")}
-              >
-                Tím
-              </Button>
+              {listColorMapping.map((color) => (
+                <Button
+                  size="small"
+                  type={colorButtonActivated[color.name] ? "primary" : "dashed"}
+                  onClick={() => handleClickColorButton(color.name)}
+                >
+                  {color.display}
+                </Button>
+              ))}
             </Space>
           </>
         ),
@@ -291,14 +231,14 @@ function ClothesFilterPage(): React.ReactElement {
               ghost
               className="col-12"
               defaultActiveKey={["size"]}
-              items={listSizeButton}
+              items={sizeButtonComponent}
             />
           </Col>
           <Col span={24}>
             <Collapse
               ghost
               defaultActiveKey={["color"]}
-              items={listColorButton}
+              items={colorButtonComponent}
             />
           </Col>
         </Row>
