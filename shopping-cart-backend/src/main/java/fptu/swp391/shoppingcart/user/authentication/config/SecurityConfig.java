@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .mvcMatchers("/api/user/auth/verify-phone").authenticated()
                     .mvcMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
                     .mvcMatchers("/api/user/auth/**").permitAll()
+                    .mvcMatchers("/api/products/**").permitAll()
                     .anyRequest().authenticated().and()
                 .formLogin()
                     .failureHandler(authenticationFailureHandlerCustom)

@@ -1,18 +1,12 @@
 package fptu.swp391.shoppingcart.product.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import fptu.swp391.shoppingcart.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,18 +20,25 @@ public class Product extends BaseEntity{
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "DESCRIPTION", length = 1000)
-    private String description;
+    @Column(name = "PRICE", nullable = false)
+    private int price;
 
-    @OneToOne
-    @JoinColumn(name = "CATEGORY_ID", nullable = false)
+    @Column(name = "DISCOUNT", nullable = false)
+    private float discount;
+
+    @Column(name = "NUMBER_OF_SOLD")
+    private int numberOfSold;
+
+    @Column(name = "RATED")
+    private float rated;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany
-    @JoinColumn(name = "PRODUCT_ID")
-    private Set<Image> images = new HashSet<>();
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "PRODUCT_ID")
-    private Set<Variation> variations = new HashSet<>();
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private List<Quantity> quantities = new ArrayList<>();
 }
