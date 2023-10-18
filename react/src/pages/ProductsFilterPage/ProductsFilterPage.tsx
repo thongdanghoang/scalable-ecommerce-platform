@@ -2,173 +2,219 @@ import React, { useEffect, useState } from "react";
 import {
   Col,
   Row,
-  Select,
   Spin,
   Badge,
   Pagination,
   Collapse,
   Button,
   Space,
+  Cascader,
 } from "antd";
 import "./ProductsFilter.css";
 import CardComponent from "../../components/CardComponent/CardComponent";
 import { clothes } from "../../model/ClothesModal";
+import { sortAndFilterClothes } from "../../services/clothesService";
+import { API_URL } from "../../utils/constants";
+
+interface Option {
+  value: string;
+  label: string;
+  children?: Option[];
+}
+
+type QuerySortParams = {
+  sort: string;
+  size: string;
+  colour: string;
+  category: string;
+  page: string;
+  limit: "24";
+};
 
 // NOTE: test API
-async function getProductList(selectPage: string) {
-  let param = new URLSearchParams({ page: selectPage });
-  console.log(param.toString());
-  let response = await fetch(
-    `https://picsum.photos/v2/list?${param.toString()}`,
+async function getProductList(
+  filterAndOption: QuerySortParams,
+): Promise<[clothes[], number]> {
+  let params = new URLSearchParams(filterAndOption);
+  let data = await sortAndFilterClothes(params);
+  let productList: clothes[] = data.products as clothes[];
+  productList.forEach(
+    (product) =>
+      (product.image = `${API_URL}/api/products/images/${product.image}`),
   );
-  let dataList = await response.json();
-  let productList: clothes[] = dataList.map(
-    (item: any): clothes => ({
-      id: item.id,
-      image: item.download_url,
-      name: item.author,
-      price: item.width,
-    }),
-  );
-  return productList;
+  return [productList, data.totalCount];
 }
 
 // TODO: implement pagination
 function ClothesFilterPage(): React.ReactElement {
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalProduct: 0,
+  });
+  const handleChangePagination = (value: number) => {
+    setPagination((prev) => {
+      let current = {
+        ...prev,
+        currentPage: value,
+      };
+      return current;
+    });
+  };
+
+  // spin loading
   const LoadingSpin = (
     <Col className="text-center p-5" span={24}>
       <Spin size="large" />
     </Col>
   );
-
   let [productRender, setProductRender] = useState([LoadingSpin]);
-  const [select, setSelect] = useState("first");
-  const handleChange = (value: string) => {
-    setSelect(() => {
-      console.log(value);
-      return value;
+
+  // sort options
+  const [selectedSortOption, setSelectedOptions] = useState([
+    "popular",
+    "desc",
+  ]);
+  const handleChangeSortOption = (value: any[]) => {
+    console.log(value);
+    setSelectedOptions(() => {
+      return value as string[];
     });
   };
-
-  useEffect(() => {
-    setProductRender([LoadingSpin]);
-    const productItems = async () => {
-      let productList = await getProductList(select);
-      let productItems = productList.map((item) => (
-        <Col xs={24} sm={12} md={8} lg={6}>
-          <Badge.Ribbon text="new" color="cyan">
-            <CardComponent
-              id={item.id}
-              image={item.image}
-              name={item.name}
-              price={item.price.toString()}
-            />
-          </Badge.Ribbon>
-        </Col>
-      ));
-      setProductRender(productItems);
-    };
-    productItems();
-  }, [select]);
+  const sortOptions: Option[] = [
+    {
+      value: "popular",
+      label: "phổ biến",
+      children: [
+        {
+          value: "asc",
+          label: "tăng dần",
+        },
+        {
+          value: "desc",
+          label: "giảm dần",
+        },
+      ],
+    },
+    {
+      value: "name",
+      label: "Tên",
+      children: [
+        {
+          value: "asc",
+          label: "tăng dần",
+        },
+        {
+          value: "desc",
+          label: "giảm dần",
+        },
+      ],
+    },
+    {
+      value: "price",
+      label: "giá",
+      children: [
+        {
+          value: "asc",
+          label: "tăng dần",
+        },
+        {
+          value: "desc",
+          label: "giảm dần",
+        },
+      ],
+    },
+  ];
 
   // INFO: this part below contains filter components
 
   // Size
-  const [sizeButtonActivated, setSizeButtonActivated] = useState({
-    XS: false,
-    S: false,
-    M: false,
-    L: false,
-    XL: false,
-    XXL: false,
-    size28: false,
-    size29: false,
-    size30: false,
-  });
-  type ButtonSizeName =
-    | "XS"
-    | "S"
-    | "M"
-    | "L"
-    | "XL"
-    | "XXL"
-    | "size28"
-    | "size29"
-    | "size30";
-
-  type FilterSize = {
-    name: ButtonSizeName;
-    display: string;
+  const [sizeButtonActivated, setSizeButtonActivated] = useState("");
+  const handleClickSizeButton = (size: string) => {
+    setSizeButtonActivated((prev) => {
+      if (prev == size) {
+        return "";
+      } else {
+        return size;
+      }
+    });
   };
 
   // Color
-  const [colorButtonActivated, setColorButtonActivated] = useState({
-    red: false,
-    orange: false,
-    yellow: false,
-    green: false,
-    cyan: false,
-    blue: false,
-    purple: false,
-  });
-
-  type ButtonColorName =
-    | "red"
-    | "orange"
-    | "yellow"
-    | "green"
-    | "cyan"
-    | "blue"
-    | "purple";
-  type FilterColor = {
-    name: ButtonColorName;
-    display: string;
-  };
-  const handleClickSizeButton = (button: ButtonSizeName) => {
-    setSizeButtonActivated((prev) => {
-      let current = {
-        XS: false,
-        S: false,
-        M: false,
-        L: false,
-        XL: false,
-        XXL: false,
-        size28: false,
-        size29: false,
-        size30: false,
-      };
-      current[button] = true;
-      return current;
+  const [colorButtonActivated, setColorButtonActivated] = useState("");
+  const handleClickColorButton = (color: string) => {
+    setColorButtonActivated((prev) => {
+      if (prev == color) {
+        return "";
+      } else {
+        return color;
+      }
     });
   };
 
-  const handleClickColorButton = (button: ButtonColorName) => {
-    setColorButtonActivated((prev) => {
-      let current = {
-        red: false,
-        orange: false,
-        yellow: false,
-        green: false,
-        cyan: false,
-        blue: false,
-        purple: false,
-      };
-      current[button] = true;
-      return current;
+  //category
+  const [categoryButtonActivated, setCategoryButtonActivated] = useState("");
+  const handleClickCategoryButton = (category: string) => {
+    setCategoryButtonActivated((prev) => {
+      if (prev == category) {
+        return "";
+      } else {
+        return category;
+      }
     });
   };
   const FilterArea = () => {
-    let listSizeMapping: FilterSize[] = [
-      { name: "XS", display: "XS" },
-      { name: "S", display: "S" },
-      { name: "M", display: "M" },
-      { name: "L", display: "L" },
-      { name: "XL", display: "L" },
-      { name: "XXL", display: "XXL" },
-      { name: "size28", display: "28" },
-      { name: "size29", display: "29" },
-      { name: "size30", display: "30" },
+    let sizeNameList = [
+      "M",
+      "L",
+      "XL",
+      "2XL",
+      "3XL",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "F",
+      "S",
     ];
+    let colorNameList = [
+      "Xanh nhạt",
+      "Trắng",
+      "Tím than",
+      "Xanh đậm",
+      "Xanh rêu",
+      "Xanh lơ",
+      "Đen",
+      "Xám",
+      "Nâu sữa",
+      "Kẻ be",
+      "Xanh đá",
+      "Be",
+      "Rêu",
+      "Navy",
+      "Ghi",
+      "Ghi đậm",
+    ];
+    let categoryNameList = [
+      "NAM",
+      "NỮ",
+      "ÁO SƠ MI",
+      "ÁO THUN",
+      "ÁO POLO",
+      "QUẦN ÂU",
+      "QUẦN SHORT",
+      "QUẦN ÂU NỮ",
+      "ĐẦM NỮ - VÁY LIỀN THÂN",
+      "CHÂN VÁY",
+      "QUẦN JEAN",
+      "ÁO KHOÁC",
+      "ÁO CHỐNG NẮNG",
+    ];
+    categoryNameList = categoryNameList.map((category) => {
+      return category.toLowerCase();
+    });
+
     let sizeButtonComponent = [
       {
         key: "size",
@@ -176,15 +222,13 @@ function ClothesFilterPage(): React.ReactElement {
         children: (
           <>
             <Space wrap>
-              {listSizeMapping.map((sizeName) => (
+              {sizeNameList.map((sizeName) => (
                 <Button
                   size="small"
-                  type={
-                    sizeButtonActivated[sizeName.name] ? "primary" : "dashed"
-                  }
-                  onClick={() => handleClickSizeButton(sizeName.name)}
+                  type={sizeName == sizeButtonActivated ? "primary" : "dashed"}
+                  onClick={() => handleClickSizeButton(sizeName)}
                 >
-                  {sizeName.display}
+                  {sizeName}
                 </Button>
               ))}
             </Space>
@@ -193,15 +237,6 @@ function ClothesFilterPage(): React.ReactElement {
       },
     ];
 
-    let listColorMapping: FilterColor[] = [
-      { name: "red", display: "Đỏ" },
-      { name: "orange", display: "Cam" },
-      { name: "yellow", display: "Vàng" },
-      { name: "green", display: "Xanh lục" },
-      { name: "cyan", display: "Xanh da trời" },
-      { name: "blue", display: "Xanh dương" },
-      { name: "purple", display: "Tím" },
-    ];
     let colorButtonComponent = [
       {
         key: "color",
@@ -209,13 +244,13 @@ function ClothesFilterPage(): React.ReactElement {
         children: (
           <>
             <Space wrap>
-              {listColorMapping.map((color) => (
+              {colorNameList.map((color) => (
                 <Button
                   size="small"
-                  type={colorButtonActivated[color.name] ? "primary" : "dashed"}
-                  onClick={() => handleClickColorButton(color.name)}
+                  type={color == colorButtonActivated ? "primary" : "dashed"}
+                  onClick={() => handleClickColorButton(color)}
                 >
-                  {color.display}
+                  {color}
                 </Button>
               ))}
             </Space>
@@ -223,6 +258,31 @@ function ClothesFilterPage(): React.ReactElement {
         ),
       },
     ];
+
+    let categoryButtonComponent = [
+      {
+        key: "category",
+        label: "Phân loại",
+        children: (
+          <>
+            <Space wrap>
+              {categoryNameList.map((category) => (
+                <Button
+                  size="small"
+                  type={
+                    category == categoryButtonActivated ? "primary" : "dashed"
+                  }
+                  onClick={() => handleClickCategoryButton(category)}
+                >
+                  {category}
+                </Button>
+              ))}
+            </Space>
+          </>
+        ),
+      },
+    ];
+    // filter components
     return (
       <>
         <Row>
@@ -241,10 +301,62 @@ function ClothesFilterPage(): React.ReactElement {
               items={colorButtonComponent}
             />
           </Col>
+          <Col span={24}>
+            <Collapse
+              ghost
+              defaultActiveKey={["category"]}
+              items={categoryButtonComponent}
+            />
+          </Col>
         </Row>
       </>
     );
   };
+
+  // update page on change
+  useEffect(() => {
+    setProductRender([LoadingSpin]);
+    const productItems = async () => {
+      let filterAndOption: QuerySortParams = {
+        sort: `${selectedSortOption[0]}:${selectedSortOption[1]}`,
+        size: sizeButtonActivated,
+        colour: colorButtonActivated,
+        category: categoryButtonActivated,
+        page: (pagination.currentPage - 1).toString(),
+        limit: "24",
+      };
+
+      let productList = await getProductList(filterAndOption);
+      let productItems = productList[0].map((item) => (
+        <Col xs={24} sm={12} md={8} lg={6}>
+          <Badge.Ribbon text="new" color="cyan">
+            <CardComponent
+              id={item.id}
+              image={item.image}
+              name={item.name}
+              price={item.price.toString()}
+            />
+          </Badge.Ribbon>
+        </Col>
+      ));
+      // handleChangePagination(productList[1]);
+      setPagination((prev) => {
+        let current = {
+          ...prev,
+          totalProduct: productList[1],
+        };
+        return current;
+      });
+      setProductRender(productItems);
+    };
+    productItems();
+  }, [
+    selectedSortOption,
+    sizeButtonActivated,
+    colorButtonActivated,
+    categoryButtonActivated,
+    pagination.currentPage,
+  ]);
 
   // NOTE: render page
   return (
@@ -261,22 +373,12 @@ function ClothesFilterPage(): React.ReactElement {
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
               <Col xs={12} md={16} lg={18}></Col>
               <Col xs={12} md={8} lg={6} className="">
-                <Select
+                <Cascader
+                  allowClear={false}
                   className="selection"
-                  defaultValue="1"
-                  onChange={handleChange}
-                  options={[
-                    { value: "1", label: "One" },
-                    { value: "2", label: "Two" },
-                    { value: "3", label: "Three" },
-                    { value: "4", label: "Four" },
-                    { value: "5", label: "Five" },
-                    { value: "6", label: "Six" },
-                    { value: "7", label: "Seven" },
-                    { value: "8", label: "Eight" },
-                    { value: "9", label: "Nine" },
-                    { value: "10", label: "Ten" },
-                  ]}
+                  defaultValue={["popular", "desc"]}
+                  options={sortOptions}
+                  onChange={handleChangeSortOption}
                 />
               </Col>
             </Row>
@@ -287,14 +389,16 @@ function ClothesFilterPage(): React.ReactElement {
             </Row>
           </Col>
         </Row>
+
+        {/* Pagiantion */}
         <div className="d-flex justify-content-center p-5">
           <Pagination
             className="font-weight-normal"
-            onChange={(event) => console.log(event)}
+            onChange={handleChangePagination}
             showSizeChanger={false}
             pageSize={10}
             defaultCurrent={1}
-            total={500}
+            total={pagination.totalProduct}
           />
         </div>
       </div>
