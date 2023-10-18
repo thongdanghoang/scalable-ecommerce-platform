@@ -74,6 +74,27 @@
   color: #fff;
   background-color: #fcaf17;
 }
-.price-text {
+#payment-page .price-text {
   opacity: 0.7;
+}
+
+#payment-page .ant-collapse-content-box {
+  padding: 14px 0;
+}
+#payment-page :where(.css-dev-only-do-not-override-pr0fja).ant-collapse {
+  border: none;
+}
+#payment-page
+  :where(.css-dev-only-do-not-override-pr0fja).ant-collapse
+  > .ant-collapse-item:last-child,
+:where(.css-dev-only-do-not-override-pr0fja).ant-collapse
+  > .ant-collapse-item:last-child
+  > .ant-collapse-header {
+  border-radius: none;
+}
+.payment-product-info {
+  max-width: 140px;
+}
+.payment-product-price {
+  max-width: 56px;
 }

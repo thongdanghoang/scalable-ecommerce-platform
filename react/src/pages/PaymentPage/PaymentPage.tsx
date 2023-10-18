@@ -5,9 +5,10 @@ import type { CollapseProps } from "antd";
 import { Collapse } from "antd";
 
 export default function PaymentPage() {
+  const quantity = `1 x`;
   const text = `
-  Áo thun miền núi chất
-`;
+  Áo thun miền núi chất jdsfk dsjflklf ksdjf;lda `;
+  const price = `5000000đ`;
 
   const CollapseItem: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +25,13 @@ export default function PaymentPage() {
       {
         key: "1",
         label: getLabel(),
-        children: <p>{text}</p>,
+        children: (
+          <div className="d-flex justify-content-around ">
+            <div className="payment-product-quantity">{quantity}</div>
+            <div className="payment-product-info"> {text}</div>
+            <div className="payment-product-price">{price}</div>
+          </div>
+        ),
       },
     ];
 
