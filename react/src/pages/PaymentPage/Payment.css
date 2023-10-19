@@ -36,7 +36,7 @@
   justify-content: space-between;
   align-items: center;
 }
-#payment-page .payment-address span {
+#payment-page .payment-address .payment-customer-address {
   color: rgb(116, 116, 119);
   font-weight: normal;
   padding-bottom: 10px;
@@ -96,5 +96,5 @@
   max-width: 140px;
 }
 .payment-product-price {
-  max-width: 56px;
+  
 }

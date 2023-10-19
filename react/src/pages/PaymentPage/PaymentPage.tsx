@@ -1,50 +1,65 @@
-import React from "react";
+import {useMemo} from "react";
 import "./Payment.css";
 import { useState } from "react";
 import type { CollapseProps } from "antd";
-import { Collapse } from "antd";
+import { Collapse, Modal, Tag } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { calculatePriceFinal, convertPrice } from "../../utils/utils";
+import { getAddressShipsByUser } from "../../services/userService";
+import { useQuery } from "@tanstack/react-query";
+import { AddressShipping } from "../../model/UserModal";
+import AddressShipItem from "../../components/AddressShipComponent/AddressShipItem";
 
 export default function PaymentPage() {
-  const quantity = `1 x`;
-  const text = `
-  Áo thun miền núi chất jdsfk dsjflklf ksdjf;lda `;
-  const price = `5000000đ`;
 
-  const CollapseItem: React.FC = () => {
+  const order = useSelector((state:RootState) => state.order); console.log(order);
+  const [isOpenModalAddress , setIsOpenModalAddress] = useState(false)
+
+  const fetchGetAddressShipByUser = async () => {
+    const res = await getAddressShipsByUser();
+    return res.data
+  }
+
+  const queryAddressShip = useQuery({queryKey : ['addresses-ship-by-user-1'] , queryFn:fetchGetAddressShipByUser })
+  const {data : listAddressShip} = queryAddressShip
+  console.log(listAddressShip)
+
+  const addressShipDefault : AddressShipping = useMemo(() => {
+    return listAddressShip?.find((as : AddressShipping) => as.default)
+  },[listAddressShip])
+
+  const CollapseItem = () => {
     const [isOpen, setIsOpen] = useState(false);
-
-    const toggleCollapse = () => {
-      setIsOpen(!isOpen);
-    };
-
-    const getLabel = () => {
-      return isOpen ? "Thu nhỏ" : "Xem chi tiết";
-    };
 
     const items: CollapseProps["items"] = [
       {
         key: "1",
-        label: getLabel(),
+        label: isOpen ? "Thu nhỏ" : "Xem chi tiết",
         children: (
-          <div className="d-flex justify-content-around ">
-            <div className="payment-product-quantity">{quantity}</div>
-            <div className="payment-product-info"> {text}</div>
-            <div className="payment-product-price">{price}</div>
-          </div>
+          <>
+            {order.orderItems.map(item => (
+              <div className="d-flex justify-content-between">
+                <div className="payment-product-quantity">{item.amountBuy} x</div>
+                <div className="payment-product-info"> {item.name}</div>
+                <div className="payment-product-price">{calculatePriceFinal(item.price , item.discount)}</div>
+              </div>
+            ))}
+          </>
         ),
       },
     ];
 
-    const onChange = (key: string | string[]) => {
+    const onChangeCollapse = (key: string | string[]) => {
       console.log(key);
-      toggleCollapse(); // Toggle the collapse state when the item is clicked
+      setIsOpen(!isOpen);
     };
 
     return (
       <Collapse
         items={items}
         activeKey={isOpen ? ["1"] : undefined}
-        onChange={onChange}
+        onChange={onChangeCollapse}
       />
     );
   };
@@ -84,30 +99,31 @@ export default function PaymentPage() {
               <div>
                 <span>Giao tới</span>
               </div>
-              <div className="change-address">Thay đổi</div>
-            </div>
-            <div className="payment-customer-info">
-              <div className="customer-name">Huỳnh Gia Khôi</div>
-              <span>|</span>
-              <div className="customer-phone">0987654321</div>
-            </div>
-            <div className="payment-customer-address">
-              <span>
-                250, khu phố 1, Thị trấn Tầm Vu, Huyện Châu Thành, Long An
-              </span>
+              <div className="change-address" onClick={() => setIsOpenModalAddress(true)}>Thay đổi</div>
+            </div>           
+            <div>
+              <div className="payment-customer-info">
+                <div className="customer-name">{addressShipDefault?.fullName}</div>
+                <span>|</span>
+                <div className="customer-phone">{addressShipDefault?.phone?.replace('+84', '0')}</div>
+              </div>
+              <div className="payment-customer-address">
+                <Tag color="green">{addressShipDefault.type}</Tag>
+                {`${addressShipDefault?.addressDetail} , ${addressShipDefault?.ward} , ${addressShipDefault?.district.split('-')[0]} , ${addressShipDefault?.province.split('-')[0]}`}
+              </div>
             </div>
           </div>
           <div className="payment-bill">
             <div className="payment-bill-header">
               <div>Đơn hàng</div>
-              <div>1 sản phẩm</div>
+              <div>{`${order.totalQuantity} sản phẩm`}</div>
             </div>
             <hr />
             <CollapseItem />
             <div className="payment-bill-info">
               <div className="temporary-price">
                 <span className="price-text">Tạm tính</span>
-                <span>500.000đ</span>
+                <span>{convertPrice(order.totalPrice)}</span>
               </div>
               <div className="ship-fee">
                 <span className="price-text">Phí vận chuyển</span>
@@ -127,7 +143,7 @@ export default function PaymentPage() {
                     fontWeight: "500",
                   }}
                 >
-                  500.000đ
+                  {convertPrice(order.totalPrice)}
                 </span>
               </div>
               <button>ĐẶT HÀNG</button>
@@ -135,6 +151,35 @@ export default function PaymentPage() {
           </div>
         </div>
       </div>
+      <Modal 
+        title="List Address ship" 
+        open={isOpenModalAddress} 
+        footer={null} 
+        onCancel={() => setIsOpenModalAddress(false)}
+        width={720}
+      >
+        <div id="AddressShipComponent">
+          <div className="instructor-address">Vui lòng chọn địa chỉ giao hàng có sẵn bên dưới</div>
+          {listAddressShip && listAddressShip?.map((address : AddressShipping) => (
+            <AddressShipItem 
+              key={address.id}
+              id={address.id}
+              fullName={address.fullName}
+              phone={address.phone}
+              province={address.province}
+              district={address.district}
+              ward={address.ward}
+              addressDetail={address.addressDetail}
+              type={address.type}
+              default={address.default}
+            />
+          ))}
+          <div className="redirect-profile">
+            Bạn muốn giao hàng đến địa chỉ khác?
+            <span> Thêm địa chỉ mới tại đây</span>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

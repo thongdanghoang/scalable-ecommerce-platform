@@ -1,10 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./Order.css";
 import { RootState } from "../../redux/store";
-import { calculatePriceFinal, convertPrice, handleChangeAmountBuy, toastMSGObject } from "../../utils/utils";
+import { calculatePriceFinal, convertPrice, handleChangeAmountBuy } from "../../utils/utils";
 import { changeAmount, removeProduct } from "../../redux/slides/orderSlide";
 import { clothesOrder } from "../../model/ClothesModal";
-import { toast } from 'react-toastify'
 import { useNavigate } from "react-router-dom";
 
 export default function OrderPage() {
@@ -31,6 +30,8 @@ export default function OrderPage() {
   const handleRedirectPayment = () => {
     if(!user.username){
       navigate('/sign-in' , {state : 'Vui lòng đăng nhập trước khi thanh toán'})
+    }else{
+      navigate('/order/payment')
     }
   }
 
@@ -57,16 +58,15 @@ export default function OrderPage() {
                   <div className="cart-product">
                     <div className="cart-image">
                       <img
-                        src={item.classifyClothes.images}
+                        src={item.classifyClothes.images[0]}
                         alt=""
                       />
                     </div>
                     <div className="cart-info">
                       <div className="cart-name">
-                        <a href="">
+                        <div>
                           {item.name}
-                        </a>
-                        <div className="spacer"></div>
+                        </div>
                         <span>{`${item.classifyClothes.color}/${item.classifyClothes.quantities.size}`}</span>
                       </div>
                       <div className="cart-item-price">

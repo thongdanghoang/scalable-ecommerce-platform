@@ -1,17 +1,17 @@
 import "./header.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { logoutService } from "../../services/userService";
 import { resetUser } from "../../redux/slides/userSlide";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CardHeaderComponent from "../CardHeaderComponent/CardHeaderComponent";
 import { Badge, Popover } from "antd";
 import { CartContext, CartContextType } from '../DefaultComponent/DefaultComponent'
 import {useContext} from 'react'
 import { AiOutlineProfile } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
-import { cloneOrder, resetOrder } from "../../redux/slides/orderSlide";
+import { resetOrder } from "../../redux/slides/orderSlide";
 import { updateListOrder } from "../../redux/slides/listOrdersSlide";
 
 
@@ -102,7 +102,7 @@ export default function HeaderComponent({
             </div>
           </div>
           <div className="col-md-6">
-            <div className="row">
+            <div className="row" style={{height:"75px"}}>
               <div className="col-md-7">
                 {isShowSearch && (
                   <div className="header_search">

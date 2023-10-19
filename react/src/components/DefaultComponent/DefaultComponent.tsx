@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import FooterComponent from "../FooterComponent/FooterComponent";
 import HeaderComponent from "../HeaderComponent/HeaderComponent";
 import { ReactNode , useState , createContext } from "react";
@@ -15,11 +16,16 @@ const DefaultComponent: React.FC<{ children: ReactNode }> = ({
   children: ReactNode;
 }) => {
   const [isHiddenCart , setIsHiddenCart] = useState(false);
+  const locate = useLocation(); console.log(locate.pathname)
   return (
     <CartContext.Provider value={{isHiddenCart , setIsHiddenCart}}>
-      <HeaderComponent />
-      {children}
-      <FooterComponent />
+      {locate.pathname !== '/system/admin' ? (
+        <>
+          <HeaderComponent />
+          {children}
+          <FooterComponent />
+        </>
+      ) : children}
     </CartContext.Provider>
   );
 };

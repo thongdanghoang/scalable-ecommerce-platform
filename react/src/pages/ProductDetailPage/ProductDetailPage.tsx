@@ -3,7 +3,7 @@ import SliderComponent from "../../components/SliderComponent/SliderComponent";
 import "./ProductDetail.css";
 import { useQuery } from "@tanstack/react-query";
 import { getClothesById } from "../../services/clothesService";
-import { convertPrice, convertToShortNumber, handleChangeAmountBuy, toastMSGObject } from "../../utils/utils";
+import { calculatePriceFinal, convertPrice, convertToShortNumber, handleChangeAmountBuy, toastMSGObject } from "../../utils/utils";
 import {useState , useEffect, useMemo} from 'react'
 import { ToastContainer , toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -46,10 +46,6 @@ export default function ProductDetailPage() {
       handleGetSizesByColor(firstClassify);
     }
   },[productDetail,isSuccess])
-
-  const priceRest = useMemo(() => {
-    return productDetail?.price - productDetail?.price * productDetail?.discount
-  },[productDetail])
 
   const handleSetAmountProduct = (action : string , amountChange : number) => {
     const amount = handleChangeAmountBuy(action , amountChange , activeSize?.quantity as number);
@@ -122,7 +118,7 @@ export default function ProductDetailPage() {
             </div>
             <div className="price">
               <div className="special-price">
-                <span>{convertPrice(priceRest)}</span>
+                <span>{convertPrice(calculatePriceFinal(productDetail?.price , productDetail?.discount))}</span>
               </div>
               {productDetail?.discount !== 0 && (
                 <>

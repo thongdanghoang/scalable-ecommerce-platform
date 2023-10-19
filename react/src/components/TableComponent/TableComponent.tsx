@@ -6,11 +6,11 @@ import LoadingComponent from '../../components/LoadingComponent/LoadingComponent
 interface propsTable {
     columns : Array<any>,
     listData : Array<any>,
-    isLoading : boolean,
-    onRow : any,
-    pageSize : number,
-    isRowSelection : true,
-    setListApproveOrder : any
+    isLoading ?: boolean,
+    onRow ?: any,
+    pageSize ?: number,
+    isRowSelection ?: true,
+    setListApproveOrder ?: any
 }
 
 export default function TableComponent(props : propsTable) {
@@ -24,7 +24,7 @@ export default function TableComponent(props : propsTable) {
         setListApproveOrder = ''
     } = props;
 
-    const dataSource = listData?.map(data => ({...data, key : data._id}))
+    const dataSource = listData?.map(data => ({...data, key : data.id}))
 
     return (
         <LoadingComponent isloading={isLoading} delay={500}>

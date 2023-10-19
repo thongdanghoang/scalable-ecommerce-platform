@@ -1,4 +1,4 @@
-import {AiOutlinePlus , AiOutlineCheckCircle , AiTwotoneEdit , AiFillDelete} from 'react-icons/ai'
+import {AiOutlinePlus } from 'react-icons/ai'
 import './Address.css'
 import { Button, Input, Modal, Select , Form, Checkbox, Radio, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
@@ -8,6 +8,7 @@ import { AddressShipping } from '../../model/UserModal';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ToastContainer , toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AddressShipItem from './AddressShipItem';
 
 export default function AddressShipComponent() {
   const [isModalOpen , setIsOpenModal] = useState(false);
@@ -16,7 +17,7 @@ export default function AddressShipComponent() {
   const [listWards , setListWards] = useState([]); 
   const [form] = Form.useForm();
   const [isDisableCheckBox , setIsDisableCheckBox] = useState(false);
-  const [addressShipping , setAddressShipping] = useState<AddressShipping>({
+  const initialAddressShip = {
     fullName : '',
     phone : '',
     province : '',
@@ -25,6 +26,9 @@ export default function AddressShipComponent() {
     addressDetail : '',
     type : '',
     default : false
+  }
+  const [addressShipping , setAddressShipping] = useState<AddressShipping>({
+    ...initialAddressShip
   })
   const [isFormEdit , setIsFormEdit] = useState(false)
 
@@ -98,9 +102,14 @@ export default function AddressShipComponent() {
     return res.data
   }
 
-  const queryAddressShip = useQuery({queryKey : ['addresses-ship-by-user'] , queryFn:fetchGetAddressShipByUser })
+  const queryAddressShip = useQuery({queryKey : ['addresses-ship-by-user-0'] , queryFn:fetchGetAddressShipByUser })
   const {data : listAddressShip} = queryAddressShip
   console.log(listAddressShip)
+
+  const handleShowFormAddressShip = () => {
+    setIsOpenModal(true);
+    setAddressShipping({...initialAddressShip})
+  }
 
   // handle create new address ship
 
@@ -178,7 +187,7 @@ export default function AddressShipComponent() {
     })
   }
 
-  const handleShowMoreAddressShip = async (address : AddressShipping) => {
+  const handleShowDetailAddressShip = async (address : AddressShipping) => {
     setIsFormEdit(true);
     setIsOpenModal(true);
     const [province_name , province_id] = address.province.split('-');
@@ -223,44 +232,25 @@ export default function AddressShipComponent() {
   return (
     <div id='AddressShipComponent'>
       <ToastContainer/>
-      <div className="add-address" onClick={() => setIsOpenModal(true)}>
+      <div className="add-address" onClick={handleShowFormAddressShip}>
         <AiOutlinePlus />
         <span>Add new address</span>
       </div>
       {listAddressShip && listAddressShip?.map((address : AddressShipping) => (
-        <div className="address-ship">
-          <div className="info">
-            <div className="name">
-              {address.fullName}
-              {address.default && (
-                <span>
-                  <AiOutlineCheckCircle />
-                  <span className='ms-2'>Default address</span>
-                </span>
-              )}
-            </div>
-            <div className="address" style={{marginBottom:5}}>
-              <span>Address: </span>
-              {address.addressDetail}
-            </div>
-            <div className="phone">
-              <span>Phone: </span>
-              {address.phone.replace('+84','0')}
-            </div>
-          </div>
-          <div className="action">
-            <div className='act-edit' onClick={() => handleShowMoreAddressShip(address)}>
-              <AiTwotoneEdit/>
-              Edit
-            </div>
-            {!address.default && (
-              <div className='act-delete' onClick={() => handleDeleteAddressShip(address.id || 0)}>
-                <AiFillDelete/>
-                Delete
-              </div>
-            )}
-          </div>
-        </div>
+        <AddressShipItem 
+          key={address.id}
+          id={address.id}
+          fullName={address.fullName}
+          phone={address.phone}
+          province={address.province}
+          district={address.district}
+          ward={address.ward}
+          addressDetail={address.addressDetail}
+          type={address.type}
+          default={address.default}
+          handleDeleteAddressShip={handleDeleteAddressShip}
+          handleShowDetailAddressShip={handleShowDetailAddressShip}
+        />
       ))}
       <Modal title={isFormEdit ? "Chỉnh sửa địa chỉ" : "Thêm địa chỉ mới"} open={isModalOpen} footer={null} onCancel={handleCancelModal}>
         <Form
@@ -339,7 +329,7 @@ export default function AddressShipComponent() {
           </Form.Item>
 
           <Form.Item label=" " name="default">
-            {listAddressShip?.lenght === 0 || isDisableCheckBox ? (
+            {listAddressShip?.length === 0 || isDisableCheckBox ? (
               <Tooltip title={showTextToolTip()}>
                 <Checkbox 
                   className={'disable-checkbox'}

@@ -50,6 +50,9 @@ body {
 }
 #order-page .cart-name {
   width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 #order-page .cart-item-price,
 #order-page .cart-qty,

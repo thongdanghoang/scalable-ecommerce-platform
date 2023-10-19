@@ -5,11 +5,13 @@ import { calculatePriceFinal, convertPrice, handleChangeAmountBuy } from '../../
 import { changeAmount, removeProduct } from '../../redux/slides/orderSlide';
 import { clothesOrder } from '../../model/ClothesModal';
 import OrderEmptyComponent from '../OrderEmptyComponent/OrderEmptyComponent';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function CardHeaderComponent() {
     const dispatch = useDispatch();
     const order = useSelector((state:RootState) => state.order); console.log(order);
+    const navigate = useNavigate();
 
     const handleRemoveProductOutCart = (proRemove : clothesOrder) => {
         dispatch(removeProduct(proRemove))
@@ -34,7 +36,7 @@ export default function CardHeaderComponent() {
                             <div className="header-card-product">
                                 <div className="header-card-image-product">
                                     <img
-                                        src={item?.classifyClothes?.images}
+                                        src={item?.classifyClothes?.images[0]}
                                         style={{ width: "83px", height: "141px" }}
                                         alt=""
                                     />
@@ -110,7 +112,7 @@ export default function CardHeaderComponent() {
                                 Tổng cộng: <span className="highlight">{convertPrice(order.totalPrice)}</span>
                             </div>
                         </div>
-                        <button>Xem giỏ hàng</button>
+                        <button onClick={() => navigate('/order')}>Xem giỏ hàng</button>
                     </div>
                 </>
             )}
