@@ -30,7 +30,8 @@ export interface UserProfileUpdated {
 }
 
 export interface AddressShipping {
-    id ?: number
+    id ?: number,
+    version ?: number,
     fullName : string,
     phone : string,
     province : string,

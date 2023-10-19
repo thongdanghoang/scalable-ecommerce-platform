@@ -108,7 +108,7 @@ export default function PaymentPage() {
                 <div className="customer-phone">{addressShipDefault?.phone?.replace('+84', '0')}</div>
               </div>
               <div className="payment-customer-address">
-                <Tag color="green">{addressShipDefault.type}</Tag>
+                <Tag color="green">{addressShipDefault?.type}</Tag>
                 {`${addressShipDefault?.addressDetail} , ${addressShipDefault?.ward} , ${addressShipDefault?.district.split('-')[0]} , ${addressShipDefault?.province.split('-')[0]}`}
               </div>
             </div>

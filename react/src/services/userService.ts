@@ -291,3 +291,21 @@ export async function deleteAddressShip(
   return null;
 }
 
+export async function LogInWithGoogle(){
+  try {
+    const res = await fetch(
+      `http://localhost:8080/login/oauth2/code/google/authorize`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }
+    );
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+  return null;
+}
+

@@ -9,6 +9,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { ToastContainer , toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddressShipItem from './AddressShipItem';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 export default function AddressShipComponent() {
   const [isModalOpen , setIsOpenModal] = useState(false);
@@ -29,8 +31,9 @@ export default function AddressShipComponent() {
   }
   const [addressShipping , setAddressShipping] = useState<AddressShipping>({
     ...initialAddressShip
-  })
-  const [isFormEdit , setIsFormEdit] = useState(false)
+  });
+  const [isFormEdit , setIsFormEdit] = useState(false);
+  const user = useSelector((state:RootState)=> state.user);
 
   console.log(addressShipping)
 
@@ -159,6 +162,7 @@ export default function AddressShipComponent() {
   )
 
   const {data : responseUpdate , isSuccess : isSuccessUpdate} = mutationEditAddress;
+  console.log(responseUpdate)
 
   useEffect(() => {
     if(isSuccessUpdate && responseUpdate?.success){
@@ -179,6 +183,7 @@ export default function AddressShipComponent() {
   const handleEditAddressShip = () => {
     mutationEditAddress.mutate({
       ...addressShipping,
+      version : user.version,
       phone : formatVietnamesePhone(addressShipping.phone)
     } , {
       onSettled : () => {

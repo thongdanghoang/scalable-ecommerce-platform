@@ -5,6 +5,7 @@
     height: 60px;
     border: 1px dashed rgb(216, 216, 216);
     margin: 0px 0px 20px;
+    display: flex;
     justify-content: center;
     align-items: center;
 }

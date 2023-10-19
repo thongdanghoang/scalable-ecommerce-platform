@@ -3,7 +3,7 @@ import logo from "../../assets/img/logo.png";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { loginService } from "../../services/userService";
+import { LogInWithGoogle, loginService } from "../../services/userService";
 import {useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {updateUser } from "../../redux/slides/userSlide";
@@ -108,6 +108,11 @@ export default function LoginPage() {
     );
   };
 
+  const handleLogInWithGoogle = async () => {
+    const res = await LogInWithGoogle();
+    console.log(res)
+  }
+
   return (
     <div id="LoginPage" className="background h-100">
       <LoginModal />
@@ -159,6 +164,14 @@ export default function LoginPage() {
                           type="submit"
                         >
                           Log in
+                        </button>
+                        <button
+                          type="button"
+                          style={{background:"#e7e5e5"}}
+                          className="btn btn-link"
+                        >
+                          <i className="fa-brands fa-google-plus-g"></i>
+                          Google
                         </button>
                         <div className="text-muted mt-3">
                           Forgot password?

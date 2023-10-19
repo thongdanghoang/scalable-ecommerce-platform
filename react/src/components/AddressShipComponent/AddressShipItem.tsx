@@ -33,7 +33,17 @@ export default function AddressShipItem(props : AddressShipItemProps) {
         }else{
             return(
                 <>
-                    <div className='act-edit' onClick={() => handleShowDetailAddressShip && handleShowDetailAddressShip(props)}>
+                    <div className='act-edit' onClick={() => handleShowDetailAddressShip && handleShowDetailAddressShip({
+                        id,
+                        fullName,
+                        phone,
+                        province,
+                        district,
+                        ward,
+                        addressDetail,
+                        type,
+                        default : isDefault
+                    })}>
                         <AiTwotoneEdit />
                         Edit
                     </div>
