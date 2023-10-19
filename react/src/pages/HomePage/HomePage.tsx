@@ -3,6 +3,7 @@ import SliderComponent from "../../components/SliderComponent/SliderComponent";
 import { getAllClothes} from "../../services/clothesService";
 import "./Home.css";
 import { clothes } from "../../model/ClothesModal";
+import { Navigate, useNavigate } from "react-router-dom";
 
 async function getProductsList(): Promise<clothes[]> {
   let response = await getAllClothes();
@@ -19,6 +20,7 @@ async function getProductsList(): Promise<clothes[]> {
 
 export default function HomePage() {
 
+  const navigate = useNavigate();
   const [productList, setProductList] = useState([] as clothes[]);
   
   useEffect(() => {
@@ -73,6 +75,7 @@ export default function HomePage() {
           <img
             src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_preivew_sanpham_3_image_desktop.jpg?1696059235970"
             alt=""
+            onClick={() => navigate('/product' , {})}
           />
         </div>
         <SliderComponent
