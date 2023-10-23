@@ -13,6 +13,7 @@ export default function AddressShipItem(props : AddressShipItemProps) {
 
     const {
         id,
+        version,
         fullName,
         phone,
         province,
@@ -35,6 +36,7 @@ export default function AddressShipItem(props : AddressShipItemProps) {
                 <>
                     <div className='act-edit' onClick={() => handleShowDetailAddressShip && handleShowDetailAddressShip({
                         id,
+                        version,
                         fullName,
                         phone,
                         province,

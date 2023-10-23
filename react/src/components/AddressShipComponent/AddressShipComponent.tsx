@@ -2,15 +2,13 @@ import {AiOutlinePlus } from 'react-icons/ai'
 import './Address.css'
 import { Button, Input, Modal, Select , Form, Checkbox, Radio, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
-import { formatVietnamesePhone, getListDistricts, getListProvincesCity, getListWards} from '../../utils/utils';
+import { formatVietnamesePhone, getListDistricts, getListProvincesCity, getListWards, toastMSGObject} from '../../utils/utils';
 import { getAddressShipsByUser , createAddressShip, updateAddressShip, deleteAddressShip } from '../../services/userService';
 import { AddressShipping } from '../../model/UserModal';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ToastContainer , toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddressShipItem from './AddressShipItem';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
 
 export default function AddressShipComponent() {
   const [isModalOpen , setIsOpenModal] = useState(false);
@@ -20,6 +18,8 @@ export default function AddressShipComponent() {
   const [form] = Form.useForm();
   const [isDisableCheckBox , setIsDisableCheckBox] = useState(false);
   const initialAddressShip = {
+    id: 0,
+    version: 0,
     fullName : '',
     phone : '',
     province : '',
@@ -33,7 +33,6 @@ export default function AddressShipComponent() {
     ...initialAddressShip
   });
   const [isFormEdit , setIsFormEdit] = useState(false);
-  const user = useSelector((state:RootState)=> state.user);
 
   console.log(addressShipping)
 
@@ -127,17 +126,10 @@ export default function AddressShipComponent() {
 
   useEffect(() => {
     if(isSuccessCreate && responseCreate?.success){
-      toast.success(responseCreate?.message,{
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      })
+      toast.success(responseCreate?.message, toastMSGObject())
       handleCancelModal();
+    }else{
+      toast.error(responseCreate?.message , toastMSGObject())
     }
   },[isSuccessCreate])
 
@@ -183,7 +175,6 @@ export default function AddressShipComponent() {
   const handleEditAddressShip = () => {
     mutationEditAddress.mutate({
       ...addressShipping,
-      version : user.version,
       phone : formatVietnamesePhone(addressShipping.phone)
     } , {
       onSettled : () => {
@@ -245,6 +236,7 @@ export default function AddressShipComponent() {
         <AddressShipItem 
           key={address.id}
           id={address.id}
+          version={address.version}
           fullName={address.fullName}
           phone={address.phone}
           province={address.province}
