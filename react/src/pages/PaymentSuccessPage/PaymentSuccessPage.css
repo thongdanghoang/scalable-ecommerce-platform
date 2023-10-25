@@ -1,0 +1,22 @@
+.payment-success {
+  margin-top: 50px;
+}
+.payment-info h3 {
+  font-weight: 400;
+}
+.payment-info .row p {
+  font-size: 16px;
+  opacity: 0.8;
+}
+.payment-order-image {
+  padding: 20px;
+}
+.payment-bill-content {
+  display: flex;
+  justify-content: space-between;
+}
+.payment {
+  padding: 10px;
+  background-color: rgb(156, 227, 178);
+  border-radius: 5px;
+}
