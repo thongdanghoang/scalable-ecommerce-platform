@@ -10,10 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 
 @Service
 public class ImageService {
@@ -31,8 +28,13 @@ public class ImageService {
     public String uploadImage(MultipartFile file) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         Path targetLocation = this.imageUploadPath.resolve(fileName);
-        Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-        return fileName;
+
+        if (Files.exists(targetLocation)) {
+            throw new FileAlreadyExistsException("File with the same name already exists: " + fileName);
+        } else {
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            return fileName;
+        }
     }
 
     public Path getImagePath(String fileName) {
@@ -48,5 +50,9 @@ public class ImageService {
         } else {
             throw new FileNotFoundException("Image not found: " + fileName);
         }
+    }
+    public boolean isImageExist(String fileName) {
+        Path imagePath = getImagePath(fileName);
+        return Files.exists(imagePath);
     }
 }

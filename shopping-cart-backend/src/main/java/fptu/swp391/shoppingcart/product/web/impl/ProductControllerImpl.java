@@ -1,38 +1,40 @@
 package fptu.swp391.shoppingcart.product.web.impl;
 
 import fptu.swp391.shoppingcart.AbstractApplicationController;
-import fptu.swp391.shoppingcart.product.dto.ProductDetailDto;
-import fptu.swp391.shoppingcart.product.dto.ProductDto;
-import fptu.swp391.shoppingcart.product.dto.ProductsResponse;
+import fptu.swp391.shoppingcart.product.dto.*;
+import fptu.swp391.shoppingcart.product.exceptions.ProductImageNotFoundException;
 import fptu.swp391.shoppingcart.product.services.ImageService;
 import fptu.swp391.shoppingcart.product.services.ProductService;
-import fptu.swp391.shoppingcart.product.web.ProjectController;
-import org.springframework.beans.factory.annotation.Autowired;
+import fptu.swp391.shoppingcart.product.web.ProductController;
+import fptu.swp391.shoppingcart.user.authentication.dto.ApiResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/products")
-public class ProjectControllerImpl extends AbstractApplicationController implements ProjectController {
+public class ProductControllerImpl extends AbstractApplicationController implements ProductController {
 
-    @Autowired
-    private ImageService imageService;
+    private final ImageService imageService;
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+
+    public ProductControllerImpl(ImageService imageService, ProductService productService) {
+        this.imageService = imageService;
+        this.productService = productService;
+    }
 
     @GetMapping
     @Override
@@ -52,6 +54,23 @@ public class ProjectControllerImpl extends AbstractApplicationController impleme
                                                    int minPrice, int maxPrice, int page, int limit) {
         Page<ProductDto> result = productService.search(keyword, sort, category, size, colour, minPrice, maxPrice, page, limit);
         return ResponseEntity.ok(new ProductsResponse(result.getContent(), result.getTotalElements()));
+    }
+
+    @PostMapping
+    @Override
+    public ResponseEntity<ProductAddingDto> createProduct(ProductAddingDto productDto) {
+        try {
+            return ResponseEntity.ok(productService.createProduct(productDto));
+        } catch (ProductImageNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS, e.getMessage());
+        }
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
+        return ResponseEntity.ok(productService.getAllCategory());
     }
 
     @GetMapping("/{id}")
@@ -79,10 +98,14 @@ public class ProjectControllerImpl extends AbstractApplicationController impleme
         }
     }
 
-//    @PostMapping
-//    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-//        String fileName = imageService.uploadImage(file);
-//        String imageUrl = "/api/products/images/" + fileName;
-//        return ResponseEntity.ok(imageUrl);
-//    }
+    @PostMapping("/image/upload")
+    public ApiResponse<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
+        try {
+            String fileName = imageService.uploadImage(file);
+            String imageUrl = "/api/products/images/" + fileName;
+            return new ApiResponse<>("Image uploaded successfully", true, imageUrl);
+        } catch (FileAlreadyExistsException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
 }
