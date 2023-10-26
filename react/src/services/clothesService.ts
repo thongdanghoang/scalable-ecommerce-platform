@@ -37,3 +37,15 @@ export async function sortAndFilterClothes(
   }
   return null;
 }
+
+export async function getCategories() {
+  try {
+    let response = await fetch(`${API_URL}/api/products/categories`, {
+      method: "GET"
+    });
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error)
+  }
+}
