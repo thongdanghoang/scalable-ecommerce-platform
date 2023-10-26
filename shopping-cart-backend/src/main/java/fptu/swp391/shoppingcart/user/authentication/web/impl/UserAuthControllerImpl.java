@@ -195,7 +195,7 @@ public class UserAuthControllerImpl extends AbstractApplicationController implem
         cookie.setPath("/");
         cookie.setDomain("localhost");
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(600);
+        cookie.setMaxAge(1800);
         response.addCookie(cookie);
     }
     @PostMapping("/login")
