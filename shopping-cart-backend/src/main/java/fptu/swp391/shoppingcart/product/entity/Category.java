@@ -26,6 +26,6 @@ public class Category {
         if (parentCategory == null) {
             return name;
         }
-        return parentCategory.getFullName() + ">" + name;
+        return name + " " + parentCategory.getFullName();
     }
 }

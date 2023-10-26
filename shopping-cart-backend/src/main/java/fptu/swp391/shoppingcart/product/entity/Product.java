@@ -41,4 +41,8 @@ public class Product extends BaseEntity{
 
     @OneToMany(mappedBy = "product", orphanRemoval = true)
     private List<Quantity> quantities = new ArrayList<>();
+    public Product() {
+        this.numberOfSold = 0;
+        this.rated = 0;
+    }
 }

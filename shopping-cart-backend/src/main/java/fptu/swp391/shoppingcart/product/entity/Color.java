@@ -18,4 +18,9 @@ public class Color {
 
     @Column(name = "COLOR_NAME", nullable = false)
     private String colorName;
+    public Color(String colorName) {
+        this.colorName = colorName;
+    }
+    public Color() {
+    }
 }

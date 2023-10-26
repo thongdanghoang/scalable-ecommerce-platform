@@ -18,4 +18,11 @@ public class Size {
 
     @Column(name = "SIZE_NAME", nullable = false)
     private String sizeName;
+
+    public Size() {
+    }
+
+    public Size(String sizeName) {
+        this.sizeName = sizeName;
+    }
 }
