@@ -56,7 +56,8 @@ public class ProductDetailMapper implements IMapper<Product, ProductDetailDto> {
                 if(Objects.equals(quantity.getColor().getId(), colorId)){
                     QuantityBySizeDto quantityBySizeDto = new QuantityBySizeDto();
                     quantityBySizeDto.setSize(quantity.getSize().getSizeName());
-                    quantityBySizeDto.setQuantity(quantity.getQuantityInStock());
+                    quantityBySizeDto.setQuantityInStock(quantity.getQuantityInStock());
+                    quantityBySizeDto.setQuantityId(quantity.getId());
                     quantitiesBySize.add(quantityBySizeDto);
                 }
             }
