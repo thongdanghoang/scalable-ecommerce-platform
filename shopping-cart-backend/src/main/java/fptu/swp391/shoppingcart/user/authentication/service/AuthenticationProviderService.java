@@ -1,7 +1,6 @@
 package fptu.swp391.shoppingcart.user.authentication.service;
 
 import fptu.swp391.shoppingcart.user.authentication.model.CustomUserDetails;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,11 +13,14 @@ import java.time.LocalDateTime;
 
 @Service
 public class AuthenticationProviderService implements AuthenticationProvider {
-    @Autowired
-    private JpaUserDetailsService userDetailsService;
+    private final JpaUserDetailsService userDetailsService;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public AuthenticationProviderService(JpaUserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userDetailsService = userDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -27,9 +29,9 @@ public class AuthenticationProviderService implements AuthenticationProvider {
 
         CustomUserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        if (!userDetails.getUser().isEnabled() && (userDetails.getUser().getDisabledUntil().isAfter(LocalDateTime.now()))){
-                throw new BadCredentialsException("Account is disabled, please try again later until "
-                        + userDetails.getUser().getDisabledUntil());
+        if (!userDetails.getUser().isEnabled() || (userDetails.getUser().getDisabledUntil().isAfter(LocalDateTime.now()))) {
+            throw new BadCredentialsException("Account is disabled, please try again later until "
+                    + userDetails.getUser().getDisabledUntil());
         }
         if (bCryptPasswordEncoder.matches(password, userDetails.getPassword())) {
             return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
