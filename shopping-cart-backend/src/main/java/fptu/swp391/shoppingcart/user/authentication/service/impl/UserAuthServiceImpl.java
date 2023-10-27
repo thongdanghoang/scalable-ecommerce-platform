@@ -151,7 +151,7 @@ public class UserAuthServiceImpl implements UserAuthService {
             throw new PhoneNotVerifiedException("Phone not verified, just verified phone can reset password");
         }
 
-        if(isVerified.isEmpty()){
+        if (isVerified.isEmpty()) {
             throw new PhoneNotFound("Phone not found");
         }
 
@@ -180,7 +180,7 @@ public class UserAuthServiceImpl implements UserAuthService {
             throw new EmailNotVerifiedException("Email not verified, just verified email can reset password");
         }
 
-        if(isVerified.isEmpty()){
+        if (isVerified.isEmpty()) {
             throw new EmailNotFound("Email not found");
         }
 

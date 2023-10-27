@@ -105,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
                 quantityEntity.setProduct(product);
                 quantityEntity.setColor(color);
                 quantityEntity.setSize(sizeRepository.findBySizeName(quantity.getSize()).orElseThrow());
-                quantityEntity.setQuantityInStock(quantity.getQuantity());
+                quantityEntity.setQuantityInStock(quantity.getQuantityInStock());
                 quantities.add(quantityEntity);
             });
         });
