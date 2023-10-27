@@ -18,7 +18,7 @@ export default function CardComponent(props: PropsCard) {
       id="card"
       hoverable
       cover={<img height={'100%'} alt="" src={image} />}
-      onClick={() => navigate(`product-detail/${convertToSlug(name)}` , {state : id})}
+      onClick={() => navigate(`/product-detail/${convertToSlug(name)}` , {state : id})}
     >
       <div className="name">{name}</div>
       <div className="price">{price}</div>

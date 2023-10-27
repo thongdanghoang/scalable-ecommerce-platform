@@ -13,8 +13,13 @@ import {
 import "./ProductsFilter.css";
 import CardComponent from "../../components/CardComponent/CardComponent";
 import { clothes } from "../../model/ClothesModal";
-import { sortAndFilterClothes } from "../../services/clothesService";
+import {
+  getCategories,
+  sortAndFilterClothes,
+} from "../../services/clothesService";
 import { API_URL } from "../../utils/constants";
+import { useNavigate } from "react-router-dom";
+import { convertToSlug } from "../../utils/utils";
 
 interface Option {
   value: string;
@@ -30,8 +35,13 @@ type QuerySortParams = {
   page: string;
   limit: "24";
 };
+type Categories = {
+  id: number;
+  name: string;
+};
 
-// NOTE: test API
+// NOTE: get array data from api
+
 async function getProductList(
   filterAndOption: QuerySortParams,
 ): Promise<[clothes[], number]> {
@@ -45,8 +55,18 @@ async function getProductList(
   return [productList, data.totalCount];
 }
 
-// TODO: implement pagination
+async function getCategoriesList() {
+  let data = (await getCategories()) as Categories[];
+  data.forEach((category) => {
+    category.name = category.name.toLowerCase();
+  });
+  return data;
+}
+
 function ClothesFilterPage(): React.ReactElement {
+
+  const navigate = useNavigate();
+
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalProduct: 0,
@@ -162,6 +182,15 @@ function ClothesFilterPage(): React.ReactElement {
       }
     });
   };
+
+  let [categoryNameList, setCategoryNameList] = useState([] as Categories[]);
+  useEffect(() => {
+    const handleCategoriesNameList = async () => {
+      let list = await getCategoriesList();
+      setCategoryNameList(list);
+    };
+    handleCategoriesNameList();
+  }, []);
   const FilterArea = () => {
     let sizeNameList = [
       "M",
@@ -196,24 +225,21 @@ function ClothesFilterPage(): React.ReactElement {
       "Ghi",
       "Ghi đậm",
     ];
-    let categoryNameList = [
-      "NAM",
-      "NỮ",
-      "ÁO SƠ MI",
-      "ÁO THUN",
-      "ÁO POLO",
-      "QUẦN ÂU",
-      "QUẦN SHORT",
-      "QUẦN ÂU NỮ",
-      "ĐẦM NỮ - VÁY LIỀN THÂN",
-      "CHÂN VÁY",
-      "QUẦN JEAN",
-      "ÁO KHOÁC",
-      "ÁO CHỐNG NẮNG",
-    ];
-    categoryNameList = categoryNameList.map((category) => {
-      return category.toLowerCase();
-    });
+    // let categoryNameList = [
+    //   "NAM",
+    //   "NỮ",
+    //   "ÁO SƠ MI",
+    //   "ÁO THUN",
+    //   "ÁO POLO",
+    //   "QUẦN ÂU",
+    //   "QUẦN SHORT",
+    //   "QUẦN ÂU NỮ",
+    //   "ĐẦM NỮ - VÁY LIỀN THÂN",
+    //   "CHÂN VÁY",
+    //   "QUẦN JEAN",
+    //   "ÁO KHOÁC",
+    //   "ÁO CHỐNG NẮNG",
+    // ];
 
     let sizeButtonComponent = [
       {
@@ -270,11 +296,13 @@ function ClothesFilterPage(): React.ReactElement {
                 <Button
                   size="small"
                   type={
-                    category == categoryButtonActivated ? "primary" : "dashed"
+                    category.name == categoryButtonActivated
+                      ? "primary"
+                      : "dashed"
                   }
-                  onClick={() => handleClickCategoryButton(category)}
+                  onClick={() => handleClickCategoryButton(category.name)}
                 >
-                  {category}
+                  {category.name}
                 </Button>
               ))}
             </Space>
@@ -328,7 +356,9 @@ function ClothesFilterPage(): React.ReactElement {
 
       let productList = await getProductList(filterAndOption);
       let productItems = productList[0].map((item) => (
-        <Col xs={24} sm={12} md={8} lg={6}>
+        <Col xs={24} sm={12} md={8} lg={6}
+          // onClick={() => navigate(`/product-detail/`, {state: item.id})}
+        >
           <Badge.Ribbon text="new" color="cyan">
             <CardComponent
               id={item.id}
