@@ -109,8 +109,8 @@ export default function LoginPage() {
   };
 
   const handleLogInWithGoogle = async () => {
-    const res = await LogInWithGoogle();
-    console.log(res)
+    window.location.href =
+    "http://localhost:8080/login/oauth2/code/google/authorize";
   }
 
   return (
@@ -169,6 +169,7 @@ export default function LoginPage() {
                           type="button"
                           style={{background:"#e7e5e5"}}
                           className="btn btn-link"
+                          onClick={handleLogInWithGoogle}
                         >
                           <i className="fa-brands fa-google-plus-g"></i>
                           Google

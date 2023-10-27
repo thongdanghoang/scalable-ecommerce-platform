@@ -9,7 +9,7 @@ import CardHeaderComponent from "../CardHeaderComponent/CardHeaderComponent";
 import { Badge, Popover } from "antd";
 import { CartContext, CartContextType } from '../DefaultComponent/DefaultComponent'
 import {useContext} from 'react'
-import { AiOutlineProfile } from "react-icons/ai";
+import { AiOutlineGroup, AiOutlineProfile } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
 import { resetOrder } from "../../redux/slides/orderSlide";
 import { updateListOrder } from "../../redux/slides/listOrdersSlide";
@@ -60,6 +60,10 @@ export default function HeaderComponent({
           <div className="menu-item" onClick={handleProfile}>
             <AiOutlineProfile />
             User Profile
+          </div>
+          <div className="menu-item" onClick={() => navigate('/system/admin')}>
+            <AiOutlineGroup />
+            Manage System
           </div>
           <div className="menu-item" onClick={handleLogout}>
             <BiLogOut/>

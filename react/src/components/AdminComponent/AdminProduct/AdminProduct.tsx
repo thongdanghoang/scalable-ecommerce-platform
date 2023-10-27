@@ -1,6 +1,6 @@
 import { CloseOutlined , DeleteOutlined , EditOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Input, Space, Typography ,Select, Radio, Drawer, Row, Col } from 'antd';
-import { useState , useRef , useEffect } from 'react';
+import { Upload , Button, Card, Form, Input, Space, Typography ,Select, Radio, Drawer, Row, Col } from 'antd';
+import { useState , useRef , useEffect, useMemo } from 'react';
 import './AdminProduct.css'
 import { BiPlus } from 'react-icons/bi';
 import TableComponent from '../../TableComponent/TableComponent';
@@ -8,10 +8,15 @@ import Highlighter from 'react-highlight-words'
 import type { InputRef } from 'antd';
 import { FilterConfirmProps } from 'antd/es/table/interface';
 import { SearchOutlined } from '@ant-design/icons';
-import { useQuery } from '@tanstack/react-query';
-import { getAllClothes, getClothesById } from '../../../services/clothesService';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { createNewClothes, getAllClothes, getClothesById, uploadImageClothes } from '../../../services/clothesService';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { UploadOutlined } from '@ant-design/icons';
+import type { UploadProps } from 'antd';
+import { toast } from 'react-toastify';
+import { toastMSGObject } from '../../../utils/utils';
+import { ToastContainer } from 'react-bootstrap';
 
 export default function AdminProduct() {
 
@@ -19,11 +24,30 @@ export default function AdminProduct() {
   const [isOpenDrawer , setisOpenDrawer] = useState(false) ;
   const [rowSelected , setRowSelected] = useState<any>({});
   const [value, setValue] = useState('');
+  const [listCate , setListCate] = useState<any[]>([]);
 
   const handleOnCloseDrawer = () => {
     setisOpenDrawer(false);
     form.resetFields();
   }
+
+  // useEffect(() => {
+  //   const currentFormValues = form.getFieldsValue();
+  //   const newClassifyClothes = [...currentFormValues.classifyClothes];
+  //   newClassifyClothes[0].images = listImage;
+  //   form.setFieldsValue({
+  //     classifyClothes: newClassifyClothes
+  //   });
+  // },[listImage])
+
+  const newClothesCustome = useMemo(() => {
+    const formClothes = form.getFieldsValue();
+    const classifyClothesCustome = formClothes.classifyClothes && formClothes.classifyClothes.map((item : any) => ({
+      ...item,
+      images: item?.images?.map((file : any) => file?.name)
+    }))
+    return {...formClothes , classifyClothes : classifyClothesCustome}
+  },[form.getFieldsValue()])
 
   // Get all clothes via API
 
@@ -55,6 +79,41 @@ export default function AdminProduct() {
 
   const handleGetDetailProduct = () => {
     setisOpenDrawer(true);
+  }
+
+  // get all categories 
+
+  useEffect(() => {
+    fetch('http://localhost:8080/api/products/categories')
+      .then(res => res.json())
+      .then(data => setListCate(data))
+  },[])
+
+  // add new clothes
+
+  const mutationAddClo = useMutation(
+    async (data : any) => {
+      const res = await createNewClothes(data);
+      return res.data
+    }
+  ) 
+
+  console.log(newClothesCustome)
+
+  const {data : newClothes , isSuccess : isSuccessNewClothes} = mutationAddClo;
+
+  useEffect(() => {
+    if(isSuccessNewClothes){
+      toast.success('add success', toastMSGObject())
+    }else{
+      toast.error('fail add' , toastMSGObject())
+    }
+  },[isSuccessNewClothes])
+
+  const handleAddNewClothes = () => {
+    mutationAddClo.mutate({
+      ...newClothesCustome
+    })
   }
 
   // Search and filter Product --------------------------------------------------------------------
@@ -233,6 +292,7 @@ export default function AdminProduct() {
 
   return (
     <div id='AdminProduct'>
+      <ToastContainer/>
       <div className="clo-act-btn">
         <Button type="primary" onClick={() => setisOpenDrawer(true)}>
           <BiPlus/>
@@ -263,7 +323,7 @@ export default function AdminProduct() {
         extra={
           <Space>
             <Button onClick={handleOnCloseDrawer}>Cancel</Button>
-            <Button onClick={handleOnCloseDrawer} type="primary">
+            <Button onClick={handleAddNewClothes} type="primary">
               Submit
             </Button>
           </Space>
@@ -286,25 +346,31 @@ export default function AdminProduct() {
               <Form.Item name="sku" label="Đơn vị lưu kho" rules={[{ required: true }]}>
                 <Input />
               </Form.Item>
-              <Form.Item name="price" label="Price" rules={[{ required: true }]}>
-                <Input />
+              <Form.Item 
+                name="price" label="Price" 
+                rules={[{ required: true }]}
+                getValueFromEvent={(event) => {
+                  const value = parseFloat(event.target.value);
+                  return isNaN(value) ? undefined : value;
+                }}
+              >
+                <Input type='number'/>
               </Form.Item>
-              <Form.Item name="discount" label="Discount" rules={[{ required: true }]}>
-                <Input />
+              <Form.Item 
+                name="discount" label="Discount" 
+                rules={[{ required: true }]}
+                getValueFromEvent={(event) => {
+                  const value = parseFloat(event.target.value);
+                  return isNaN(value) ? undefined : value;
+                }}
+              >
+                <Input type='number' />
               </Form.Item>
-              <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
-                <Radio.Group >
-                  <Radio value={1}>Nam</Radio>
-                  <Radio value={2}>Nữ</Radio>
-                </Radio.Group>
-              </Form.Item>
-              <Form.Item name="category" label="Danh mục sản phẩm" rules={[{ required: true }]}>
-                <Select
-                  defaultValue={'Áo phong'}
-                >
-                  <Select.Option value={'Áo phong'}>Áo phong</Select.Option>
-                  <Select.Option value={'Áo khoát'}>Áo khoát</Select.Option>
-                  <Select.Option value={'Áo polo'}>Áo polo</Select.Option>
+              <Form.Item name="categoryId" label="Danh mục sản phẩm" initialValue={listCate[0]?.id} rules={[{ required: true }]}>
+                <Select>
+                  {listCate.map(cate => (
+                    <Select.Option value={cate.id}>{cate.name}</Select.Option>
+                  ))}
                 </Select>
               </Form.Item>
               <Form.Item 
@@ -337,29 +403,24 @@ export default function AdminProduct() {
                           <Input/>
                         </Form.Item>
 
-                        <Form.Item label="Images" name={[field.name, 'images']}>
-                          <Form.List name={[field.name, 'images']}>
-                            {(subFields, subOpt) => (
-                              <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
-                                {subFields.map((subField) => (
-                                  <div style={{display:'flex' , alignItems:'center'}} key={subField.key}>
-                                    <Form.Item noStyle name={[subField.name]}>
-                                      <Input/>
-                                    </Form.Item>
-                                    <CloseOutlined
-                                      style={{marginLeft:"10px"}}
-                                      onClick={() => {
-                                        subOpt.remove(subField.name);
-                                      }}
-                                    />
-                                  </div>
-                                ))}
-                                <Button type="dashed" onClick={() => subOpt.add()} block>
-                                  + Add extra image url
-                                </Button>
-                              </div>
-                            )}
-                          </Form.List>
+                        <Form.Item label="Images" name={[field.name, 'images']} valuePropName="fileList"
+                          getValueFromEvent={(e) => e?.fileList}
+                        >
+                          <Upload 
+                            onChange={async (info) => {
+                              const res = await uploadImageClothes(info.file);
+                              if(res.success){
+                                toast.success(res.message, toastMSGObject({ autoClose : 1000}))
+                              }else{
+                                toast.error(res.message , toastMSGObject({ autoClose : 1000}))
+                              }
+                            }}
+                            beforeUpload = {(file) => {
+                              return false
+                            }}
+                          >
+                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                          </Upload>
                         </Form.Item>
 
                         {/* Nest Form.List */}
@@ -369,17 +430,21 @@ export default function AdminProduct() {
                               <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
                                 {subFields.map((subField) => (
                                   <Space key={subField.key}>
-                                    <Form.Item noStyle name={[subField.name,'size']}>
-                                      <Select
-                                        defaultValue={'M'}
-                                      >
+                                    <Form.Item noStyle name={[subField.name,'size']} initialValue={'M'}>
+                                      <Select>
                                         <Select.Option value={'M'}>M</Select.Option>
                                         <Select.Option value={'L'}>L</Select.Option>
                                         <Select.Option value={'XL'}>XL</Select.Option>
                                       </Select>
                                     </Form.Item>
-                                    <Form.Item noStyle name={[subField.name,'quantity']}>
-                                      <Input placeholder="Số lượng" />
+                                    <Form.Item 
+                                      noStyle name={[subField.name,'quantity']}
+                                      getValueFromEvent={(event) => {
+                                        const value = parseFloat(event.target.value);
+                                        return isNaN(value) ? undefined : value;
+                                      }}
+                                    >
+                                      <Input type='number' placeholder="Số lượng" />
                                     </Form.Item>
                                     <CloseOutlined
                                       onClick={() => {
@@ -410,7 +475,7 @@ export default function AdminProduct() {
           <Form.Item noStyle shouldUpdate>
             {() => (
               <Typography style={{marginTop:"30px"}} >
-                <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre>
+                <pre>{JSON.stringify(newClothesCustome, null, 2)}</pre>
               </Typography>
             )}
           </Form.Item>
