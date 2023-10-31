@@ -65,9 +65,6 @@ export async function sortAndFilterClothes(
   return null;
 }
 
-<<<<<<< HEAD
-
-=======
 export async function getCategories() {
   try {
     let response = await fetch(`${API_URL}/api/products/categories`, {
@@ -79,4 +76,3 @@ export async function getCategories() {
     console.log(error)
   }
 }
->>>>>>> ddeec0e9b49f25894bf107e1fbe066e953bd9c92
