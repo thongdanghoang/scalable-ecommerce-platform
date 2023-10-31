@@ -30,6 +30,8 @@ export default function HomePage() {
     run();
   },[])
 
+  const [selectedCategory, setSelectedCategory] = useState("typeCategories");
+
   return (
     <div className="container" id="homepage">
       <div>
@@ -45,13 +47,13 @@ export default function HomePage() {
         />
       </div>
       <div className="gender">
-        <div className="gender-item">
+        <div className="gender-item" onClick={() => setSelectedCategory("menCategories")}>
           <div className="gender-item__value">
             MEN
           </div>
         </div>
-        <div className="gender-item">
-          <div className="gender-item__value">
+        <div className="gender-item" onClick={() => setSelectedCategory("womenCategories")}>
+          <div className="gender-item__value" >
             WOMEN
           </div>
         </div>
@@ -59,7 +61,7 @@ export default function HomePage() {
       <SliderComponent
         slidesToShow={8}
         listItems={[]}
-        nameSlider={"typeCagetories"}
+        nameSlider={selectedCategory}
       />
       <div className="header-preview">
         <div className="content">

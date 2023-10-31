@@ -171,11 +171,37 @@ export default function SliderComponent(props: PropsSlider) {
             ))}
           </Slider>
         );
-      case "typeCagetories":
+      case "typeCategories":
         return (
           <div className="slider-cate">
             <Slider className="slider-arrow-custome" {...settings}>
               {typeCategory.map((item) => (
+                <div className="typeCagetories">
+                  <img src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036" alt="" />
+                  <div className="title">{item.name}</div>
+                </div>
+              ))}
+            </Slider>
+          </div>
+        );
+        case "menCategories":
+        return (
+          <div className="slider-cate">
+            <Slider className="slider-arrow-custome" {...settings}>
+              {typeCategory.filter((item) => item.name.includes("NAM")).map((item) => (
+                <div className="typeCagetories">
+                  <img src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036" alt="" />
+                  <div className="title">{item.name}</div>
+                </div>
+              ))}
+            </Slider>
+          </div>
+        );
+        case "womenCategories":
+        return (
+          <div className="slider-cate">
+            <Slider className="slider-arrow-custome" {...settings}>
+              {typeCategory.filter((item) => item.name.includes("NỮ")).map((item) => (
                 <div className="typeCagetories">
                   <img src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036" alt="" />
                   <div className="title">{item.name}</div>

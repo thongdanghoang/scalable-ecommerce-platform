@@ -37,7 +37,7 @@ export default function SearchBarComponent() {
   }
 
   const handleSubmitSearch = async (search: string = searchText) => {
-    navigate("/search", { state: { searchText: search} });
+    navigate("/product", { state: { searchText: search} });
     navigate(0);
   };
 
