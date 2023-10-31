@@ -1,0 +1,17 @@
+#product-search-list #card {
+	margin: 1em auto;
+	aspect-ratio: 0.6;
+}
+
+#product-search-list #card img {
+	aspect-ratio: 4/5;
+	object-fit: cover;
+	/* object-position: 100% 0; */
+}
+
+#product-search-list .selection {
+	width: 100%;
+}
+#product-search-list .product-spin {
+  text-align: center;
+}

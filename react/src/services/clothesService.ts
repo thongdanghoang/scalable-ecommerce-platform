@@ -65,9 +65,7 @@ export async function sortAndFilterClothes(
   return null;
 }
 
-<<<<<<< HEAD
 
-=======
 export async function getCategories() {
   try {
     let response = await fetch(`${API_URL}/api/products/categories`, {
@@ -79,4 +77,20 @@ export async function getCategories() {
     console.log(error)
   }
 }
->>>>>>> ddeec0e9b49f25894bf107e1fbe066e953bd9c92
+
+export async function searchClother(searchText: string) {
+  let params = new URLSearchParams({keyword: searchText});
+  try {
+    let response = await fetch(
+      `${API_URL}/api/products/search?${params.toString()}`,
+      {
+        method: "GET",
+      },
+    );
+    let data = await response.json();
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+  return null;
+}
