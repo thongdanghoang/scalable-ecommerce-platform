@@ -1,118 +1,117 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
-.background{
-    background-image: url("../../assets/img/backgroundShop.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    overflow-x: hidden;
-    overflow-y: auto;
-    text-align: justify;
+.background {
+  background-image: url("../../assets/img/login.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: justify;
 }
 
 #RegisterPage .container {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 400px;
-	background: white;
-	border-radius: 10px;
-	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
+  opacity: 0.9;
 }
 
 #RegisterPage .container h1 {
-	text-align: center;
-	padding-top: 20px;
+  text-align: center;
+  padding-top: 20px;
 }
 
 #RegisterPage .container form {
-	padding: 0 40px;
+  padding: 0 40px;
 }
 
 #RegisterPage form .form-control {
-	position: relative;
-	border-bottom: 2px solid #adadad;
-	margin: 40px 0;
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin: 40px 0;
 }
 
 #RegisterPage .form-control.success {
-	border-bottom-color: #2691d9;
+  border-bottom-color: #2691d9;
 }
 
 #RegisterPage .form-control.error {
-	border-bottom-color: #e74c3c;
+  border-bottom-color: #e74c3c;
 }
 
 #RegisterPage .form-control input {
-	width: 100%;
-	height: 40px;
-	font-size: 16px;
-	border: none;
-	background: none;
-	outline: none;
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  background: none;
+  outline: none;
 }
 
 #RegisterPage small {
-	position: absolute;
-	left: 0;
-	top: 100%;
-	margin-top: 3px;
-	color: #e74c3c;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin-top: 3px;
+  color: #e74c3c;
 }
 
 #RegisterPage .form-control span::before {
-	content: '';
-	position: absolute;
-	top: 40px;
-	left: 0;
-	width: 0%;
-	height: 2px;
-	background: #2691d9;
-	transition: 0.3s;
+  content: "";
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #2691d9;
+  transition: 0.3s;
 }
 
 #RegisterPage .form-control input:focus ~ span::before {
-	width: 100%;
+  width: 100%;
 }
 
-#RegisterPage input[type='submit'] {
-	margin-top: 20px;
-	width: 100%;
-	height: 50px;
-	border: 1px solid;
-	background: #2691d9;
-	border-radius: 25px;
-	font-size: 18px;
-	color: #e9f4fb;
-	font-weight: 700;
-	cursor: pointer;
-	outline: none;
-	transition: 0.5s;
+#RegisterPage input[type="submit"] {
+  margin-top: 20px;
+  width: 100%;
+  height: 50px;
+  border: 1px solid;
+  background: #2691d9;
+  border-radius: 25px;
+  font-size: 18px;
+  color: #e9f4fb;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  transition: 0.5s;
 }
 
-#RegisterPage input[type='submit']:hover {
-	background-color: #08609a;
+#RegisterPage input[type="submit"]:hover {
+  background-color: #08609a;
 }
 
 #RegisterPage .signup_link {
-	margin: 25px 0;
-	text-align: center !important;
-	font-size: 16px;
-	color: #666666;
+  margin: 25px 0;
+  text-align: center !important;
+  font-size: 16px;
+  color: #666666;
 }
 
 #RegisterPage .signup_link a {
-	color: #2647d9;
-	text-decoration: none;
+  color: #2647d9;
+  text-decoration: none;
 }
 
 #RegisterPage .signup_link a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
-#RegisterPage .container{
-	background: #ffffffee;
+#RegisterPage .container {
+  background: #ffffffee;
 }
-
-
