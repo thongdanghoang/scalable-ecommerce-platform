@@ -85,10 +85,10 @@ export function ResetPasswordPart() {
           <Modal.Title>Reset password successfully!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Click button below to return home page
+          Click button below to return sign in page
         </Modal.Body>
         <Modal.Footer>
-          <a className="btn btn-primary" href="/">Return home page</a>
+          <a className="btn btn-primary" href="/sign-in">Return sign in</a>
         </Modal.Footer>
       </Modal>
     </>)

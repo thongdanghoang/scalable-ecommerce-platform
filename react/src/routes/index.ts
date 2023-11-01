@@ -29,7 +29,7 @@ export const routes = [
     isShowHeader: false,
   },
   {
-    path: "/reset-password",
+    path: "/forgot-password",
     page: ResetPasswordPage,
     isShowHeader: false,
   },

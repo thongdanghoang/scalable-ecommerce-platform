@@ -187,6 +187,7 @@ export default function LoginPage() {
                         <div
                           className="text-muted mt-3"
                           style={{ cursor: "pointer" }}
+                          onClick={() => navigate("/forgot-password")}
                         >
                           Forgot password?
                         </div>
