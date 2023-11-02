@@ -1,5 +1,5 @@
 #header {
-  height: 75px;
+  height: 80px;
   background: #000000;
 }
 
@@ -7,11 +7,9 @@
   height: 75px;
   background-color: #231f20;
 }
-#header .header_logo {
-  margin-right: 5px;
-  font-family: "Dancing Script", cursive;
-  font-size: 45px;
-  line-height: 75px;
+#header .header_logo img {
+  max-width: 56%;
+  max-height: 97%;
 }
 #header .header_item {
   color: #fff;

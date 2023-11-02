@@ -8,7 +8,7 @@ export default function FooterComponent() {
             <div className="col-md-3">
               <div className="company">
                 <br/>
-                <h4>CÔNG TY TTNTK</h4>
+                <h4>CÔNG TY N3TK</h4>
                 <div>
                   Address: R639+HM2, Khu đô thị mới, Thành phố Qui Nhơn, Bình Định 55117, Việt Nam
                 </div>
@@ -16,9 +16,9 @@ export default function FooterComponent() {
             </div>
             <div className="col-md-3">
               <div className="about">
-                <h4>VỀ TTNTK</h4>
+                <h4>VỀ N3TK</h4>
                 <div>
-                  Chúng tôi tại TTNTK cam kết cung cấp sự sáng tạo và chất lượng trong từng sản phẩm, giúp khách hàng thể hiện phong cách cá nhân và tự tin.
+                  Chúng tôi tại N3TK cam kết cung cấp sự sáng tạo và chất lượng trong từng sản phẩm, giúp khách hàng thể hiện phong cách cá nhân và tự tin.
                 </div>
               </div>
             </div>

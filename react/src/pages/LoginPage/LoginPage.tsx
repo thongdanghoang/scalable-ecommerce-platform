@@ -1,5 +1,5 @@
 import "./login.css";
-import logo from "../../assets/img/a7239272bd9a46b888560746d9dc475d (1).png";
+import logo from "../../assets/img/n3tk-high-resolution-logo-black-transparent.png";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -127,12 +127,12 @@ export default function LoginPage() {
               <div className="row g-0" style={{ borderRadius: "20px" }}>
                 <div className="col-lg-6">
                   <div className="card-body p-md-5 mx-md-4">
-                    <div className="text-center">
+                    <div className="text-center my-1">
                       <img
                         src={logo}
                         style={{
-                          width: "50%",
-                          height: "50%",
+                          width: "49%",
+                          height: "49%%",
                           position: "relative",
                         }}
                         alt="logo"

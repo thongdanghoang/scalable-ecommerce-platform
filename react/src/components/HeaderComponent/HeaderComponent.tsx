@@ -11,6 +11,7 @@ import {
   CartContext,
   CartContextType,
 } from "../DefaultComponent/DefaultComponent";
+import logo from '../../assets/img/n3tk-high-resolution-logo-white-transparent.png'
 import { useContext } from "react";
 import { AiOutlineGroup, AiOutlineProfile } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
@@ -96,7 +97,7 @@ export default function HeaderComponent({
         <div className="row">
           <div className="col-md-6">
             <div className="row">
-              <div className="col-md-3 header_logo">TTNTK</div>
+              <div className="col-md-3 header_logo"><img src={logo} alt=""/></div>
               <div className="col-md-2 header_item text-center">NAM</div>
               <div className="col-md-2 header_item text-center">NỮ</div>
               <div className="col-md-3 header_item text-center">
