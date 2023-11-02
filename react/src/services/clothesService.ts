@@ -76,3 +76,20 @@ export async function getCategories() {
     console.log(error)
   }
 }
+
+export async function searchClother(searchText: string) {
+  let params = new URLSearchParams({keyword: searchText});
+  try {
+    let response = await fetch(
+      `${API_URL}/api/products/search?${params.toString()}`,
+      {
+        method: "GET",
+      },
+    );
+    let data = await response.json();
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+  return null;
+}

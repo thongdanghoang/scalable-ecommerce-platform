@@ -10,6 +10,7 @@ import AdminPage from "../pages/AdminPage/AdminPage";
 import OrderPage from "../pages/OrderPage/OrderPage";
 import PaymentPage from "../pages/PaymentPage/PaymentPage";
 import PaymentSuccessPage from "../pages/PaymentSuccessPage/PaymentSuccessPage";
+import ProductSearchPage from "../pages/ProductSearchPage/ProductSearchPage";
 
 export const routes = [
   {
@@ -46,6 +47,11 @@ export const routes = [
     path: "/product",
     page: ProductsFilterPage,
     isShowHeader: true,
+  },
+  {
+    path: "/search",
+    page: ProductSearchPage,
+    isShowHeader: true
   },
   {
     path: "/order",

@@ -65,8 +65,6 @@ async function getCategoriesList() {
 
 function ClothesFilterPage(): React.ReactElement {
 
-  const navigate = useNavigate();
-
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalProduct: 0,

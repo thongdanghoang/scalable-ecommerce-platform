@@ -13,6 +13,7 @@ import { AiOutlineGroup, AiOutlineProfile } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
 import { resetOrder } from "../../redux/slides/orderSlide";
 import { updateListOrder } from "../../redux/slides/listOrdersSlide";
+import SearchBarComponent from "../SearchBarComponent/SearchBarComponent";
 
 
 interface propsHeader {
@@ -110,14 +111,15 @@ export default function HeaderComponent({
               <div className="col-md-7">
                 {isShowSearch && (
                   <div className="header_search">
-                    <input
+                    {/* <input
                       type="text"
                       className="header-search_input"
                       placeholder="Nhập để tìm kiếm sản phẩm "
                     />
                     <button className="header-search-btn">
                       <i className="header-search-btn-icon fa-solid fa-magnifying-glass"></i>
-                    </button>
+                    </button> */}
+                    <SearchBarComponent/>
                   </div>
                 )}
               </div>
