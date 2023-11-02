@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
-import { getAllClothes} from "../../services/clothesService";
+import { getAllClothes } from "../../services/clothesService";
 import "./Home.css";
 import { clothes } from "../../model/ClothesModal";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -10,7 +10,8 @@ async function getProductsList(): Promise<clothes[]> {
   if (response != null) {
     let jsonList = (await response.json()).products as clothes[];
     jsonList.forEach((product) => {
-        product.image = "http://localhost:8080/api/products/images/"+ product.image;
+      product.image =
+        "http://localhost:8080/api/products/images/" + product.image;
     });
     console.table(jsonList);
     return jsonList;
@@ -19,16 +20,17 @@ async function getProductsList(): Promise<clothes[]> {
 }
 
 export default function HomePage() {
-
   const navigate = useNavigate();
   const [productList, setProductList] = useState([] as clothes[]);
-  
+
   useEffect(() => {
     const run = async () => {
       setProductList(await getProductsList());
-    }
+    };
     run();
-  },[])
+  }, []);
+
+  const [selectedCategory, setSelectedCategory] = useState("typeCategories");
 
   return (
     <div className="container" id="homepage">
@@ -45,21 +47,23 @@ export default function HomePage() {
         />
       </div>
       <div className="gender">
-        <div className="gender-item">
-          <div className="gender-item__value">
-            MEN
-          </div>
+        <div
+          className="gender-item"
+          onClick={() => setSelectedCategory("menCategories")}
+        >
+          <div className="gender-item__value">MEN</div>
         </div>
-        <div className="gender-item">
-          <div className="gender-item__value">
-            WOMEN
-          </div>
+        <div
+          className="gender-item"
+          onClick={() => setSelectedCategory("womenCategories")}
+        >
+          <div className="gender-item__value">WOMEN</div>
         </div>
       </div>
       <SliderComponent
         slidesToShow={8}
         listItems={[]}
-        nameSlider={"typeCagetories"}
+        nameSlider={selectedCategory}
       />
       <div className="header-preview">
         <div className="content">
@@ -75,7 +79,7 @@ export default function HomePage() {
           <img
             src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_preivew_sanpham_3_image_desktop.jpg?1696059235970"
             alt=""
-            onClick={() => navigate('/product' , {})}
+            onClick={() => navigate("/product", {})}
           />
         </div>
         <SliderComponent

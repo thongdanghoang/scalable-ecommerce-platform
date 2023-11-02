@@ -72,7 +72,7 @@ export default function EmailInputPart() {
             </form>
             <div>
             <a href="/sign-in" className="m-3">Sign in</a>
-            <a href="/register" className="m-3">Resister</a>
+            <a href="/sign-up" className="m-3">Resister</a>
             </div>
           </div>
           

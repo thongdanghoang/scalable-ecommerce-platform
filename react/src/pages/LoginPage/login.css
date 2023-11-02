@@ -1,19 +1,18 @@
- .background{
-    background-image: url("../../assets/img/backgroundShop.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    overflow-x: hidden;
-    overflow-y: auto;
-    text-align: justify;
+.background {
+  background-image: url("../../assets/img/login.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: justify;
 }
 
 #LoginPage .gradient-custom-2 {
-    background: #28a5d6;
 }
 #LoginPage .customBtn button {
-    width: 100%;
+  width: 100%;
 }
 #LoginPage .card {
-    opacity: 0.9;
+  opacity: 0.9;
 }

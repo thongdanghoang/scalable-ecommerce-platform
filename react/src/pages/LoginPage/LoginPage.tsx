@@ -1,18 +1,19 @@
 import "./login.css";
-import logo from "../../assets/img/logo.png";
+import logo from "../../assets/img/a7239272bd9a46b888560746d9dc475d (1).png";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { LogInWithGoogle, loginService } from "../../services/userService";
-import {useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {updateUser } from "../../redux/slides/userSlide";
+import { updateUser } from "../../redux/slides/userSlide";
 import { RootState } from "../../redux/store";
-import {toast , ToastContainer } from "react-toastify";
-import {useEffect} from 'react'
+import { toast, ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 import { toastMSGObject } from "../../utils/utils";
 import { addOrderToList } from "../../redux/slides/listOrdersSlide";
 import { cloneOrder } from "../../redux/slides/orderSlide";
+import imagebackground from "../../assets/img/19235643.jpg";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -23,17 +24,18 @@ export default function LoginPage() {
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
   const navigate = useNavigate();
-  const user = useSelector((state:RootState)=> state.user); console.log(user);
-  const order = useSelector((state:RootState)=> state.order);
-  const listOrder = useSelector((state:RootState)=> state.listOrder);
+  const user = useSelector((state: RootState) => state.user);
+  console.log(user);
+  const order = useSelector((state: RootState) => state.order);
+  const listOrder = useSelector((state: RootState) => state.listOrder);
   const dispatch = useDispatch();
-  const {state : msgAuthen} = useLocation();
+  const { state: msgAuthen } = useLocation();
 
   useEffect(() => {
-    if(msgAuthen){
-      toast.error(msgAuthen, toastMSGObject())
+    if (msgAuthen) {
+      toast.error(msgAuthen, toastMSGObject());
     }
-  },[msgAuthen])
+  }, [msgAuthen]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -59,17 +61,19 @@ export default function LoginPage() {
 
     const response = await loginService(params);
     if (response) {
-      console.log(response)
+      console.log(response);
       if (response?.success) {
-        dispatch(updateUser({...user, username : response?.data}));
-        const findOrderUnpaid = listOrder.ordersUnpaid.find(order => order.username === response?.data)
-        if(findOrderUnpaid){
-          dispatch(cloneOrder(findOrderUnpaid))
-        }else{
-          dispatch(addOrderToList({...order , username : response?.data}))
-          dispatch(cloneOrder({...order , username : response?.data}))
+        dispatch(updateUser({ ...user, username: response?.data }));
+        const findOrderUnpaid = listOrder.ordersUnpaid.find(
+          (order) => order.username === response?.data
+        );
+        if (findOrderUnpaid) {
+          dispatch(cloneOrder(findOrderUnpaid));
+        } else {
+          dispatch(addOrderToList({ ...order, username: response?.data }));
+          dispatch(cloneOrder({ ...order, username: response?.data }));
         }
-        navigate('/');
+        navigate("/");
       } else {
         handleShow();
       }
@@ -110,13 +114,13 @@ export default function LoginPage() {
 
   const handleLogInWithGoogle = async () => {
     window.location.href =
-    "http://localhost:8080/login/oauth2/code/google/authorize";
-  }
+      "http://localhost:8080/login/oauth2/code/google/authorize";
+  };
 
   return (
     <div id="LoginPage" className="background h-100">
       <LoginModal />
-      <ToastContainer/>
+      <ToastContainer />
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-xl-10">
@@ -125,14 +129,21 @@ export default function LoginPage() {
                 <div className="col-lg-6">
                   <div className="card-body p-md-5 mx-md-4">
                     <div className="text-center">
-                      <img src={logo} style={{ width: "60%" }} alt="logo" />
-                      <h4 className="mt-1 mb-5 pb-1"></h4>
+                      <img
+                        src={logo}
+                        style={{
+                          width: "50%",
+                          height: "50%",
+                          position: "relative",
+                        }}
+                        alt="logo"
+                      />
                     </div>
 
                     <form onSubmit={handleSubmit}>
                       <p>Please login to your account</p>
 
-                      <div className="form-outline mb-4">
+                      <div className="form-outline mt-1 mb-4">
                         <input
                           type="username"
                           id="form2Example11"
@@ -156,9 +167,9 @@ export default function LoginPage() {
                         />
                       </div>
 
-                      <div className={"text-center customBtn pt-1 mb-5 pb-1"}>
+                      <div className={"text-center customBtn pt-1 mb-3 pb-1"}>
                         <button
-                          className={`btn btn-primary ${
+                          className={`btn btn-dark ${
                             validInput() ? "" : "disabled"
                           }`}
                           type="submit"
@@ -167,24 +178,27 @@ export default function LoginPage() {
                         </button>
                         <button
                           type="button"
-                          style={{background:"#e7e5e5"}}
-                          className="btn btn-link"
+                          className="btn btn-dark mt-4"
                           onClick={handleLogInWithGoogle}
                         >
-                          <i className="fa-brands fa-google-plus-g"></i>
-                          Google
+                          <i className="fa-brands fa-google-plus-g mx-1"></i>
+                          Sign in with Google
                         </button>
-                        <div className="text-muted mt-3">
+                        <div
+                          className="text-muted mt-3"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => navigate("/forgot-password")}
+                        >
                           Forgot password?
                         </div>
                       </div>
 
-                      <div className="d-flex align-items-center justify-content-center pb-4">
-                        <p className="mb-0 me-2">Don't have an account?</p>
+                      <div className="d-flex align-items-center justify-content-center pb-1">
+                        <p className="mb-0 me-1">Don't have an account?</p>
                         <button
                           type="button"
                           className="btn btn-outline-danger"
-                          onClick={() => navigate('/sign-up')}
+                          onClick={() => navigate("/sign-up")}
                         >
                           Create new
                         </button>
@@ -192,18 +206,13 @@ export default function LoginPage() {
                     </form>
                   </div>
                 </div>
-                <div
-                  className="col-lg-6 d-flex align-items-center gradient-custom-2"
-                  style={{ borderRadius: "15px" }}
-                >
-                  <div className="text-white px-3 py-4 p-md-5 mx-md-4">
-                    <h4 className="mb-4">We are more than just a company</h4>
-                    <p className="small mb-0">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
+                <div className="col-lg-6 d-flex align-items-center gradient-custom-2">
+                  <div>
+                    <img
+                      src={imagebackground}
+                      alt=""
+                      style={{ maxWidth: "500px" }}
+                    />
                   </div>
                 </div>
               </div>

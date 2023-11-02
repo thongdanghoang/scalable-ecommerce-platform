@@ -93,14 +93,13 @@ const products = [
 //   },
 // ];
 
-
 export default function SliderComponent(props: PropsSlider) {
   const { slidesToShow = 1, listItems = [], nameSlider } = props;
   let [typeCategory, setTypeCategory] = useState([] as any[]);
   useEffect(() => {
     const handleTypeCategory = async () => {
       setTypeCategory(await getCategories());
-    }
+    };
     handleTypeCategory();
   }, []);
 
@@ -138,11 +137,28 @@ export default function SliderComponent(props: PropsSlider) {
   var settings = {
     dots: false,
     infinite: true,
-    speed: 500,
     slidesToShow,
     slidesToScroll: 1,
-    // autoplay : true,
-    // autoplaySpeed : 3000,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    ...arrowCustome(),
+  };
+  var settings_nameSlider = {
+    dots: false,
+    infinite: true,
+    slidesToShow,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    ...arrowCustome(),
+  };
+  var settings_typeCategories_clothesFilter = {
+    dots: false,
+    infinite: true,
+    slidesToShow,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
     ...arrowCustome(),
   };
 
@@ -150,7 +166,7 @@ export default function SliderComponent(props: PropsSlider) {
     switch (nameSlider) {
       case "imagesBackground":
         return (
-          <Slider {...settings} className="slider-img-bg">
+          <Slider {...settings_nameSlider} className="slider-img-bg">
             {listItems?.map((item) => (
               <img src={item} alt="" width={500} height={385} />
             ))}
@@ -158,7 +174,10 @@ export default function SliderComponent(props: PropsSlider) {
         );
       case "clothesFilter":
         return (
-          <Slider {...settings} className="slider-arrow-custome">
+          <Slider
+            {...settings_typeCategories_clothesFilter}
+            className="slider-arrow-custome"
+          >
             {listItems?.map((item) => (
               <div className="custome-card-home-page" style={{ width: 250 }}>
                 <CardComponent
@@ -171,16 +190,58 @@ export default function SliderComponent(props: PropsSlider) {
             ))}
           </Slider>
         );
-      case "typeCagetories":
+      case "typeCategories":
         return (
           <div className="slider-cate">
-            <Slider className="slider-arrow-custome" {...settings}>
+            <Slider
+              className="slider-arrow-custome"
+              {...settings_typeCategories_clothesFilter}
+            >
               {typeCategory.map((item) => (
                 <div className="typeCagetories">
-                  <img src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036" alt="" />
+                  <img
+                    src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036"
+                    alt=""
+                  />
                   <div className="title">{item.name}</div>
                 </div>
               ))}
+            </Slider>
+          </div>
+        );
+      case "menCategories":
+        return (
+          <div className="slider-cate">
+            <Slider className="slider-arrow-custome" {...settings}>
+              {typeCategory
+                .filter((item) => item.name.includes("NAM"))
+                .map((item) => (
+                  <div className="typeCagetories">
+                    <img
+                      src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036"
+                      alt=""
+                    />
+                    <div className="title">{item.name}</div>
+                  </div>
+                ))}
+            </Slider>
+          </div>
+        );
+      case "womenCategories":
+        return (
+          <div className="slider-cate">
+            <Slider className="slider-arrow-custome" {...settings}>
+              {typeCategory
+                .filter((item) => item.name.includes("NỮ"))
+                .map((item) => (
+                  <div className="typeCagetories">
+                    <img
+                      src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036"
+                      alt=""
+                    />
+                    <div className="title">{item.name}</div>
+                  </div>
+                ))}
             </Slider>
           </div>
         );

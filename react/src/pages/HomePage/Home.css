@@ -1,4 +1,3 @@
-
 #homepage .header-preview {
   display: flex;
   justify-content: space-between;
@@ -22,7 +21,6 @@
   width: 20%;
 }
 #homepage .banner > img {
-  border-radius: 10px;
   height: 100%;
 }
 .product > .slick-slider {
@@ -42,7 +40,7 @@
   margin-bottom: 30px;
 }
 
-#homepage .gender .gender-item{
+#homepage .gender .gender-item {
   height: 64px;
   width: 220px;
   justify-content: center;
@@ -50,17 +48,17 @@
   align-items: end;
   margin-right: 50px;
   padding-bottom: 19px;
-  border-bottom: 2px solid #97A0AD;
+  border-bottom: 2px solid #97a0ad;
   cursor: pointer;
   text-transform: uppercase;
 }
 
-#homepage .gender .gender-item:hover{
-  border-bottom: 2px solid #FCAF17;
-  color: #FCAF17;
+#homepage .gender .gender-item:hover {
+  border-bottom: 2px solid #fcaf17;
+  color: #fcaf17;
 }
 
-.custome-card-home-page{
+.custome-card-home-page {
   width: 90% !important;
   height: 450px;
 }

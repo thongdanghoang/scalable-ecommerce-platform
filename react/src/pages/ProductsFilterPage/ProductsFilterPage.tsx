@@ -9,6 +9,7 @@ import {
   Button,
   Space,
   Cascader,
+  Empty,
 } from "antd";
 import "./ProductsFilter.css";
 import CardComponent from "../../components/CardComponent/CardComponent";
@@ -18,7 +19,7 @@ import {
   sortAndFilterClothes,
 } from "../../services/clothesService";
 import { API_URL } from "../../utils/constants";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { convertToSlug } from "../../utils/utils";
 
 interface Option {
@@ -28,6 +29,7 @@ interface Option {
 }
 
 type QuerySortParams = {
+  keyword: string;
   sort: string;
   size: string;
   colour: string;
@@ -40,17 +42,28 @@ type Categories = {
   name: string;
 };
 
+const NotFound = (<Empty
+  image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+  imageStyle={{ height: 300 }}
+  description={
+    <span>
+      Not found
+    </span>
+  }
+>
+</Empty>);
+
 // NOTE: get array data from api
 
 async function getProductList(
-  filterAndOption: QuerySortParams,
+  filterAndOption: QuerySortParams
 ): Promise<[clothes[], number]> {
   let params = new URLSearchParams(filterAndOption);
   let data = await sortAndFilterClothes(params);
   let productList: clothes[] = data.products as clothes[];
   productList.forEach(
     (product) =>
-      (product.image = `${API_URL}/api/products/images/${product.image}`),
+      (product.image = `${API_URL}/api/products/images/${product.image}`)
   );
   return [productList, data.totalCount];
 }
@@ -64,6 +77,16 @@ async function getCategoriesList() {
 }
 
 function ClothesFilterPage(): React.ReactElement {
+
+  let keyword = useLocation().state;
+  if (keyword) {
+    keyword = keyword.searchText;
+    if (!keyword) {
+      keyword = "";
+    }
+  } else {
+    keyword = "";
+  }
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -344,6 +367,7 @@ function ClothesFilterPage(): React.ReactElement {
     setProductRender([LoadingSpin]);
     const productItems = async () => {
       let filterAndOption: QuerySortParams = {
+        keyword: keyword,
         sort: `${selectedSortOption[0]}:${selectedSortOption[1]}`,
         size: sizeButtonActivated,
         colour: colorButtonActivated,
@@ -354,7 +378,11 @@ function ClothesFilterPage(): React.ReactElement {
 
       let productList = await getProductList(filterAndOption);
       let productItems = productList[0].map((item) => (
-        <Col xs={24} sm={12} md={8} lg={6}
+        <Col
+          xs={24}
+          sm={12}
+          md={8}
+          lg={6}
           // onClick={() => navigate(`/product-detail/`, {state: item.id})}
         >
           <Badge.Ribbon text="new" color="cyan">
@@ -375,7 +403,7 @@ function ClothesFilterPage(): React.ReactElement {
         };
         return current;
       });
-      setProductRender(productItems);
+      setProductRender(productItems.length != 0 ? productItems : [NotFound]);
     };
     productItems();
   }, [
@@ -412,7 +440,7 @@ function ClothesFilterPage(): React.ReactElement {
             </Row>
 
             {/* product list */}
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify={"center"}>
               {productRender}
             </Row>
           </Col>

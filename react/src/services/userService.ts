@@ -157,18 +157,22 @@ export async function forgetPasswordByMail(
   email: string,
   code?: string
 ): Promise<Response | null> {
-  let requestParam: URLSearchParams;
+  let requestBody: string;
   if (code == undefined) {
-    requestParam = new URLSearchParams({ email: email });
+    requestBody = JSON.stringify({ email: email });
   } else {
-    requestParam = new URLSearchParams({ email: email, code: code });
+    requestBody = JSON.stringify({ email: email, code: code });
   }
   try {
     const res = await fetch(
-      `${API_URL}/api/user/auth/forgot-password-by-mail?${requestParam.toString()}`,
+      `${API_URL}/api/user/auth/forgot-password-by-mail`,
       {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         credentials: "include",
+        body: requestBody
       }
     );
     return res;
@@ -183,20 +187,19 @@ export async function resetPassword(
 ): Promise<Response | null> {
   let requestParam = new URLSearchParams({ newPassword: newPassword });
   try {
-    //NOTE: This API maybe is under developing in back-end
-    // Detail error:
-    // Object {
-    //   timestamp: "2023-09-29T20:48:07.276717",
-    //   status: 500,
-    //   error: "Internal Server Error",
-    //   message: "An unexpected application error occurred: Missing cookie 'verificationResetPassword' for method parameter of type String"
-    // }
-
     const res = await fetch(
       `http://localhost:8080/api/user/auth/reset-password?${requestParam.toString()}`,
       {
         method: "POST",
         credentials: "include",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+  newPassword: newPassword,
+  confirmPassword: newPassword
+})
       }
     );
     return res;
