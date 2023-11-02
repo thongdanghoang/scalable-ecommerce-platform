@@ -6,6 +6,7 @@ import InforUserComponent from './components/InforUserComponent/InforUserCompone
 import OrderHistoryComponent from './components/OrderHistoryComponent/OrderHistoryComponent'
 import AddressShipComponent from './components/AddressShipComponent/AddressShipComponent'
 import 'react-toastify/dist/ReactToastify.css';
+import MyOrderPage from './pages/MyOrderPage/MyOrderPage'
 
 
 function App() {
@@ -25,9 +26,11 @@ function App() {
             >
               {route.path === '/profile-user' ? (
                 <>
-                  <Route path={'information-user'} element={<InforUserComponent/>} />
-                  <Route path={'address-ship-user'} element={<AddressShipComponent/>} /> 
-                  <Route path={'order-user'} element={<OrderHistoryComponent/>} />                
+                  <Route path='information-user' element={<InforUserComponent/>} />
+                  <Route path='address-ship-user' element={<AddressShipComponent/>} /> 
+                  <Route path='order-user' element={<OrderHistoryComponent/>} >
+                    <Route path=':code' element={<MyOrderPage/>}/>
+                  </Route>                
                 </>
               ) : <Fragment/>}
               
