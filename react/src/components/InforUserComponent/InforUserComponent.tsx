@@ -5,8 +5,7 @@ import { updateUser } from '../../redux/slides/userSlide';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { User } from '../../model/UserModal';
-import { ToastContainer , toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import OTPInput, {} from 'react-otp-input'
 import { Button, Modal } from 'react-bootstrap';
 import './InforUser.css'
@@ -120,7 +119,6 @@ export default function InforUserComponent() {
     return (
         <>
             <div className="form-info">
-                <ToastContainer />
                 <div className="grid">
                     <div className="grid__column two-twelfths">
                         <div className="form-info-user">

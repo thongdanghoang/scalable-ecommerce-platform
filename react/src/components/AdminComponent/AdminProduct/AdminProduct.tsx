@@ -1,22 +1,16 @@
 import { CloseOutlined , DeleteOutlined , EditOutlined } from '@ant-design/icons';
-import { Upload , Button, Card, Form, Input, Space, Typography ,Select, Radio, Drawer, Row, Col } from 'antd';
-import { useState , useRef , useEffect, useMemo } from 'react';
+import { Upload , Button, Card, Form, Input, Space, Typography ,Select,Drawer, Row, Col } from 'antd';
+import { useState ,useEffect, useMemo } from 'react';
 import './AdminProduct.css'
 import { BiPlus } from 'react-icons/bi';
 import TableComponent from '../../TableComponent/TableComponent';
-import Highlighter from 'react-highlight-words'
-import type { InputRef } from 'antd';
-import { FilterConfirmProps } from 'antd/es/table/interface';
-import { SearchOutlined } from '@ant-design/icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createNewClothes, getAllClothes, getClothesById, uploadImageClothes } from '../../../services/clothesService';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { UploadOutlined } from '@ant-design/icons';
-import type { UploadProps } from 'antd';
 import { toast } from 'react-toastify';
 import { toastMSGObject } from '../../../utils/utils';
-import { ToastContainer } from 'react-bootstrap';
 
 export default function AdminProduct() {
 
@@ -30,15 +24,6 @@ export default function AdminProduct() {
     setisOpenDrawer(false);
     form.resetFields();
   }
-
-  // useEffect(() => {
-  //   const currentFormValues = form.getFieldsValue();
-  //   const newClassifyClothes = [...currentFormValues.classifyClothes];
-  //   newClassifyClothes[0].images = listImage;
-  //   form.setFieldsValue({
-  //     classifyClothes: newClassifyClothes
-  //   });
-  // },[listImage])
 
   const newClothesCustome = useMemo(() => {
     const formClothes = form.getFieldsValue();
@@ -69,7 +54,6 @@ export default function AdminProduct() {
   }
 
   const {data : product , isSuccess : isSuccessProduct} = useQuery(['all-product',rowSelected.id], fetchGetProductById)
-  console.log()
 
   useEffect(() => {
     if(isSuccessProduct){
@@ -98,15 +82,11 @@ export default function AdminProduct() {
     }
   ) 
 
-  console.log(newClothesCustome)
-
   const {data : newClothes , isSuccess : isSuccessNewClothes} = mutationAddClo;
 
   useEffect(() => {
     if(isSuccessNewClothes){
       toast.success('add success', toastMSGObject())
-    }else{
-      toast.error('fail add' , toastMSGObject())
     }
   },[isSuccessNewClothes])
 
@@ -115,104 +95,6 @@ export default function AdminProduct() {
       ...newClothesCustome
     })
   }
-
-  // Search and filter Product --------------------------------------------------------------------
-
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
-  const searchInput = useRef<InputRef>(null);
-
-  const handleSearch = (
-    selectedKeys: string[],
-    confirm: (param?: FilterConfirmProps) => void,
-    dataIndex: any,
-  ) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
-  };
-
-  const handleReset = (clearFilters: () => void) => {
-    clearFilters();
-    setSearchText('');
-  };
-
-  const getColumnSearchProps = (dataIndex: any): any => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close } : any) => (
-      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
-          style={{ marginBottom: 8, display: 'block' }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              setSearchText((selectedKeys as string[])[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            close
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
-    ),
-    onFilter: (value : any, record : any) =>
-      record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes((value as string).toLowerCase()),
-    onFilterDropdownOpenChange: (visible : boolean) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-    render: (text : any) =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
-  });
 
   const renderAction = () => {
     return (
@@ -231,19 +113,19 @@ export default function AdminProduct() {
 
   const columns = [
     {
-        title: 'Tên chi tiết',
-        dataIndex: 'name',
-        render: (text : string) => <a>{text}</a>,
-        width : 400,
-        sorter: (a : any,b : any) => a.name.length - b.name.length,
-        ...getColumnSearchProps('name')
+      title: 'Tên chi tiết',
+      dataIndex: 'name',
+      render: (text : string) => <span>{text}</span>,
+      width : 400,
+      sorter: (a : any,b : any) => a.name.length - b.name.length,
+      isSearchProps : true
     },
     {
       title: 'Đơn vị lưu kho',
       dataIndex: 'sku',
       render: (text : string) => <span>{text}</span>,
       sorter: (a : any,b : any) => a.sku.length - b.sku.length,
-      ...getColumnSearchProps('sku')
+      isSearchProps : true
     },
     {
       title: 'Giảm giá',
@@ -252,32 +134,32 @@ export default function AdminProduct() {
       sorter: (a : any,b : any) => a.sku - b.sku,
     },
     {
-        title: 'Giá tiền',
-        dataIndex: 'price',
-        sorter: (a : any,b : any) => a.price - b.price,
-        filters: [
-            {
-                text: 'Dưới 50k',
-                value: [0,50000],
-            },
-            {
-                text: 'Từ 50k đến 200k',
-                value: [50000,200000],
-            },
-            {
-                text: 'Từ 200k đến 500k',
-                value: [200000,500000],
-            },
-            {
-                text: 'Từ 500k đến 1000k',
-                value: [500000,1000000],
-            },
-            {
-                text: 'Trên 1000k',
-                value: [1000000],
-            },
-          ],
-          onFilter: ([start ,end] : number[], record : any) => (end ? (record.price <= end && record.price >= start) : (record.price >= start)),
+      title: 'Giá tiền',
+      dataIndex: 'price',
+      sorter: (a : any,b : any) => a.price - b.price,
+      filters: [
+          {
+              text: 'Dưới 50k',
+              value: [0,50000],
+          },
+          {
+              text: 'Từ 50k đến 200k',
+              value: [50000,200000],
+          },
+          {
+              text: 'Từ 200k đến 500k',
+              value: [200000,500000],
+          },
+          {
+              text: 'Từ 500k đến 1000k',
+              value: [500000,1000000],
+          },
+          {
+              text: 'Trên 1000k',
+              value: [1000000],
+          },
+        ],
+      onFilter: ([start ,end] : number[], record : any) => (end ? (record.price <= end && record.price >= start) : (record.price >= start)),
     },
     {
         title: 'Danh mục',
@@ -292,7 +174,6 @@ export default function AdminProduct() {
 
   return (
     <div id='AdminProduct'>
-      <ToastContainer/>
       <div className="clo-act-btn">
         <Button type="primary" onClick={() => setisOpenDrawer(true)}>
           <BiPlus/>

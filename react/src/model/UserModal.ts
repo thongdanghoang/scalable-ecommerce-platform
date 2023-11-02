@@ -1,3 +1,10 @@
+export interface UserSystem {
+    username : string,
+    password : string,
+    role : string,
+    enabled : boolean
+}
+
 export interface User {
     version : number,
     username: string,

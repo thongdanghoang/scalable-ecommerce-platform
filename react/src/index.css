@@ -34,3 +34,7 @@ img {
 .ant-form-item-required::before {
   display: none !important;
 }
+
+.ant-modal button svg{
+  margin-bottom: 7px;
+}

@@ -3,12 +3,12 @@ import logo from "../../assets/img/a7239272bd9a46b888560746d9dc475d (1).png";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { LogInWithGoogle, loginService } from "../../services/userService";
+import { loginService } from "../../services/userService";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../redux/slides/userSlide";
 import { RootState } from "../../redux/store";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { toastMSGObject } from "../../utils/utils";
 import { addOrderToList } from "../../redux/slides/listOrdersSlide";
@@ -120,7 +120,6 @@ export default function LoginPage() {
   return (
     <div id="LoginPage" className="background h-100">
       <LoginModal />
-      <ToastContainer />
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-xl-10">

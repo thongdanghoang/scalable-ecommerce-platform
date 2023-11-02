@@ -5,6 +5,8 @@ import {Fragment} from 'react'
 import InforUserComponent from './components/InforUserComponent/InforUserComponent'
 import OrderHistoryComponent from './components/OrderHistoryComponent/OrderHistoryComponent'
 import AddressShipComponent from './components/AddressShipComponent/AddressShipComponent'
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
 

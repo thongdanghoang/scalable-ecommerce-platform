@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import FooterComponent from "../FooterComponent/FooterComponent";
 import HeaderComponent from "../HeaderComponent/HeaderComponent";
 import { ReactNode , useState , createContext } from "react";
+import { ToastContainer } from "react-toastify";
 
 export interface CartContextType {
   isHiddenCart: boolean;
@@ -19,6 +20,7 @@ const DefaultComponent: React.FC<{ children: ReactNode }> = ({
   const locate = useLocation(); console.log(locate.pathname)
   return (
     <CartContext.Provider value={{isHiddenCart , setIsHiddenCart}}>
+      <ToastContainer/>
       {locate.pathname !== '/system/admin' ? (
         <>
           <HeaderComponent />

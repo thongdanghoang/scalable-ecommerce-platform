@@ -4,7 +4,7 @@ import {getItem} from '../../utils/utils'
 import { Menu } from 'antd';
 import './Admin.css'
 import { useState } from 'react';
-import AdminUser from '../../components/AdminComponent/AdminUser/AdminUser';
+import AdminUser from '../../components/AdminComponent/AdminUserSystem/AdminUserSystem';
 import AdminProduct from '../../components/AdminComponent/AdminProduct/AdminProduct';
 import AdminOrder from '../../components/AdminComponent/AdminOrder/AdminOrder';
 import AdminDashboard from '../../components/AdminComponent/AdminDashboard/AdminDashboard';

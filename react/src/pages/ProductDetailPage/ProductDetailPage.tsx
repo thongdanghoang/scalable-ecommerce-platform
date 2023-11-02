@@ -5,8 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getClothesById } from "../../services/clothesService";
 import { calculatePriceFinal, convertPrice, convertToShortNumber, handleChangeAmountBuy, toastMSGObject } from "../../utils/utils";
 import {useState , useEffect, useMemo} from 'react'
-import { ToastContainer , toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector} from "react-redux";
 import { addProductToOrder } from "../../redux/slides/orderSlide";
 import { CartContext, CartContextType } from '../../components/DefaultComponent/DefaultComponent'
@@ -87,7 +86,6 @@ export default function ProductDetailPage() {
   return (
     
     <div className="container" id="productDetail">
-      <ToastContainer/>
       <div className="row justify-content-between">
         <div className="col-md-4 image-product">
           <SliderComponent

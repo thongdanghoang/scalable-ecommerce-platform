@@ -6,8 +6,7 @@ import { formatVietnamesePhone, getListDistricts, getListProvincesCity, getListW
 import { getAddressShipsByUser , createAddressShip, updateAddressShip, deleteAddressShip } from '../../services/userService';
 import { AddressShipping } from '../../model/UserModal';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { ToastContainer , toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import AddressShipItem from './AddressShipItem';
 
 export default function AddressShipComponent() {
@@ -227,7 +226,6 @@ export default function AddressShipComponent() {
 
   return (
     <div id='AddressShipComponent'>
-      <ToastContainer/>
       <div className="add-address" onClick={handleShowFormAddressShip}>
         <AiOutlinePlus />
         <span>Add new address</span>
