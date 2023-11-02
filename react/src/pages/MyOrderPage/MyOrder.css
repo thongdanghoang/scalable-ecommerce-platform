@@ -1,0 +1,96 @@
+#myOrderorderPage .myOrderorderPage-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #a09f9f;
+}
+ .myOrderorderPage{
+    background: #fff;
+     padding-bottom: 20px;
+}
+#myOrderorderPage .myOrderorderPage-header .content span {
+    font-size: 18px;
+    margin-left: 5px;
+    font-weight: 400;
+    cursor: pointer;
+}
+#myOrderorderPage .myOrderorderPage-header .content span:hover{
+    font-weight: 500;
+}
+#myOrderorderPage  .myOrderorderPage-body, .myOrderorderPage-body-content  {
+    padding:10px 20px 10px 30px;
+}
+
+#myOrderorderPage   .myOrderorderPage-body-content  .myOrderorderPage-body-content-address,.myOrderorderPage-body-content-payment{
+    border: solid 1px #858383;
+    margin-left: 10px;
+    padding: 15px;
+}
+#myOrderorderPage   .myOrderorderPage-body-content  .myOrderorderPage-body-content-address .address > span{
+    max-width: 290px;
+}
+#myOrderorderPage   .myOrderorderPage-body-content  .myOrderorderPage-body-content-address .name{
+    font-weight: 500;
+}
+#myOrderorderPage .myOrderorderPage-body span {
+    font-weight: 600;
+}
+#myOrderorderPage  .order-product-header {
+    border-bottom:  solid 1px #858383;
+    border-top:  solid 1px #858383;
+    background: #f8f8f8;
+    margin: 10px 0px;
+    height: 50px;
+    line-height: 50px;
+}
+#myOrderorderPage  .order-product-header .order-product-header-title {
+    font-weight: 500;
+    padding-left: 30px;
+}
+#myOrderorderPage .order-product-body {
+    border-bottom:  solid 1px #858383;
+    margin: 15px 0px 15px 0px ;
+    font-weight: 500;
+}
+
+#myOrderorderPage .order-product-body .order-product-body-name {
+    display: flex;
+    margin-left: 20px;
+    max-width: 420px;
+}
+#myOrderorderPage .order-product-body .order-product-body-name .order-product-body-name-image {
+    max-width: 120px;
+    max-height: 160px;
+    margin-bottom: 10px;
+}
+#myOrderorderPage .order-product-body .order-product-body-name .order-product-body-name-detail{
+    font-size: 15px;
+    margin-left: 20px;
+}
+#myOrderorderPage .order-product-body .order-product-body-name .order-product-body-name-detail> p:first-child{
+    font-weight: 500;
+}
+#myOrderorderPage .order-product-body .order-product-body-quantity{
+    text-align: center;
+    max-width: 100px;
+}
+#myOrderorderPage .order-product-body .order-product-body-total  {
+    text-align: center;
+
+}
+#myOrderorderPage .order-product-near-footer, .order-product-footer{
+    margin: 30px;
+    font-weight: 500;
+}
+.back{
+    float: right;
+    margin: 10px 0;
+    width: 300px;
+    font-size: 20px;
+    padding: 10px 20px;
+    background-color: #000000;
+    color: #fff;
+}
+

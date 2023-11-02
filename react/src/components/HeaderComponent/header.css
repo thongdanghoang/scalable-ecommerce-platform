@@ -8,6 +8,7 @@
   background-color: #231f20;
 }
 #header .header_logo {
+  margin-right: 5px;
   font-family: "Dancing Script", cursive;
   font-size: 45px;
   line-height: 75px;
@@ -19,8 +20,8 @@
 }
 #header .header_item:hover {
   cursor: pointer;
-  background-color: #f8f8f8;
-  color: #000000;
+  background-color: #3c3c3c;;
+  color: #fff;
   font-weight: 600;
 }
 

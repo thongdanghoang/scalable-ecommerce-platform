@@ -5,6 +5,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { BiMap } from 'react-icons/bi';
 import {BsFillCreditCardFill, BsLayoutTextWindowReverse} from 'react-icons/bs'
 
+
 export default function UserProfilePage() {
     const location = useLocation();
 
@@ -19,21 +20,21 @@ export default function UserProfilePage() {
                                     Nguyễn Trần Duy Thái
                                 </div>
                                 <div className="account--sidebar-items">
-                                    <NavLink to="/profile-user/information-user" className="account--sidebar-item">
+                                    <NavLink to="/profile-user/information-user" className="account--sidebar-item ">
                                         <AiOutlineUser/>
-                                        Information User
+                                        Tài khoản của tôi
                                     </NavLink>
                                     <NavLink to="/profile-user/address-ship-user" className="account--sidebar-item">
                                         <BiMap/>
-                                        Address Shipping
+                                        Sổ địa chỉ
                                     </NavLink>
                                     <NavLink to="/profile-user/order-user" className="account--sidebar-item">
                                         <BsLayoutTextWindowReverse/>
-                                        Order History
+                                        Đơn hàng của tôi
                                     </NavLink>
                                     <NavLink to="/profile-user/bank-user" className="account--sidebar-item">
                                         <BsFillCreditCardFill/>
-                                        Linked Bank Acount
+                                        Tài khoản ngân hàng
                                     </NavLink>
                                 </div>
                             </div>

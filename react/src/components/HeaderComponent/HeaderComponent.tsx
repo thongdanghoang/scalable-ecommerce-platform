@@ -65,7 +65,7 @@ export default function HeaderComponent({
         <div>
           <div className="menu-item" onClick={handleProfile}>
             <AiOutlineProfile />
-            User Profile
+            Tài khoản của tôi
           </div>
           <div className="menu-item" onClick={() => navigate("/system/admin")}>
             <AiOutlineGroup />
@@ -73,16 +73,16 @@ export default function HeaderComponent({
           </div>
           <div className="menu-item" onClick={handleLogout}>
             <BiLogOut />
-            Logout
+            Đăng xuất
           </div>
         </div>
       ) : (
         <div>
           <div className="menu-item" onClick={() => navigate("/sign-in")}>
-            Login
+            Đăng nhập
           </div>
           <div className="menu-item" onClick={() => navigate("/sign-up")}>
-            Register
+            Đăng kí
           </div>
         </div>
       )}
@@ -97,10 +97,10 @@ export default function HeaderComponent({
           <div className="col-md-6">
             <div className="row">
               <div className="col-md-3 header_logo">TTNTK</div>
-              <div className="col-md-2 header_item text-center">MEN</div>
-              <div className="col-md-2 header_item text-center">WOMEN</div>
+              <div className="col-md-2 header_item text-center">NAM</div>
+              <div className="col-md-2 header_item text-center">NỮ</div>
               <div className="col-md-3 header_item text-center">
-                BEST SELLER
+                KHUYẾN MẠI
               </div>
             </div>
           </div>

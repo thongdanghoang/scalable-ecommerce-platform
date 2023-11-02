@@ -7,26 +7,25 @@ export default function FooterComponent() {
           <div className="row">
             <div className="col-md-3">
               <div className="company">
-                <h4>TTNTK COMPANY</h4>
+                <br/>
+                <h4>CÔNG TY TTNTK</h4>
                 <div>
-                  Address: 50 macarona, blabla town, blabla city, blabla
-                  province
+                  Address: R639+HM2, Khu đô thị mới, Thành phố Qui Nhơn, Bình Định 55117, Việt Nam
                 </div>
               </div>
             </div>
             <div className="col-md-3">
               <div className="about">
-                <h4>About Us</h4>
+                <h4>VỀ TTNTK</h4>
                 <div>
-                  About Our TTNTK Our Style Coupons Accessibility Statement
-                  Shipping Policy Security Policy
+                  Chúng tôi tại TTNTK cam kết cung cấp sự sáng tạo và chất lượng trong từng sản phẩm, giúp khách hàng thể hiện phong cách cá nhân và tự tin.
                 </div>
               </div>
             </div>
             <div className="col-md-3">
               <div className="contact">
                 <div className="row">
-                  <h4>Contact Us</h4>
+                  <h4>LIÊN HỆ</h4>
                 </div>
                 <div className="row mail-icon">
                   <div className="col-md-1">
@@ -56,7 +55,7 @@ export default function FooterComponent() {
           <hr style={{ width: "100%", color: "#fff", fontSize: "5px" }} />
         </div>
         <div className="row connect">
-          <h4>Conncet with us</h4>
+          <h4>Kết nối với chúng tôi</h4>
           <div className="icon-connect">
             <i className="fa-brands fa-facebook"></i>
             <i className="fa-brands fa-tiktok"></i>

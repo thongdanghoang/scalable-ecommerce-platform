@@ -1,8 +1,9 @@
 #FooterComponent .footer {
   height: 365px;
   background: #000000;
-  margin-top: 30px;
+margin-top:30px;
 }
+
 #FooterComponent .row {
   justify-content: space-between;
   align-items: center;
@@ -26,7 +27,7 @@
   color: #fff;
 }
 #FooterComponent .about {
-  margin-top: 26px;
+  margin-top: 50px;
 }
 
 #FooterComponent .map > iframe {

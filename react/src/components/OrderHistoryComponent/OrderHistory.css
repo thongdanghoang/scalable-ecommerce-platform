@@ -1,0 +1,51 @@
+#oder-history .order-history-header{
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    height: 60px;
+    border-bottom: 1px solid #a09f9f;
+}
+#oder-history .order-history-header .info {
+    font-size: 20px;
+    font-weight: 500;
+}
+#oder-history .order-history-header .quantity{
+    opacity: 0.9;
+}
+
+#oder-history .order-history-body {
+    padding: 20px;
+    max-height: 60px;
+    line-height: 100%;
+
+}
+#oder-history .order-history-body .order-history-body-title .order-history-body-item {
+    font-weight: 500;
+}
+
+
+#oder-history .order-history-detail  {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #a09f9f;
+}
+#oder-history .order-history-detail .order-history-detail-item{
+    font-weight: 470;
+}
+#oder-history .order-history-detail .order-history-detail-item  span  {
+    cursor: pointer;
+}
+#oder-history .order-history-detail .order-history-detail-item  span:hover{
+    font-weight: 500;
+}
+#oder-history .order-history-detail .address {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
