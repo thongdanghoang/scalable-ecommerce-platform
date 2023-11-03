@@ -138,9 +138,9 @@ export default function RegisterPage() {
           <input type="submit" value="Register" />
           <div className="signup_link">
             Already a member?{" "}
-            <a href="#" onClick={() => navigate("/sign-in")}>
+            <h5 style={{cursor: 'pointer', color:"balck"}} onClick={() => navigate("/sign-in")}>
               Login
-            </a>
+            </h5>
           </div>
         </form>
         </div>
