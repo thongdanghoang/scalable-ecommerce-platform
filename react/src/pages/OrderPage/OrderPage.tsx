@@ -5,6 +5,7 @@ import { calculatePriceFinal, convertPrice, handleChangeAmountBuy } from "../../
 import { changeAmount, removeProduct } from "../../redux/slides/orderSlide";
 import { clothesOrder } from "../../model/ClothesModal";
 import { useNavigate } from "react-router-dom";
+import { removeItemOutCartService } from "../../services/cartServices";
 
 export default function OrderPage() {
 
@@ -23,7 +24,8 @@ export default function OrderPage() {
     }
   }
 
-  const handleRemoveProductOutCart = (proRemove : clothesOrder) => {
+  const handleRemoveProductOutCart = async (proRemove : clothesOrder) => {
+    await removeItemOutCartService(proRemove.classifyClothes.quantities.quantityId)
     dispatch(removeProduct(proRemove))
   }
 

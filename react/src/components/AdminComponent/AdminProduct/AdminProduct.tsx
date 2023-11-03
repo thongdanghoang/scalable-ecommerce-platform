@@ -23,26 +23,31 @@ export default function AdminProduct() {
   const handleOnCloseDrawer = () => {
     setisOpenDrawer(false);
     form.resetFields();
+    form.setFieldsValue({ 
+      classifyClothes: [1]// reset lại form classifyClothes thành 1 cái
+    });
   }
 
-  const newClothesCustome = useMemo(() => {
+  const newClothesCustome = () => {
     const formClothes = form.getFieldsValue();
     const classifyClothesCustome = formClothes.classifyClothes && formClothes.classifyClothes.map((item : any) => ({
       ...item,
       images: item?.images?.map((file : any) => file?.name)
     }))
     return {...formClothes , classifyClothes : classifyClothesCustome}
-  },[form.getFieldsValue()])
+  }
 
   // Get all clothes via API
 
   const fetchGetAllProducts = async () => {
     const res = await getAllClothes();
     const {products , totalCount} = await res?.json();
+    console.log(totalCount)
     return products
   }
 
-  const {data : listProducts , isLoading : isLoadingProducts} = useQuery(['all-product'], fetchGetAllProducts)
+  const queryAllProducts = useQuery(['all-product'], fetchGetAllProducts , { enabled : false })
+  const {data : listProducts , isLoading : isLoadingProducts} = queryAllProducts
   console.log(listProducts)
 
   // get detail clothes via API
@@ -82,17 +87,24 @@ export default function AdminProduct() {
     }
   ) 
 
-  const {data : newClothes , isSuccess : isSuccessNewClothes} = mutationAddClo;
+  const {data : newClothes , isSuccess : isSuccessNewClothes , isError : isErrorNewClothes} = mutationAddClo;
 
   useEffect(() => {
-    if(isSuccessNewClothes){
+    if(isSuccessNewClothes && newClothes){
       toast.success('add success', toastMSGObject())
+      handleOnCloseDrawer();
+    }else if(isErrorNewClothes){
+      toast.error('error add' , toastMSGObject())
     }
   },[isSuccessNewClothes])
 
   const handleAddNewClothes = () => {
     mutationAddClo.mutate({
-      ...newClothesCustome
+      ...newClothesCustome()
+    },{
+      onSettled : () => {
+        queryAllProducts.refetch();
+      }
     })
   }
 
@@ -316,6 +328,7 @@ export default function AdminProduct() {
                                         <Select.Option value={'M'}>M</Select.Option>
                                         <Select.Option value={'L'}>L</Select.Option>
                                         <Select.Option value={'XL'}>XL</Select.Option>
+                                        <Select.Option value={'2XL'}>XL</Select.Option>
                                       </Select>
                                     </Form.Item>
                                     <Form.Item 
@@ -356,7 +369,7 @@ export default function AdminProduct() {
           <Form.Item noStyle shouldUpdate>
             {() => (
               <Typography style={{marginTop:"30px"}} >
-                <pre>{JSON.stringify(newClothesCustome, null, 2)}</pre>
+                <pre>{JSON.stringify(newClothesCustome(), null, 2)}</pre>
               </Typography>
             )}
           </Form.Item>

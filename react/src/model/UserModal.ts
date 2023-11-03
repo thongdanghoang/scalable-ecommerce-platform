@@ -1,14 +1,15 @@
 export interface UserSystem {
     username : string,
-    password : string,
+    password ?: string,
     role : string,
-    enabled : boolean
+    enabled ?: boolean
 }
 
 export interface User {
     version : number,
     username: string,
     fullName: string,
+    role: string
     email: string,
     phone : string,
     gender : string,

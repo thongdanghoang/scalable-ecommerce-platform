@@ -10,9 +10,7 @@ import { updateUser } from "../../redux/slides/userSlide";
 import { RootState } from "../../redux/store";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
-import { toastMSGObject } from "../../utils/utils";
-import { addOrderToList } from "../../redux/slides/listOrdersSlide";
-import { cloneOrder } from "../../redux/slides/orderSlide";
+import {toastMSGObject } from "../../utils/utils";
 import imagebackground from "../../assets/img/19235643.jpg";
 
 export default function LoginPage() {
@@ -27,16 +25,17 @@ export default function LoginPage() {
   const user = useSelector((state: RootState) => state.user);
   console.log(user);
   const order = useSelector((state: RootState) => state.order);
-  const listOrder = useSelector((state: RootState) => state.listOrder);
   const dispatch = useDispatch();
   const { state: msgAuthen } = useLocation();
 
+  // handle show msg unauthorized
   useEffect(() => {
     if (msgAuthen) {
       toast.error(msgAuthen, toastMSGObject());
     }
   }, [msgAuthen]);
 
+  // handle login 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -57,28 +56,18 @@ export default function LoginPage() {
     e.preventDefault();
     const params = new URLSearchParams(formData);
 
-    console.log(params.toString());
-
     const response = await loginService(params);
     if (response) {
-      console.log(response);
       if (response?.success) {
-        dispatch(updateUser({ ...user, username: response?.data }));
-        const findOrderUnpaid = listOrder.ordersUnpaid.find(
-          (order) => order.username === response?.data
-        );
-        if (findOrderUnpaid) {
-          dispatch(cloneOrder(findOrderUnpaid));
-        } else {
-          dispatch(addOrderToList({ ...order, username: response?.data }));
-          dispatch(cloneOrder({ ...order, username: response?.data }));
-        }
+        const {username , role} = response?.data
+        dispatch(updateUser({ ...user, username, role }));
         navigate("/");
       } else {
         handleShow();
       }
     }
   };
+
 
   const LoginModal = () => {
     return (

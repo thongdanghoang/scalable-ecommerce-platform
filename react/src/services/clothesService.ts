@@ -16,6 +16,7 @@ export async function uploadImageClothes(file : any){
   try {
     const response = await fetch(`${API_URL}/api/products/image/upload`, {
       method: "POST",
+      credentials: 'include',
       body: formData,
     });
     return await response.json();
@@ -40,6 +41,9 @@ export async function createNewClothes(newClothes : any) {
     const response = await fetch(`${API_URL}/api/products`, {
       method: "POST",
       credentials: "include",
+      headers: {
+        'Content-type' : 'application/json'
+      },
       body: JSON.stringify(newClothes)
     });
     return await response.json();

@@ -1,18 +1,23 @@
 import { DeleteOutlined , EditOutlined } from '@ant-design/icons';
-import { Button , Form, Modal } from 'antd';
+import { Button , Form, Input, Modal, Radio } from 'antd';
 import { BiPlus } from 'react-icons/bi';
 import TableComponent from '../../TableComponent/TableComponent';
-import { useState } from 'react';
-import { getAllUserSystemService } from '../../../services/adminServices';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { createUserSystemService, deleteUserSystemService, editUserSystemService, getAllUserSystemService, getUserSystemService } from '../../../services/adminServices';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import './AdminUserSystem.css'
+import { convertDateAndTime, toastMSGObject } from '../../../utils/utils';
+import { UserSystem } from '../../../model/UserModal';
+import { toast } from 'react-toastify';
+import { Action } from '../../../model/ActionModal';
 
 
 export default function AdminUserSystem() {
 
   const [form] = Form.useForm();
-  const [isOpenModal , setisOpenModal] = useState(false) ;
+  const [isOpenModal , setisOpenModal] = useState(false);
   const [rowSelected , setRowSelected] = useState<any>({});
+  const [typeAction , setTypeAction] = useState<Action>(Action.ADD);
 
   // get all user sys
   const fetchGetAllUserSys = async () => {
@@ -21,10 +26,95 @@ export default function AdminUserSystem() {
     return res
   }
 
-  const {data : listUserSyss , isLoading : isLoadingUserSyss} = useQuery(['all-user-sys'], fetchGetAllUserSys)
+  const queryUserSys = useQuery(['all-user-sys'], fetchGetAllUserSys);
+  const {data : listUserSyss , isLoading : isLoadingUserSyss} = queryUserSys
 
-  const handleGetDetailUserSystem = () => {
+  // create UserSystem
 
+  const mutationCreate = useMutation(
+    (data : UserSystem) => createUserSystemService(data),
+    {
+      onSuccess : (res, variables) => {
+        if(res?.status === 409){
+          toast.error(res.message , toastMSGObject());
+        }else{
+          toast.success('Create successfully!' , toastMSGObject());
+          handleCloseModal();
+        }
+      },
+      onError : (error) => {
+        console.log(error)
+      },
+      onSettled: () => {
+        queryUserSys.refetch()
+      }
+    }
+  )
+
+  const handleCreateUserSystem = (valuesInput : UserSystem) => {
+    mutationCreate.mutate(
+      {...valuesInput , enabled : true}
+    )
+  }
+
+  // update UserSystem
+
+  const mutationUpdate = useMutation(
+    (data : UserSystem) => editUserSystemService(data),
+    {
+      onSuccess : (res, variables) => {
+        if(res?.status === 409){
+          toast.error(res.message , toastMSGObject());
+        }else{
+          toast.success('Update successfully!' , toastMSGObject());
+          handleCloseModal();
+        }
+      },
+      onError : (error) => {
+        console.log(error)
+      },
+      onSettled: () => {
+        queryUserSys.refetch()
+      }
+    }
+  )
+
+  const handleUpdateUserSystem = (valuesInput : UserSystem) => {
+    mutationUpdate.mutate(
+      {...valuesInput , enabled : true}
+    )
+  }
+
+  // soft delete UserSystem
+
+  const mutationDisabled = useMutation(
+    (data : string) => deleteUserSystemService(data),
+    {
+      onSuccess : () => {
+        handleCloseModal();
+      },
+      onError : (error) => {
+        console.log(error)
+      },
+      onSettled: () => {
+        queryUserSys.refetch()
+      }
+    }
+  )
+
+  const handleDisabledUserSystem = () => {
+    mutationDisabled.mutate(rowSelected.username)
+  }
+
+  // action modal
+  const handleOpenModal = (typeAction : Action) => {
+    setisOpenModal(true);
+    setTypeAction(typeAction)
+  }
+
+  const handleCloseModal = () => {
+    setisOpenModal(false);
+    form.resetFields();
   }
 
   const renderAction = () => {
@@ -32,11 +122,11 @@ export default function AdminUserSystem() {
     <div>
         <DeleteOutlined
           style={{ color: 'red', fontSize: '30px', cursor: 'pointer' }} 
-          onClick={() => setisOpenModal(true)}
+          onClick={() => handleOpenModal(Action.DELETE)}
         />
         <EditOutlined 
           style={{ color: 'orange', fontSize: '30px', cursor: 'pointer' }} 
-          onClick={handleGetDetailUserSystem}
+          onClick={() => handleOpenModal(Action.UPDATE)}
         />
     </div>
     )
@@ -58,10 +148,21 @@ export default function AdminUserSystem() {
       sorter: (a : any,b : any) => a.sku.length - b.sku.length,
     },
     {
-      title: 'createdDate',
+      title: 'Ngày tạo',
       dataIndex: 'createdAt',
-      render: (text : string) => <span>{text}</span>,
+      render: (createdAt : string) => <span>{convertDateAndTime(createdAt).date}</span>,
       sorter: (a : any,b : any) => a.createdAt - b.createdAt,
+    },
+    {
+      title: 'Ngày chỉnh sửa',
+      dataIndex: 'updatedAt',
+      render: (updatedAt : string) => <span>{convertDateAndTime(updatedAt).date}</span>,
+      sorter: (a : any,b : any) => a.createdAt - b.createdAt,
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'enabled',
+      render: (isActive : boolean) => <span style={{color : `${isActive ? 'rgb(0, 171, 86)' : 'red'}`}}>⬤  {isActive ? 'Enable' : 'Disable'}</span>,
     },
     {
       title: 'Action',
@@ -73,7 +174,7 @@ export default function AdminUserSystem() {
   return (
     <div id='AdminUserSystem'>
       <div className="user-act-btn">
-        <Button type="primary" onClick={() => setisOpenModal(true)}>
+        <Button type="primary" onClick={() => handleOpenModal(Action.ADD)}>
           <BiPlus/>
           Add new user system
         </Button>
@@ -86,7 +187,11 @@ export default function AdminUserSystem() {
           onRow={(record : any, rowIndex : any) => {
               return {
                   onClick : (event : any) => {
-                      setRowSelected(record)
+                    setRowSelected(record);
+                    getUserSystemService(record.username)
+                      .then(res => form.setFieldsValue({
+                        ...res
+                      }))
                   }
               }
           }}                    
@@ -94,17 +199,69 @@ export default function AdminUserSystem() {
 
       <Modal 
         title="Delete User System" 
-        open={isOpenModal} 
-        onCancel={() => setisOpenModal(false)}
+        open={typeAction === Action.DELETE && isOpenModal} 
+        onCancel={handleCloseModal}
         footer = {[
-          <Button type='primary' danger>
+          <Button type='primary' danger onClick={handleDisabledUserSystem}>
             <DeleteOutlined />
             Delete
           </Button>,
           <Button type='primary'>Cancel</Button>
         ]}
       >
-        <p>Bạn muốn xóa vĩnh viễn người dùng hệ thống này ?</p>
+        <p>Bạn muốn vô hiệu hóa chức năng của người dùng hệ thống này ?</p>
+      </Modal>
+
+      <Modal 
+        width={400}
+        title={`${typeAction} User System`} 
+        open={typeAction !== Action.DELETE && isOpenModal} 
+        onCancel={() => setisOpenModal(false)}
+        footer = {null}
+      >
+        <Form 
+            style={{ width: '100%' }} 
+            // layout="vertical"
+            labelAlign="left" 
+            autoComplete="off"
+            form={form}
+            colon={false} // mất dấu : ở label
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            onFinish={typeAction === Action.UPDATE ? handleUpdateUserSystem : handleCreateUserSystem}
+        >
+          <Form.Item
+              label="Username"
+              name="username"
+          >
+            <Input placeholder="username , ex : LeKimTan" />
+          </Form.Item>
+
+          <Form.Item
+              label={typeAction === Action.UPDATE ? "New password" : "Password"}
+              name="password"
+          >
+            <Input.Password placeholder="" />
+          </Form.Item>
+
+          <Form.Item
+              label="Role"
+              name="role"
+          >
+            <Radio.Group>
+              <Radio value={'ROLE_ADMIN'}>ADMIN</Radio>
+              <Radio value={'ROLE_SHOP_OWNER'}>SHOP OWNER</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item
+              label=" "
+          >
+              <Button type="primary" htmlType="submit">
+                {typeAction === Action.ADD ? 'Create' : 'Update'}
+              </Button>
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   )

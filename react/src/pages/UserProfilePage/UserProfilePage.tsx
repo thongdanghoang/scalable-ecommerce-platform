@@ -4,9 +4,13 @@ import './UserProfile.css'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { BiMap } from 'react-icons/bi';
 import {BsFillCreditCardFill, BsLayoutTextWindowReverse} from 'react-icons/bs'
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 export default function UserProfilePage() {
     const location = useLocation();
+    const user = useSelector((state: RootState) => state.user);
+    console.log(user)
 
     return (
         <div id="UserProfilePage">
@@ -16,7 +20,7 @@ export default function UserProfilePage() {
                         <div className="grid__column four-twelfths">
                             <div className="account--sidebar">
                                 <div className="title flex align--center justify--between">
-                                    Nguyễn Trần Duy Thái
+                                    {user.username}
                                 </div>
                                 <div className="account--sidebar-items">
                                     <NavLink to="/profile-user/information-user" className="account--sidebar-item">

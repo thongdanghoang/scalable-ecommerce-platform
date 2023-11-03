@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import userReducer from './slides/userSlide'
 import orderReducer from './slides/orderSlide'
-import listOrderSlice from './slides/listOrdersSlide'
 import {
     persistStore,
     persistReducer,
@@ -24,7 +23,6 @@ const persistConfig = {
 const rootReducer = combineReducers({
     user : userReducer,
     order : orderReducer,
-    listOrder : listOrderSlice
 })
   
 const persistedReducer = persistReducer(persistConfig, rootReducer)

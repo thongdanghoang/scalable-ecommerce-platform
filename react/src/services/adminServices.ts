@@ -59,6 +59,9 @@ export async function createUserSystemService(newUserSys : UserSystem) {
             {
                 method: "POST",
                 credentials: "include",
+                headers:{
+                    'Content-type' : 'application/json'
+                },
                 body: JSON.stringify(newUserSys)
             }
         );
@@ -77,6 +80,9 @@ export async function editUserSystemService(updatedUserSys : UserSystem) {
             {
                 method: "PUT",
                 credentials: "include",
+                headers:{
+                    'Content-type' : 'application/json'
+                },
                 body : JSON.stringify(updatedUserSys)
             }
         );

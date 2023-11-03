@@ -12,10 +12,9 @@ import {
   CartContextType,
 } from "../DefaultComponent/DefaultComponent";
 import { useContext } from "react";
-import { AiOutlineGroup, AiOutlineProfile } from "react-icons/ai";
+import { AiOutlineGroup, AiOutlineLogin, AiOutlineProfile, AiOutlineUserAdd } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
 import { resetOrder } from "../../redux/slides/orderSlide";
-import { updateListOrder } from "../../redux/slides/listOrdersSlide";
 import SearchBarComponent from "../SearchBarComponent/SearchBarComponent";
 
 interface propsHeader {
@@ -34,16 +33,12 @@ export default function HeaderComponent({
   console.log(user);
   const order = useSelector((state: RootState) => state.order);
   console.log(order);
-  const listOrder = useSelector((state: RootState) => state.listOrder);
-  console.log(listOrder);
   const dispatch = useDispatch();
   const cartContext = useContext(CartContext);
   const { isHiddenCart, setIsHiddenCart } = cartContext as CartContextType;
 
   // update listOrderUnpaid
   useEffect(() => {
-    console.log(order);
-    dispatch(updateListOrder(order));
   }, [order.totalQuantity]);
 
   const handleProfile = async () => {
@@ -67,10 +62,12 @@ export default function HeaderComponent({
             <AiOutlineProfile />
             User Profile
           </div>
-          <div className="menu-item" onClick={() => navigate("/system/admin")}>
-            <AiOutlineGroup />
-            Manage System
-          </div>
+          {(user.role === "[ROLE_ADMIN]" || user.role === '[ROLE_SHOP_OWNER]') && (
+            <div className="menu-item" onClick={() => navigate("/system/admin")}>
+              <AiOutlineGroup />
+              Manage System
+            </div>
+          )}
           <div className="menu-item" onClick={handleLogout}>
             <BiLogOut />
             Logout
@@ -79,9 +76,11 @@ export default function HeaderComponent({
       ) : (
         <div>
           <div className="menu-item" onClick={() => navigate("/sign-in")}>
+            <AiOutlineLogin />
             Login
           </div>
           <div className="menu-item" onClick={() => navigate("/sign-up")}>
+            <AiOutlineUserAdd/>
             Register
           </div>
         </div>
@@ -94,17 +93,21 @@ export default function HeaderComponent({
     <div id="header">
       <div className="container">
         <div className="row">
-          <div className="col-md-6">
-            <div className="row">
-              <div className="col-md-3 header_logo">TTNTK</div>
-              <div className="col-md-2 header_item text-center">MEN</div>
-              <div className="col-md-2 header_item text-center">WOMEN</div>
-              <div className="col-md-3 header_item text-center">
-                BEST SELLER
+          <div className="col-md-5">
+            {isShowMenu ? (
+              <div className="row">
+                <div className="col-md-4 header_logo">TTNTK</div>
+                <div className="col-md-2 header_item text-center">MEN</div>
+                <div className="col-md-3 header_item text-center">WOMEN</div>
+                <div className="col-md-3 header_item text-center">
+                  BEST SELLER
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="header_system">Quản lí hệ thống shop TTNTK</div>
+            )}
           </div>
-          <div className="col-md-6">
+          <div className="col-md-7">
             <div className="row" style={{ height: "75px" }}>
               <div className="col-md-7">
                 {isShowSearch && (

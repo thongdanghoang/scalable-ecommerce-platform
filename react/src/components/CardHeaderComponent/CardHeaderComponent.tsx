@@ -6,6 +6,7 @@ import { changeAmount, removeProduct } from '../../redux/slides/orderSlide';
 import { clothesOrder } from '../../model/ClothesModal';
 import OrderEmptyComponent from '../OrderEmptyComponent/OrderEmptyComponent';
 import { useNavigate } from 'react-router-dom';
+import { removeItemOutCartService } from '../../services/cartServices';
 
 
 export default function CardHeaderComponent() {
@@ -13,7 +14,8 @@ export default function CardHeaderComponent() {
     const order = useSelector((state:RootState) => state.order); console.log(order);
     const navigate = useNavigate();
 
-    const handleRemoveProductOutCart = (proRemove : clothesOrder) => {
+    const handleRemoveProductOutCart = async (proRemove : clothesOrder) => {
+        await removeItemOutCartService(proRemove.classifyClothes.quantities.quantityId)
         dispatch(removeProduct(proRemove))
     }
 
@@ -22,7 +24,7 @@ export default function CardHeaderComponent() {
         if(amount){
           dispatch(changeAmount({
             amountChange : amount,
-            orderItem 
+            orderItem
           }))
         }
     }

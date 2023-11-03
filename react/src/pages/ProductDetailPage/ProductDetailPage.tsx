@@ -4,18 +4,19 @@ import "./ProductDetail.css";
 import { useQuery } from "@tanstack/react-query";
 import { getClothesById } from "../../services/clothesService";
 import { calculatePriceFinal, convertPrice, convertToShortNumber, handleChangeAmountBuy, toastMSGObject } from "../../utils/utils";
-import {useState , useEffect, useMemo} from 'react'
+import {useState , useEffect} from 'react'
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector} from "react-redux";
 import { addProductToOrder } from "../../redux/slides/orderSlide";
 import { CartContext, CartContextType } from '../../components/DefaultComponent/DefaultComponent'
 import {useContext} from 'react'
 import { RootState } from "../../redux/store";
+import { createCartService } from "../../services/cartServices";
 
 export default function ProductDetailPage() {
 
-  const [activeSize , setActiveSize] = useState<any>({});
-  const [activeColor , setActiveColor] = useState<any>({});
+  const [activeSize , setActiveSize] = useState<any>({}); console.log(activeSize)
+  const [activeColor , setActiveColor] = useState<any>({}); console.log(activeColor)
   const { state : id }  = useLocation();
   const [amountBuy , setAmountBuy] = useState<number>(1);
   const dispatch = useDispatch();
@@ -53,34 +54,48 @@ export default function ProductDetailPage() {
     }
   }
 
-  const handleAddProductToOrder = () => {
+  const handleAddProductToOrder = async () => {
     if(!user.username){
       navigate('/sign-in' , {state : 'Vui lòng đăng nhập trước khi tạo giỏ hàng'})
     }else if(JSON.stringify(activeSize) === '{}'){
       toast('Please choose size clothes' , toastMSGObject({ theme : 'dark'}));
     }else{
       setIsHiddenCart(true);
+      await createCartService({
+        quantityId : activeSize.quantityId,
+        amount : amountBuy
+      })
       dispatch(addProductToOrder({
-        ...productDetail,
-        classifyClothes : {
-          ...activeColor,
-          quantities : {
-            ...activeSize
-          }
-        },
-        amountBuy
+          ...productDetail,
+          classifyClothes : {
+            ...activeColor,
+            quantities : {
+              ...activeSize
+            }
+          },
+          amountBuy
       }))
-      // console.log({
-      //   ...productDetail,
-      //   classifyClothes : {
-      //     ...activeColor,
-      //     quantities : {
-      //       ...activeSize
-      //     }
-      //   },
-      //   amountBuy
-      // })
     }
+    //   {
+    //     product : {
+    //       id : productDetail.id,
+    //       sku : productDetail.sku,
+    //       name : productDetail.name,
+    //       image : productDetail.image,
+    //       price : productDetail.price,
+    //       discount : productDetail.discount,
+    //       numberOfSold : productDetail.numberOfSold,
+    //       rated : productDetail.rate,
+    //       category : productDetail.category
+    //     },
+    //     classification : {
+    //       quantityId : productDetail.classifyClothes.quantities.quantityId,
+    //       sizeName : productDetail.classifyClothes.quantities.sizeName,
+    //       colorName : productDetail.classifyClothes.color
+    //     },
+    //     amount : amountBuy
+    //   }
+    // }
   }
 
   return (

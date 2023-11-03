@@ -7,22 +7,8 @@ import { calculatePriceFinal } from '../../utils/utils'
 
 const initialState: Order = {
     orderItems : [],
-    paymentMethod : '',
-    isPayment : false,
-    addressShip : {} as AddressShipping,
-    // addressShip : {
-    //     fullName : '',
-    //     phone : '',
-    //     province : '',
-    //     district : '',
-    //     ward : '',
-    //     addressDetail : '',
-    //     type : '',
-    //     default : false
-    // },
     totalPrice : 0,
-    totalQuantity : 0,
-    username : ''
+    totalQuantity : 0
 }
 
 export const orderSlice = createSlice({
