@@ -91,7 +91,7 @@ export async function getCategories() {
 }
 
 export async function searchClother(searchText: string) {
-  let params = new URLSearchParams({keyword: searchText});
+  let params = new URLSearchParams({keyword: searchText, limit: "10"});
   try {
     let response = await fetch(
       `${API_URL}/api/products/search?${params.toString()}`,
