@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../redux/slides/userSlide";
 import { RootState } from "../../redux/store";
 import { userRegister } from "../../model/UserModal";
+import fashion from "../../assets/img/woman-and-man-fashion-models-vector-19842053.jpg"
+import logo from "../../assets/img/n3tk-high-resolution-logo-black-transparent.png"
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -49,8 +51,13 @@ export default function RegisterPage() {
   };
 
   return (
-    <div id="RegisterPage" className="background" style={{ height: "100vh" }}>
-      <div className="container">
+    <div id="RegisterPage" className="background " style={{ height: "125vh" }}>
+      <div className="container row">
+        <div className="image-fashion col-md-6">
+          <div className="image-fashion-logo"><img src={logo} alt=""/></div>
+          <div className="image-fashion-fashion"><img src={fashion} alt=""/></div>
+        </div>
+        <div className="register-form col-md-6">
         <h1>Register</h1>
         <form onSubmit={handleSignUp}>
           <div className="form-control">
@@ -131,12 +138,14 @@ export default function RegisterPage() {
           <input type="submit" value="Register" />
           <div className="signup_link">
             Already a member?{" "}
-            <a href="#" onClick={() => navigate("/sign-in")}>
+            <h5 style={{cursor: 'pointer', color:"balck"}} onClick={() => navigate("/sign-in")}>
               Login
-            </a>
+            </h5>
           </div>
         </form>
+        </div>
       </div>
+
     </div>
   );
 }

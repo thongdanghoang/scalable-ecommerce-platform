@@ -46,7 +46,7 @@ export default function AdminProduct() {
     return products
   }
 
-  const queryAllProducts = useQuery(['all-product'], fetchGetAllProducts , { enabled : false })
+  const queryAllProducts = useQuery(['all-product'], fetchGetAllProducts )
   const {data : listProducts , isLoading : isLoadingProducts} = queryAllProducts
   console.log(listProducts)
 
@@ -58,7 +58,7 @@ export default function AdminProduct() {
     return res;
   }
 
-  const {data : product , isSuccess : isSuccessProduct} = useQuery(['all-product',rowSelected.id], fetchGetProductById)
+  const {data : product , isSuccess : isSuccessProduct} = useQuery(['product-detail',rowSelected.id], fetchGetProductById , { enabled : !!rowSelected.id})
 
   useEffect(() => {
     if(isSuccessProduct){

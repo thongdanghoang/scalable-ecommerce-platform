@@ -11,6 +11,7 @@ import {
   CartContext,
   CartContextType,
 } from "../DefaultComponent/DefaultComponent";
+import logo from '../../assets/img/n3tk-high-resolution-logo-white-transparent.png'
 import { useContext } from "react";
 import { AiOutlineGroup, AiOutlineLogin, AiOutlineProfile, AiOutlineUserAdd } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
@@ -60,7 +61,7 @@ export default function HeaderComponent({
         <div>
           <div className="menu-item" onClick={handleProfile}>
             <AiOutlineProfile />
-            User Profile
+            Tài khoản của tôi
           </div>
           {(user.role === "[ROLE_ADMIN]" || user.role === '[ROLE_SHOP_OWNER]') && (
             <div className="menu-item" onClick={() => navigate("/system/admin")}>
@@ -70,7 +71,7 @@ export default function HeaderComponent({
           )}
           <div className="menu-item" onClick={handleLogout}>
             <BiLogOut />
-            Logout
+            Đăng xuất
           </div>
         </div>
       ) : (

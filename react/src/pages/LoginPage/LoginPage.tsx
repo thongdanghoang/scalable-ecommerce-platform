@@ -1,5 +1,5 @@
 import "./login.css";
-import logo from "../../assets/img/a7239272bd9a46b888560746d9dc475d (1).png";
+import logo from "../../assets/img/n3tk-high-resolution-logo-black-transparent.png";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -116,12 +116,13 @@ export default function LoginPage() {
               <div className="row g-0" style={{ borderRadius: "20px" }}>
                 <div className="col-lg-6">
                   <div className="card-body p-md-5 mx-md-4">
-                    <div className="text-center">
+                    <div className="text-center " >
                       <img
                         src={logo}
                         style={{
-                          width: "50%",
-                          height: "50%",
+                          top: "-30px",
+                          width: "49%",
+                          height: "49%%",
                           position: "relative",
                         }}
                         alt="logo"
@@ -157,7 +158,7 @@ export default function LoginPage() {
 
                       <div className={"text-center customBtn pt-1 mb-3 pb-1"}>
                         <button
-                          className={`btn btn-dark ${
+                          className={`btn btn-outline-dark ${
                             validInput() ? "" : "disabled"
                           }`}
                           type="submit"
@@ -166,7 +167,7 @@ export default function LoginPage() {
                         </button>
                         <button
                           type="button"
-                          className="btn btn-dark mt-4"
+                          className="btn btn-outline-dark mt-4"
                           onClick={handleLogInWithGoogle}
                         >
                           <i className="fa-brands fa-google-plus-g mx-1"></i>
@@ -185,7 +186,7 @@ export default function LoginPage() {
                         <p className="mb-0 me-1">Don't have an account?</p>
                         <button
                           type="button"
-                          className="btn btn-outline-danger"
+                          className="btn btn-outline-dark"
                           onClick={() => navigate("/sign-up")}
                         >
                           Create new

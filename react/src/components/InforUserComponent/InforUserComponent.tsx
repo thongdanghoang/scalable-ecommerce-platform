@@ -135,7 +135,7 @@ export default function InforUserComponent() {
                             <div className="grid__column">Username</div>
                         </div>
                         <div className="grid">
-                            <div className="grid__column hafl-hafl">Full Name</div>
+                            <div className="grid__column hafl-hafl">Họ và tên</div>
                         </div>
                     </div>
                     <div className="grid__column seven-twelfths1 flex align--center">
@@ -161,7 +161,7 @@ export default function InforUserComponent() {
                 </div>
             </div>
             <div className="grid">
-                <div className="grid__column three-twelfths flex align--center">Phone Number</div>
+                <div className="grid__column three-twelfths flex align--center">Số điện thoại</div>
                 <div className="grid__column seven-twelfths ">
                     <div className="form-group">
                         <input
@@ -177,11 +177,11 @@ export default function InforUserComponent() {
                 <div className="grid__column two-twelfths1">
                     {userProfile.phoneVerified ? (
                         <div className='has-verified'>
-                            <p>Verified</p>
+                            <p>Xác nhận</p>
                         </div>
                     ) : (
                         <div className="form-group">
-                            <button onClick={() => handleSendOTP('PHONE')} type="submit" className="btn1 form-control2">Update</button>
+                            <button onClick={() => handleSendOTP('PHONE')} type="submit" className="btn1 form-control2">Thêm</button>
                         </div>
                     )}
                 </div>
@@ -204,11 +204,11 @@ export default function InforUserComponent() {
                 <div className="grid__column two-twelfths1">
                     {userProfile.emailVerified ? (
                         <div className='has-verified'>
-                            <p>Verified</p>
+                            <p>Xác nhận</p>
                         </div>
                     ) : (
                         <div className="form-group">
-                            <button onClick={() => handleSendOTP('EMAIL')} type="submit" className="btn1 form-control2">Update</button>
+                            <button onClick={() => handleSendOTP('EMAIL')} type="submit" className="btn1 form-control2">Thêm</button>
                         </div>
                     )}
                 </div>
@@ -257,15 +257,15 @@ export default function InforUserComponent() {
                                     onChange={handleOnChangeProfile}
                                 />
                             </span>
-                            <span className="label">Others</span>
+                            <span className="label">Khác</span>
                         </label>
                     </div>
                 </div>
             </div>
             <div className="grid mgb--20">
                 <div className="grid__column three-twelfths flex align-center">
-                    <div className="bday-label">Gender
-                        <div className="bday-note">(day/month/year)</div>
+                    <div className="bday-label">Ngày sinh
+                        <div className="bday-note">(ngày/tháng/năm)</div>
                     </div>
                 </div>
                 <div className="grid__column seven-twelfths ">
@@ -290,7 +290,7 @@ export default function InforUserComponent() {
                 </div>
             </div>
             <div className="grid">
-                <div className="grid__column three-twelfths flex align--center">Height</div>
+                <div className="grid__column three-twelfths flex align--center">Chiều cao</div>
                 <div className="grid__column seven-twelfths2 ">
                     <div className="form-group">
                         <input
@@ -305,7 +305,7 @@ export default function InforUserComponent() {
                 </div>
             </div>
             <div className="grid">
-                <div className="grid__column three-twelfths flex align--center">Weight</div>
+                <div className="grid__column three-twelfths flex align--center">Cân nặng</div>
                 <div className="grid__column seven-twelfths2 ">
                     <div className="form-group">
                         <input
@@ -321,7 +321,7 @@ export default function InforUserComponent() {
             </div>
             <div className="grid">
                 <div className="grid__column flex align--center">
-                    <button onClick={handleUpdateProfile} className="btn btn-primary btn-block-sm">Update Profile</button>
+                    <button onClick={handleUpdateProfile} className="btn btn-primary btn-block-sm">Cập nhật tài khoản</button>
                 </div>
             </div>
             <Modal
@@ -359,7 +359,7 @@ export default function InforUserComponent() {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button style={{ width: "100%" }} variant="danger" onClick={handleVerify}>
-                        Confirm
+                        Xác nhận
                     </Button>
                 </Modal.Footer>
             </Modal>

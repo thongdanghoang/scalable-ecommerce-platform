@@ -8,13 +8,13 @@ export function constantMenuProfile(url : string){
 
     switch(key){
         case 'information-user':
-            return 'Information User'
+            return 'Thông tin tài khoản'
         case 'address-ship-user':
-            return 'Address Shipping'
+            return 'Sổ địa chỉ'
         case 'order-user':
-            return 'Order History'
+            return 'Đơn hàng của tôi'
         case 'bank-user':
-            return 'Linked Bank Account'
+            return 'Tài khoản ngân hàng'
     }
 }
 
