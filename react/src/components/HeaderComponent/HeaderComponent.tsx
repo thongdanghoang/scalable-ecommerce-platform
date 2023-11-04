@@ -97,13 +97,27 @@ export default function HeaderComponent({
           <div className="col-md-5">
             {isShowMenu ? (
               <div className="row">
-                <div className="col-md-4 header_logo">TTNTK</div>
-                <div className="col-md-2 header_item text-center">MEN</div>
-                <div className="col-md-3 header_item text-center">WOMEN</div>
-                <div className="col-md-3 header_item text-center">
-                  BEST SELLER
+                <div className="col-md-3 header_logo"><img src={logo} alt=""/></div>
+                <div className="col-md-2 header_item text-center"
+                onClick={() => {
+                  navigate("/product", {state: {category: "nam"}});
+                  navigate(0);
+                }}
+                >
+                  NAM
                 </div>
-              </div>
+                <div className="col-md-2 header_item text-center"
+                onClick={() => {
+                  navigate("/product", {state: {category: "nữ"}});
+                  navigate(0);
+                }}
+                >
+                  NỮ
+                </div>
+                <div className="col-md-3 header_item text-center">
+                  KHUYẾN MẠI
+                </div>
+              </div>             
             ) : (
               <div className="header_system">Quản lí hệ thống shop TTNTK</div>
             )}

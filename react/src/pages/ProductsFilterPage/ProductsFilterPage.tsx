@@ -78,15 +78,8 @@ async function getCategoriesList() {
 
 function ClothesFilterPage(): React.ReactElement {
 
-  let keyword = useLocation().state;
-  if (keyword) {
-    keyword = keyword.searchText;
-    if (!keyword) {
-      keyword = "";
-    }
-  } else {
-    keyword = "";
-  }
+  let navigateState = useLocation().state;
+  let searchText = navigateState?.searchText;
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -192,10 +185,10 @@ function ClothesFilterPage(): React.ReactElement {
     });
   };
 
-  //category
-  const [categoryButtonActivated, setCategoryButtonActivated] = useState("");
+  let categoryState = navigateState?.category;
+  const [categoryButtonActivated, setCategoryButtonActivated] = useState(categoryState ? categoryState as string : "");
   const handleClickCategoryButton = (category: string) => {
-    setCategoryButtonActivated((prev) => {
+    setCategoryButtonActivated((prev: any) => {
       if (prev == category) {
         return "";
       } else {
@@ -367,7 +360,7 @@ function ClothesFilterPage(): React.ReactElement {
     setProductRender([LoadingSpin]);
     const productItems = async () => {
       let filterAndOption: QuerySortParams = {
-        keyword: keyword,
+        keyword: searchText ? searchText : "",
         sort: `${selectedSortOption[0]}:${selectedSortOption[1]}`,
         size: sizeButtonActivated,
         colour: colorButtonActivated,

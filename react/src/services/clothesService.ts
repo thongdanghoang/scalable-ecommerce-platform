@@ -10,6 +10,19 @@ export async function getAllClothes(): Promise<Response | null> {
   return null;
 }
 
+export async function getClothesOrderBy(order: string): Promise<Response | null> {
+  let params = new URLSearchParams({
+    sort: order
+  })
+  try {
+    const response = await fetch(`${API_URL}/api/products/search?${params.toString()}`, {
+      method: "GET",
+    });
+    return response;
+  } catch (error) {}
+  return null;
+}
+
 export async function uploadImageClothes(file : any){
   const formData = new FormData();
   formData.append("file", file);
@@ -82,7 +95,7 @@ export async function getCategories() {
 }
 
 export async function searchClother(searchText: string) {
-  let params = new URLSearchParams({keyword: searchText});
+  let params = new URLSearchParams({keyword: searchText, limit: "10"});
   try {
     let response = await fetch(
       `${API_URL}/api/products/search?${params.toString()}`,

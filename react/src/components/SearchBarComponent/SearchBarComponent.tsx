@@ -1,4 +1,4 @@
-import { AutoComplete } from "antd";
+import { AutoComplete, Button, Input } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { searchClother } from "../../services/clothesService";
@@ -13,13 +13,13 @@ function useDebounce(effect: Function, dependencies: any[], delay: number) {
   }, [callback]);
 }
 
-async function getAvailableClothes(searchText:string): Promise<clothes[]> {
-    let data = await searchClother(searchText);
-    if (data) {
-        return data.products;
-    } else {
-        return [];
-    }
+async function getAvailableClothes(searchText: string): Promise<clothes[]> {
+  let data = await searchClother(searchText);
+  if (data) {
+    return data.products;
+  } else {
+    return [];
+  }
 }
 
 export default function SearchBarComponent() {
@@ -27,17 +27,19 @@ export default function SearchBarComponent() {
   const [searchOptions, setSearchOptions] = useState([] as { value: string }[]);
   const navigate = useNavigate();
 
-  const handleSearch =async () => {
+  const handleSearch = async () => {
     if (searchText.trim().length == 0) {
-        setSearchOptions([]);
+      setSearchOptions([]);
     } else {
-    let clothersList = await getAvailableClothes(searchText);
-    setSearchOptions(clothersList.map(clothes => ({ value: clothes.name})))
+      let clothersList = await getAvailableClothes(searchText);
+      setSearchOptions(
+        clothersList.map((clothes) => ({ value: clothes.name }))
+      );
     }
-  }
+  };
 
   const handleSubmitSearch = async (search: string = searchText) => {
-    navigate("/product", { state: { searchText: search} });
+    navigate("/product", { state: { searchText: search } });
     navigate(0);
   };
 
@@ -45,7 +47,7 @@ export default function SearchBarComponent() {
   return (
     <>
       <form
-      style={{width: "100%"}}
+        style={{ width: "100%" }}
         onSubmit={(event) => {
           event.preventDefault();
           handleSubmitSearch();
@@ -53,12 +55,15 @@ export default function SearchBarComponent() {
       >
         <AutoComplete
           options={searchOptions}
-          style={{ width: "100%" }}
+          style={{ width: "80%", height: "100%" }}
           bordered={false}
           onSelect={(selected) => handleSubmitSearch(selected)}
           onSearch={(text) => setSearchText(text)}
           placeholder="Nhập để tìm kiếm sản phẩm"
         />
+        <button className="header-search-btn border">
+          <i className="header-search-btn-icon fa-solid fa-magnifying-glass"></i>
+        </button>
       </form>
     </>
   );

@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
-import { getAllClothes } from "../../services/clothesService";
+import { getAllClothes, getClothesOrderBy } from "../../services/clothesService";
 import "./Home.css";
 import { clothes } from "../../model/ClothesModal";
 import { Navigate, useNavigate } from "react-router-dom";
 
-async function getProductsList(): Promise<clothes[]> {
-  let response = await getAllClothes();
+async function getProductOrderBy(order: string): Promise<clothes[]> {
+  let response = await getClothesOrderBy(order);
   if (response != null) {
     let jsonList = (await response.json()).products as clothes[];
+    console.table(jsonList);
     jsonList.forEach((product) => {
       product.image =
         "http://localhost:8080/api/products/images/" + product.image;
     });
-    console.table(jsonList);
+    
     return jsonList;
   }
   return [];
@@ -21,16 +22,18 @@ async function getProductsList(): Promise<clothes[]> {
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [productList, setProductList] = useState([] as clothes[]);
+  const [popularProduct, setPopularProduct] = useState([] as clothes[]);
+  const [newestProduct, setNewestProduct] = useState([] as clothes[]);
 
   useEffect(() => {
     const run = async () => {
-      setProductList(await getProductsList());
+      setPopularProduct(await getProductOrderBy("popular:desc"));
+      setNewestProduct(await getProductOrderBy("newest:asc"));
     };
     run();
   }, []);
 
-  const [selectedCategory, setSelectedCategory] = useState("typeCategories");
+  const [selectedCategory, setSelectedCategory] = useState("womenCategories");
 
   return (
     <div className="container" id="homepage">
@@ -84,13 +87,13 @@ export default function HomePage() {
         </div>
         <SliderComponent
           slidesToShow={4}
-          listItems={productList}
+          listItems={popularProduct}
           nameSlider={"clothesFilter"}
         />
       </div>
       <div className="header-preview">
         <div className="content">
-          <a href="">Recommend</a>
+          <a href="">New</a>
         </div>
         <div className="more">
           <a href="">More</a>
@@ -106,7 +109,7 @@ export default function HomePage() {
         </div>
         <SliderComponent
           slidesToShow={4}
-          listItems={productList}
+          listItems={newestProduct}
           nameSlider={"clothesFilter"}
         />
       </div>
@@ -128,7 +131,7 @@ export default function HomePage() {
         </div>
         <SliderComponent
           slidesToShow={4}
-          listItems={productList}
+          listItems={popularProduct}
           nameSlider={"clothesFilter"}
         />
       </div>
