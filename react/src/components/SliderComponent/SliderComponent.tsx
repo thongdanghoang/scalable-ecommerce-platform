@@ -7,6 +7,7 @@ import leftArrow from "../../assets/icons/left-arrow.svg";
 import rightArrow from "../../assets/icons/right-arrow.svg";
 import { getCategories } from "../../services/clothesService";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface PropsSlider {
   slidesToShow: number;
@@ -94,6 +95,7 @@ const products = [
 // ];
 
 export default function SliderComponent(props: PropsSlider) {
+  const navigate = useNavigate();
   const { slidesToShow = 1, listItems = [], nameSlider } = props;
   let [typeCategory, setTypeCategory] = useState([] as any[]);
   useEffect(() => {
@@ -190,25 +192,25 @@ export default function SliderComponent(props: PropsSlider) {
             ))}
           </Slider>
         );
-      case "typeCategories":
-        return (
-          <div className="slider-cate">
-            <Slider
-              className="slider-arrow-custome"
-              {...settings_typeCategories_clothesFilter}
-            >
-              {typeCategory.map((item) => (
-                <div className="typeCagetories">
-                  <img
-                    src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036"
-                    alt=""
-                  />
-                  <div className="title">{item.name}</div>
-                </div>
-              ))}
-            </Slider>
-          </div>
-        );
+      // case "typeCategories":
+      //   return (
+      //     <div className="slider-cate">
+      //       <Slider
+      //         className="slider-arrow-custome"
+      //         {...settings_typeCategories_clothesFilter}
+      //       >
+      //         {typeCategory.map((item) => (
+      //           <div className="typeCagetories">
+      //             <img
+      //               src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036"
+      //               alt=""
+      //             />
+      //             <div className="title">{item.name}</div>
+      //           </div>
+      //         ))}
+      //       </Slider>
+      //     </div>
+      //   );
       case "menCategories":
         return (
           <div className="slider-cate">
@@ -216,7 +218,9 @@ export default function SliderComponent(props: PropsSlider) {
               {typeCategory
                 .filter((item) => item.name.includes("NAM"))
                 .map((item) => (
-                  <div className="typeCagetories">
+                  <div className="typeCagetories"
+                  onClick={() => navigate("/product", {state:{category: item.name.toLowerCase()}})}
+                  >
                     <img
                       src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036"
                       alt=""
@@ -234,7 +238,9 @@ export default function SliderComponent(props: PropsSlider) {
               {typeCategory
                 .filter((item) => item.name.includes("NỮ"))
                 .map((item) => (
-                  <div className="typeCagetories">
+                  <div className="typeCagetories"
+                  onClick={() => navigate("/product", {state:{category: item.name.toLowerCase()}})}
+                  >
                     <img
                       src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036"
                       alt=""

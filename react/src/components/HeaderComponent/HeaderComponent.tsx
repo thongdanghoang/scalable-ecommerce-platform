@@ -98,8 +98,17 @@ export default function HeaderComponent({
           <div className="col-md-6">
             <div className="row">
               <div className="col-md-3 header_logo"><img src={logo} alt=""/></div>
-              <div className="col-md-2 header_item text-center">NAM</div>
-              <div className="col-md-2 header_item text-center">NỮ</div>
+              <div className="col-md-2 header_item text-center"
+              onClick={() => {
+                navigate("/product", {state: {category: "nam"}});
+                navigate(0);
+              }}>NAM</div>
+              <div className="col-md-2 header_item text-center"
+              onClick={() => {
+                navigate("/product", {state: {category: "nữ"}});
+                navigate(0);
+              }}
+              >NỮ</div>
               <div className="col-md-3 header_item text-center">
                 KHUYẾN MẠI
               </div>
