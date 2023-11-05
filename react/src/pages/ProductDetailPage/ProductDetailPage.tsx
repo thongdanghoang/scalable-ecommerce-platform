@@ -54,7 +54,7 @@ export default function ProductDetailPage() {
     }
   }
 
-  const handleAddProductToOrder = async () => {
+  const handleAddProductToOrder = async (isRedirectPayment : boolean) => {
     if(!user.username){
       navigate('/sign-in' , {state : 'Vui lòng đăng nhập trước khi tạo giỏ hàng'})
     }else if(JSON.stringify(activeSize) === '{}'){
@@ -75,6 +75,7 @@ export default function ProductDetailPage() {
           },
           amountBuy
       }))
+      isRedirectPayment && navigate('/order')
     }
     //   {
     //     product : {
@@ -96,6 +97,10 @@ export default function ProductDetailPage() {
     //     amount : amountBuy
     //   }
     // }
+  }
+
+  const handleBuyNow = async () => {
+    await handleAddProductToOrder(true);
   }
 
   return (
@@ -214,11 +219,19 @@ export default function ProductDetailPage() {
             </div>
           </div>
           <div className="product-submit">
-            <button onClick={handleAddProductToOrder} type="button" className="btn btn-primary">
+            <button 
+              onClick={() => handleAddProductToOrder(false)} 
+              type="button" 
+              className="btn btn-primary"
+            >
               <i className="fa-solid fa-cart-plus "></i>
               Thêm vào giỏ hàng
             </button>
-            <button type="button" className="btn btn-secondary">
+            <button 
+              onClick={handleBuyNow} 
+              type="button" 
+              className="btn btn-secondary"
+            >
               Mua ngay
             </button>
           </div>

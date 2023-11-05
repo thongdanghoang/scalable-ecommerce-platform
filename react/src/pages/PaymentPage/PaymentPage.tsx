@@ -4,7 +4,7 @@ import type { CollapseProps } from "antd";
 import { Collapse, Modal, Tag } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { calculatePriceFinal, convertPrice } from "../../utils/utils";
+import { calculatePriceFinal, convertPrice, toastMSGObject } from "../../utils/utils";
 import { getAddressShipsByUser } from "../../services/userService";
 import { useQuery } from "@tanstack/react-query";
 import { AddressShipping } from "../../model/UserModal";
@@ -14,6 +14,7 @@ import { checkoutInfoService, checkoutService } from "../../services/checkoutSer
 import { useNavigate } from "react-router-dom";
 import { OrderCheckout } from "../../model/OrderModal";
 import { paymentImage } from "../../utils/constants";
+import { toast } from "react-toastify";
 
 export default function PaymentPage() {
 
@@ -62,40 +63,44 @@ export default function PaymentPage() {
   //handle checkout order api
 
   const handleCheckoutOrder = () => {
-    console.log({
-      addressId : addressShipSelect.id,
-      paymentMethod,
-      deliveryMethodDto : "STANDARD_DELIVERY"
-    })
-    // checkoutService({
-    //   addressId : addressShipSelect.id,
-    //   paymentMethod,
-    //   deliveryMethodDto : "STANDARD_DELIVERY"
-    // })
-    //   .then(res => {
-    //     console.log(res);
-    //     navigate('/payment/success' , 
-    //       { state : {
-    //         orderCheckout : {
-    //           ...orderCheckout,
-    //           paymentMethod,
-    //           deliveryMethod : orderCheckout?.availableDeliveryMethods && orderCheckout?.availableDeliveryMethods[0]
-    //         } , 
-    //         addressShipSelect
-    //       } }
-    //     )
-    //   })
-
-    navigate('/payment/success' , 
-      { state : {
-        orderCheckout : {
-          ...orderCheckout,
-          paymentMethod,
-          deliveryMethod : orderCheckout?.availableDeliveryMethods && orderCheckout?.availableDeliveryMethods[0]
-        } , 
-        addressShipSelect
-      } }
-    )
+    if(!addressShipSelect){
+      toast('Hiện tại sổ địa chỉ của bạn đang trống', toastMSGObject({theme : 'dark'}))
+    }else{
+      console.log({
+        addressId : addressShipSelect.id,
+        paymentMethod,
+        deliveryMethodDto : "STANDARD_DELIVERY"
+      })
+      // checkoutService({
+      //   addressId : addressShipSelect.id,
+      //   paymentMethod,
+      //   deliveryMethodDto : "STANDARD_DELIVERY"
+      // })
+      //   .then(res => {
+      //     console.log(res);
+      //     navigate('/payment/success' , 
+      //       { state : {
+      //         orderCheckout : {
+      //           ...orderCheckout,
+      //           paymentMethod,
+      //           deliveryMethod : orderCheckout?.availableDeliveryMethods && orderCheckout?.availableDeliveryMethods[0]
+      //         } , 
+      //         addressShipSelect
+      //       } }
+      //     )
+      //   })
+  
+      navigate('/payment/success' , 
+        { state : {
+          orderCheckout : {
+            ...orderCheckout,
+            paymentMethod,
+            deliveryMethod : orderCheckout?.availableDeliveryMethods && orderCheckout?.availableDeliveryMethods[0]
+          } , 
+          addressShipSelect
+        } }
+      )
+    }
   }
 
   const CollapseItem = () => {
@@ -111,7 +116,7 @@ export default function PaymentPage() {
               <div className="d-flex justify-content-between">
                 <div className="payment-product-quantity">{item.amountBuy} x</div>
                 <div className="payment-product-info"> {item.name}</div>
-                <div className="payment-product-price">{calculatePriceFinal(item.price , item.discount)}</div>
+                <div className="payment-product-price">{convertPrice(calculatePriceFinal(item.price , item.discount))}</div>
               </div>
             ))}
           </>
@@ -132,6 +137,8 @@ export default function PaymentPage() {
       />
     );
   };
+
+  console.log(addressShipSelect)
 
   return (
     <div className="container" id="payment-page">
@@ -172,23 +179,32 @@ export default function PaymentPage() {
         <div className="col-md-3">
           <LoadingComponent isloading={!isSuccessListAddressShip}>
             <div className="payment-address">
-              <div className="payment-address-header">
+              {!addressShipSelect ? (
                 <div>
-                  <span>Giao tới</span>
+                  <div>Hiện tại sổ địa chỉ của bạn trống</div>
+                  <div onClick={() => navigate('/profile-user/address-ship-user')} >Thêm địa chỉ mới tại đây</div>
                 </div>
-                <div className="change-address" onClick={() => setIsOpenModalAddress(true)}>Thay đổi</div>
-              </div>           
-              <div>
-                <div className="payment-customer-info">
-                  <div className="customer-name">{addressShipSelect?.fullName}</div>
-                  <span>|</span>
-                  <div className="customer-phone">{addressShipSelect?.phone?.replace('+84', '0')}</div>
-                </div>
-                <div className="payment-customer-address">
-                  <Tag color="green">{addressShipSelect?.type}</Tag>
-                  {`${addressShipSelect?.addressDetail} , ${addressShipSelect?.ward} , ${addressShipSelect?.district?.split('-')[0]} , ${addressShipSelect?.province?.split('-')[0]}`}
-                </div>
-              </div>
+              ) : (
+                <>
+                  <div className="payment-address-header">
+                    <div>
+                      <span>Giao tới</span>
+                    </div>
+                    <div className="change-address" onClick={() => setIsOpenModalAddress(true)}>Thay đổi</div>
+                  </div>           
+                  <div>
+                    <div className="payment-customer-info">
+                      <div className="customer-name">{addressShipSelect?.fullName}</div>
+                      <span>|</span>
+                      <div className="customer-phone">{addressShipSelect?.phone?.replace('+84', '0')}</div>
+                    </div>
+                    <div className="payment-customer-address">
+                      <Tag color="green">{addressShipSelect?.type}</Tag>
+                      {`${addressShipSelect?.addressDetail} , ${addressShipSelect?.ward} , ${addressShipSelect?.district?.split('-')[0]} , ${addressShipSelect?.province?.split('-')[0]}`}
+                    </div>
+                  </div>              
+                </>
+              )}
             </div>
           </LoadingComponent>
           <div className="payment-bill">
@@ -255,7 +271,7 @@ export default function PaymentPage() {
           ))}
           <div className="redirect-profile">
             Bạn muốn giao hàng đến địa chỉ khác?
-            <span> Thêm địa chỉ mới tại đây</span>
+            <span onClick={() => navigate('/profile-user/address-ship-user')}> Thêm địa chỉ mới tại đây</span>
           </div>
         </div>
       </Modal>

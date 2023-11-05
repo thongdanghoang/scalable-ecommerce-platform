@@ -7,7 +7,6 @@ import { OrderCheckout } from "../../model/OrderModal";
 import { AddressShipping } from "../../model/UserModal";
 import { clothesCart } from "../../model/ClothesModal";
 import { convertPrice } from "../../utils/utils";
-import { API_URL } from "../../utils/constants";
 
 interface orderSuccess {
   orderCheckout : OrderCheckout,
