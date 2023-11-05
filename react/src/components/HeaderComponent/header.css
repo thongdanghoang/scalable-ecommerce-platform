@@ -4,12 +4,15 @@
 }
 
 #header .header {
-  height: 75px;
+  height: 90px;
   background-color: #231f20;
 }
 #header .header_logo img {
   max-width: 56%;
   max-height: 97%;
+}
+#header .header_item{
+  max-height: 75px;
 }
 #header .header_item ,
 #header .header_system{

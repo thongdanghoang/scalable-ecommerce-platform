@@ -115,7 +115,7 @@ export default function HeaderComponent({
                   NỮ
                 </div>
                 <div className="col-md-3 header_item text-center">
-                  KHUYẾN MẠI
+                  BÁN CHẠY
                 </div>
               </div>             
             ) : (
