@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { formatVietnamesePhone, getListDistricts, getListProvincesCity, getListWards, toastMSGObject} from '../../utils/utils';
 import { getAddressShipsByUser , createAddressShip, updateAddressShip, deleteAddressShip } from '../../services/userService';
 import { AddressShipping } from '../../model/UserModal';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import AddressShipItem from './AddressShipItem';
 

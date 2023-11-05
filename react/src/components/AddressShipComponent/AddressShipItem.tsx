@@ -3,10 +3,12 @@ import { AddressShipping } from '../../model/UserModal'
 import './Address.css'
 import { useLocation } from 'react-router-dom'
 import { Button } from 'antd'
+import {SetStateAction , Dispatch} from 'react'
 
 interface AddressShipItemProps extends AddressShipping {
     handleShowDetailAddressShip ?: (address : AddressShipping) => void
     handleDeleteAddressShip ?: (idAddressShip : number) => void
+    setAddressShipSelect ?: Dispatch<SetStateAction<AddressShipping>>
 }
 
 export default function AddressShipItem(props : AddressShipItemProps) {
@@ -23,13 +25,31 @@ export default function AddressShipItem(props : AddressShipItemProps) {
         type,
         default : isDefault,
         handleDeleteAddressShip,
-        handleShowDetailAddressShip
+        handleShowDetailAddressShip,
+        setAddressShipSelect
     } = props
     const location = useLocation();
     const renderBtn = () => {
         if(location.pathname === '/order/payment'){
             return (
-                <Button type='primary' className={isDefault ? `btn-address__default` : `btn-address`}>Giao đến địa chỉ này</Button>
+                <Button 
+                    type='primary' 
+                    className={isDefault ? `btn-address__default` : `btn-address`}
+                    onClick={() => setAddressShipSelect && setAddressShipSelect({
+                        id,
+                        version,
+                        fullName,
+                        phone,
+                        province,
+                        district,
+                        ward,
+                        addressDetail,
+                        type,
+                        default : isDefault
+                    })}
+                >
+                    Giao đến địa chỉ này
+                </Button>
             )
         }else{
             return(

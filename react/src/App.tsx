@@ -25,11 +25,13 @@ function App() {
   
   // handle login with google 
   useEffect(() => {
-    profileService()
-      .then(res => {
-        dispatch(updateUser(res.data));
-        toast.success('Login with google successfully!', toastMSGObject())
-      })
+    if(!user.username){
+      profileService()
+        .then(res => {
+          dispatch(updateUser(res.data));
+          //toast.success('Login with google successfully!', toastMSGObject())
+        })
+    }
   },[])
 
   // handle get cart by user

@@ -1,4 +1,4 @@
-import {API_URL} from '../utils/constants'
+const API_URL = import.meta.env.VITE_API_URL
 
 export async function getCartService() {
     try {
