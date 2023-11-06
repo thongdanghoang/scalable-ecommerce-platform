@@ -21,7 +21,9 @@ const DefaultComponent: React.FC<{ children: ReactNode }> = ({
   return (
     <CartContext.Provider value={{isHiddenCart , setIsHiddenCart}}>
       <ToastContainer/>
-      {locate.pathname !== '/system/admin' ? (
+      {locate.pathname !== '/system/admin' &&
+       locate.pathname !== '/order/payment' &&
+       locate.pathname !== '/payment/success' ? (
         <>
           <HeaderComponent />
           {children}
