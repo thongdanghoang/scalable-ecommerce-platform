@@ -7,7 +7,7 @@ import { OrderCheckout } from "../../model/OrderModal";
 import { AddressShipping } from "../../model/UserModal";
 import { clothesCart } from "../../model/ClothesModal";
 import { convertPrice } from "../../utils/utils";
-import { paymentName } from "../../utils/constants";
+import { API_URL, paymentName } from "../../utils/constants";
 
 interface orderSuccess {
   orderCheckout: OrderCheckout;
@@ -81,7 +81,7 @@ export default function PaymentSuccessPage() {
               <div className="payment-order-image col-md-2">
                 <div className="image-product">
                   <img
-                    src={`http://localhost:8080/api/products/images/${item.product.image}`}
+                    src={`${API_URL}/api/products/images/${item.product.image}`}
                     alt=""
                     style={{ maxWidth: "100%", maxHeight: "100%" }}
                   />

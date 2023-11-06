@@ -5,6 +5,7 @@ import "./Home.css";
 import { clothes } from "../../model/ClothesModal";
 import { Navigate, useNavigate } from "react-router-dom";
 import banner from "../../assets/img/banner.png"
+import { API_URL } from "../../utils/constants";
 
 async function getProductOrderBy(order: string): Promise<clothes[]> {
   let response = await getClothesOrderBy(order);
@@ -13,7 +14,7 @@ async function getProductOrderBy(order: string): Promise<clothes[]> {
     console.table(jsonList);
     jsonList.forEach((product) => {
       product.image =
-        "http://localhost:8080/api/products/images/" + product.image;
+        `${API_URL}/api/products/images/` + product.image;
     });
     
     return jsonList;

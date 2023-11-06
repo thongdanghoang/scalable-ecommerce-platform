@@ -12,6 +12,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import { toastMSGObject } from '../../../utils/utils';
 import { Action } from '../../../model/ActionModal';
+import { API_URL } from '../../../utils/constants';
 
 export default function AdminProduct() {
 
@@ -76,7 +77,7 @@ export default function AdminProduct() {
           images : classify.images.map((img : string) => ({
             uid : -1,
             name : img,
-            url : `http://localhost:8080/api/products/images/${img}`
+            url : `${API_URL}/api/products/images/${img}`
           }))
         }))
       })
@@ -86,7 +87,7 @@ export default function AdminProduct() {
   // get all categories 
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/products/categories')
+    fetch(`${API_URL}/api/products/categories`)
       .then(res => res.json())
       .then(data => setListCate(data))
   },[])
