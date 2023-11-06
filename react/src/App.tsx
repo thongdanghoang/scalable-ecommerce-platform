@@ -21,6 +21,7 @@ import { Role } from './model/UserModal'
 import HomePage from './pages/HomePage/HomePage'
 import PrivateRouter from './routes/PrivateRouter'
 import { ToastContainer } from 'react-toastify'
+import { API_URL } from './utils/constants'
 
 function App() {
   const order = useSelector((state: RootState) => state.order);
@@ -59,7 +60,7 @@ function App() {
         sku : item.product.sku,
         classifyClothes : {
           color : item.classification.colorName,
-          images : [`http://localhost:8080/api/products/images/${item.product.image}`],
+          images : [`${API_URL}/api/products/images/${item.product.image}`],
           quantities : {
             quantityId : item.classification.quantityId,
             size : item.classification.sizeName            

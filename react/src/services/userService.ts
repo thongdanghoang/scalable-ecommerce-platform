@@ -1,4 +1,4 @@
-import { UserProfileUpdated, userRegister , AddressShipping } from "../model/UserModal";
+import { UserProfileUpdated, userRegister, AddressShipping } from "../model/UserModal";
 const API_URL = import.meta.env.VITE_API_URL
 
 export async function loginService(formLogin: URLSearchParams) {
@@ -119,7 +119,7 @@ export async function verifyEmailService(email: string, code: string | null) {
         headers: {
           "Content-Type": "application/json",
         },
-        body : JSON.stringify(code ? {email,code} : {email})
+        body: JSON.stringify(code ? { email, code } : { email })
       }
     );
 
@@ -141,7 +141,7 @@ export async function verifyPhoneService(phone: string, code: string | null) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(code ? {phone,code} : {phone})
+        body: JSON.stringify(code ? { phone, code } : { phone })
       }
     );
 
@@ -188,7 +188,7 @@ export async function resetPassword(
   let requestParam = new URLSearchParams({ newPassword: newPassword });
   try {
     const res = await fetch(
-      `http://localhost:8080/api/user/auth/reset-password?${requestParam.toString()}`,
+      `${API_URL}/api/user/auth/reset-password?${requestParam.toString()}`,
       {
         method: "POST",
         credentials: "include",
@@ -197,9 +197,9 @@ export async function resetPassword(
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-  newPassword: newPassword,
-  confirmPassword: newPassword
-})
+          newPassword: newPassword,
+          confirmPassword: newPassword
+        })
       }
     );
     return res;
@@ -210,11 +210,11 @@ export async function resetPassword(
 }
 
 export async function createAddressShip(
-  addressShip : AddressShipping
+  addressShip: AddressShipping
 ) {
   try {
     const res = await fetch(
-      `http://localhost:8080/api/user/address`,
+      `${API_URL}/api/user/address`,
       {
         method: "POST",
         credentials: "include",
@@ -231,10 +231,10 @@ export async function createAddressShip(
   return null;
 }
 
-export async function getAddressShipsByUser(){
+export async function getAddressShipsByUser() {
   try {
     const res = await fetch(
-      `http://localhost:8080/api/user/address`,
+      `${API_URL}/api/user/address`,
       {
         method: "GET",
         credentials: "include",
@@ -251,18 +251,18 @@ export async function getAddressShipsByUser(){
 }
 
 export async function updateAddressShip(
-  addressShip : AddressShipping
-){
+  addressShip: AddressShipping
+) {
   try {
     const res = await fetch(
-      `http://localhost:8080/api/user/address/update`,
+      `${API_URL}/api/user/address/update`,
       {
         method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body : JSON.stringify(addressShip)
+        body: JSON.stringify(addressShip)
       }
     );
     return await res.json();
@@ -273,18 +273,18 @@ export async function updateAddressShip(
 }
 
 export async function deleteAddressShip(
-  idAddressShip : number
-){
+  idAddressShip: number
+) {
   try {
     const res = await fetch(
-      `http://localhost:8080/api/user/address`,
+      `${API_URL}/api/user/address`,
       {
         method: "DELETE",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body : JSON.stringify({id : idAddressShip})
+        body: JSON.stringify({ id: idAddressShip })
       }
     );
     return await res.json();
@@ -294,10 +294,10 @@ export async function deleteAddressShip(
   return null;
 }
 
-export async function LogInWithGoogle(){
+export async function LogInWithGoogle() {
   try {
     const res = await fetch(
-      `http://localhost:8080/login/oauth2/code/google/authorize`,
+      `${API_URL}/login/oauth2/code/google/authorize`,
       {
         method: "GET",
         headers: {

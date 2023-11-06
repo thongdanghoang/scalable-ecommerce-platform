@@ -1,4 +1,4 @@
-export const API_URL = 'http://localhost:8080'
+export const API_URL = 'https://thongdanghoang.id.vn/swp391'
 
 export const paymentImage = (key : string) => {
     switch (key) {

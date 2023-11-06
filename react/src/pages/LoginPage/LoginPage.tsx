@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 import {toastMSGObject } from "../../utils/utils";
 import imagebackground from "../../assets/img/19235643.jpg";
+import { API_URL } from "../../utils/constants";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -103,7 +104,7 @@ export default function LoginPage() {
 
   const handleLogInWithGoogle = async () => {
     window.location.href =
-      "http://localhost:8080/login/oauth2/code/google/authorize";
+      `${API_URL}/login/oauth2/code/google/authorize`;
   };
 
   return (
