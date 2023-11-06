@@ -46,7 +46,7 @@ export default function FooterComponent() {
             <div className="col-md-3">
               <div className="map">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3874.584811996225!2d109.21427447704302!3d13.803884352025454!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x316f6bf778c80973%3A0x8a7d0b5aa0af29c7!2zxJDhuqFpIGjhu41jIEZQVCBRdXkgTmjGoW4!5e0!3m2!1svi!2s!4v1695972730591!5m2!1svi!2s"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3874.32986872797!2d109.17271307487015!3d13.819220186579695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x316f14c59b5e713f%3A0xec90efbee0c9d2b9!2zNTAgTmd1eeG7hW4gSHXhu4csIFRULiBUdXkgUGjGsOG7m2MsIFR1eSBQaMaw4bubYywgQsOsbmggxJDhu4tuaCwgVmlldG5hbQ!5e0!3m2!1sen!2s!4v1699259709205!5m2!1sen!2s"
                   loading="lazy"
                 ></iframe>
               </div>

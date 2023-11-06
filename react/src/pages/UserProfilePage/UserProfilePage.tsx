@@ -3,7 +3,8 @@ import { constantMenuProfile } from '../../utils/utils'
 import './UserProfile.css'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { BiMap } from 'react-icons/bi';
-import {BsFillCreditCardFill, BsLayoutTextWindowReverse} from 'react-icons/bs'
+import {BsLayoutTextWindowReverse} from 'react-icons/bs'
+import {CiLock} from 'react-icons/ci'
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 
@@ -46,9 +47,9 @@ export default function UserProfilePage() {
                                         <BsLayoutTextWindowReverse/>
                                         Đơn hàng của tôi
                                     </NavLink>
-                                    <NavLink to="/profile-user/bank-user" className="account--sidebar-item">
-                                        <BsFillCreditCardFill/>
-                                        Tài khoản ngân hàng
+                                    <NavLink to="/profile-user/change-password" className="account--sidebar-item">
+                                        <CiLock/>
+                                        Đổi mật khẩu
                                     </NavLink>
                                 </div>
                             </div>

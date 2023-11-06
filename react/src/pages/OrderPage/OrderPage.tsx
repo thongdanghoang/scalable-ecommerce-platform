@@ -7,6 +7,7 @@ import { clothesOrder } from "../../model/ClothesModal";
 import { useNavigate } from "react-router-dom";
 import { removeItemOutCartService } from "../../services/cartServices";
 import { toast } from "react-toastify";
+import CartEmptyComponent from "../../components/CartEmptyComponent/CartEmptyComponent";
 
 export default function OrderPage() {
 
@@ -57,7 +58,7 @@ export default function OrderPage() {
               <div>Số lượng</div>
               <div>Tổng tiền</div>
             </div>
-            {order.orderItems.map((item) => (
+            {order.orderItems.length !== 0 ? order.orderItems.map((item) => (
               <div className="items-available">
                 <div className="cart-item">
                   <div className="cart-product">
@@ -126,7 +127,11 @@ export default function OrderPage() {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="cart-empty">
+                <CartEmptyComponent/>
+              </div>
+            )}
             
           </div>
         </div>

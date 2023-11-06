@@ -2,7 +2,7 @@ import { Outlet, useNavigate, useParams } from "react-router-dom"
 import "./OrderHistory.css"
 import { getOrdersByUserService } from "../../services/orderServices";
 import { useQuery } from "@tanstack/react-query";
-import { convertPrice } from "../../utils/utils";
+import { convertDateAndTime, convertPrice } from "../../utils/utils";
 export default function OrderHistoryComponent() {
   const navigate = useNavigate();
   const {code} = useParams();
@@ -40,7 +40,7 @@ export default function OrderHistoryComponent() {
             {ordersByUser ? ordersByUser.map((order : any) => (
               <div className="row">
                 <div className="col-md-2 order-history-detail-item"> <span onClick={() => navigate(`/profile-user/order-user/${order.orderId}`)}>{`#0000${order.orderId}`}</span></div>
-                <div className="col-md-2 order-history-detail-item">12:50 24/10/2023</div>
+                <div className="col-md-2 order-history-detail-item">{order.createdAt}</div>
                 <div className="col-md-2 order-history-detail-item address">
                 {`${order.address.addressDetail} , ${order.address.ward} , ${order.address.district?.split('-')[0]} , ${order.address.province?.split('-')[0]}`}
                 </div>

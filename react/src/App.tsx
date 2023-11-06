@@ -21,6 +21,7 @@ import { Role } from './model/UserModal'
 import HomePage from './pages/HomePage/HomePage'
 import PrivateRouter from './routes/PrivateRouter'
 import { ToastContainer } from 'react-toastify'
+import ChangePasswordComponent from './components/ChangePasswordComponent/ChangePasswordComponent'
 
 function App() {
   const order = useSelector((state: RootState) => state.order);
@@ -125,7 +126,8 @@ function App() {
                   <Route path='address-ship-user' element={<AddressShipComponent/>} /> 
                   <Route path='order-user' element={<OrderHistoryComponent/>} >
                     <Route path=':code' element={<MyOrderPage/>}/>
-                  </Route>                
+                  </Route>    
+                  <Route path='change-password' element={<ChangePasswordComponent/>} />            
                 </>
               ) : <Fragment/>}
               

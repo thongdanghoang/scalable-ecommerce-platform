@@ -22,8 +22,10 @@ body {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+  padding-bottom: 10px;
   font-weight: bold;
   border-radius: 4px 4px 0 0;
+  border-bottom: 1px solid #e4e4e4;
 }
 #order-page .items-available {
   margin-bottom: 20px;
@@ -129,4 +131,8 @@ body {
   color: #fff;
   padding: 8px 15px;
   border-radius: 5px;
+}
+
+#order-page .cart-empty{
+  height: 450px;
 }
