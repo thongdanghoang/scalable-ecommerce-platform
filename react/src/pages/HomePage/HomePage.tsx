@@ -4,6 +4,7 @@ import { getAllClothes, getClothesOrderBy } from "../../services/clothesService"
 import "./Home.css";
 import { clothes } from "../../model/ClothesModal";
 import { Navigate, useNavigate } from "react-router-dom";
+import banner from "../../assets/img/banner.png"
 
 async function getProductOrderBy(order: string): Promise<clothes[]> {
   let response = await getClothesOrderBy(order);
@@ -41,7 +42,7 @@ export default function HomePage() {
         <SliderComponent
           slidesToShow={1}
           listItems={[
-            "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/slider_2.jpg?1696059235970",
+              banner,
             "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/slider_3.jpg?1696059235970",
             "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/slider_4.jpg?1696059235970",
             "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/slider_5.jpg?1696059235970",

@@ -120,17 +120,7 @@ export default function InforUserComponent() {
         <>
             <div className="form-info">
                 <div className="grid">
-                    <div className="grid__column two-twelfths">
-                        <div className="form-info-user">
-                            <div className="avatar_icon">
-                                <i className="far fa-user"></i>
-                                <div className="edit">
-                                    <i className="fas fa-pencil-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="grid__column three-twelfths1">
+                    <div className="grid__column three-twelfths">
                         <div className="grid1">
                             <div className="grid__column">Username</div>
                         </div>
@@ -138,8 +128,8 @@ export default function InforUserComponent() {
                             <div className="grid__column hafl-hafl">Họ và tên</div>
                         </div>
                     </div>
-                    <div className="grid__column seven-twelfths1 flex align--center">
-                        <div className="form-group">
+                    <div className="grid__column seven-twelfths flex align--center">
+                        <div className="form-group mt-4">
                             <input
                                 type="text"
                                 name="username"

@@ -2,9 +2,12 @@
   background: #f8f8f8;
   min-height: 90vh;
 }
-
+#UserProfilePage .two-twelfths-avatar{
+    width: 30%;
+    align-items: center;
+}
 #UserProfilePage .account--sidebar {
-    border-right: 1px solid #d9d9d9;
+
     box-sizing: border-box;
   }
 #UserProfilePage .grid {
@@ -36,22 +39,29 @@
     box-sizing: border-box;
     min-height: 1px;
     vertical-align: top;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
     padding: 9px;
+
   }
   
 #UserProfilePage .four-twelfths {
     width: 33.33%;
   }
   
-#UserProfilePage .title {
+#UserProfilePage .title-infouser {
     font-size: 30px;
     font-weight: 700;
     font: 1.987em sans-serif;
-    margin: 2rem 0 1rem;
-    align-items: center;
+    margin: 1rem 0 1rem;
+    margin-right: 20px;
   }
+#UserProfilePage .title-infouser-name{
+    font-size: 30px;
+    font-weight: 700;
+    font: 1.987em sans-serif;
+    margin: 1rem 0 1rem;
+    margin-right: 20px;
+    text-align: center;
+}
 
 #UserProfilePage  a[aria-current="page"] {
   background-color: #000000 !important;
@@ -245,3 +255,6 @@
     cursor: pointer;
     background-color: #000;
   }
+.form-info-user-avatar{
+    margin-left: 137px;
+}

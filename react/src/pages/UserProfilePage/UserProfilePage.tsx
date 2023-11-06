@@ -20,7 +20,17 @@ export default function UserProfilePage() {
                     <div className="grid">
                         <div className="grid__column four-twelfths">
                             <div className="account--sidebar">
-                                <div className="title flex align--center justify--between">
+                                <div className="grid__column two-twelfths-avatar">
+                                    <div className="form-info-user-avatar">
+                                        <div className="avatar_icon">
+                                            <i className="far fa-user"></i>
+                                            <div className="edit">
+                                                <i className="fas fa-pencil-alt"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="title-infouser-name flex align--center justify--between">
                                     {user.username}
                                 </div>
                                 <div className="account--sidebar-items">
@@ -45,7 +55,7 @@ export default function UserProfilePage() {
                         </div>
                         <div className="grid__column eigth-twelfths">
                             <div id="infotab">
-                                <div className="title">{constantMenuProfile(location.pathname)}</div>
+                                <div className="title-infouser">{constantMenuProfile(location.pathname)}</div>
                                 <Outlet/>
                             </div>
                         </div>

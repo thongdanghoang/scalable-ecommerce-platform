@@ -10,19 +10,18 @@ import { convertPrice } from "../../utils/utils";
 import { paymentName } from "../../utils/constants";
 
 interface orderSuccess {
-  orderCheckout : OrderCheckout,
-  addressShipSelect : AddressShipping
+  orderCheckout: OrderCheckout;
+  addressShipSelect: AddressShipping;
 }
 
 export default function PaymentSuccessPage() {
-
-  const {state} = useLocation();
-  const user = useSelector((state:RootState) => state.user);
-  const {orderCheckout , addressShipSelect} = state as orderSuccess
+  const { state } = useLocation();
+  const user = useSelector((state: RootState) => state.user);
+  const { orderCheckout, addressShipSelect } = state as orderSuccess;
   const navigate = useNavigate();
 
   console.log(orderCheckout);
-  console.log(addressShipSelect)
+  console.log(addressShipSelect);
 
   return (
     <div className="payment-success container" id="payment-success">
@@ -57,7 +56,9 @@ export default function PaymentSuccessPage() {
               <h3>Địa chỉ nhận hàng</h3>
               <p>{addressShipSelect.fullName}</p>
               <p>{addressShipSelect.addressDetail}</p>
-              <p>{`${addressShipSelect?.ward} , ${addressShipSelect?.district?.split('-')[0]} , ${addressShipSelect?.province?.split('-')[0]}`}</p>
+              <p>{`${addressShipSelect?.ward} , ${
+                addressShipSelect?.district?.split("-")[0]
+              } , ${addressShipSelect?.province?.split("-")[0]}`}</p>
               <p>{addressShipSelect.phone}</p>
             </div>
           </div>
@@ -75,20 +76,25 @@ export default function PaymentSuccessPage() {
         <div className="col-md-5 payment">
           <h6>Đơn hàng </h6>
           <hr />
-          {orderCheckout.items.map((item : clothesCart) => (
+          {orderCheckout.items.map((item: clothesCart) => (
             <div className="payment-order-bill-info row">
-              <div className="payment-oder-image col-md-2">
-                <img
-                  src={`http://localhost:8080/api/products/images/${item.product.image}`}
-                  alt=""
-                  style={{ maxWidth: "100%", maxHeight: "100%" }}
-                />
+              <div className="payment-order-image col-md-2">
+                <div className="image-product">
+                  <img
+                    src={`http://localhost:8080/api/products/images/${item.product.image}`}
+                    alt=""
+                    style={{ maxWidth: "100%", maxHeight: "100%" }}
+                  />
+                  <div className="amount">x1</div>
+                </div>
               </div>
-              <div className="payment-order-name-color col-md-8">
-                <p>{item.product.name}</p>
-                <p>{`${item.classification.colorName}/${item.classification.sizeName}`}</p>
+              <div className="payment-order-name-color col-md-7">
+                <div>{item.product.name}</div>
+                <div>{`${item.classification.colorName}/${item.classification.sizeName}`}</div>
               </div>
-              <div className="payment-order-price col-md-2">{convertPrice(item.product.price)}</div>
+              <div className="payment-order-price col-md-3 text-end">
+                {convertPrice(item.product.price)}
+              </div>
             </div>
           ))}
           <hr />
@@ -115,8 +121,14 @@ export default function PaymentSuccessPage() {
         </div>
         <button
           className="btn btn-warning"
-          style={{ maxWidth: "200px", margin: "0 auto", marginTop: "20px" }}
-          onClick={() => navigate('/')}
+          style={{
+            maxWidth: "200px",
+            margin: "0 auto",
+            marginTop: "20px",
+            backgroundColor: "#000000",
+            color: "#fff",
+          }}
+          onClick={() => navigate("/")}
         >
           Tiếp tục mua hàng
         </button>
