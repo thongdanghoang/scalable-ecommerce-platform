@@ -3,11 +3,11 @@
   margin-bottom: 30px;
 }
 .title {
-  padding-left: 15px;
+  max-width: 140px;
   margin-top: 10px;
-  align-items: center;
   font-weight: 600;
   font-size: 14px;
+  margin-right: 40px;
 }
 .menu > .slick-slider {
   margin-left: 30px;
@@ -15,6 +15,7 @@
 }
 .typeCagetories {
   padding-top: 10px;
+  text-align: center;
 }
 .typeCagetories:hover {
   transform: translate(0px, -10px);

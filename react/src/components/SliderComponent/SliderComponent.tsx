@@ -9,6 +9,7 @@ import { getCategories } from "../../services/clothesService";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+
 interface PropsSlider {
   slidesToShow: number;
   listItems: Array<any>;
@@ -170,7 +171,7 @@ export default function SliderComponent(props: PropsSlider) {
         return (
           <Slider {...settings_nameSlider} className="slider-img-bg">
             {listItems?.map((item) => (
-              <img src={item} alt="" width={500} height={385} />
+              <img src={item} alt="" width="100%" height={500} />
             ))}
           </Slider>
         );

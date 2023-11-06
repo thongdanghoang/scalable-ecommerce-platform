@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./email-input.css";
 import { OTPPart } from "../OTPPart/OTPPart";
 import { forgetPasswordByMail } from "../../../services/userService";
+import logo from "../../../assets/img/n3tk-high-resolution-logo-black-transparent.png"
 
 
 export default function EmailInputPart() {
@@ -46,10 +47,10 @@ export default function EmailInputPart() {
     return (
       <div id="email-form">
         <div className="main">
-          <div className="container a-container d-flex flex-column" id="a-container">
+          <div className="container d-flex flex-column" id="a-container">
             <form className="form">
-              <h2 className="form_title title ">Enter your email</h2>
-              <div>
+              <div className="form_title  ">Enter your email</div>
+              <div >
                 <input
                   value={email}
                   className={`form__input form-control ${
@@ -70,7 +71,7 @@ export default function EmailInputPart() {
                 SEND EMAIL
               </button>
             </form>
-            <div>
+            <div className="form-login-register">
             <a href="/sign-in" className="m-3">Sign in</a>
             <a href="/sign-up" className="m-3">Resister</a>
             </div>
