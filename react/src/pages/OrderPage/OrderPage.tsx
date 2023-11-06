@@ -72,7 +72,7 @@ export default function OrderPage() {
                         <span>{`${item.classifyClothes.color}/${item.classifyClothes.quantities.size}`}</span>
                       </div>
                       <div className="cart-item-price">
-                        <span className="price">{convertPrice(calculatePriceFinal(item.price , item.discount))}</span>
+                        <span className="price">{convertPrice(item.price)}</span>
                       </div>
                       <div className="cart-qty">
                         <div className="cart-select">
@@ -114,7 +114,7 @@ export default function OrderPage() {
                         </div>
                       </div>
                       <div className="cart-total-item-price">
-                        <span>{convertPrice(calculatePriceFinal(item.price , item.discount) * item.amountBuy)}</span>
+                        <span>{convertPrice(item.price * item.amountBuy)}</span>
                         <div className="remove-cart" onClick={() => handleRemoveProductOutCart(item)}>
                           <i className="fa-solid fa-trash-can"></i>
                         </div>

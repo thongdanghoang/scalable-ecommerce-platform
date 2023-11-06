@@ -163,7 +163,7 @@ export function formatVietnamesePhone(phoneNumber : string) {
 }
 
 export function calculatePriceFinal ( firstPrice : number , discount : number) {
-    return discount === 0 ? firstPrice : firstPrice - (firstPrice * discount) / 100
+    return discount === 0 ? firstPrice : firstPrice - (firstPrice * discount)
 }
 
 export const handleChangeAmountBuy = (action : string , amountChange : number , amountRemain : number) => {

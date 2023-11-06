@@ -101,7 +101,7 @@ export default function CardHeaderComponent() {
                                             </button>
                                         </div>
                                         <div className="product-select-total">
-                                            Tổng cộng: <span className="highlight">{convertPrice(calculatePriceFinal(item.price , item.discount) * item.amountBuy)}</span>
+                                            Tổng cộng: <span className="highlight">{convertPrice(item.price * item.amountBuy)}</span>
                                         </div>
                                     </div>
                                 </div>

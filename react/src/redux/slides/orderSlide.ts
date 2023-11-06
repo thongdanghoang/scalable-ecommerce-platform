@@ -17,7 +17,6 @@ export const orderSlice = createSlice({
   reducers: {
     addProductToOrder : (state , action : PayloadAction<clothesOrder> ) => {
         const orderItem = action.payload;
-        const itemPriceFinal = calculatePriceFinal(orderItem.price , orderItem.discount)
         const orderClothes = state.orderItems.find(
             item => item.id === orderItem.id 
             && item.classifyClothes.color === orderItem.classifyClothes.color
@@ -28,7 +27,7 @@ export const orderSlice = createSlice({
         }else{
             state.orderItems.push(orderItem)
         }
-        state.totalPrice = state.totalPrice + itemPriceFinal * orderItem.amountBuy;
+        state.totalPrice = state.totalPrice + orderItem.price * orderItem.amountBuy;
         state.totalQuantity = state.totalQuantity + orderItem.amountBuy;
         // state.totalPrice = 3000;
         // state.totalQuantity = 4;
@@ -46,8 +45,7 @@ export const orderSlice = createSlice({
                 return total + item.amountBuy;
             }, 0);
             state.totalPrice = state.orderItems.reduce((total, item) => {
-                const itemPriceFinal = calculatePriceFinal(item.price, item.discount);
-                return total + itemPriceFinal * item.amountBuy;
+                return total + item.price * item.amountBuy;
             }, 0);
         }
     },
@@ -59,11 +57,10 @@ export const orderSlice = createSlice({
             || item.classifyClothes.quantities.size !== orderItem.classifyClothes.quantities.size
         );
         state.orderItems = [...orderItemsFilter];
-        const itemPriceFinal = calculatePriceFinal(orderItem.price , orderItem.discount);
         // state.totalPrice = 0;
         // state.totalQuantity = 0;
         state.totalQuantity -= orderItem.amountBuy;
-        state.totalPrice -= (itemPriceFinal * orderItem.amountBuy);
+        state.totalPrice -= (orderItem.price * orderItem.amountBuy);
     },
     cloneOrder : (state , action : PayloadAction<Order>) => {
         Object.assign(state, action.payload);

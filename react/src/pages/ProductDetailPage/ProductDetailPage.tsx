@@ -144,7 +144,7 @@ export default function ProductDetailPage() {
                     <span>{convertPrice(productDetail?.price)}</span>
                   </div>
                   <div className="discount-price">
-                    <span>{`-${productDetail?.discount}%`}</span>
+                    <span>{`-${productDetail?.discount*100}%`}</span>
                   </div>                
                 </>
               )}
