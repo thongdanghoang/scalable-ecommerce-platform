@@ -44,9 +44,9 @@ export function OTPPart({ email }: any) {
           id="otp-form"
           className="d-flex align-items-center justify-content-center"
         >
-          <div className="container shadow p-3 mb-5 rounded d-flex flex-column align-items-center justify-content-around">
-            <h3 className="text-center">We have sent OTP code to your email</h3>
-            <p>Please check email and enter otp code here</p>
+          <div className="container p-3 mb-5 rounded d-flex flex-column align-items-center justify-content-around">
+            <div className="text-center">Chúng tôi đã gửi mã OTP đến email của bạn</div>
+            <p>Vui lòng kiểm tra email của bạn và nhập mã OTP tại đây</p>
             <OTPInput
               value={otp}
               onChange={(event) => {
@@ -63,7 +63,7 @@ export function OTPPart({ email }: any) {
               containerStyle={"otp-input-container"}
               inputStyle={"otp-input shadow"}
             />
-            <div>
+            <div >
               <p className="text-danger">{validateOTP.invalidOTP ? validateOTP.errorOTPMessage: null}</p>
               <button
                 className={`btn btn-primary ${
@@ -71,7 +71,7 @@ export function OTPPart({ email }: any) {
                 }`}
                 onClick={() => handleSubmit()}
               >
-                Submit
+                Xác nhận
               </button>
             </div>
           </div>
