@@ -1,3 +1,9 @@
+export enum Role {
+    '[ROLE_USER]' = '[ROLE_USER]',
+    '[ROLE_ADMIN]' = '[ROLE_ADMIN]',
+    '[ROLE_SHOP_OWNER]' = '[ROLE_SHOP_OWNER]'
+}
+
 export interface UserSystem {
     username : string,
     password ?: string,

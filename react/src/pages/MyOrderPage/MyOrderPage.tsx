@@ -1,9 +1,24 @@
-import {useNavigate } from "react-router-dom";
+import {useNavigate, useParams } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import './MyOrder.css'
+import { getDetailOrderService } from "../../services/orderServices";
+import { useQuery } from "@tanstack/react-query";
+import { paymentName } from "../../utils/constants";
+import { PaymentMethod } from "../../model/OrderModal";
 
 export default function MyOrderPage() {
     const navigate = useNavigate();
+    const {code} = useParams();
+
+
+    const fetchGetDetailOrder = async (context : any) => {
+        const orderId = context?.queryKey[1]
+        const res = await getDetailOrderService(orderId);
+        return res.data
+      }
+    
+    const {data : orderDetail , isSuccess : isSuccessOrderDetail} = useQuery(['detail-order',code], fetchGetDetailOrder )
+    
 
     return (<>
         <div className="myOrderorderPage" id="myOrderorderPage">
@@ -22,14 +37,15 @@ export default function MyOrderPage() {
             </div>
             <div className="myOrderorderPage-body-content row">
                 <div className="col-md-5 myOrderorderPage-body-content-address">
-                    <div className='name'>Nguyễn Trần Duy Thái</div>
-                    <div className='address'>Địa chỉ: <span>abc, Huyện Châu Thành, Long An, aaaaaaaa
-                        aaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaaa</span></div>
-                    <div>Số điện thoại: <span>0981642567</span></div>
+                    <div className='name'>{orderDetail?.address.fullName}</div>
+                    <div className='address'>Địa chỉ: <span>
+                        {`${orderDetail?.address.addressDetail} , ${orderDetail?.address.ward} , ${orderDetail?.address.district?.split('-')[0]} , ${orderDetail?.address.province?.split('-')[0]}`}
+                    </span></div>
+                    <div>Số điện thoại: <span>{orderDetail?.phone?.replace('+84', '0')}</span></div>
                 </div>
                 <div className="col-md-1"></div>
                 <div className="col-md-5 myOrderorderPage-body-content-payment">
-                    <div>Thanh toán khi nhận hàng (COD)</div>
+                    <div>{paymentName(orderDetail?.paymentMethod as PaymentMethod)}</div>
                 </div>
             </div>
             <div className="order-product-header row">

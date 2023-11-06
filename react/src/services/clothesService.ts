@@ -64,6 +64,21 @@ export async function createNewClothes(newClothes : any) {
   return null;
 }
 
+export async function updateClothes(updatedClothes : any) {
+  try {
+    const response = await fetch(`${API_URL}/api/products`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        'Content-type' : 'application/json'
+      },
+      body: JSON.stringify(updatedClothes)
+    });
+    return await response.json();
+  } catch (error) {}
+  return null;
+}
+
 export async function sortAndFilterClothes(
   params: URLSearchParams,
 ): Promise<any> {

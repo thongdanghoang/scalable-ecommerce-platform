@@ -8,9 +8,9 @@ export interface Order {
 }
 
 export enum PaymentMethod {
-    MOMO = 'Thanh toán bằng MOMO',
-    CASH_ON_DELIVERY = 'Thanh toán khi nhận hàng (COD)',
-    CREDIT_CARD = 'Thanh toán bằng thẻ tín dụng (CREDIT CARD)'
+    MOMO = 'MOMO',
+    CASH_ON_DELIVERY = 'CASH_ON_DELIVERY',
+    CREDIT_CARD = 'CREDIT_CARD'
 }
 
 export interface OrderCheckout {

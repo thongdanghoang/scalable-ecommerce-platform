@@ -7,6 +7,7 @@ import { OrderCheckout } from "../../model/OrderModal";
 import { AddressShipping } from "../../model/UserModal";
 import { clothesCart } from "../../model/ClothesModal";
 import { convertPrice } from "../../utils/utils";
+import { paymentName } from "../../utils/constants";
 
 interface orderSuccess {
   orderCheckout : OrderCheckout,
@@ -63,7 +64,7 @@ export default function PaymentSuccessPage() {
           <div className="row">
             <div className="col-md-6 payment-method">
               <h3>Phương thức thanh toán</h3>
-              <p>{orderCheckout.paymentMethod}</p>
+              <p>{orderCheckout.paymentMethod && paymentName(orderCheckout.paymentMethod)}</p>
             </div>
             <div className="col-md-6 payment-ship-method">
               <h3>Phương thức vận chuyển</h3>

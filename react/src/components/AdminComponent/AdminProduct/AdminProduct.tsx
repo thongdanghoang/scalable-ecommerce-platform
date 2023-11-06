@@ -5,12 +5,13 @@ import './AdminProduct.css'
 import { BiPlus } from 'react-icons/bi';
 import TableComponent from '../../TableComponent/TableComponent';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { createNewClothes, getAllClothes, getClothesById, uploadImageClothes } from '../../../services/clothesService';
+import { createNewClothes, getAllClothes, getClothesById, updateClothes, uploadImageClothes } from '../../../services/clothesService';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { UploadOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import { toastMSGObject } from '../../../utils/utils';
+import { Action } from '../../../model/ActionModal';
 
 export default function AdminProduct() {
 
@@ -19,6 +20,12 @@ export default function AdminProduct() {
   const [rowSelected , setRowSelected] = useState<any>({});
   const [value, setValue] = useState('');
   const [listCate , setListCate] = useState<any[]>([]);
+  const [typeAction , setTypeAction] = useState<Action>(Action.ADD);
+
+  const handleOnOpenDrawer = (action : Action) => {
+    setisOpenDrawer(true);
+    setTypeAction(action);
+  }
 
   const handleOnCloseDrawer = () => {
     setisOpenDrawer(false);
@@ -58,17 +65,23 @@ export default function AdminProduct() {
     return res;
   }
 
-  const {data : product , isSuccess : isSuccessProduct} = useQuery(['product-detail',rowSelected.id], fetchGetProductById , { enabled : !!rowSelected.id})
+  const {data : productDetail , isSuccess : isSuccessProduct} = useQuery(['product-detail-1',rowSelected.id], fetchGetProductById , { enabled : !!rowSelected.id})
 
   useEffect(() => {
     if(isSuccessProduct){
-      form.setFieldsValue({...product})
+      form.setFieldsValue({
+        ...productDetail,
+        classifyClothes : productDetail.classifyClothes.map((classify : any) => ({
+          ...classify,
+          images : classify.images.map((img : string) => ({
+            uid : -1,
+            name : img,
+            url : `http://localhost:8080/api/products/images/${img}`
+          }))
+        }))
+      })
     }
   },[isSuccessProduct])
-
-  const handleGetDetailProduct = () => {
-    setisOpenDrawer(true);
-  }
 
   // get all categories 
 
@@ -84,27 +97,52 @@ export default function AdminProduct() {
     async (data : any) => {
       const res = await createNewClothes(data);
       return res.data
+    },
+    {
+      onSuccess : () => {
+        toast.success('add clothes success', toastMSGObject())
+        handleOnCloseDrawer();
+      },
+      onError : () => {
+        toast.error('add clothes fail' , toastMSGObject())
+      },
+      onSettled : () => {
+        queryAllProducts.refetch();
+      }
     }
   ) 
-
-  const {data : newClothes , isSuccess : isSuccessNewClothes , isError : isErrorNewClothes} = mutationAddClo;
-
-  useEffect(() => {
-    if(isSuccessNewClothes && newClothes){
-      toast.success('add success', toastMSGObject())
-      handleOnCloseDrawer();
-    }else if(isErrorNewClothes){
-      toast.error('error add' , toastMSGObject())
-    }
-  },[isSuccessNewClothes])
 
   const handleAddNewClothes = () => {
     mutationAddClo.mutate({
       ...newClothesCustome()
-    },{
+    })
+  }
+
+  // add new clothes
+
+  const mutationUpdateClo = useMutation(
+    async (data : any) => {
+      const res = await updateClothes(data);
+      return res.data
+    },
+    {
+      onSuccess : () => {
+        toast.success('Update clothes success', toastMSGObject())
+        handleOnCloseDrawer();
+      },
+      onError : () => {
+        toast.error('Update clothes fail' , toastMSGObject())
+      },
       onSettled : () => {
         queryAllProducts.refetch();
       }
+    }
+  ) 
+
+  const handleUpdateClothes = () => {
+    mutationUpdateClo.mutate({
+      id : productDetail.id,
+      ...newClothesCustome()
     })
   }
 
@@ -117,7 +155,7 @@ export default function AdminProduct() {
         />
         <EditOutlined 
           style={{ color: 'orange', fontSize: '30px', cursor: 'pointer' }} 
-          onClick={handleGetDetailProduct}
+          onClick={() => handleOnOpenDrawer(Action.UPDATE)}
         />
     </div>
     )
@@ -187,7 +225,7 @@ export default function AdminProduct() {
   return (
     <div id='AdminProduct'>
       <div className="clo-act-btn">
-        <Button type="primary" onClick={() => setisOpenDrawer(true)}>
+        <Button type="primary" onClick={() => handleOnOpenDrawer(Action.ADD)}>
           <BiPlus/>
           Add new clothes
         </Button>
@@ -208,7 +246,7 @@ export default function AdminProduct() {
 
       {/** form add clothes */}
       <Drawer
-        title="Create a new account"
+        title={typeAction === Action.ADD ? 'Create a new clothes' : 'Update information clothes'}
         width={1100}
         onClose={handleOnCloseDrawer}
         open={isOpenDrawer}
@@ -216,8 +254,11 @@ export default function AdminProduct() {
         extra={
           <Space>
             <Button onClick={handleOnCloseDrawer}>Cancel</Button>
-            <Button onClick={handleAddNewClothes} type="primary">
-              Submit
+            <Button 
+              onClick={typeAction === Action.ADD ? handleAddNewClothes : handleUpdateClothes} 
+              type="primary"
+            >
+              {typeAction.toLocaleLowerCase()}
             </Button>
           </Space>
         }
@@ -226,7 +267,6 @@ export default function AdminProduct() {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           form={form}
-          name="dynamic_form_complex"
           // style={{ maxWidth: 600 }}
           autoComplete="off"
           initialValues={{ classifyClothes: [{}] }}
@@ -328,11 +368,11 @@ export default function AdminProduct() {
                                         <Select.Option value={'M'}>M</Select.Option>
                                         <Select.Option value={'L'}>L</Select.Option>
                                         <Select.Option value={'XL'}>XL</Select.Option>
-                                        <Select.Option value={'2XL'}>XL</Select.Option>
+                                        <Select.Option value={'2XL'}>2XL</Select.Option>
                                       </Select>
                                     </Form.Item>
                                     <Form.Item 
-                                      noStyle name={[subField.name,'quantity']}
+                                      noStyle name={[subField.name,'quantityInStock']}
                                       getValueFromEvent={(event) => {
                                         const value = parseFloat(event.target.value);
                                         return isNaN(value) ? undefined : value;

@@ -4,7 +4,7 @@ import { RootState } from '../../redux/store';
 import { calculatePriceFinal, convertPrice, handleChangeAmountBuy } from '../../utils/utils';
 import { changeAmount, removeProduct } from '../../redux/slides/orderSlide';
 import { clothesOrder } from '../../model/ClothesModal';
-import OrderEmptyComponent from '../OrderEmptyComponent/OrderEmptyComponent';
+import OrderEmptyComponent from '../CartEmptyComponent/CartEmptyComponent';
 import { useNavigate } from 'react-router-dom';
 import { removeItemOutCartService } from '../../services/cartServices';
 
@@ -35,7 +35,7 @@ export default function CardHeaderComponent() {
                 <>
                     <div className="header-card-list">
                         {order.orderItems?.map(item => (
-                            <div className="header-card-product">
+                            <div className="header-card-product" key={item.id}>
                                 <div className="header-card-image-product">
                                     <img
                                         src={item?.classifyClothes?.images[0]}

@@ -2,7 +2,7 @@ import "./Payment.css";
 import { useState , useMemo , useEffect } from "react";
 import type { CollapseProps } from "antd";
 import { Collapse, Modal, Tag } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { calculatePriceFinal, convertPrice, toastMSGObject } from "../../utils/utils";
 import { getAddressShipsByUser } from "../../services/userService";
@@ -12,13 +12,15 @@ import AddressShipItem from "../../components/AddressShipComponent/AddressShipIt
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 import { checkoutInfoService, checkoutService } from "../../services/checkoutServices";
 import { useNavigate } from "react-router-dom";
-import { OrderCheckout } from "../../model/OrderModal";
-import { paymentImage } from "../../utils/constants";
+import { OrderCheckout, PaymentMethod } from "../../model/OrderModal";
+import { paymentImage, paymentName } from "../../utils/constants";
 import { toast } from "react-toastify";
+import { resetOrder } from "../../redux/slides/orderSlide";
 
 export default function PaymentPage() {
 
   const order = useSelector((state:RootState) => state.order); console.log(order);
+  const dispatch = useDispatch();
   const [isOpenModalAddress , setIsOpenModalAddress] = useState(false);
   const [paymentMethod , setPaymentMethod] = useState('CASH_ON_DELIVERY');
   const [addressShipSelect , setAddressShipSelect] = useState<AddressShipping>({} as AddressShipping);
@@ -64,42 +66,43 @@ export default function PaymentPage() {
 
   const handleCheckoutOrder = () => {
     if(!addressShipSelect){
-      toast('Hiện tại sổ địa chỉ của bạn đang trống', toastMSGObject({theme : 'dark'}))
+      toast('🙁 Hiện tại sổ địa chỉ của bạn đang trống', toastMSGObject({theme : 'dark'}))
     }else{
-      console.log({
-        addressId : addressShipSelect.id,
-        paymentMethod,
-        deliveryMethodDto : "STANDARD_DELIVERY"
-      })
-      // checkoutService({
+      // console.log({
       //   addressId : addressShipSelect.id,
       //   paymentMethod,
       //   deliveryMethodDto : "STANDARD_DELIVERY"
       // })
-      //   .then(res => {
-      //     console.log(res);
-      //     navigate('/payment/success' , 
-      //       { state : {
-      //         orderCheckout : {
-      //           ...orderCheckout,
-      //           paymentMethod,
-      //           deliveryMethod : orderCheckout?.availableDeliveryMethods && orderCheckout?.availableDeliveryMethods[0]
-      //         } , 
-      //         addressShipSelect
-      //       } }
-      //     )
-      //   })
+      checkoutService({
+        addressId : addressShipSelect.id,
+        paymentMethod,
+        deliveryMethodDto : "STANDARD_DELIVERY"
+      })
+        .then(() => {
+          toast.success('Thanh toán đơn hàng thành công', toastMSGObject());
+          dispatch(resetOrder());
+          navigate('/payment/success' , 
+            { state : {
+              orderCheckout : {
+                ...orderCheckout,
+                paymentMethod,
+                deliveryMethod : orderCheckout?.availableDeliveryMethods && orderCheckout?.availableDeliveryMethods[0]
+              } , 
+              addressShipSelect
+            } }
+          )
+        })
   
-      navigate('/payment/success' , 
-        { state : {
-          orderCheckout : {
-            ...orderCheckout,
-            paymentMethod,
-            deliveryMethod : orderCheckout?.availableDeliveryMethods && orderCheckout?.availableDeliveryMethods[0]
-          } , 
-          addressShipSelect
-        } }
-      )
+      // navigate('/payment/success' , 
+      //   { state : {
+      //     orderCheckout : {
+      //       ...orderCheckout,
+      //       paymentMethod,
+      //       deliveryMethod : orderCheckout?.availableDeliveryMethods && orderCheckout?.availableDeliveryMethods[0]
+      //     } , 
+      //     addressShipSelect
+      //   } }
+      // )
     }
   }
 
@@ -147,7 +150,7 @@ export default function PaymentPage() {
           <div className="payment-method">
             <div className="payment-text">Chọn hình thức thanh toán</div>
             {orderCheckout?.availablePaymentMethods && 
-            orderCheckout?.availablePaymentMethods.map((availablePayM) => (
+            orderCheckout?.availablePaymentMethods.map((availablePayM : PaymentMethod) => (
               <div className="form-check">
                 <input
                   className="form-check-input"
@@ -158,7 +161,7 @@ export default function PaymentPage() {
                   checked = {paymentMethod === availablePayM}
                 />
                 <img src={paymentImage(availablePayM)} alt="" />
-                <label className="form-check-label">{availablePayM}</label>
+                <label className="form-check-label">{paymentName(availablePayM)}</label>
               </div>
             ))}
           </div>

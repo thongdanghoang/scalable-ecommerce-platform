@@ -11,80 +11,95 @@ import OrderPage from "../pages/OrderPage/OrderPage";
 import PaymentPage from "../pages/PaymentPage/PaymentPage";
 import PaymentSuccessPage from "../pages/PaymentSuccessPage/PaymentSuccessPage";
 import ProductSearchPage from "../pages/ProductSearchPage/ProductSearchPage";
+import { Role } from "../model/UserModal";
 
 export const routes = [
   {
     path: "/",
     page: HomePage,
-    isShowHeader: true,
+    isShowHeaderFooter: true,
+    role: [Role['[ROLE_ADMIN]'] , Role['[ROLE_SHOP_OWNER]'] , Role['[ROLE_USER]']]
   },
   {
     path: "/sign-in",
     page: LoginPage,
-    isShowHeader: false,
+    isShowHeaderFooter: false,
+    role: []
   },
   {
     path: "/sign-up",
     page: RegisterPage,
-    isShowHeader: false,
+    isShowHeaderFooter: false,
+    role: []
   },
   {
     path: "/forgot-password",
     page: ResetPasswordPage,
-    isShowHeader: false,
+    isShowHeaderFooter: false,
+    role: []
   },
   {
     path: "/profile-user",
     page: UserProfilePage,
-    isShowHeader: true,
+    isShowHeaderFooter: true,
+    role: [Role['[ROLE_USER]']]
   },
   {
     path: "/product-detail/:name",
     page: ProductDetailPage,
-    isShowHeader: true,
+    isShowHeaderFooter: true,
+    role: [Role['[ROLE_ADMIN]'] , Role['[ROLE_SHOP_OWNER]'] , Role['[ROLE_USER]']]
   },
   {
     path: "/product",
     page: ProductsFilterPage,
-    isShowHeader: true,
+    isShowHeaderFooter: true,
+    role: [Role['[ROLE_ADMIN]'] , Role['[ROLE_SHOP_OWNER]'] , Role['[ROLE_USER]']]
   },
   {
     path: "/search",
     page: ProductSearchPage,
-    isShowHeader: true
+    isShowHeaderFooter: true,
+    role : [Role['[ROLE_ADMIN]'] , Role['[ROLE_SHOP_OWNER]'] , Role['[ROLE_USER]']]
   },
   {
     path: "/order",
     page: OrderPage,
-    isShowHeader: true,
+    isShowHeaderFooter: true,
+    role: [Role['[ROLE_USER]']]
   },
   {
     path: "/order/payment",
     page: PaymentPage,
-    isShowHeader: true,
+    isShowHeaderFooter: false,
+    role: [Role['[ROLE_USER]']]
   },
   {
     path: "/system/admin",
     page: AdminPage,
-    isShowHeader: true,
+    isShowHeaderFooter: true, // do trong admin có phần header
+    role: [Role['[ROLE_ADMIN]'] , Role['[ROLE_SHOP_OWNER]']]
   },
   {
     path: "/payment/success",
     page: PaymentSuccessPage,
-    isShowHeader: true,
+    isShowHeaderFooter: false,
+    role: [Role['[ROLE_USER]']]
   },
   // {
   //     path: '/profile-user/information-user',
   //     page: InforUserComponent,
-  //     isShowHeader: true
+  //     isShowHeaderFooter: true
   // },
   // {
   //     path: '/profile-user/order-user',
   //     page: OrderHistoryComponent,
-  //     isShowHeader: true
+  //     isShowHeaderFooter: true
   // },
   {
     path: "*",
     page: NotFoundPage,
+    isShowHeaderFooter: false,
+    role : [Role['[ROLE_ADMIN]'] , Role['[ROLE_SHOP_OWNER]'] , Role['[ROLE_USER]']]
   },
 ];

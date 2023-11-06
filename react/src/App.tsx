@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate} from 'react-router-dom'
 import { routes } from './routes'
 import DefaultComponent from './components/DefaultComponent/DefaultComponent'
 import {Fragment} from 'react'
@@ -17,10 +17,14 @@ import { RootState } from './redux/store'
 import { getCartService, updateCartService } from './services/cartServices'
 import { cloneOrder } from './redux/slides/orderSlide'
 import { clothesCart, clothesOrder } from './model/ClothesModal'
+import { Role } from './model/UserModal'
+import HomePage from './pages/HomePage/HomePage'
+import PrivateRouter from './routes/PrivateRouter'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
   const order = useSelector((state: RootState) => state.order);
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.user); console.log(user)
   const dispatch = useDispatch();
   
   // handle login with google 
@@ -28,7 +32,11 @@ function App() {
     if(!user.username){
       profileService()
         .then(res => {
-          dispatch(updateUser(res.data));
+          if(res.status === 401){
+            return;
+          }else{
+            dispatch(updateUser(res.data));
+          }
           //toast.success('Login with google successfully!', toastMSGObject())
         })
     }
@@ -70,7 +78,7 @@ function App() {
   }
 
   useEffect(() => {
-    user.username && handleGetCartUser();
+    user.username && user.role === Role['[ROLE_USER]'] && handleGetCartUser();
   },[user.username])
 
   // handle update cart 
@@ -83,7 +91,7 @@ function App() {
   }
 
   useEffect(() => {
-    if(user.username){
+    if(user.username && user.role === Role['[ROLE_USER]']){
       const handle = setTimeout(async () => {
         await updateCartService({
           items : handleMapCart()
@@ -100,12 +108,15 @@ function App() {
       <Routes>
         {routes.map((route) => {
           const Page = route.page
-          const Layout = route.isShowHeader ? DefaultComponent : Fragment
+          const Layout = route.isShowHeaderFooter ? DefaultComponent : Fragment
           return (
             <Route key={route.path} path={route.path} element={
-                <Layout>
-                  <Page />
-                </Layout>
+                <PrivateRouter role={route.role}>
+                  <ToastContainer/>
+                  <Layout>
+                      <Page />
+                  </Layout>
+                </PrivateRouter>
               } 
             >
               {route.path === '/profile-user' ? (

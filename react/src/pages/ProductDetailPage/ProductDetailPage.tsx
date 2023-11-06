@@ -30,7 +30,7 @@ export default function ProductDetailPage() {
     return res
   }
 
-  const { data : productDetail , isSuccess} = useQuery(['product-detail',id] , fetchGetProductById)
+  const { data : productDetail , isSuccess} = useQuery(['product-detail-0',id] , fetchGetProductById)
   console.log(productDetail);
 
   const handleGetSizesByColor = (classify : any) => {
@@ -236,6 +236,7 @@ export default function ProductDetailPage() {
             </button>
           </div>
           <div className="product-describe">
+            {productDetail?.description}
             <h5>Mô tả sản phẩm</h5>
             <ul>
               <li>Sơ mi nam vải lụa nến lịch lãm, nam tính</li>

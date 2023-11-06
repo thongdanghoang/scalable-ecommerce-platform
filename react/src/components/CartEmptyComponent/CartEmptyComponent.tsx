@@ -1,7 +1,6 @@
-import React from 'react'
-import './OrderEmpty.css'
+import './CartEmpty.css'
 
-export default function OrderEmptyComponent() {
+export default function CartEmptyComponent() {
   return (
     <div id='orderEmpty'>
       <img src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/blank_cart.svg?1697103821" alt="" />
