@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./Order.css";
 import { RootState } from "../../redux/store";
-import { calculatePriceFinal, convertPrice, handleChangeAmountBuy } from "../../utils/utils";
+import { calculatePriceFinal, convertPrice, handleChangeAmountBuy, toastMSGObject } from "../../utils/utils";
 import { changeAmount, removeProduct } from "../../redux/slides/orderSlide";
 import { clothesOrder } from "../../model/ClothesModal";
 import { useNavigate } from "react-router-dom";
 import { removeItemOutCartService } from "../../services/cartServices";
+import { toast } from "react-toastify";
 
 export default function OrderPage() {
 
@@ -32,6 +33,8 @@ export default function OrderPage() {
   const handleRedirectPayment = () => {
     if(!user.username){
       navigate('/sign-in' , {state : 'Vui lòng đăng nhập trước khi thanh toán'})
+    }else if(order.orderItems.length === 0){
+      toast('Giỏ hàng của bạn đang trống , ko thể tiến hành thanh toán', toastMSGObject());
     }else{
       navigate('/order/payment')
     }
