@@ -32,20 +32,20 @@ export function ResetPasswordPart() {
         0
       ) {
         currentPassword.isValid = false;
-        currentPassword.errPasswordMessage = "Password is empty";
+        currentPassword.errPasswordMessage = "Mật khẩu không được trống";
         return currentPassword;
       }
 
       if (currentPassword.newPassword.length < 6) {
         currentPassword.isValid = false;
         currentPassword.errPasswordMessage =
-          "Password must have at least 6 characters";
+          "Mật khẩu ít nhất có 6 kí tự";
         return currentPassword;
       }
 
       if (currentPassword.newPassword !== currentPassword.repeatPassword) {
         currentPassword.isValid = false;
-        currentPassword.errPasswordMessage = "Password not match";
+        currentPassword.errPasswordMessage = "Mật khẩu không khớp";
         return currentPassword;
       }
 
@@ -82,13 +82,13 @@ export function ResetPasswordPart() {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title>Reset password successfully!</Modal.Title>
+          <Modal.Title>Đặt lại mật khẩu thành công</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Click button below to return sign in page
+          Nhấn vào nút bên dưới để quay lại trang đăng nhập
         </Modal.Body>
         <Modal.Footer>
-          <a className="btn btn-primary" href="/sign-in">Return sign in</a>
+          <a className="btn btn-primary" href="/sign-in">Quay về đăng nhập</a>
         </Modal.Footer>
       </Modal>
     </>)
@@ -104,9 +104,9 @@ export function ResetPasswordPart() {
           id="a-container"
         >
           <form className="form">
-            <h2 className="form_title title ">Enter your new password</h2>
+            <div style={{fontSize:'30px', fontWeight:'700', paddingBottom:"50px"}}>Hãy điền mật khẩu mới</div>
             <div className="is-invalid">
-              <label className="text-dark">New password</label>
+              <label className="text-dark " style={{fontSize:'15px', fontWeight:'500', paddingBottom:"5px"}}>Mật khẩu mới</label>
               <input
                 value={password.newPassword}
                 className={`form__input form-control ${
@@ -114,11 +114,11 @@ export function ResetPasswordPart() {
                 }`}
                 name="newPassword"
                 type="password"
-                placeholder="New password"
+                placeholder="Nhập mật khẩu mới"
                 onChange={handleChangePassword}
               />
               <br />
-              <label className="text-dark">Repeat password</label>
+              <label className="text-dark"  style={{fontSize:'15px', fontWeight:'500', paddingBottom:"5px"}}>Xác nhận mật khẩu mới</label>
               <input
                 value={password.repeatPassword}
                 className={`form__input form-control ${
@@ -126,7 +126,7 @@ export function ResetPasswordPart() {
                 }`}
                 name="repeatPassword"
                 type="password"
-                placeholder="Repeat password"
+                placeholder="Nhập lại mật khẩu mới"
                 onChange={handleChangePassword}
               />
               <p>{password.isValid ? "" : password.errPasswordMessage}</p>
@@ -137,7 +137,7 @@ export function ResetPasswordPart() {
               }`}
               onClick={(event) => handleSubmit(event)}
             >
-              SEND EMAIL
+              CHẤP NHẬN
             </button>
           </form>
           <div></div>

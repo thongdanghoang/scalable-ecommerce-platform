@@ -1,10 +1,18 @@
 #otp-form {
   height: 100vh;
-  background-color: whitesmoke;
+    background-image: url("../../../assets/img/login.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    overflow-y: auto;
+
 }
 #otp-form > div {
-  height: 50%;
-  background-color: white;
+  top: 10px;
+    font-size: 30px;
+    font-weight: 700;
+    background-color: rgba(248, 248, 248, 0.68);
 }
 
 #otp-form .otp-input-container {
@@ -33,6 +41,7 @@ input::-webkit-inner-spin-button {
     background-color: whitesmoke;
 }
 #otp-form button {
+    cursor: pointer;
     display: block;
     font-size: 1.2rem;
 
