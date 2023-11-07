@@ -17,6 +17,7 @@ import { AiOutlineGroup, AiOutlineLogin, AiOutlineProfile, AiOutlineUserAdd } fr
 import { BiLogOut } from "react-icons/bi";
 import { resetOrder } from "../../redux/slides/orderSlide";
 import SearchBarComponent from "../SearchBarComponent/SearchBarComponent";
+import { API_URL } from "../../utils/constants";
 
 interface propsHeader {
   isShowMenu?: boolean;
@@ -59,11 +60,21 @@ export default function HeaderComponent({
     <>
       {user?.username ? (
         <div>
-          <div className="menu-item" onClick={handleProfile}>
-            <AiOutlineProfile />
-            Tài khoản của tôi
+          <div className="avatar-name-user">
+            <img 
+              src={
+                user.avatar ? `${API_URL}/api/user/profile/image/${user.avatar}`
+                : 'https://cdn-icons-png.flaticon.com/512/9385/9385289.png'
+              } 
+            />
+            <div className="name-user">{user.fullName || user.username}</div>
           </div>
-          {(user.role === "[ROLE_ADMIN]" || user.role === '[ROLE_SHOP_OWNER]') && (
+          {(user.role === "[ROLE_USER]") ? (
+            <div className="menu-item" onClick={handleProfile}>
+              <AiOutlineProfile />
+              Tài khoản của tôi
+            </div>
+          ) : (
             <div className="menu-item" onClick={() => navigate("/system/admin")}>
               <AiOutlineGroup />
               Manage System
@@ -97,7 +108,9 @@ export default function HeaderComponent({
           <div className="col-md-5">
             {isShowMenu ? (
               <div className="row">
-                <div className="col-md-3 header_logo"><img src={logo} alt=""/></div>
+                <div className="col-md-3 header_logo" onClick={() => navigate('/')}>
+                  <img src={logo} alt=""/>
+                </div>
                 <div className="col-md-2 header_item text-center"
                 onClick={() => {
                   navigate("/product", {state: {category: "nam"}});

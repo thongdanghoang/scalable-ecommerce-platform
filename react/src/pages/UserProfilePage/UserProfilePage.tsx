@@ -5,14 +5,18 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { BiMap } from 'react-icons/bi';
 import {BsLayoutTextWindowReverse} from 'react-icons/bs'
 import {CiLock} from 'react-icons/ci'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { Upload } from 'antd';
+import { updateAvatarProfileService, uploadImageProfileService } from '../../services/checkoutServices';
+import { updateUser } from '../../redux/slides/userSlide';
+import { API_URL } from '../../utils/constants';
 
 
 export default function UserProfilePage() {
     const location = useLocation();
     const user = useSelector((state: RootState) => state.user);
-    console.log(user)
+    const dispatch = useDispatch();
 
     return (
         <div id="UserProfilePage">
@@ -21,18 +25,39 @@ export default function UserProfilePage() {
                     <div className="grid">
                         <div className="grid__column four-twelfths">
                             <div className="account--sidebar">
-                                <div className="grid__column two-twelfths-avatar">
-                                    <div className="form-info-user-avatar">
-                                        <div className="avatar_icon">
+                                <div className="account--sidebar-user">
+                                    <div className="avatar_icon">
+                                        {user.avatar ? (
+                                            <img  src={`${API_URL}/api/user/profile/image/${user.avatar}`} />
+                                        ) : (
                                             <i className="far fa-user"></i>
-                                            <div className="edit">
-                                                <i className="fas fa-pencil-alt"></i>
-                                            </div>
+                                        )}
+                                        <div className="edit-act">
+                                            <Upload 
+                                                onChange={async (info) => {
+                                                    console.log(info.file)
+                                                    await uploadImageProfileService(info.file);
+                                                    await updateAvatarProfileService(info.file.name)
+                                                        .then(res => {
+                                                            if(res.success){
+                                                                dispatch(updateUser(res.data))
+                                                            }
+                                                        })
+                                                }}
+                                                beforeUpload = {() => {
+                                                    return false
+                                                }}
+                                            >
+                                                <div className='upload-act'>
+                                                    <i className="fas fa-pencil-alt"></i>
+                                                    Edit
+                                                </div>
+                                            </Upload>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="title-infouser-name flex align--center justify--between">
-                                    {user.username}
+                                    <div className="fullname">
+                                        {user.fullName || user.username}
+                                    </div>
                                 </div>
                                 <div className="account--sidebar-items">
                                     <NavLink to="/profile-user/information-user" className="account--sidebar-item ">

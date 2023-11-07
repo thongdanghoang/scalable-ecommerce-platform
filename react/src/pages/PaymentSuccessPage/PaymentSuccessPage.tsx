@@ -59,7 +59,7 @@ export default function PaymentSuccessPage() {
               <p>{`${addressShipSelect?.ward} , ${
                 addressShipSelect?.district?.split("-")[0]
               } , ${addressShipSelect?.province?.split("-")[0]}`}</p>
-              <p>{addressShipSelect.phone}</p>
+              <p>{addressShipSelect.phone.replace('+84','0')}</p>
             </div>
           </div>
           <div className="row">

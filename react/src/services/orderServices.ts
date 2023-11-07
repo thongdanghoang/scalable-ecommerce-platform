@@ -17,6 +17,23 @@ export async function getOrdersByUserService() {
     return null;
 }
 
+export async function getOrdersByStatusService(status : string) {
+    try {
+        const response = await fetch(
+            `${API_URL}/api/orders/status/${status}`,
+            {
+                method: "GET",
+                credentials: "include",
+            }
+        );
+        const data = await response.json();
+        return data;
+    } catch (e) {
+        console.log(e);
+    }
+    return null;
+}
+
 export async function getDetailOrderService(orderId : string) {
     try {
         const response = await fetch(

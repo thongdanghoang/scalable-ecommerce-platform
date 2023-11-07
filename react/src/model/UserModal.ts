@@ -15,6 +15,7 @@ export interface User {
     version : number,
     username: string,
     fullName: string,
+    avatar: string,
     role: string
     email: string,
     phone : string,

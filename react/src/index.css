@@ -43,3 +43,23 @@ img {
   text-transform: uppercase;
   margin-bottom: 15px !important;
 }
+
+#avatar-popover .avatar-name-user{
+  display: flex;
+  align-items: center;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #d1d1d1;
+}
+
+#avatar-popover .avatar-name-user img{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin: 0 10px;
+  border-radius: 50%;
+}
+
+#avatar-popover .avatar-name-user .name-user{
+  font-size: 18px;
+  font-weight: 400;
+}

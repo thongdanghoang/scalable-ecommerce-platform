@@ -3,8 +3,10 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import './MyOrder.css'
 import { getDetailOrderService } from "../../services/orderServices";
 import { useQuery } from "@tanstack/react-query";
-import { paymentName } from "../../utils/constants";
+import { API_URL, paymentName } from "../../utils/constants";
 import { PaymentMethod } from "../../model/OrderModal";
+import { convertDateAndTime, convertPrice } from "../../utils/utils";
+import { clothesCart } from "../../model/ClothesModal";
 
 export default function MyOrderPage() {
     const navigate = useNavigate();
@@ -24,7 +26,9 @@ export default function MyOrderPage() {
         <div className="myOrderorderPage" id="myOrderorderPage">
             <div className="myOrderorderPage-header">
                 <div className="content" onClick={() => navigate('/profile-user/order-user')}><AiOutlineArrowLeft/><span>Chi tiết đơn hàng</span></div>
-                <div className="date">Ngày tạo: 12:50 24/ 10/ 2023</div>
+                <div className="date">
+                    Ngày tạo: {convertDateAndTime(orderDetail.createdAt).time + " " + convertDateAndTime(orderDetail.createdAt).date}
+                </div>
             </div>
             <div className="myOrderorderPage-body  row">
                 <div className='col-md-5'>Trạng thái thanh toán : <span>Chưa thanh toán</span></div>
@@ -41,7 +45,7 @@ export default function MyOrderPage() {
                     <div className='address'>Địa chỉ: <span>
                         {`${orderDetail?.address.addressDetail} , ${orderDetail?.address.ward} , ${orderDetail?.address.district?.split('-')[0]} , ${orderDetail?.address.province?.split('-')[0]}`}
                     </span></div>
-                    <div>Số điện thoại: <span>{orderDetail?.phone?.replace('+84', '0')}</span></div>
+                    <div>Số điện thoại: <span>{orderDetail?.address?.phone?.replace('+84', '0')}</span></div>
                 </div>
                 <div className="col-md-1"></div>
                 <div className="col-md-5 myOrderorderPage-body-content-payment">
@@ -54,37 +58,38 @@ export default function MyOrderPage() {
                 <div className="col-md-2 order-product-header-title">Số lượng</div>
                 <div className="col-md-2 order-product-header-title">Tống</div>
             </div>
-            <div className="order-product-body row">
-                <div className="col-md-6 order-product-body-name">
-                    <div className="order-product-body-name-image">
-                        <img src="https://bizweb.dktcdn.net/thumb/compact/100/438/408/products/qam3190-nau-2131231.jpg?v=1690163853647" alt=""/>
+            {orderDetail?.items?.map((item : clothesCart) => (
+                <div className="order-product-body row">
+                    <div className="col-md-6 order-product-body-name">
+                        <div className="order-product-body-name-image">
+                            <img src={`${API_URL}/api/products/images/${item.product.image}`} alt=""/>
+                        </div>
+                        <div className="order-product-body-name-detail">
+                            <p>{item.product.name}</p>
+                            <p>{item.classification.colorName} / {item.classification.sizeName}</p>
+                            <p>Mã sản phẩm: {item.product.id}</p>
+                        </div>
                     </div>
-                    <div className="order-product-body-name-detail">
-                        <p>Quần Âu Nam Ống Đứng Vải Nano Cao Cấp Giữ Phom, Co Giãn Thoải Mái</p>
-                        <p>Nâu / XL</p>
-                        <p>Mã sản phẩm: QAM3190-NAU-XL</p>
+                    <div className="col-md-2 order-product-body-price">
+                        <span>{convertPrice(item.product.price)}</span>
+                    </div>
+                    <div className="col-md-2 order-product-body-quantity">
+                        <span>{item.amount}</span>
+                    </div>
+                    <div className="col-md-2 order-product-body-total">
+                        <span>{convertPrice(item.product.price * item.amount)}</span>
                     </div>
                 </div>
-                <div className="col-md-2 order-product-body-price">
-                    <span>439.120đ</span>
-                </div>
-                <div className="col-md-2 order-product-body-quantity">
-                    <span>1</span>
-                </div>
-                <div className="col-md-2 order-product-body-total">
-                    <span>439.120đ</span>
-                </div>
-
-            </div>
+            ))}
             <div className="order-product-near-footer row">
                 <div className="col-md-8"></div>
                 <div className="col-md-2">Phí vận chuyển</div>
-                <div className="col-md-2">0đ (Miễn phí vận chuyển đơn hàng từ 200k)</div>
+                <div className="col-md-2">{convertPrice(orderDetail?.shoppingFee)} (Miễn phí vận chuyển đơn hàng từ 200k)</div>
             </div>
             <div className="order-product-footer row">
                 <div className="col-md-8"></div>
                 <div className="col-md-2">Tổng tiền</div>
-                <div className="col-md-2">439.120đ</div>
+                <div className="col-md-2">{convertPrice(orderDetail?.grandTotal)}</div>
             </div>
         </div>
             <div className="content" onClick={() => navigate('/profile-user/order-user')}> <button className='back'>QUAY LẠI</button></div>

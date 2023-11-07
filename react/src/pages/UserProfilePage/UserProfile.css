@@ -7,9 +7,22 @@
     align-items: center;
 }
 #UserProfilePage .account--sidebar {
+  box-sizing: border-box;
+  margin-top: 1rem;
+}
 
-    box-sizing: border-box;
-  }
+#UserProfilePage .account--sidebar .account--sidebar-user{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#UserProfilePage .account--sidebar .account--sidebar-user .fullname{
+  font-size: 25px;
+  font-weight: 500;
+  padding: 15px 0;
+}
+
 #UserProfilePage .grid {
     display: -webkit-flex;
     -moz-flex-direction: row;
@@ -111,8 +124,8 @@
 #UserProfilePage .avatar_icon {
     background-color: rgb(240, 248, 255);
     border-radius: 50%;
-    width: 112px;
-    height: 112px;
+    width: 130px;
+    height: 130px;
     border: 4px solid rgb(194, 225, 255);
     position: relative;
     -webkit-box-pack: center;
@@ -120,18 +133,37 @@
     display: flex;
     -webkit-box-align: center;
     align-items: center;
-  }
+}
+
+#UserProfilePage .avatar_icon > img{
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#UserProfilePage .avatar_icon .upload-act{
+  display: flex;
+  align-items: center;
+  color: white;
+  background: black;
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+
+#UserProfilePage .avatar_icon .upload-act > i{
+  margin-right: 5px;
+}
+
 #UserProfilePage .avatar_icon > i {
     font-size: 60px;
   }
-#UserProfilePage .edit {
+#UserProfilePage .edit-act {
     position: absolute;
-    width: 16px;
-    height: 16px;
     color: #000;
     border-radius: 12px;
-    right: 3px;
-    bottom: 5px;
+    right: -30px;
+    bottom: -5px;
     -webkit-box-align: center;
     align-items: center;
     -webkit-box-pack: center;
@@ -257,4 +289,8 @@
   }
 .form-info-user-avatar{
     margin-left: 137px;
+}
+
+#UserProfilePage .edit-act .ant-upload-list{
+  display: none !important;
 }

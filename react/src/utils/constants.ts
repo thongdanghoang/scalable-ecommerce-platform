@@ -1,4 +1,4 @@
-export const API_URL = 'https://thongdanghoang.id.vn/swp391'
+export const API_URL = 'http://localhost:8080'
 
 export const paymentImage = (key : string) => {
     switch (key) {
@@ -21,4 +21,28 @@ export const paymentName = (key : string) => {
             return 'Thanh toán bằng thẻ tín dụng (CREDIT CARD)'
     }
 }
+
+export const statusOrder = [
+    {
+        key : 'PENDING',
+        value : 'Chờ xác nhận'
+    },
+    {
+        key : 'PROCESSING',
+        value : 'Đang xử lí'
+    },
+    {
+        key : 'DELIVERING',
+        value : 'Đang vận chuyển'
+    },
+    {
+        key : 'COMPLETED',
+        value : 'Đã giao'
+    },
+    {
+        key : 'CANCELLED',
+        value : 'Đã hủy'
+    },
+]
+
 

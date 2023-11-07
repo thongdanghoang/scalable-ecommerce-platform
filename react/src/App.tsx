@@ -30,7 +30,7 @@ function App() {
   
   // handle login with google 
   useEffect(() => {
-    if(!user.username){
+    // if(!user.username){
       profileService()
         .then(res => {
           if(res.status === 401){
@@ -40,8 +40,8 @@ function App() {
           }
           //toast.success('Login with google successfully!', toastMSGObject())
         })
-    }
-  },[])
+    // }
+  },[user.username])
 
   // handle get cart by user
 

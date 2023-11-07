@@ -65,6 +65,11 @@
     max-height: 160px;
     margin-bottom: 10px;
 }
+
+#myOrderorderPage .order-product-body .order-product-body-name .order-product-body-name-image img{
+    width: 100%;
+}
+
 #myOrderorderPage .order-product-body .order-product-body-name .order-product-body-name-detail{
     font-size: 15px;
     margin-left: 20px;

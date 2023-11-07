@@ -6,6 +6,7 @@ const initialState: User = {
   version : 0,
   username: '',
   fullName: '',
+  avatar: '',
   role: '',
   email: '',
   phone: '',
@@ -26,6 +27,7 @@ export const userSlice = createSlice({
         version  = 0,
         username = '',
         fullName = '',
+        avatar = '',
         role = '',
         email = '',
         phone = '',
@@ -39,6 +41,7 @@ export const userSlice = createSlice({
       state.version = version ? version : state.version
       state.username = username ? username : state.username
       state.fullName = fullName ? fullName : state.fullName
+      state.avatar = avatar ? avatar : state.avatar
       state.role = role ? role : state.role
       state.email = email ? email : state.email
       state.phone = phone ? phone : state.phone

@@ -19,23 +19,14 @@ export default function InforUserComponent() {
     const [otp, setOtp] = useState('');
     const [verifyField , setVerifyField] = useState('');
     const [isOpenModal , setIsOpenModal] = useState(false);
-    //const spanEle = useRef<HTMLElement | null>(null)
-
-    useEffect(() => {
-        profileService().then(res => {
-            if(res?.success){
-                setUserProfile(res?.data)
-            }
-        })
-    },[user])
 
     const handleUpdateProfile = async () => {
         const res = await updateProfileService({
             version : userProfile.version,
             username : userProfile.username,
             fullName : userProfile.fullName,
-            gender : userProfile.gender.toUpperCase(),
-            birthday : userProfile.birthday.split('-').reverse().join('/'),
+            gender : userProfile.gender?.toUpperCase(),
+            birthday : userProfile.birthday?.split('-').reverse().join('/'),
             weight : userProfile.weight,
             height : userProfile.height
         })
@@ -131,6 +122,7 @@ export default function InforUserComponent() {
                     <div className="grid__column seven-twelfths flex align--center">
                         <div className="form-group mt-4">
                             <input
+                                disabled
                                 type="text"
                                 name="username"
                                 value={userProfile.username}
