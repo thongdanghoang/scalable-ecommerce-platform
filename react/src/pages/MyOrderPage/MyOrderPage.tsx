@@ -5,7 +5,7 @@ import { cancelOrderService, getDetailOrderService } from "../../services/orderS
 import { useQuery } from "@tanstack/react-query";
 import { API_URL, paymentName } from "../../utils/constants";
 import { PaymentMethod } from "../../model/OrderModal";
-import { convertDateAndTime, convertPrice } from "../../utils/utils";
+import { calculatePriceFinal, convertDateAndTime, convertPrice } from "../../utils/utils";
 import { clothesCart } from "../../model/ClothesModal";
 import { Button, Modal } from "antd";
 import { useState } from "react";
@@ -107,13 +107,13 @@ export default function MyOrderPage() {
                         </div>
                     </div>
                     <div className="col-md-2 order-product-body-price">
-                        <span>{convertPrice(item.product.price)}</span>
+                        <span>{convertPrice(calculatePriceFinal(item.product.price , item.product.discount))}</span>
                     </div>
                     <div className="col-md-2 order-product-body-quantity">
                         <span>{item.amount}</span>
                     </div>
                     <div className="col-md-2 order-product-body-total">
-                        <span>{convertPrice(item.product.price * item.amount)}</span>
+                        <span>{convertPrice(calculatePriceFinal(item.product.price , item.product.discount) * item.amount)}</span>
                     </div>
                 </div>
             ))}

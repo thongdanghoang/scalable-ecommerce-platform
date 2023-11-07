@@ -220,11 +220,13 @@ export default function PaymentPage() {
             <div className="payment-bill-info">
               <div className="temporary-price">
                 <span className="price-text">Tạm tính</span>
-                <span>{convertPrice(orderCheckout?.total)}</span>
+                <span>{
+                  orderCheckout?.total && convertPrice(orderCheckout?.total - orderCheckout?.discount)
+                }</span>
               </div>
               <div className="ship-promotion">
                 <span className="price-text">Giảm giá</span>
-                <span style={{ color: "rgb(0, 171, 86)" }}>-{convertPrice(orderCheckout?.discount)}</span>
+                <span style={{ color: "rgb(0, 171, 86)" }}>- 0 đ</span>
               </div>
               <div className="ship-fee">
                 <span className="price-text">Phí vận chuyển</span>

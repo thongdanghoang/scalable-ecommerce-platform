@@ -17,17 +17,14 @@ export const orderSlice = createSlice({
   reducers: {
     addProductToOrder : (state , action : PayloadAction<clothesOrder> ) => {
         const orderItem = action.payload;
-        const orderClothes = state.orderItems.find(
-            item => item.id === orderItem.id 
-            && item.classifyClothes.color === orderItem.classifyClothes.color
-            && item.classifyClothes.quantities.size === orderItem.classifyClothes.quantities.size
-        );
+        const priceFinal = calculatePriceFinal(orderItem.price , orderItem.discount)
+        const orderClothes = state.orderItems.find(item => item.classifyClothes.quantities.quantityId === orderItem.classifyClothes.quantities.quantityId);
         if(orderClothes){
             orderClothes.amountBuy += orderItem.amountBuy
         }else{
             state.orderItems.push(orderItem)
         }
-        state.totalPrice = state.totalPrice + orderItem.price * orderItem.amountBuy;
+        state.totalPrice = state.totalPrice + priceFinal * orderItem.amountBuy;
         state.totalQuantity = state.totalQuantity + orderItem.amountBuy;
         // state.totalPrice = 3000;
         // state.totalQuantity = 4;
@@ -35,22 +32,21 @@ export const orderSlice = createSlice({
     changeAmount : (state , action : PayloadAction<{amountChange : number , orderItem : clothesOrder}>) => {
         const {orderItem , amountChange} = action.payload;
         const orderClothes = state.orderItems.find(
-            item => item.id === orderItem.id 
-            && item.classifyClothes.color === orderItem.classifyClothes.color
-            && item.classifyClothes.quantities.size === orderItem.classifyClothes.quantities.size
-        );
+            item => item.classifyClothes.quantities.quantityId === orderItem.classifyClothes.quantities.quantityId);
         if(orderClothes) {
             orderClothes.amountBuy = amountChange;
             state.totalQuantity = state.orderItems.reduce((total, item) => {
                 return total + item.amountBuy;
             }, 0);
             state.totalPrice = state.orderItems.reduce((total, item) => {
-                return total + item.price * item.amountBuy;
+                const priceFinal = calculatePriceFinal(item.price , item.discount)
+                return total + priceFinal * item.amountBuy;
             }, 0);
         }
     },
     removeProduct : (state , action : PayloadAction<clothesOrder>) => {
         const orderItem = action.payload;
+        const priceFinal = calculatePriceFinal(orderItem.price , orderItem.discount)
         const orderItemsFilter = state.orderItems.filter(
             item => item.id !== orderItem.id 
             || item.classifyClothes.color !== orderItem.classifyClothes.color
@@ -60,7 +56,7 @@ export const orderSlice = createSlice({
         // state.totalPrice = 0;
         // state.totalQuantity = 0;
         state.totalQuantity -= orderItem.amountBuy;
-        state.totalPrice -= (orderItem.price * orderItem.amountBuy);
+        state.totalPrice -= (priceFinal * orderItem.amountBuy);
     },
     cloneOrder : (state , action : PayloadAction<Order>) => {
         Object.assign(state, action.payload);

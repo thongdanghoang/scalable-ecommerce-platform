@@ -20,7 +20,7 @@ export default function CardHeaderComponent() {
     }
 
     const handleSetAmountProduct = (action : string , amountChange : number , orderItem : clothesOrder ) => {
-        const amount = handleChangeAmountBuy(action , amountChange );
+        const amount = handleChangeAmountBuy(action , amountChange , orderItem.classifyClothes.quantities.quantityInStock as number);
         if(amount){
           dispatch(changeAmount({
             amountChange : amount,
@@ -51,7 +51,7 @@ export default function CardHeaderComponent() {
                                             </div>
 
                                             <div className="card-product-price">
-                                                <span>{convertPrice(item.price)}</span>
+                                                <span>{convertPrice(calculatePriceFinal(item.price , item.discount))}</span>
                                             </div>
 
                                             <div className="card-product-color">
@@ -101,7 +101,7 @@ export default function CardHeaderComponent() {
                                             </button>
                                         </div>
                                         <div className="product-select-total">
-                                            Tổng cộng: <span className="highlight">{convertPrice(item.price * item.amountBuy)}</span>
+                                            Tổng cộng: <span className="highlight">{convertPrice(calculatePriceFinal(item.price , item.discount) * item.amountBuy)}</span>
                                         </div>
                                     </div>
                                 </div>
