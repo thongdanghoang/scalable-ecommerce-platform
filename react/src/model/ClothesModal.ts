@@ -1,6 +1,5 @@
 export interface clothes {
     id: number;
-    image: any;
     name: string;
     price: number;
 }
@@ -8,7 +7,6 @@ export interface clothes {
 export interface clothesOrder extends clothes{
     category: string;
     discount: number;
-    size: string;
     amountBuy: number;
     classifyClothes: {
         color : string;
@@ -16,7 +14,7 @@ export interface clothesOrder extends clothes{
         quantities : {
             quantityId : number,
             size : string;
-            quantity : number;
+            quantityInStock ?: number;
         } 
     }
 }

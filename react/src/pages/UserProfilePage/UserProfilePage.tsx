@@ -8,7 +8,7 @@ import {CiLock} from 'react-icons/ci'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { Upload } from 'antd';
-import { updateAvatarProfileService, uploadImageProfileService } from '../../services/checkoutServices';
+import { updateAvatarProfileService, uploadImageProfileService } from '../../services/userService';
 import { updateUser } from '../../redux/slides/userSlide';
 import { API_URL } from '../../utils/constants';
 

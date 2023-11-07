@@ -10,14 +10,16 @@
 }
 #otp-form > div {
   top: 10px;
-    font-size: 30px;
-    font-weight: 700;
-    background-color: rgba(248, 248, 248, 0.68);
+  font-size: 28px;
+  font-weight: 700;
+  background-color: rgba(248, 248, 248, 0.68);
 }
 
 #otp-form .otp-input-container {
   font-size: 5rem;
+  width: 60%;
 }
+
 #otp-form .otp-input {
   border: none;
   background: "transparent";

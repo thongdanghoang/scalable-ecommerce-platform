@@ -17,7 +17,7 @@ export default function OrderPage() {
   const navigate = useNavigate();
 
   const handleSetAmountProduct = (action : string , amountChange : number , orderItem : clothesOrder ) => {
-    const amount = handleChangeAmountBuy(action , amountChange , orderItem.classifyClothes.quantities.quantity,);
+    const amount = handleChangeAmountBuy(action , amountChange );
     if(amount){
       dispatch(changeAmount({
         amountChange : amount,
@@ -64,7 +64,7 @@ export default function OrderPage() {
                   <div className="cart-product">
                     <div className="cart-image">
                       <img
-                        src={item.classifyClothes.images[0]}
+                        src={item.classifyClothes.images}
                         alt=""
                       />
                     </div>

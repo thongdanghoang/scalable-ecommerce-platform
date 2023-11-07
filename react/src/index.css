@@ -63,3 +63,14 @@ img {
   font-size: 18px;
   font-weight: 400;
 }
+
+.modal-cancel-order p{
+  text-align: left;
+}
+
+.modal-cancel-order button{
+  background-color: black;
+  color: white;
+  font-weight: 400;
+  width: 80%;
+}

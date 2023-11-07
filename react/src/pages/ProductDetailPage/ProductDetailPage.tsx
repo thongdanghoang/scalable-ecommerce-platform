@@ -49,7 +49,7 @@ export default function ProductDetailPage() {
   },[productDetail,isSuccess])
 
   const handleSetAmountProduct = (action : string , amountChange : number) => {
-    const amount = handleChangeAmountBuy(action , amountChange , activeSize?.quantity as number);
+    const amount = handleChangeAmountBuy(action , amountChange );
     if(amount){
       setAmountBuy(amount)
     }
@@ -70,6 +70,7 @@ export default function ProductDetailPage() {
           ...productDetail,
           classifyClothes : {
             ...activeColor,
+            images : activeColor.images[0],
             quantities : {
               ...activeSize
             }

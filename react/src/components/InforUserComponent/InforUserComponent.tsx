@@ -1,6 +1,6 @@
 import '../../pages/UserProfilePage/UserProfile.css'
-import {useEffect , useState} from 'react'
-import { profileService, updateProfileService, verifyEmailService, verifyPhoneService } from "../../services/userService";
+import { useState} from 'react'
+import { updateProfileService, verifyEmailService, verifyPhoneService } from "../../services/userService";
 import { updateUser } from '../../redux/slides/userSlide';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';

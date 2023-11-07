@@ -50,3 +50,20 @@ export async function getDetailOrderService(orderId : string) {
     }
     return null;
 }
+
+export async function cancelOrderService(orderId : string) {
+    try {
+        const response = await fetch(
+            `${API_URL}/api/orders/${orderId}`,
+            {
+                method: "DELETE",
+                credentials: "include",
+            }
+        );
+        const data = await response.json();
+        return data;
+    } catch (e) {
+        console.log(e);
+    }
+    return null;
+}

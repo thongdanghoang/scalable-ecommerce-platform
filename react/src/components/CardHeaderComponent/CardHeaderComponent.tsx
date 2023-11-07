@@ -20,7 +20,7 @@ export default function CardHeaderComponent() {
     }
 
     const handleSetAmountProduct = (action : string , amountChange : number , orderItem : clothesOrder ) => {
-        const amount = handleChangeAmountBuy(action , amountChange , orderItem.classifyClothes.quantities.quantity,);
+        const amount = handleChangeAmountBuy(action , amountChange );
         if(amount){
           dispatch(changeAmount({
             amountChange : amount,
@@ -38,7 +38,7 @@ export default function CardHeaderComponent() {
                             <div className="header-card-product" key={item.id}>
                                 <div className="header-card-image-product">
                                     <img
-                                        src={item?.classifyClothes?.images[0]}
+                                        src={item?.classifyClothes?.images}
                                         style={{ width: "83px", height: "141px" }}
                                         alt=""
                                     />

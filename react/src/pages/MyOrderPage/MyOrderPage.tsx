@@ -1,17 +1,22 @@
 import {useNavigate, useParams } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import './MyOrder.css'
-import { getDetailOrderService } from "../../services/orderServices";
+import { cancelOrderService, getDetailOrderService } from "../../services/orderServices";
 import { useQuery } from "@tanstack/react-query";
 import { API_URL, paymentName } from "../../utils/constants";
 import { PaymentMethod } from "../../model/OrderModal";
 import { convertDateAndTime, convertPrice } from "../../utils/utils";
 import { clothesCart } from "../../model/ClothesModal";
+import { Button, Modal } from "antd";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addProductToOrder } from "../../redux/slides/orderSlide";
 
 export default function MyOrderPage() {
     const navigate = useNavigate();
     const {code} = useParams();
-
+    const [isOpenModal , setIsOpenModal] = useState(false);
+    const dispatch = useDispatch();
 
     const fetchGetDetailOrder = async (context : any) => {
         const orderId = context?.queryKey[1]
@@ -21,13 +26,44 @@ export default function MyOrderPage() {
     
     const {data : orderDetail , isSuccess : isSuccessOrderDetail} = useQuery(['detail-order',code], fetchGetDetailOrder )
     
+    const handleCancelOrder = async () => {
+        const res = code && await cancelOrderService(code);
+        if(res.success){
+            setIsOpenModal(true);
+        }
+    }
 
-    return (<>
+    const handleBuyAgain = () => {
+        orderDetail?.items?.forEach((item : clothesCart) => {
+            dispatch(addProductToOrder(
+                {
+                    id : item.product.id,
+                    amountBuy : item.amount,
+                    category : item.product.category,
+                    discount : item.product.discount,
+                    name : item.product.name,
+                    price : item.product.price,
+                    classifyClothes : {
+                        color : item.classification.colorName,
+                        images : `${API_URL}/api/products/images/${item.product.image}`,
+                        quantities : {
+                            quantityId : item.classification.quantityId,
+                            size : item.classification.sizeName,          
+                        }
+                    }
+                }
+            ))
+        })
+        navigate('/order')
+    }
+
+    return (
+    <>
         <div className="myOrderorderPage" id="myOrderorderPage">
             <div className="myOrderorderPage-header">
                 <div className="content" onClick={() => navigate('/profile-user/order-user')}><AiOutlineArrowLeft/><span>Chi tiết đơn hàng</span></div>
                 <div className="date">
-                    Ngày tạo: {convertDateAndTime(orderDetail.createdAt).time + " " + convertDateAndTime(orderDetail.createdAt).date}
+                    Ngày tạo: {convertDateAndTime(orderDetail?.createdAt).time + " " + convertDateAndTime(orderDetail?.createdAt).date}
                 </div>
             </div>
             <div className="myOrderorderPage-body  row">
@@ -92,7 +128,28 @@ export default function MyOrderPage() {
                 <div className="col-md-2">{convertPrice(orderDetail?.grandTotal)}</div>
             </div>
         </div>
-            <div className="content" onClick={() => navigate('/profile-user/order-user')}> <button className='back'>QUAY LẠI</button></div>
-        </>
+        <div className="content" onClick={orderDetail?.status === 'CANCELLED' ? handleBuyAgain : handleCancelOrder}> 
+            <button className='back'>
+                {orderDetail?.status === 'CANCELLED' ? 'Mua lại' : 'Hủy'}
+            </button>
+        </div>
+        
+        <Modal 
+            className="modal-cancel-order"
+            width={'380px'} 
+            bodyStyle={{textAlign: "center"}} 
+            title="Hủy đơn hàng" 
+            open={isOpenModal} 
+            footer={null} 
+            onCancel={() => setIsOpenModal(false)}
+        >
+            <img src="https://salt.tikicdn.com/ts/upload/03/b2/49/d6e0011868792350aa44bcbd7e6ffeeb.png" alt="" />
+            <p>Đơn hàng của bạn đã được huỷ :
+            <br/>
+            N3TK mong được tiếp tục phục vụ bạn trong tương lai.
+            </p>
+            <Button onClick={() => navigate('/')}>Tiếp tục mua sắm</Button>
+        </Modal>
+    </>
     )
 }
