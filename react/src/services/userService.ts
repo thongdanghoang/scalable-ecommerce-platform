@@ -312,3 +312,22 @@ export async function LogInWithGoogle() {
   return null;
 }
 
+export async function changePassword(password: any) {
+  try {
+    let response = await fetch(
+      `${API_URL}/api/user/auth/change-password`,
+      {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(password)
+      }
+    );
+    return response.json();
+  } catch (error) {
+    return null;
+  }
+  
+}
