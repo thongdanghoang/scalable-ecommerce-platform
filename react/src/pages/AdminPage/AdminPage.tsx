@@ -74,8 +74,11 @@ export default function AdminPage() {
     <div id="AdminPage">
       <div className="menu">
         <div onClick={() => navigate("/")} className="title-header">
-          <img src={logo} alt="" style={{ maxWidth: "25%" }} />
-          <span>N3TK</span>
+          <img
+            src={logo}
+            alt=""
+            style={{ maxWidth: "25%", marginLeft: "90px" }}
+          />
         </div>
         <Menu
           defaultSelectedKeys={[keySelected]}

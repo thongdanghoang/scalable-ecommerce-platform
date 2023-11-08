@@ -1,6 +1,10 @@
 #header {
   height: 80px;
   background: #000000;
+  /* position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; */
 }
 
 #header .header {
@@ -11,18 +15,18 @@
   max-width: 70%;
   max-height: 97%;
 }
-#header .header_item{
+#header .header_item {
   max-height: 75px;
 }
-#header .header_item ,
-#header .header_system{
+#header .header_item,
+#header .header_system {
   color: #fff;
   font-size: 20px;
   line-height: 75px;
 }
 #header .header_item:hover {
   cursor: pointer;
-  background-color: #3c3c3c;;
+  background-color: #3c3c3c;
   color: #fff;
   font-weight: 600;
 }

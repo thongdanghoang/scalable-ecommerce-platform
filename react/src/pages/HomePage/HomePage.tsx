@@ -45,12 +45,7 @@ export default function HomePage() {
       <div>
         <SliderComponent
           slidesToShow={1}
-          listItems={[
-            banner,
-            banner1,
-            "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/slider_4.jpg?1696059235970",
-            "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/slider_5.jpg?1696059235970",
-          ]}
+          listItems={[banner, banner1]}
           nameSlider={"imagesBackground"}
         />
       </div>
