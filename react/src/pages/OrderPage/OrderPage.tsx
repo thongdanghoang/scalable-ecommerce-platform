@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./Order.css";
 import { RootState } from "../../redux/store";
-import { calculatePriceFinal, convertPrice, handleChangeAmountBuy, toastMSGObject } from "../../utils/utils";
+import { calculatePriceFinal, convertPrice, convertToSlug, handleChangeAmountBuy, toastMSGObject } from "../../utils/utils";
 import { changeAmount, removeProduct } from "../../redux/slides/orderSlide";
 import { clothesOrder } from "../../model/ClothesModal";
 import { useNavigate } from "react-router-dom";
@@ -70,7 +70,10 @@ export default function OrderPage() {
                     </div>
                     <div className="cart-info">
                       <div className="cart-info-detail">
-                        <span className="cart-name">
+                        <span 
+                          className="cart-name"
+                          onClick={() => navigate(`/product-detail/${convertToSlug(item.name)}` , {state : item.id})}
+                        >
                           {item.name}
                         </span>
                         <span>{`${item.classifyClothes.color}/${item.classifyClothes.quantities.size}`}</span>

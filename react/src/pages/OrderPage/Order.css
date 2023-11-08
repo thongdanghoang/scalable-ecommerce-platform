@@ -1,11 +1,9 @@
-body {
-  background-color: #f8f8f8;
-}
 .spacer {
   height: 55%;
 }
+
 #order-page .cart-body-item,
-.total-all {
+#order-page .total-all {
   background-color: #fff;
   padding: 15px 20px;
   margin-top: 30px;

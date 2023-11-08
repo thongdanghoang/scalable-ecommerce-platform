@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import './CardHeader.css'
 import { RootState } from '../../redux/store';
-import { calculatePriceFinal, convertPrice, handleChangeAmountBuy } from '../../utils/utils';
+import { calculatePriceFinal, convertPrice, convertToSlug, handleChangeAmountBuy } from '../../utils/utils';
 import { changeAmount, removeProduct } from '../../redux/slides/orderSlide';
 import { clothesOrder } from '../../model/ClothesModal';
 import OrderEmptyComponent from '../CartEmptyComponent/CartEmptyComponent';
@@ -46,7 +46,10 @@ export default function CardHeaderComponent() {
                                 <div className="header-card-content-product">
                                     <div className="header-card-product-info">
                                         <div className="header-card-product-info-detail">
-                                            <div className='card-product-name'>
+                                            <div 
+                                                className='card-product-name'
+                                                onClick={() => navigate(`/product-detail/${convertToSlug(item.name)}` , {state : item.id})}
+                                            >
                                                 {item.name}                                   
                                             </div>
 
