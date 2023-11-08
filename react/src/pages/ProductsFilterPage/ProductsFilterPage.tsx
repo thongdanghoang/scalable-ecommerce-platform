@@ -47,7 +47,7 @@ const NotFound = (<Empty
   imageStyle={{ height: 300 }}
   description={
     <span>
-      Not found
+      Not found clothes
     </span>
   }
 >

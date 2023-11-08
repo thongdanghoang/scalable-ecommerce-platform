@@ -6,7 +6,7 @@ import { RootState } from "../../redux/store";
 import { OrderCheckout } from "../../model/OrderModal";
 import { AddressShipping } from "../../model/UserModal";
 import { clothesCart } from "../../model/ClothesModal";
-import { convertPrice } from "../../utils/utils";
+import { calculatePriceFinal, convertPrice } from "../../utils/utils";
 import { API_URL, paymentName } from "../../utils/constants";
 
 interface orderSuccess {
@@ -85,7 +85,7 @@ export default function PaymentSuccessPage() {
                     alt=""
                     style={{ maxWidth: "100%", maxHeight: "100%" }}
                   />
-                  <div className="amount">x1</div>
+                  <div className="amount">x{item.amount}</div>
                 </div>
               </div>
               <div className="payment-order-name-color col-md-7">
@@ -93,7 +93,7 @@ export default function PaymentSuccessPage() {
                 <div>{`${item.classification.colorName}/${item.classification.sizeName}`}</div>
               </div>
               <div className="payment-order-price col-md-3 text-end">
-                {convertPrice(item.product.price)}
+                {convertPrice(calculatePriceFinal(item.product.price , item.product.discount))}
               </div>
             </div>
           ))}
@@ -106,9 +106,9 @@ export default function PaymentSuccessPage() {
               <p>Tổng cộng</p>
             </div>
             <div className="payment-bill-price">
-              <p>{convertPrice(orderCheckout.total)}</p>
-              <p>{convertPrice(orderCheckout.discount)}</p>
-              <p>{convertPrice(orderCheckout.shoppingFee)}</p>
+              <p>{convertPrice(orderCheckout.total - orderCheckout.discount)}</p>
+              <p>- {convertPrice(0)}</p>
+              <p>- {convertPrice(orderCheckout.shoppingFee)}</p>
               <p
                 style={{
                   fontSize: "20px",
