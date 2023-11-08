@@ -69,6 +69,10 @@ export default function ChangePasswordComponent() {
     }
     let response = await changePassword(password);
     if (response && response.status == undefined) {
+      setPassword({
+        oldPassword: "",
+        newPassword: ""
+      });
       toast.success("Thay đổi mật khẩu thành công!");
     } else {
       toast.error("Mật khẩu cũ không đúng!");
