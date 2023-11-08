@@ -57,45 +57,68 @@ import { getAllClothes } from "../../../services/clothesService";
 // ];
 
 export default function SimpleBarChart() {
-  const [category, setCategory] = useState([]);
-  const [numberOfSold, setNumberOfSold] = useState([]);
+  const [numberOfSold, setNumberOfSold] = useState<
+    { name: string; sold: number }[]
+  >([]);
 
   const getNumberOfSold = async () => {
-    const res = await getAllClothes();
-    const { products, totalCount } = await res?.json();
-    if (products) {
-      const sold = products.filter((item: any) =>
-        item.category.includes("ÁO SƠ MI")
-      );
-      console.log("check", sold);
-      setNumberOfSold(sold);
-    } else {
-      console.error("Dữ liệu không hợp lệ hoặc không chứa numberOfSold");
+    try {
+      const res = await getAllClothes();
+      const { products } = await res?.json();
+
+      if (products) {
+        const categories: string[] = [
+          "ÁO SƠ MI",
+          "QUẦN ÂU",
+          "ÁO THUN",
+          "QUẦN SHORT",
+          "ÁO KHOÁC",
+          "ÁO POLO",
+          "QUẦN JEAN",
+          "CHÂN VÁY",
+          "ÁO CHỐNG NẮNG",
+        ];
+        const data: { name: string; sold: number }[] = [];
+
+        categories.forEach((category) => {
+          const types = products.filter((item: any) =>
+            item.category.includes(category)
+          );
+
+          const sumOfSold = types.reduce(
+            (acc: any, item: any) => acc + (item.numberOfSold || 0),
+            0
+          );
+
+          data.push({ name: category, sold: sumOfSold });
+        });
+
+        setNumberOfSold(data);
+      } else {
+        console.error("Dữ liệu không hợp lệ hoặc không chứa numberOfSold");
+      }
+    } catch (error) {
+      console.error("Đã xảy ra lỗi: ", error);
     }
   };
 
   useEffect(() => {
     getNumberOfSold();
   }, []);
+
   return (
     <BarChart
       width={1100}
       height={500}
       data={numberOfSold}
-      margin={{
-        top: 5,
-        right: 30,
-        left: 20,
-        bottom: 5,
-      }}
+      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" />
       <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey="pv" fill="#8884d8" />
-      <Bar dataKey="uv" fill="#82ca9d" />
+      <Bar dataKey="sold" fill="#8884d8" />
     </BarChart>
   );
 }
