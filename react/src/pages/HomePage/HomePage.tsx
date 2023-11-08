@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
-import { getAllClothes, getClothesOrderBy } from "../../services/clothesService";
+import {
+  getAllClothes,
+  getClothesOrderBy,
+} from "../../services/clothesService";
 import "./Home.css";
 import { clothes } from "../../model/ClothesModal";
 import { Navigate, useNavigate } from "react-router-dom";
-import banner from "../../assets/img/banner.png"
+import banner from "../../assets/img/banner.png";
+import banner1 from "../../assets/img/Thiết kế chưa có tên.png";
 import { API_URL } from "../../utils/constants";
 
 async function getProductOrderBy(order: string): Promise<clothes[]> {
@@ -13,10 +17,9 @@ async function getProductOrderBy(order: string): Promise<clothes[]> {
     let jsonList = (await response.json()).products as clothes[];
     console.table(jsonList);
     jsonList.forEach((product) => {
-      product.image =
-        `${API_URL}/api/products/images/` + product.image;
+      product.image = `${API_URL}/api/products/images/` + product.image;
     });
-    
+
     return jsonList;
   }
   return [];
@@ -43,8 +46,8 @@ export default function HomePage() {
         <SliderComponent
           slidesToShow={1}
           listItems={[
-              banner,
-            "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/slider_3.jpg?1696059235970",
+            banner,
+            banner1,
             "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/slider_4.jpg?1696059235970",
             "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/slider_5.jpg?1696059235970",
           ]}
