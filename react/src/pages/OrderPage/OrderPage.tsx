@@ -17,7 +17,7 @@ export default function OrderPage() {
   const navigate = useNavigate();
 
   const handleSetAmountProduct = (action : string , amountChange : number , orderItem : clothesOrder ) => {
-    const amount = handleChangeAmountBuy(action , amountChange );
+    const amount = handleChangeAmountBuy(action , amountChange , orderItem.classifyClothes.quantities.quantityInStock as number );
     if(amount){
       dispatch(changeAmount({
         amountChange : amount,
@@ -59,7 +59,7 @@ export default function OrderPage() {
               <div>Tổng tiền</div>
             </div>
             {order.orderItems.length !== 0 ? order.orderItems.map((item) => (
-              <div className="items-available">
+              <div key={item.id} className="items-available">
                 <div className="cart-item">
                   <div className="cart-product">
                     <div className="cart-image">
@@ -69,14 +69,14 @@ export default function OrderPage() {
                       />
                     </div>
                     <div className="cart-info">
-                      <div className="cart-name">
-                        <div>
+                      <div className="cart-info-detail">
+                        <span className="cart-name">
                           {item.name}
-                        </div>
+                        </span>
                         <span>{`${item.classifyClothes.color}/${item.classifyClothes.quantities.size}`}</span>
                       </div>
                       <div className="cart-item-price">
-                        <span className="price">{convertPrice(item.price)}</span>
+                        <span className="price">{convertPrice(calculatePriceFinal(item.price , item.discount))}</span>
                       </div>
                       <div className="cart-qty">
                         <div className="cart-select">
@@ -118,7 +118,7 @@ export default function OrderPage() {
                         </div>
                       </div>
                       <div className="cart-total-item-price">
-                        <span>{convertPrice(item.price * item.amountBuy)}</span>
+                        <span>{convertPrice(calculatePriceFinal(item.price , item.discount) * item.amountBuy)}</span>
                         <div className="remove-cart" onClick={() => handleRemoveProductOutCart(item)}>
                           <i className="fa-solid fa-trash-can"></i>
                         </div>

@@ -23,6 +23,6 @@
   border-radius: 50%;
 }
 #admin-dashboard .dashboard-item-content-icon > svg,
-img {
+#admin-dashboard .dashboard-item-content-icon > img {
   margin-bottom: 7px;
 }

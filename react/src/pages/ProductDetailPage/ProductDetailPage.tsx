@@ -49,9 +49,13 @@ export default function ProductDetailPage() {
   },[productDetail,isSuccess])
 
   const handleSetAmountProduct = (action : string , amountChange : number) => {
-    const amount = handleChangeAmountBuy(action , amountChange );
-    if(amount){
-      setAmountBuy(amount)
+    if(JSON.stringify(activeSize) !== '{}'){
+      const amount = handleChangeAmountBuy(action , amountChange , activeSize.quantityInStock );
+      if(amount){
+        setAmountBuy(amount)
+      }
+    }else{
+      toast('☹️ Vui lòng chọn size sản phẩm' , toastMSGObject({ theme : 'dark'}));
     }
   }
 
@@ -59,7 +63,7 @@ export default function ProductDetailPage() {
     if(!user.username){
       navigate('/sign-in' , {state : 'Vui lòng đăng nhập trước khi tạo giỏ hàng'})
     }else if(JSON.stringify(activeSize) === '{}'){
-      toast('Please choose size clothes' , toastMSGObject({ theme : 'dark'}));
+      toast('☹️ Vui lòng chọn size sản phẩm' , toastMSGObject({ theme : 'dark'}));
     }else{
       setIsHiddenCart(true);
       await createCartService({
@@ -182,7 +186,7 @@ export default function ProductDetailPage() {
               <div className="flex items-center">
                 {activeColor?.quantities?.map((q : any) => ( // q gồm size và quantity
                   <button
-                    className={`product-variation ${activeSize?.size === q.size ? 'active' : ''}`}
+                    className={`product-variation ${activeSize?.size === q.size ? 'active' : ''} ${q.quantityInStock === 0 ? 'soldout' : ''}`}
                     aria-label={q.size}
                     aria-disabled="false"
                     onClick={() => setActiveSize(q)}

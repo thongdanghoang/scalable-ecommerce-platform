@@ -381,9 +381,10 @@ function ClothesFilterPage(): React.ReactElement {
           <Badge.Ribbon text="new" color="cyan">
             <CardComponent
               id={item.id}
-              image={item.image}
+              image={item.image as string}
               name={item.name}
-              price={item.price.toString()}
+              price={item.price}
+              discount={item.discount as number}
             />
           </Badge.Ribbon>
         </Col>

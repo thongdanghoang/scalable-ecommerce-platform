@@ -166,52 +166,32 @@ export function calculatePriceFinal ( firstPrice : number , discount : number) {
     return discount === 0 ? firstPrice : firstPrice - (firstPrice * discount)
 }
 
-export const handleChangeAmountBuy = (action : string , amountChange : number) => {
-    console.log(amountChange)
-    if(amountChange){
-      switch (action) {
-          case 'INCREASE':
-          case 'DECREASE':           
-          case 'INPUT':
-              if(amountChange >=1 && amountChange <=999){
-                return (amountChange);
-              }else{
-                return (+(amountChange+'').slice(0,-1));
-              }
-          default:
-              break;
-      }
-    }else{
-      return 1;
+export const handleChangeAmountBuy = (action : string , amountChange : number , amountRemain : number) => {
+  console.log(amountChange)
+  if(amountChange){
+    switch (action) {
+        case 'INCREASE':
+            if(amountRemain < amountChange){
+              toast.error(`Sản phẩm này chỉ còn lại ${amountRemain} cái`)
+            }else{
+              return (amountChange);
+            }
+            break;
+        case 'DECREASE':           
+            return (amountChange);            
+        case 'INPUT':
+            if(amountChange >=1 && amountChange <=999){
+              return (amountChange);
+            }else if(amountRemain < amountChange){
+              toast.error(`Sản phẩm này chỉ còn lại ${amountRemain} cái`)
+            }else{
+              return (+(amountChange+'').slice(0,-1));
+            }
+            break;
+        default:
+            break;
     }
+  }else{
+    return 1;
+  }
 }
-
-// export const handleChangeAmountBuy = (action : string , amountChange : number , amountRemain : number) => {
-//   console.log(amountChange)
-//   if(amountChange){
-//     switch (action) {
-//         case 'INCREASE':
-//             if(amountRemain < amountChange){
-//               toast.error(`Sản phẩm này chỉ còn lại ${amountRemain} cái`)
-//             }else{
-//               return (amountChange);
-//             }
-//             break;
-//         case 'DECREASE':           
-//             return (amountChange);            
-//         case 'INPUT':
-//             if(amountChange >=1 && amountChange <=999){
-//               return (amountChange);
-//             }else if(amountRemain < amountChange){
-//               toast.error(`Sản phẩm này chỉ còn lại ${amountRemain} cái`)
-//             }else{
-//               return (+(amountChange+'').slice(0,-1));
-//             }
-//             break;
-//         default:
-//             break;
-//     }
-//   }else{
-//     return 1;
-//   }
-// }

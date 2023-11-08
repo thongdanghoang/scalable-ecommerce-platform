@@ -21,7 +21,7 @@
   width: 20%;
 }
 #homepage .banner > img {
-  height: 100%;
+  height: 92%;
 }
 .product > .slick-slider {
   margin: 0 20px;
@@ -60,5 +60,4 @@
 
 .custome-card-home-page {
   width: 90% !important;
-  height: 450px;
 }

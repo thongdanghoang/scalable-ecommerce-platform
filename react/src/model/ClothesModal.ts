@@ -1,7 +1,9 @@
 export interface clothes {
     id: number;
+    image ?: string;
     name: string;
     price: number;
+    discount?: number;
 }
 
 export interface clothesOrder extends clothes{

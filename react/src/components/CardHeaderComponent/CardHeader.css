@@ -90,6 +90,7 @@
 #card-popover .header-card-product-info-detail .card-product-name{
     font-size: medium;
     width: 90%;
+    cursor: pointer;
 }
 #card-popover .header-card-product-info-detail .card-product-name:hover {
   color: rgb(237, 207, 15);

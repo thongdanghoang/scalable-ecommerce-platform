@@ -47,12 +47,7 @@ export default function AdminPage() {
     getItem(
       <span>{"Đơn hàng"}</span>,
       "Đơn hàng",
-      <ShoppingCartOutlined style={{ fontSize: "20px", marginRight: "5px" }} />,
-      [
-        getItem(<span>{"Đơn hàng trực tuyến"}</span>, "Đơn hàng trực tuyến"),
-        getItem(<span>{"Đơn hàng đã hủy"}</span>, "Đơn hàng đã hủy"),
-        getItem(<span>{"Đơn hàng đã duyệt"}</span>, "Đơn hàng đã duyệt"),
-      ]
+      <ShoppingCartOutlined style={{ fontSize: "20px", marginRight: "5px" }} />
     ),
   ];
 
@@ -83,7 +78,7 @@ export default function AdminPage() {
           <span>N3TK</span>
         </div>
         <Menu
-          //defaultSelectedKeys={'products'}
+          defaultSelectedKeys={[keySelected]}
           mode="inline"
           theme="dark"
           style={{

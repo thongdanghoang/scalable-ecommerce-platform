@@ -4,8 +4,7 @@
 }
 #card .name {
   font-weight: 500;
-  /* padding: 2px 2px; */
-  /* height: 68px; */
+  height: 44px;
   white-space: break-spaces;
   overflow: hidden;
   display: -webkit-box;
@@ -13,17 +12,29 @@
   -webkit-line-clamp: 2;
 }
 
-#card .price {
+#card .price-box {
   font-weight: 700;
   font-size: medium;
-}
-/* #card .ant-card-cover {
-  height: 70%;
+  color: black;
 }
 
-#card .ant-card-body {
-  height: 30%;
-} */
+#card .price-box .price{
+  margin-right: 15px;
+}
+
+#card .price-box .discount-price{
+  color: #CD151C !important;
+}
+
+#card .price-box .compare-price {
+  text-decoration: line-through;
+  position: relative;
+  font-size: 16px;
+  color: #8A8A8F;
+  line-height: 17px;
+  display: inline;
+  font-weight: lighter;
+}
 
 #card img {
   transition: all 0.5s;

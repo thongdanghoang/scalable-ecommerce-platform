@@ -10,7 +10,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { UploadOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
-import { toastMSGObject } from '../../../utils/utils';
+import { convertPrice, toastMSGObject } from '../../../utils/utils';
 import { Action } from '../../../model/ActionModal';
 import { API_URL } from '../../../utils/constants';
 
@@ -68,8 +68,11 @@ export default function AdminProduct() {
 
   const {data : productDetail , isSuccess : isSuccessProduct} = useQuery(['product-detail-1',rowSelected.id], fetchGetProductById , { enabled : !!rowSelected.id})
 
+  console.log(form.getFieldsValue())
+
   useEffect(() => {
-    if(isSuccessProduct){
+    if(isSuccessProduct && typeAction === Action.UPDATE && isOpenDrawer){
+      console.log(typeAction)
       form.setFieldsValue({
         ...productDetail,
         classifyClothes : productDetail.classifyClothes.map((classify : any) => ({
@@ -82,7 +85,7 @@ export default function AdminProduct() {
         }))
       })
     }
-  },[isSuccessProduct])
+  },[isSuccessProduct,isOpenDrawer])
 
   // get all categories 
 
@@ -181,12 +184,13 @@ export default function AdminProduct() {
     {
       title: 'Giảm giá',
       dataIndex: 'discount',
-      render: (text : string) => <span>{text} %</span>,
-      sorter: (a : any,b : any) => a.sku - b.sku,
+      render: (text : number) => <span>{text*100} %</span>,
+      sorter: (a : any,b : any) => a.discount - b.discount,
     },
     {
       title: 'Giá tiền',
       dataIndex: 'price',
+      render: (text : number) => <span>{convertPrice(text)}</span>,
       sorter: (a : any,b : any) => a.price - b.price,
       filters: [
           {
