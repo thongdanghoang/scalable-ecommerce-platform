@@ -8,7 +8,7 @@ import rightArrow from "../../assets/icons/right-arrow.svg";
 import { getCategories } from "../../services/clothesService";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import fakeData from "../../data/categories.json";
 
 interface PropsSlider {
   slidesToShow: number;
@@ -20,7 +20,7 @@ export default function SliderComponent(props: PropsSlider) {
   const navigate = useNavigate();
   const { slidesToShow = 1, listItems = [], nameSlider } = props;
   let [typeCategory, setTypeCategory] = useState([] as any[]);
-  
+
   useEffect(() => {
     const handleTypeCategory = async () => {
       setTypeCategory(await getCategories());
@@ -139,16 +139,18 @@ export default function SliderComponent(props: PropsSlider) {
         return (
           <div className="slider-cate">
             <Slider className="slider-arrow-custome" {...settings}>
-              {typeCategory
+              {fakeData
                 .filter((item) => item.name.includes("NAM"))
                 .map((item) => (
-                  <div className="typeCagetories"
-                  onClick={() => navigate("/product", {state:{category: item.name.toLowerCase()}})}
+                  <div
+                    className="typeCagetories"
+                    onClick={() =>
+                      navigate("/product", {
+                        state: { category: item.name.toLowerCase() },
+                      })
+                    }
                   >
-                    <img
-                      src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036"
-                      alt=""
-                    />
+                    <img src={item.image} style={{ maxWidth: "80%" }} alt="" />
                     <div className="title">{item.name}</div>
                   </div>
                 ))}
@@ -159,16 +161,18 @@ export default function SliderComponent(props: PropsSlider) {
         return (
           <div className="slider-cate">
             <Slider className="slider-arrow-custome" {...settings}>
-              {typeCategory
+              {fakeData
                 .filter((item) => item.name.includes("NỮ"))
                 .map((item) => (
-                  <div className="typeCagetories"
-                  onClick={() => navigate("/product", {state:{category: item.name.toLowerCase()}})}
+                  <div
+                    className="typeCagetories"
+                    onClick={() =>
+                      navigate("/product", {
+                        state: { category: item.name.toLowerCase() },
+                      })
+                    }
                   >
-                    <img
-                      src="https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1696308204036"
-                      alt=""
-                    />
+                    <img src={item.image} style={{ maxWidth: "80%" }} alt="" />
                     <div className="title">{item.name}</div>
                   </div>
                 ))}

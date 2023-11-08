@@ -3,6 +3,7 @@ import { FiUsers } from "react-icons/fi";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { FiShoppingCart } from "react-icons/fi";
 import { PiMoneyLight } from "react-icons/pi";
+import SimpleBarChart from "./BarChart";
 export default function AdminDashboard() {
   return (
     <div className="admin-dashboard" id="admin-dashboard">
@@ -75,6 +76,9 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="simple-bar-chart">
+        <SimpleBarChart />
       </div>
     </div>
   );

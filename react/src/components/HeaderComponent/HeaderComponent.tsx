@@ -11,9 +11,14 @@ import {
   CartContext,
   CartContextType,
 } from "../DefaultComponent/DefaultComponent";
-import logo from '../../assets/img/n3tk-high-resolution-logo-white-transparent.png'
+import logo from "../../assets/img/n3tk-high-resolution-logo-white-transparent.png";
 import { useContext } from "react";
-import { AiOutlineGroup, AiOutlineLogin, AiOutlineProfile, AiOutlineUserAdd } from "react-icons/ai";
+import {
+  AiOutlineGroup,
+  AiOutlineLogin,
+  AiOutlineProfile,
+  AiOutlineUserAdd,
+} from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
 import { resetOrder } from "../../redux/slides/orderSlide";
 import SearchBarComponent from "../SearchBarComponent/SearchBarComponent";
@@ -40,8 +45,7 @@ export default function HeaderComponent({
   const { isHiddenCart, setIsHiddenCart } = cartContext as CartContextType;
 
   // update listOrderUnpaid
-  useEffect(() => {
-  }, [order.totalQuantity]);
+  useEffect(() => {}, [order.totalQuantity]);
 
   const handleProfile = async () => {
     navigate("/profile-user/information-user");
@@ -61,21 +65,25 @@ export default function HeaderComponent({
       {user?.username ? (
         <div>
           <div className="avatar-name-user">
-            <img 
+            <img
               src={
-                user.avatar ? `${API_URL}/api/user/profile/image/${user.avatar}`
-                : 'https://cdn-icons-png.flaticon.com/512/9385/9385289.png'
-              } 
+                user.avatar
+                  ? `${API_URL}/api/user/profile/image/${user.avatar}`
+                  : "https://cdn-icons-png.flaticon.com/512/9385/9385289.png"
+              }
             />
             <div className="name-user">{user.fullName || user.username}</div>
           </div>
-          {(user.role === "[ROLE_USER]") ? (
+          {user.role === "[ROLE_USER]" ? (
             <div className="menu-item" onClick={handleProfile}>
               <AiOutlineProfile />
               Tài khoản của tôi
             </div>
           ) : (
-            <div className="menu-item" onClick={() => navigate("/system/admin")}>
+            <div
+              className="menu-item"
+              onClick={() => navigate("/system/admin")}
+            >
               <AiOutlineGroup />
               Manage System
             </div>
@@ -92,7 +100,7 @@ export default function HeaderComponent({
             Login
           </div>
           <div className="menu-item" onClick={() => navigate("/sign-up")}>
-            <AiOutlineUserAdd/>
+            <AiOutlineUserAdd />
             Register
           </div>
         </div>
@@ -108,29 +116,40 @@ export default function HeaderComponent({
           <div className="col-md-5">
             {isShowMenu ? (
               <div className="row">
-                <div className="col-md-3 header_logo" onClick={() => navigate('/')}>
-                  <img src={logo} alt=""/>
+                <div
+                  className="col-md-3 header_logo"
+                  onClick={() => navigate("/")}
+                >
+                  <img src={logo} alt="" />
                 </div>
-                <div className="col-md-2 header_item text-center"
-                onClick={() => {
-                  navigate("/product", {state: {category: "nam"}});
-                  navigate(0);
-                }}
+                <div
+                  className="col-md-2 header_item text-center"
+                  onClick={() => {
+                    navigate("/product", { state: { category: "nam" } });
+                    navigate(0);
+                  }}
                 >
                   NAM
                 </div>
-                <div className="col-md-2 header_item text-center"
-                onClick={() => {
-                  navigate("/product", {state: {category: "nữ"}});
-                  navigate(0);
-                }}
+                <div
+                  className="col-md-2 header_item text-center"
+                  onClick={() => {
+                    navigate("/product", { state: { category: "nữ" } });
+                    navigate(0);
+                  }}
                 >
                   NỮ
                 </div>
-                <div className="col-md-3 header_item text-center">
+                <div
+                  className="col-md-3 header_item text-center"
+                  onClick={() => {
+                    navigate("/product");
+                    navigate(0);
+                  }}
+                >
                   BÁN CHẠY
                 </div>
-              </div>             
+              </div>
             ) : (
               <div className="header_system">Quản lí hệ thống shop TTNTK</div>
             )}

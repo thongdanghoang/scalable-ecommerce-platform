@@ -1,92 +1,102 @@
 [
-    {
-        "idCate" : "CA0001",
-        "name" : "Áo thun",
-        "gender" : "woman",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_2_image.png"
-    },
-    {
-        "idCate" : "CA0009",
-        "name" : "Áo thun",
-        "gender" : "man",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_2_image.png"
-    },
-    {
-        "idCate" : "CA0002",
-        "name" : "Áo Polo",
-        "gender" : "woman",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_3_image.png"
-    },
-    {
-        "idCate" : "CA0010",
-        "name" : "Áo Polo",
-        "gender" : "man",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_3_image.png"
-    },
-    {
-        "idCate" : "CA0003",
-        "name" : "Áo sơ mi",
-        "gender" : "woman",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_9_image.png"
-    },
-    {
-        "idCate" : "CA0011",
-        "name" : "Áo sơ mi",
-        "gender" : "man",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_6_image.png"
-    },
-    {
-        "idCate" : "CA0004",
-        "name" : "Áo khoác",
-        "gender" : "woman",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_1_image.png"
-    },
-    {
-        "idCate" : "CA0012",
-        "name" : "Áo khoác",
-        "gender" : "man",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_1_image.png"
-    },
-    {
-        "idCate" : "CA005",
-        "name" : "Quần bò",
-        "gender" : "woman",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_5_image.png"
-    },
-    {
-        "idCate" : "CA0013",
-        "name" : "Quần bò",
-        "gender" : "man",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_8_image.png"
-    },
-    {
-        "idCate" : "CA006",
-        "name" : "Quần âu",
-        "gender" : "woman",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_7_image.png"
-    },
-    {
-        "idCate" : "CA0014",
-        "name" : "Quần âu",
-        "gender" : "man",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_9_image.png"
-    },
-    {
-        "idCate" : "CA007",
-        "name" : "Váy đầm",
-        "gender" : "woman",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_8_image.png"
-    },
-    {
-        "idCate" : "CA008",
-        "name" : "Quần đùi",
-        "gender" : "woman",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_11_image.png"
-    },
-    {
-        "idCate" : "CA0015",
-        "name" : "Quần đùi",
-        "gender" : "woman",
-        "image" : "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_10_image.png"
-    }
+  {
+    "id": 1,
+    "name": "NAM",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_5_image.png?1699410883516"
+  },
+  {
+    "id": 2,
+    "name": "ÁO SƠ MI NAM",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_6_image.png?1699410883516"
+  },
+  {
+    "id": 3,
+    "name": "ÁO THUN NAM",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_2_image.png?1699410883516"
+  },
+  {
+    "id": 4,
+    "name": "ÁO POLO NAM",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_3_image.png?1699410883516"
+  },
+  {
+    "id": 5,
+    "name": "QUẦN ÂU NAM",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_9_image.png?1699410883516"
+  },
+  {
+    "id": 6,
+    "name": "NỮ",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_6_image.png?1699410883516"
+  },
+  {
+    "id": 7,
+    "name": "QUẦN JEAN NAM",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_8_image.png?1699410883516"
+  },
+  {
+    "id": 8,
+    "name": "QUẦN SHORT NỮ",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_11_image.png?1699410883516"
+  },
+  {
+    "id": 9,
+    "name": "ÁO SƠ MI NỮ",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_9_image.png?1699410883516"
+  },
+  {
+    "id": 10,
+    "name": "ĐẦM NỮ - VÁY LIỀN THÂN NỮ",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_8_image.png?1699410883516"
+  },
+  {
+    "id": 11,
+    "name": "QUẦN ÂU NỮ NỮ",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_7_image.png?1699410883516"
+  },
+  {
+    "id": 12,
+    "name": "CHÂN VÁY NỮ",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_6_image.png?1699410883516"
+  },
+  {
+    "id": 13,
+    "name": "QUẦN JEAN NỮ",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_5_image.png?1699410883516"
+  },
+  {
+    "id": 14,
+    "name": "ÁO KHOÁC NỮ",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_1_image.png?1699410883516"
+  },
+  {
+    "id": 15,
+    "name": "ÁO CHỐNG NẮNG NỮ",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_12_image.png?1699410883516"
+  },
+  {
+    "id": 16,
+    "name": "ÁO THUN NỮ",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_2_image.png?1699410883516"
+  },
+  {
+    "id": 17,
+    "name": "ÁO POLO NỮ",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_1_child_3_image.png?1699410883516"
+  },
+  {
+    "id": 18,
+    "name": "ÁO KHOÁC NAM",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_1_image.png?1699410883516"
+  },
+  {
+    "id": 19,
+    "name": "QUẦN KAKI NAM",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_7_image.png?1699410883516"
+  },
+  {
+    "id": 21,
+    "name": "QUẦN SHORT NAM",
+    "image": "https://bizweb.dktcdn.net/100/438/408/themes/919724/assets/home_danhmuc_2_child_10_image.png?1699410883516"
+  }
 ]
