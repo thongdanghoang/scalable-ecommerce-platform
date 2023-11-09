@@ -35,7 +35,7 @@ type QuerySortParams = {
   colour: string;
   category: string;
   page: string;
-  limit: "24";
+  limit: "12";
 };
 type Categories = {
   id: number;
@@ -104,7 +104,9 @@ function ClothesFilterPage(): React.ReactElement {
   let [productRender, setProductRender] = useState([LoadingSpin]);
 
   // sort options
-  const [selectedSortOption, setSelectedOptions] = useState([
+  let sortOptionState = navigateState?.sortOption;
+  const [selectedSortOption, setSelectedOptions] = useState(
+    sortOptionState ? sortOptionState as string[] : [
     "popular",
     "desc",
   ]);
@@ -154,6 +156,21 @@ function ClothesFilterPage(): React.ReactElement {
         {
           value: "desc",
           label: "giảm dần",
+        },
+      ],
+    },
+    {
+      value: "newest",
+      label: "thời gian",
+      children: [
+        {
+          value: "asc",
+          label: "mới nhất",
+        },
+        {
+          value: "desc",
+          
+          label: "cũ nhất",
         },
       ],
     },
@@ -366,7 +383,7 @@ function ClothesFilterPage(): React.ReactElement {
         colour: colorButtonActivated,
         category: categoryButtonActivated,
         page: (pagination.currentPage - 1).toString(),
-        limit: "24",
+        limit: "12",
       };
 
       let productList = await getProductList(filterAndOption);
@@ -426,7 +443,7 @@ function ClothesFilterPage(): React.ReactElement {
                 <Cascader
                   allowClear={false}
                   className="selection"
-                  defaultValue={["popular", "desc"]}
+                  defaultValue={selectedSortOption}
                   options={sortOptions}
                   onChange={handleChangeSortOption}
                 />
@@ -446,7 +463,7 @@ function ClothesFilterPage(): React.ReactElement {
             className="font-weight-normal"
             onChange={handleChangePagination}
             showSizeChanger={false}
-            pageSize={10}
+            pageSize={12}
             defaultCurrent={1}
             total={pagination.totalProduct}
           />
