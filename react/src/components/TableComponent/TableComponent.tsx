@@ -12,7 +12,7 @@ interface propsTable {
     isLoading ?: boolean,
     onRow ?: any,
     pageSize ?: number,
-    isRowSelection ?: true,
+    isRowSelection ?: any,
 }
 
 export default function TableComponent(props : propsTable) {

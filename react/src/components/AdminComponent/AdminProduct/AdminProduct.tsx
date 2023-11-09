@@ -50,8 +50,7 @@ export default function AdminProduct() {
   const fetchGetAllProducts = async () => {
     const res = await getAllClothes();
     const {products , totalCount} = await res?.json();
-    console.log(totalCount)
-    return products
+    return {products , totalCount}
   }
 
   const queryAllProducts = useQuery(['all-product'], fetchGetAllProducts )
@@ -153,14 +152,10 @@ export default function AdminProduct() {
   const renderAction = () => {
     return (
     <div>
-        <DeleteOutlined 
-          style={{ color: 'red', fontSize: '30px', cursor: 'pointer' }} 
-
-        />
-        <EditOutlined 
-          style={{ color: 'orange', fontSize: '30px', cursor: 'pointer' }} 
-          onClick={() => handleOnOpenDrawer(Action.UPDATE)}
-        />
+      <EditOutlined 
+        style={{ color: 'orange', fontSize: '30px', cursor: 'pointer' }} 
+        onClick={() => handleOnOpenDrawer(Action.UPDATE)}
+      />
     </div>
     )
   }
@@ -230,6 +225,9 @@ export default function AdminProduct() {
   return (
     <div id='AdminProduct'>
       <div className="clo-act-btn">
+        <div className="total-clo">
+          Tổng số lượng sản phẩm : {listProducts?.totalCount}
+        </div>
         <Button type="primary" onClick={() => handleOnOpenDrawer(Action.ADD)}>
           <BiPlus/>
           Add new clothes
@@ -238,7 +236,7 @@ export default function AdminProduct() {
 
       <TableComponent 
           columns={columns} 
-          listData={listProducts} 
+          listData={listProducts?.products} 
           isLoading={isLoadingProducts}
           onRow={(record : any, rowIndex : any) => {
               return {
@@ -246,7 +244,8 @@ export default function AdminProduct() {
                       setRowSelected(record)
                   }
               }
-          }}                    
+          }}  
+          isRowSelection={false}                  
       />
 
       {/** form add clothes */}

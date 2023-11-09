@@ -1,6 +1,7 @@
 #AdminProduct .clo-act-btn{
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    margin: 10px 0;
 }
 
 #AdminProduct .clo-act-btn svg{

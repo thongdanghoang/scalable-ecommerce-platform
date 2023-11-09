@@ -1,5 +1,5 @@
 import "./Payment.css";
-import { useState , useMemo , useEffect } from "react";
+import { useState ,useEffect } from "react";
 import type { CollapseProps } from "antd";
 import { Collapse, Modal, Tag } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -115,11 +115,11 @@ export default function PaymentPage() {
         label: isOpen ? "Thu nhỏ" : "Xem chi tiết",
         children: (
           <>
-            {order.orderItems.map(item => (
+            {orderCheckout?.items.map(item => (
               <div className="d-flex justify-content-between">
-                <div className="payment-product-quantity">{item.amountBuy} x</div>
-                <div className="payment-product-info"> {item.name}</div>
-                <div className="payment-product-price">{convertPrice(calculatePriceFinal(item.price , item.discount))}</div>
+                <div className="payment-product-quantity">{item.amount} x</div>
+                <div className="payment-product-info"> {item.product.name}</div>
+                <div className="payment-product-price">{convertPrice(calculatePriceFinal(item.product.price , item.product.discount))}</div>
               </div>
             ))}
           </>

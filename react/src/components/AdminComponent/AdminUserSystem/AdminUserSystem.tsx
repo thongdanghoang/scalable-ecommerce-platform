@@ -1,5 +1,5 @@
 import { DeleteOutlined , EditOutlined } from '@ant-design/icons';
-import { Button , Form, Input, Modal, Radio } from 'antd';
+import { Button , Form, Input, Modal, Radio, Switch } from 'antd';
 import { BiPlus } from 'react-icons/bi';
 import TableComponent from '../../TableComponent/TableComponent';
 import { useEffect, useState } from 'react';
@@ -103,8 +103,21 @@ export default function AdminUserSystem() {
   )
 
   const handleDisabledUserSystem = () => {
-    mutationDisabled.mutate(rowSelected.username)
+    console.log(rowSelected)
+    // if(!rowSelected.role){
+    //   mutationUpdate.mutate(
+    //     {
+    //       username : rowSelected.username,
+    //       role : rowSelected.role,
+    //       enabled : true
+    //     }
+    //   )
+    // }else{
+    //   mutationDisabled.mutate(rowSelected.username)
+    // }
   }
+
+  console.log(rowSelected)
 
   // action modal
   const handleOpenModal = (typeAction : Action) => {
@@ -162,7 +175,12 @@ export default function AdminUserSystem() {
     {
       title: 'Trạng thái',
       dataIndex: 'enabled',
-      render: (isActive : boolean) => <span style={{color : `${isActive ? 'rgb(0, 171, 86)' : 'red'}`}}>⬤  {isActive ? 'Enable' : 'Disable'}</span>,
+      render: (isActive : boolean) => (
+        <div style={{display:"flex" , justifyContent:"space-around"}}>
+          <span style={{color : `${isActive ? 'rgb(0, 171, 86)' : 'red'}`}}>⬤  {isActive ? 'Enable' : 'Disable'}</span>
+          <Switch defaultChecked={isActive} onClick={handleDisabledUserSystem} />
+        </div>
+      ),
     },
     {
       title: 'Action',
@@ -174,6 +192,9 @@ export default function AdminUserSystem() {
   return (
     <div id='AdminUserSystem'>
       <div className="user-act-btn">
+        <div className='total-user'>
+          Tổng số lượng người dùng hệ thống : {listUserSyss?.length}
+        </div>
         <Button type="primary" onClick={() => handleOpenModal(Action.ADD)}>
           <BiPlus/>
           Add new user system
@@ -194,10 +215,11 @@ export default function AdminUserSystem() {
                       }))
                   }
               }
-          }}                    
+          }} 
+          isRowSelection={false}                   
       />
 
-      <Modal 
+      {/* <Modal 
         title="Delete User System" 
         open={typeAction === Action.DELETE && isOpenModal} 
         onCancel={handleCloseModal}
@@ -210,7 +232,7 @@ export default function AdminUserSystem() {
         ]}
       >
         <p>Bạn muốn vô hiệu hóa chức năng của người dùng hệ thống này ?</p>
-      </Modal>
+      </Modal> */}
 
       <Modal 
         width={400}

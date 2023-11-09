@@ -94,9 +94,13 @@ function App() {
   useEffect(() => {
     if(user.username && user.role === Role['[ROLE_USER]']){
       const handle = setTimeout(async () => {
-        await updateCartService({
+        const res = await updateCartService({
           items : handleMapCart()
         })
+        if(res?.status === 400){
+          toast.error(res?.message, toastMSGObject());
+          await handleGetCartUser();
+        }
       }, 1500)
       return () => {
         clearTimeout(handle)
