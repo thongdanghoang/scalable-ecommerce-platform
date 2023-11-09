@@ -10,6 +10,8 @@ import { convertDateAndTime, toastMSGObject } from '../../../utils/utils';
 import { UserSystem } from '../../../model/UserModal';
 import { toast } from 'react-toastify';
 import { Action } from '../../../model/ActionModal';
+import { RootState } from '../../../redux/store';
+import { useSelector } from 'react-redux';
 
 
 export default function AdminUserSystem() {
@@ -18,6 +20,7 @@ export default function AdminUserSystem() {
   const [isOpenModal , setisOpenModal] = useState(false);
   const [rowSelected , setRowSelected] = useState<any>({});
   const [typeAction , setTypeAction] = useState<Action>(Action.ADD);
+  const user = useSelector((state: RootState) => state.user);
 
   // get all user sys
   const fetchGetAllUserSys = async () => {
@@ -118,6 +121,8 @@ export default function AdminUserSystem() {
     }
   },[rowSelected])
 
+  console.log(form.getFieldsValue())
+
   // action modal
   const handleOpenModal = (typeAction : Action) => {
     setisOpenModal(true);
@@ -170,8 +175,14 @@ export default function AdminUserSystem() {
     {
       title: 'Trạng thái',
       dataIndex: 'enabled',
-      render: (isActive : boolean) => (
-        <div style={{display:"flex"}}>
+      render: (isActive : boolean , record : any) => (
+        <div style={
+          {
+            display:"flex" , 
+            opacity: record.username === user.username ? 0.3 : 1,
+            pointerEvents: record.username === user.username ? "none" : "auto"
+          }
+        }>
           <span style={{color : `${isActive ? 'rgb(0, 171, 86)' : 'red'}` , marginRight:20}}>⬤  {isActive ? 'Enable' : 'Disable'}</span>
           <Switch defaultChecked={isActive} onClick={() => setTypeAction(Action.DELETE)} />
         </div>
@@ -192,7 +203,7 @@ export default function AdminUserSystem() {
         </div>
         <Button type="primary" onClick={() => handleOpenModal(Action.ADD)}>
           <BiPlus/>
-          Add new user system
+          Tạo người dùng mới
         </Button>
       </div>
 
@@ -204,7 +215,7 @@ export default function AdminUserSystem() {
               return {
                   onClick : (event : any) => {
                     setRowSelected(record);
-                    getUserSystemService(record.username)
+                    typeAction === Action.UPDATE && getUserSystemService(record.username)
                       .then(res => form.setFieldsValue({
                         ...res
                       }))
@@ -233,7 +244,7 @@ export default function AdminUserSystem() {
         width={400}
         title={`${typeAction} User System`} 
         open={typeAction !== Action.DELETE && isOpenModal} 
-        onCancel={() => setisOpenModal(false)}
+        onCancel={handleCloseModal}
         footer = {null}
       >
         <Form 
@@ -248,21 +259,37 @@ export default function AdminUserSystem() {
             onFinish={typeAction === Action.UPDATE ? handleUpdateUserSystem : handleCreateUserSystem}
         >
           <Form.Item
-              label="Username"
-              name="username"
+            label="Tên tài khoản"
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: `Vui lòng nhập tên tài khoản`
+              }
+            ]}
           >
-            <Input placeholder="username , ex : LeKimTan" />
+            <Input disabled={typeAction === Action.UPDATE} placeholder="Tên tài khoản , ví dụ : LeKimTan" />
           </Form.Item>
 
           <Form.Item
-              label={typeAction === Action.UPDATE ? "New password" : "Password"}
-              name="password"
+            label={typeAction === Action.UPDATE ? "Mật khẩu mới" : "Mật khẩu"}
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: `Vui lòng nhập mật khẩu ${typeAction === Action.UPDATE ? 'mới' : ''}`
+              },
+              {
+                min: 8,
+                message: 'Mật khẩu phải từ 8 kí tự trở lên'
+              }
+            ]}  
           >
-            <Input.Password placeholder="" />
+            <Input.Password placeholder="Mật khẩu phải từ 8 kí tự trở lên" />
           </Form.Item>
 
           <Form.Item
-              label="Role"
+              label="Vai trò"
               name="role"
           >
             <Radio.Group>
@@ -275,7 +302,7 @@ export default function AdminUserSystem() {
               label=" "
           >
               <Button type="primary" htmlType="submit">
-                {typeAction === Action.ADD ? 'Create' : 'Update'}
+                {typeAction === Action.ADD ? 'Tạo mới' : 'Cập nhật'}
               </Button>
           </Form.Item>
         </Form>

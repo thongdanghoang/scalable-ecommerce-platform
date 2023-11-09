@@ -18,9 +18,12 @@ import AdminOrder from "../../components/AdminComponent/AdminOrder/AdminOrder";
 import AdminDashboard from "../../components/AdminComponent/AdminDashboard/AdminDashboard";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/img/n3tk-high-resolution-logo-white-transparent.png";
+import { RootState } from "../../redux/store";
+import { useSelector } from "react-redux";
 
 export default function AdminPage() {
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.user);
   const [keySelected, setKeySelected] = useState("Thống kê");
   const items = [
     getItem(
@@ -29,7 +32,7 @@ export default function AdminPage() {
       <LineChartOutlined style={{ fontSize: "20px", marginRight: "5px" }} />
     ),
     getItem(
-      <span>{"Người dùng"}</span>,
+      <span>{"Người dùng hệ thống"}</span>,
       "Người dùng",
       <UserOutlined style={{ fontSize: "20px", marginRight: "5px" }} />
     ),
@@ -44,6 +47,17 @@ export default function AdminPage() {
       <ShoppingCartOutlined style={{ fontSize: "20px", marginRight: "5px" }} />
     ),
   ];
+
+  const customeItemsAuthorization = () => {
+    switch (user.role) {
+      case '[ROLE_ADMIN]':
+        return items.filter(item => item?.key === 'Người dùng')
+      case '[ROLE_SHOP_OWNER]':
+        return items.filter(item => item?.key !== 'Người dùng')
+      default:
+        break;
+    }
+  }
 
   const handleOnCLick = ({ key }: any) => {
     setKeySelected(key);
@@ -83,7 +97,7 @@ export default function AdminPage() {
             boxShadow: "1px 1px 2px #ccc",
             height: "100vh",
           }}
-          items={items}
+          items={customeItemsAuthorization()}
           onClick={handleOnCLick}
         />
       </div>

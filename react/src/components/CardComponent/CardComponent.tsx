@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   calculatePriceFinal,
   convertPrice,
+  convertToShortNumber,
   convertToSlug,
 } from "../../utils/utils";
 import { useState, useEffect } from "react";
@@ -14,10 +15,12 @@ interface PropsCard {
   name: string;
   price: number;
   discount: number;
+  rated: number;
+  numberOfSold: number;
 }
 
 export default function CardComponent(props: PropsCard) {
-  const { id, image, name, price, discount } = props;
+  const { id, image, name, price, discount , rated , numberOfSold } = props;
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -41,11 +44,11 @@ export default function CardComponent(props: PropsCard) {
         ) : (
           <div>
             <div className="cart-header">
-              <div className="cart-header-content">
-                <div>5</div>
+              <div className="cart-header__rated">
+                <div className="num-rated">{rated}</div>
                 <FaStar style={{ color: "yellow" }} />
               </div>
-              <div>Đã bán 171K</div>
+              <div className="cart-header__sold">Đã bán {convertToShortNumber(numberOfSold)}</div>
             </div>
             <div className="card-image">
               <img width={"100%"} height={"297px"} src={image} alt="" />

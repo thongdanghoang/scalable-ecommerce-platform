@@ -150,3 +150,8 @@
   color: #fff;
   background: #fcaf17;
 }
+
+#productDetail .images-product{
+  position: sticky;
+  top: 110px;
+}

@@ -111,6 +111,8 @@ export default function SliderComponent(props: PropsSlider) {
                   price={item.price}
                   image={item.image}
                   discount={item.discount}
+                  rated={item.rated}
+                  numberOfSold={item.numberOfSold}
                 />
               </div>
             ))}

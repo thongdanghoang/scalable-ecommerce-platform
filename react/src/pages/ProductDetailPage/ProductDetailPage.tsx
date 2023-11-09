@@ -112,8 +112,8 @@ export default function ProductDetailPage() {
   return (
     
     <div className="container" id="productDetail">
-      <div className="row justify-content-between">
-        <div className="col-md-4 image-product">
+      <div className="row justify-content-between align-items-start">
+        <div className="col-md-4 images-product">
           <SliderComponent
             slidesToShow={1}
             listItems={activeColor?.images}
@@ -197,50 +197,54 @@ export default function ProductDetailPage() {
               </div>
             </section>
           </div>
-          <div className="product-quantity">
-            <h5>Số Lượng</h5>
-            <div className="product-select-btn">
-              <button 
-                disabled={amountBuy<=1} 
-                onClick={() => handleSetAmountProduct('DECREASE',amountBuy-1) } 
-                className="product-variation-quantity"
-              >
-                -
-              </button>
-              <input
-                className="product-variation-quantity"
-                value={amountBuy}
-                placeholder=""
-                type="number"
-                style={{ textAlign: "center" }}
-                onChange={(e) => handleSetAmountProduct('INPUT',+e.target.value)}
-              />
-              <button 
-                disabled={amountBuy>=999} 
-                onClick={() => handleSetAmountProduct('INCREASE',amountBuy+1)} 
-                className="product-variation-quantity"
-              >
-                +
-              </button>
-            </div>
-          </div>
-          <div className="product-submit">
-            <button 
-              onClick={() => handleAddProductToOrder(false)} 
-              type="button" 
-              className="btn btn-primary"
-            >
-              <i className="fa-solid fa-cart-plus "></i>
-              Thêm vào giỏ hàng
-            </button>
-            <button 
-              onClick={handleBuyNow} 
-              type="button" 
-              className="btn btn-secondary"
-            >
-              Mua ngay
-            </button>
-          </div>
+          {user.role === '[ROLE_USER]' && (
+            <>
+              <div className="product-quantity">
+                <h5>Số Lượng</h5>
+                <div className="product-select-btn">
+                  <button 
+                    disabled={amountBuy<=1} 
+                    onClick={() => handleSetAmountProduct('DECREASE',amountBuy-1) } 
+                    className="product-variation-quantity"
+                  >
+                    -
+                  </button>
+                  <input
+                    className="product-variation-quantity"
+                    value={amountBuy}
+                    placeholder=""
+                    type="number"
+                    style={{ textAlign: "center" }}
+                    onChange={(e) => handleSetAmountProduct('INPUT',+e.target.value)}
+                  />
+                  <button 
+                    disabled={amountBuy>=999} 
+                    onClick={() => handleSetAmountProduct('INCREASE',amountBuy+1)} 
+                    className="product-variation-quantity"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              <div className="product-submit">
+                <button 
+                  onClick={() => handleAddProductToOrder(false)} 
+                  type="button" 
+                  className="btn btn-primary"
+                >
+                  <i className="fa-solid fa-cart-plus "></i>
+                  Thêm vào giỏ hàng
+                </button>
+                <button 
+                  onClick={handleBuyNow} 
+                  type="button" 
+                  className="btn btn-secondary"
+                >
+                  Mua ngay
+                </button>
+              </div>           
+            </>
+          )}
           <div className="product-describe">
             {productDetail?.description}
             <h5>Mô tả sản phẩm</h5>

@@ -128,13 +128,13 @@ export default function ProductSearchPage() {
           // onClick={() => navigate(`/product-detail/`, {state: item.id})}
         >
           <Badge.Ribbon text="new" color="cyan">
-            <CardComponent
+            {/* <CardComponent
               id={item.id}
               image={item.image as string}
               name={item.name}
               price={item.price}
               discount={item.discount as number}
-            />
+            /> */}
           </Badge.Ribbon>
         </Col>
       ));

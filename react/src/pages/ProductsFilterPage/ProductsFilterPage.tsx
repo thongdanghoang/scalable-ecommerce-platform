@@ -385,6 +385,8 @@ function ClothesFilterPage(): React.ReactElement {
               name={item.name}
               price={item.price}
               discount={item.discount as number}
+              rated={item.rated as number}
+              numberOfSold={item.numberOfSold as number}
             />
           </Badge.Ribbon>
         </Col>

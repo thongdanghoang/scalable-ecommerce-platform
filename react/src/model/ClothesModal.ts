@@ -4,9 +4,14 @@ export interface clothes {
     name: string;
     price: number;
     discount?: number;
+    rated?: number;
+    numberOfSold?: number;
 }
 
-export interface clothesOrder extends clothes{
+export interface clothesOrder{
+    id: number;
+    name: string;
+    price: string;
     category: string;
     discount: number;
     amountBuy: number;

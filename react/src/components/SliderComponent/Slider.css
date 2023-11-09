@@ -37,7 +37,7 @@
   border: none;
   border-radius: 0;
   background-color: black;
-  z-index: 99 !important;
+  z-index: 5 !important;
   display: none !important;
   opacity: 0.5;
 }
@@ -69,7 +69,7 @@
   border: none;
   border-radius: 5vw;
   background-color: #fff;
-  z-index: 99 !important;
+  z-index: 5 !important;
   box-shadow: rgb(35 35 35 / 50%) 0px 0px 20px 5px;
 }
 

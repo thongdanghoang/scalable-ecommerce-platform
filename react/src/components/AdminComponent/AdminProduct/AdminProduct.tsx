@@ -1,11 +1,11 @@
-import { CloseOutlined , DeleteOutlined , EditOutlined } from '@ant-design/icons';
+import { CloseOutlined , EditOutlined } from '@ant-design/icons';
 import { Upload , Button, Card, Form, Input, Space, Typography ,Select,Drawer, Row, Col } from 'antd';
-import { useState ,useEffect, useMemo } from 'react';
+import { useState ,useEffect} from 'react';
 import './AdminProduct.css'
 import { BiPlus } from 'react-icons/bi';
 import TableComponent from '../../TableComponent/TableComponent';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { createNewClothes, getAllClothes, getClothesById, updateClothes, uploadImageClothes } from '../../../services/clothesService';
+import { createNewClothes, getAllClothes, getCategories, getClothesById, updateClothes, uploadImageClothes } from '../../../services/clothesService';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { UploadOutlined } from '@ant-design/icons';
@@ -23,6 +23,16 @@ export default function AdminProduct() {
   const [listCate , setListCate] = useState<any[]>([]);
   const [typeAction , setTypeAction] = useState<Action>(Action.ADD);
 
+  useEffect(() => {
+    form.setFieldsValue({ 
+      classifyClothes: [
+        {
+          quantities:[1]
+        }
+      ],
+    });
+  },[])
+
   const handleOnOpenDrawer = (action : Action) => {
     setisOpenDrawer(true);
     setTypeAction(action);
@@ -32,7 +42,11 @@ export default function AdminProduct() {
     setisOpenDrawer(false);
     form.resetFields();
     form.setFieldsValue({ 
-      classifyClothes: [1]// reset lại form classifyClothes thành 1 cái
+      classifyClothes: [
+        {
+          quantities:[1] // reset lại form quantities trong classifyClothes thành 1 cái
+        }
+      ],
     });
   }
 
@@ -67,8 +81,6 @@ export default function AdminProduct() {
 
   const {data : productDetail , isSuccess : isSuccessProduct} = useQuery(['product-detail-1',rowSelected.id], fetchGetProductById , { enabled : !!rowSelected.id})
 
-  console.log(form.getFieldsValue())
-
   useEffect(() => {
     if(isSuccessProduct && typeAction === Action.UPDATE && isOpenDrawer){
       console.log(typeAction)
@@ -90,7 +102,7 @@ export default function AdminProduct() {
   // get all categories 
 
   useEffect(() => {
-    fetch(`${API_URL}/api/products/categories`)
+    getCategories()
       .then(res => res.json())
       .then(data => setListCate(data))
   },[])
@@ -252,8 +264,8 @@ export default function AdminProduct() {
 
       {/** form add clothes */}
       <Drawer
-        title={typeAction === Action.ADD ? 'Create a new clothes' : 'Update information clothes'}
-        width={980}
+        title={typeAction === Action.ADD ? 'Tạo quần áo mới' : 'Cập nhật thông tin quần áo'}
+        width={1200}
         onClose={handleOnCloseDrawer}
         open={isOpenDrawer}
         bodyStyle={{paddingBottom:"80px"}}
@@ -273,37 +285,66 @@ export default function AdminProduct() {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           form={form}
-          // style={{ maxWidth: 600 }}
           autoComplete="off"
           initialValues={{ classifyClothes: [{}] }}
         >
-          <Row gutter={32}>
+          <Row gutter={32} >
             <Col span={14} style={{borderRight: '1px solid #e1e1e1'}}>
-              <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+              <Form.Item name="name" label="Tên chi tiết" rules={[{ required: true , message: 'Vui lòng nhập tên quần áo' }]}>
                 <Input />
               </Form.Item>
-              <Form.Item name="sku" label="Đơn vị lưu kho" rules={[{ required: true }]}>
+              <Form.Item name="sku" label="Đơn vị lưu kho" rules={[{ required: true , message: 'Vui lòng nhập đơn vị lưu kho' }]}>
                 <Input />
               </Form.Item>
               <Form.Item 
-                name="price" label="Price" 
-                rules={[{ required: true }]}
+                name="price" label="Giá tiền" 
+                rules={[
+                  {
+                      required: true,
+                      message: 'Vui lòng nhập giá tiền',
+                  },
+                  {
+                      validator: (_, value) =>
+                        value == null || (value && (value >= 1000 && value % 100 === 0))
+                          ? Promise.resolve()
+                          : Promise.reject("Giá tiền phải lớn hơn hoặc bằng 1000 và đúng định dạng như : 1000, 300000,...")
+                  },
+                ]}
                 getValueFromEvent={(event) => {
                   const value = parseFloat(event.target.value);
                   return isNaN(value) ? undefined : value;
                 }}
               >
-                <Input type='number'/>
+                <Input 
+                  type='number' 
+                  placeholder='Giá tiền phải đúng định dạng như : 1000, 300000,...'
+                  onKeyDown = {(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
+                />
               </Form.Item>
               <Form.Item 
-                name="discount" label="Discount" 
-                rules={[{ required: true }]}
+                name="discount" label="Giảm giá" 
                 getValueFromEvent={(event) => {
                   const value = parseFloat(event.target.value);
                   return isNaN(value) ? undefined : value;
                 }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Vui lòng nhập giảm giá!',
+                  },
+                  {
+                    validator: (_, value) =>
+                      value == null || (value && (+value >= 0 && +value <= 100))
+                        ? Promise.resolve()
+                        : Promise.reject("Giảm giá phải từ 0% đến 100%"),
+                  },
+                ]}
               >
-                <Input type='number' />
+                <Input 
+                  type='number' 
+                  placeholder='giảm giá quần áo , từ 0% đến 100%'
+                  onKeyDown = {(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
+                />
               </Form.Item>
               <Form.Item name="categoryId" label="Danh mục sản phẩm" initialValue={listCate[0]?.id} rules={[{ required: true }]}>
                 <Select>
@@ -314,7 +355,7 @@ export default function AdminProduct() {
               </Form.Item>
               <Form.Item 
                   name="description" 
-                  label="Detail description"
+                  label="Mô tả chi tiết"
                   className='des-field'
                   wrapperCol={{ span: 24 }}
               >
@@ -328,7 +369,7 @@ export default function AdminProduct() {
                     {fields.map((field) => (
                       <Card
                         size="small"
-                        title={`ClassifyClothes ${field.name + 1}`}
+                        title={`Phân loại quần áo ${field.name + 1}`}
                         key={field.key}
                         extra={
                           <CloseOutlined
@@ -338,11 +379,20 @@ export default function AdminProduct() {
                           />
                         }
                       >
-                        <Form.Item label="Color" name={[field.name, 'color']}>
-                          <Input/>
+                        <Form.Item 
+                          label="Màu sắc" 
+                          name={[field.name, 'color']}
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Vui lòng nhập tên màu phù hợp',
+                            }
+                          ]}
+                        >
+                          <Input placeholder='Vui lòng nhập tên màu phù hợp'/>
                         </Form.Item>
 
-                        <Form.Item label="Images" name={[field.name, 'images']} valuePropName="fileList"
+                        <Form.Item label="Danh sách ảnh" name={[field.name, 'images']} valuePropName="fileList"
                           getValueFromEvent={(e) => e?.fileList}
                         >
                           <Upload 
@@ -359,7 +409,7 @@ export default function AdminProduct() {
                         </Form.Item>
 
                         {/* Nest Form.List */}
-                        <Form.Item label="Quantities">
+                        <Form.Item label="Size và số lượng">
                           <Form.List name={[field.name, 'quantities']}>
                             {(subFields, subOpt) => (
                               <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
@@ -371,6 +421,7 @@ export default function AdminProduct() {
                                         <Select.Option value={'L'}>L</Select.Option>
                                         <Select.Option value={'XL'}>XL</Select.Option>
                                         <Select.Option value={'2XL'}>2XL</Select.Option>
+                                        <Select.Option value={'3XL'}>3XL</Select.Option>
                                       </Select>
                                     </Form.Item>
                                     <Form.Item 
@@ -379,8 +430,24 @@ export default function AdminProduct() {
                                         const value = parseFloat(event.target.value);
                                         return isNaN(value) ? undefined : value;
                                       }}
+                                      rules={[
+                                        {
+                                          required: true,
+                                          message: 'Vui lòng nhập số lượng trong kho!',
+                                        },
+                                        {
+                                          validator: (_, value) =>
+                                            value && (+value >= 0 && +value <= 100)
+                                              ? Promise.resolve()
+                                              : Promise.reject("Số lượng trong kho chỉ từ 0 đến 999"),
+                                        },
+                                      ]}
                                     >
-                                      <Input type='number' placeholder="Số lượng" />
+                                      <Input 
+                                        type='number' 
+                                        placeholder="Số lượng trong kho hàng" 
+                                        onKeyDown = {(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
+                                      />
                                     </Form.Item>
                                     <CloseOutlined
                                       onClick={() => {
@@ -390,7 +457,7 @@ export default function AdminProduct() {
                                   </Space>
                                 ))}
                                 <Button type="dashed" onClick={() => subOpt.add()} block>
-                                  + Add extra size
+                                  + Thêm 1 size mới
                                 </Button>
                               </div>
                             )}
@@ -400,7 +467,7 @@ export default function AdminProduct() {
                     ))}
 
                     <Button type="dashed" onClick={() => add()} block>
-                      + Add extra classify clothes
+                      + Thêm 1 phân loại quần áo mới
                     </Button>
                   </div>
                 )}
