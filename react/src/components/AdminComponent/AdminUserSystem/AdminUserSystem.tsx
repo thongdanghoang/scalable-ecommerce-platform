@@ -66,7 +66,7 @@ export default function AdminUserSystem() {
         if(res?.status === 409){
           toast.error(res.message , toastMSGObject());
         }else{
-          toast.success('Update successfully!' , toastMSGObject());
+          typeAction === Action.UPDATE && toast.success('Update successfully!' , toastMSGObject());
           handleCloseModal();
         }
       },
@@ -102,22 +102,21 @@ export default function AdminUserSystem() {
     }
   )
 
-  const handleDisabledUserSystem = () => {
-    console.log(rowSelected)
-    // if(!rowSelected.role){
-    //   mutationUpdate.mutate(
-    //     {
-    //       username : rowSelected.username,
-    //       role : rowSelected.role,
-    //       enabled : true
-    //     }
-    //   )
-    // }else{
-    //   mutationDisabled.mutate(rowSelected.username)
-    // }
-  }
-
-  console.log(rowSelected)
+  useEffect(() => {
+    if(typeAction === Action.DELETE){
+      if(!rowSelected.enabled){
+        mutationUpdate.mutate(
+          {
+            username : rowSelected.username,
+            role : rowSelected.role,
+            enabled : true
+          }
+        )
+      }else{
+        mutationDisabled.mutate(rowSelected.username)
+      }
+    }
+  },[rowSelected])
 
   // action modal
   const handleOpenModal = (typeAction : Action) => {
@@ -133,14 +132,10 @@ export default function AdminUserSystem() {
   const renderAction = () => {
     return (
     <div>
-        <DeleteOutlined
-          style={{ color: 'red', fontSize: '30px', cursor: 'pointer' }} 
-          onClick={() => handleOpenModal(Action.DELETE)}
-        />
-        <EditOutlined 
-          style={{ color: 'orange', fontSize: '30px', cursor: 'pointer' }} 
-          onClick={() => handleOpenModal(Action.UPDATE)}
-        />
+      <EditOutlined 
+        style={{ color: 'orange', fontSize: '30px', cursor: 'pointer' }} 
+        onClick={() => handleOpenModal(Action.UPDATE)}
+      />
     </div>
     )
   }
@@ -176,9 +171,9 @@ export default function AdminUserSystem() {
       title: 'Trạng thái',
       dataIndex: 'enabled',
       render: (isActive : boolean) => (
-        <div style={{display:"flex" , justifyContent:"space-around"}}>
-          <span style={{color : `${isActive ? 'rgb(0, 171, 86)' : 'red'}`}}>⬤  {isActive ? 'Enable' : 'Disable'}</span>
-          <Switch defaultChecked={isActive} onClick={handleDisabledUserSystem} />
+        <div style={{display:"flex"}}>
+          <span style={{color : `${isActive ? 'rgb(0, 171, 86)' : 'red'}` , marginRight:20}}>⬤  {isActive ? 'Enable' : 'Disable'}</span>
+          <Switch defaultChecked={isActive} onClick={() => setTypeAction(Action.DELETE)} />
         </div>
       ),
     },

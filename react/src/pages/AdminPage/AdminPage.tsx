@@ -17,7 +17,6 @@ import AdminProduct from "../../components/AdminComponent/AdminProduct/AdminProd
 import AdminOrder from "../../components/AdminComponent/AdminOrder/AdminOrder";
 import AdminDashboard from "../../components/AdminComponent/AdminDashboard/AdminDashboard";
 import { useNavigate } from "react-router-dom";
-import { BiSolidDiscount } from "react-icons/bi";
 import logo from "../../assets/img/n3tk-high-resolution-logo-white-transparent.png";
 
 export default function AdminPage() {
@@ -38,11 +37,6 @@ export default function AdminPage() {
       <span>{"Sản phẩm"}</span>,
       "Sản phẩm",
       <AppstoreOutlined style={{ fontSize: "20px", marginRight: "5px" }} />
-    ),
-    getItem(
-      <span>{"Voucher"}</span>,
-      "Voucher",
-      <BiSolidDiscount style={{ fontSize: "20px", marginRight: "5px" }} />
     ),
     getItem(
       <span>{"Đơn hàng"}</span>,

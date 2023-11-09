@@ -74,6 +74,7 @@ export default function AdminProduct() {
       console.log(typeAction)
       form.setFieldsValue({
         ...productDetail,
+        discount : +productDetail.discount * 100,
         classifyClothes : productDetail.classifyClothes.map((classify : any) => ({
           ...classify,
           images : classify.images.map((img : string) => ({
@@ -103,11 +104,11 @@ export default function AdminProduct() {
     },
     {
       onSuccess : () => {
-        toast.success('add clothes success', toastMSGObject())
+        toast.success('Thêm sản phẩm mới thành công', toastMSGObject())
         handleOnCloseDrawer();
       },
       onError : () => {
-        toast.error('add clothes fail' , toastMSGObject())
+        toast.error('Thêm sản phẩm mới thất bại' , toastMSGObject())
       },
       onSettled : () => {
         queryAllProducts.refetch();
@@ -121,7 +122,7 @@ export default function AdminProduct() {
     })
   }
 
-  // add new clothes
+  // update clothes
 
   const mutationUpdateClo = useMutation(
     async (data : any) => {
@@ -130,11 +131,11 @@ export default function AdminProduct() {
     },
     {
       onSuccess : () => {
-        toast.success('Update clothes success', toastMSGObject())
+        toast.success('Cập nhật thông tin sản phẩm thành công', toastMSGObject())
         handleOnCloseDrawer();
       },
       onError : () => {
-        toast.error('Update clothes fail' , toastMSGObject())
+        toast.error('Cập nhật thông tin sản phẩm thất bại' , toastMSGObject())
       },
       onSettled : () => {
         queryAllProducts.refetch();
@@ -145,7 +146,8 @@ export default function AdminProduct() {
   const handleUpdateClothes = () => {
     mutationUpdateClo.mutate({
       id : productDetail.id,
-      ...newClothesCustome()
+      ...newClothesCustome(),
+      discount : newClothesCustome().discount / 100
     })
   }
 
@@ -251,7 +253,7 @@ export default function AdminProduct() {
       {/** form add clothes */}
       <Drawer
         title={typeAction === Action.ADD ? 'Create a new clothes' : 'Update information clothes'}
-        width={1100}
+        width={980}
         onClose={handleOnCloseDrawer}
         open={isOpenDrawer}
         bodyStyle={{paddingBottom:"80px"}}
@@ -345,18 +347,14 @@ export default function AdminProduct() {
                         >
                           <Upload 
                             onChange={async (info) => {
-                              const res = await uploadImageClothes(info.file);
-                              if(res.success){
-                                toast.success(res.message, toastMSGObject({ autoClose : 1000}))
-                              }else{
-                                toast.error(res.message , toastMSGObject({ autoClose : 1000}))
-                              }
+                              await uploadImageClothes(info.file);
                             }}
                             beforeUpload = {(file) => {
                               return false
                             }}
+                            listType="picture-card"
                           >
-                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                            <Button icon={<UploadOutlined />}>Upload</Button>
                           </Upload>
                         </Form.Item>
 
