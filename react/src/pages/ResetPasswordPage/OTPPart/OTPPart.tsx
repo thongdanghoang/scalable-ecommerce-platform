@@ -5,11 +5,9 @@ import { ResetPasswordPart } from "../ResetPasswordPart/ResetpasswordPart";
 import { forgetPasswordByMail } from "../../../services/userService";
 
 export function OTPPart({ email }: any) {
-
   const handleAPI = async (otp: string): Promise<string | null> => {
     let response = await forgetPasswordByMail(email, otp);
     if (response != null) {
-      console.log(await response.json())
       if (response.status == 200) {
         setCurrentForm(() => {
           return <ResetPasswordPart />;
@@ -32,11 +30,11 @@ export function OTPPart({ email }: any) {
     const handleSubmit = async () => {
       let result = await handleAPI(otp);
       if (result != null) {
-      setValidateOTP({
-        invalidOTP: true,
-        errorOTPMessage: result
-      })
-    }
+        setValidateOTP({
+          invalidOTP: true,
+          errorOTPMessage: result,
+        });
+      }
     };
     return (
       <>
@@ -45,7 +43,9 @@ export function OTPPart({ email }: any) {
           className="d-flex align-items-center justify-content-center"
         >
           <div className="container p-3 mb-5 rounded d-flex flex-column align-items-center justify-content-around">
-            <div className="text-center">Chúng tôi đã gửi mã OTP đến email của bạn</div>
+            <div className="text-center">
+              Chúng tôi đã gửi mã OTP đến email của bạn
+            </div>
             <p>Vui lòng kiểm tra email của bạn và nhập mã OTP tại đây</p>
             <OTPInput
               value={otp}
@@ -53,8 +53,8 @@ export function OTPPart({ email }: any) {
                 setOtp(event);
                 setValidateOTP({
                   invalidOTP: false,
-                  errorOTPMessage: ""
-                })
+                  errorOTPMessage: "",
+                });
               }}
               numInputs={6}
               inputType="number"
@@ -63,8 +63,10 @@ export function OTPPart({ email }: any) {
               containerStyle={"otp-input-container"}
               inputStyle={"otp-input shadow"}
             />
-            <div >
-              <p className="text-danger">{validateOTP.invalidOTP ? validateOTP.errorOTPMessage: null}</p>
+            <div>
+              <p className="text-danger">
+                {validateOTP.invalidOTP ? validateOTP.errorOTPMessage : null}
+              </p>
               <button
                 className={`btn btn-primary ${
                   otp.length != 6 ? "disabled" : null
@@ -85,4 +87,3 @@ export function OTPPart({ email }: any) {
   });
   return CurrentForm;
 }
-
