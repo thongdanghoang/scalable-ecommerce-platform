@@ -47,6 +47,9 @@ export function OTPPart({ email }: any) {
             <div className="text-center">
               Chúng tôi đã gửi mã OTP đến email của bạn
             </div>
+            <div className="text-center">
+              Chúng tôi đã gửi mã OTP đến email của bạn
+            </div>
             <p>Vui lòng kiểm tra email của bạn và nhập mã OTP tại đây</p>
             <OTPInput
               value={otp}
