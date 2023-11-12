@@ -72,6 +72,20 @@ public class ProductDetailMapper implements IMapper<Product, ProductDetailDto> {
             });
         }
 
+            List<QuantityBySizeDto> quantitiesBySize = new ArrayList<>();
+            for (Quantity quantity : quantities) {
+                if(Objects.equals(quantity.getColor().getId(), colorId)){
+                    QuantityBySizeDto quantityBySizeDto = new QuantityBySizeDto();
+                    quantityBySizeDto.setSize(quantity.getSize().getSizeName());
+                    quantityBySizeDto.setQuantityInStock(quantity.getQuantityInStock());
+                    quantityBySizeDto.setQuantityId(quantity.getId());
+                    quantitiesBySize.add(quantityBySizeDto);
+                }
+            }
+            classifyClotheDto.setQuantities(quantitiesBySize);
+            classifyClotheDtos.add(classifyClotheDto);
+        });
+
         productDto.setId(product.getId());
         productDto.setSku(product.getSku());
         productDto.setName(product.getName());
