@@ -37,3 +37,4 @@ docker-compose.yml
 
 # scripts
 /docker_build_multi_platform_shell_script
+/products/
