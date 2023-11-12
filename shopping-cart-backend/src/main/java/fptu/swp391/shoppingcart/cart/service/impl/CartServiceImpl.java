@@ -108,6 +108,13 @@ public class CartServiceImpl implements CartService {
         return mapCartToCartResponseDto(cartRepository.save(userCart));
     }
 
+    @Override
+    public void clearCart() {
+        var userCart = getUserCartFromDB();
+        userCart.getItems().clear();
+        cartRepository.save(userCart);
+    }
+
     private Cart getUserCartFromDB() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         var cart = cartRepository.findByUserAuthEntityUsername(username);
