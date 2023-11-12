@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "PRODUCT")
-public class Product extends BaseEntity{
+public class Product extends BaseEntity {
 
     @Column(name = "SKU", nullable = false, unique = true)
     private String sku;
@@ -32,7 +33,14 @@ public class Product extends BaseEntity{
     @Column(name = "RATED")
     private float rated;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @Lob
+    @Column(name = "DESCRIPTION")
+    private String description;
+
+    @Column(name = "CREATED_DATE")
+    private LocalDateTime createdDate;
+
+    @ManyToOne()
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -41,8 +49,18 @@ public class Product extends BaseEntity{
 
     @OneToMany(mappedBy = "product", orphanRemoval = true)
     private List<Quantity> quantities = new ArrayList<>();
+
     public Product() {
         this.numberOfSold = 0;
         this.rated = 0;
+    }
+
+    public Long getGrandTotal() {
+        return (long) (this.price * (1 - this.discount));
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.createdDate = LocalDateTime.now();
     }
 }

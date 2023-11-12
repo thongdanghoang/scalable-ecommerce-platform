@@ -3,6 +3,7 @@ package fptu.swp391.shoppingcart.product.web.impl;
 import fptu.swp391.shoppingcart.AbstractApplicationController;
 import fptu.swp391.shoppingcart.product.dto.*;
 import fptu.swp391.shoppingcart.product.exceptions.ProductImageNotFoundException;
+import fptu.swp391.shoppingcart.product.exceptions.ProductNotFoundException;
 import fptu.swp391.shoppingcart.product.services.ImageService;
 import fptu.swp391.shoppingcart.product.services.ProductService;
 import fptu.swp391.shoppingcart.product.web.ProductController;
@@ -26,7 +27,6 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api/products")
 public class ProductControllerImpl extends AbstractApplicationController implements ProductController {
-
     private final ImageService imageService;
 
     private final ProductService productService;
@@ -63,8 +63,17 @@ public class ProductControllerImpl extends AbstractApplicationController impleme
             return ResponseEntity.ok(productService.createProduct(productDto));
         } catch (ProductImageNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS, e.getMessage());
+        }
+    }
+
+    @Override
+    @PutMapping
+    public ResponseEntity<ProductAddingDto> updateProduct(ProductAddingDto productDto) {
+        try {
+            productService.deleteProductById(productDto.getId());
+            return ResponseEntity.ok(productService.createProduct(productDto));
+        } catch (ProductImageNotFoundException | ProductNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 

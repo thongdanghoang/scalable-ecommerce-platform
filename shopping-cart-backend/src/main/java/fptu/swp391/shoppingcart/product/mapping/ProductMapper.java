@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -30,7 +31,7 @@ public class ProductMapper implements IMapper<Product, ProductDto> {
         productDto.setId(product.getId());
         productDto.setSku(product.getSku());
         productDto.setName(product.getName());
-        productDto.setImage(product.getImages().stream().findFirst().orElseThrow().getUrl());
+        productDto.setImage(product.getImages().stream().findFirst().map(Image::getUrl).orElse(null));
         productDto.setRated(product.getRated());
         productDto.setNumberOfSold(product.getNumberOfSold());
         productDto.setPrice(product.getPrice());

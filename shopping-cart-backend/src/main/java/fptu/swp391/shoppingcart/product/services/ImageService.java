@@ -1,20 +1,28 @@
 package fptu.swp391.shoppingcart.product.services;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class ImageService {
     private final Path imageUploadPath;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     public ImageService(@Value("${products-image-dir}") String uploadDir) {
         this.imageUploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
@@ -36,6 +44,30 @@ public class ImageService {
             return fileName;
         }
     }
+
+    public String uploadImageFromUrl(String imageUrl) throws IOException {
+        // Generate a unique filename
+        String fileName = UUID.randomUUID().toString();
+
+        // Create a final array to store the file extension
+        final String[] fileExtension = { "jpg" };  // Default to jpg
+
+        restTemplate.execute(imageUrl, HttpMethod.GET, null, clientHttpResponse -> {
+            String contentType = Objects.requireNonNull(clientHttpResponse.getHeaders().getContentType()).getSubtype();
+            if (!contentType.isEmpty()) {
+                fileExtension[0] = contentType;
+            }
+
+            // Save the image with the determined filename and extension
+            Path targetLocation = this.imageUploadPath.resolve(fileName + "." + fileExtension[0]);
+            Files.copy(clientHttpResponse.getBody(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            return null;
+        });
+
+        return fileName + "." + fileExtension[0];
+    }
+
 
     public Path getImagePath(String fileName) {
         return this.imageUploadPath.resolve(fileName).normalize();

@@ -19,5 +19,7 @@ public interface ProductService {
 
     ProductAddingDto createProduct(ProductAddingDto productDto);
 
+    public void deleteProductById(Long id);
+
     List<CategoryDto> getAllCategory();
 }
