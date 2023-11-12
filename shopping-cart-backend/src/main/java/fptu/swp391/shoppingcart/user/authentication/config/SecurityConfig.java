@@ -58,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .mvcMatchers("/admin").hasRole("ADMIN")
                     .mvcMatchers("/user").hasRole("USER")
+                    .mvcMatchers("/cart/**").hasRole("USER")
                     .mvcMatchers("/api/products/image/upload").hasRole("SHOP_OWNER")
                     .mvcMatchers(HttpMethod.POST, "/api/products").hasRole("SHOP_OWNER")
                     .mvcMatchers("/api/user/auth/verify-email").authenticated()
