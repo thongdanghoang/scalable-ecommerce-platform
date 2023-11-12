@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/user/address")
@@ -79,6 +79,20 @@ public class AddressControllerImpl extends AbstractApplicationController impleme
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
         } catch (DataValidationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    @GetMapping("/default")
+    @Override
+    public ResponseEntity<ApiResponse<?>> getDefaultAddress(Principal principal) {
+        try {
+            ApiResponse<AddressDto> response = new ApiResponse<>();
+            response.setMessage("Get default address successfully");
+            response.setSuccess(true);
+            response.setData(addressService.getDefaultAddress(principal.getName()));
+            return ResponseEntity.ok(response);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 

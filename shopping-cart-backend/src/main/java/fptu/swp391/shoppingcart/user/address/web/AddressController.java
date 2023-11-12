@@ -17,4 +17,5 @@ public interface AddressController {
 
     ResponseEntity<ApiResponse<?>> deleteAddress(Principal principal, @RequestBody AddressDto addressDto);
 
+    ResponseEntity<ApiResponse<?>> getDefaultAddress(Principal principal);
 }
