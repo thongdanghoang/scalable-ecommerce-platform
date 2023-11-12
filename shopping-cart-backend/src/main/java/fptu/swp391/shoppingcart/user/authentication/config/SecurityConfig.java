@@ -1,9 +1,9 @@
 package fptu.swp391.shoppingcart.user.authentication.config;
 
 import fptu.swp391.shoppingcart.user.authentication.service.AuthenticationProviderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,12 +23,15 @@ import java.util.List;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private AuthenticationProviderService authenticationProvider;
-    @Autowired
-    private AuthenticationFailureHandlerCustom authenticationFailureHandlerCustom;
-    @Autowired
-    private AuthenticationSuccessHandlerCustom authenticationSuccessHandlerCustom;
+    private final AuthenticationProviderService authenticationProvider;
+    private final AuthenticationFailureHandlerCustom authenticationFailureHandlerCustom;
+    private final AuthenticationSuccessHandlerCustom authenticationSuccessHandlerCustom;
+
+    public SecurityConfig(AuthenticationProviderService authenticationProvider, AuthenticationFailureHandlerCustom authenticationFailureHandlerCustom, AuthenticationSuccessHandlerCustom authenticationSuccessHandlerCustom) {
+        this.authenticationProvider = authenticationProvider;
+        this.authenticationFailureHandlerCustom = authenticationFailureHandlerCustom;
+        this.authenticationSuccessHandlerCustom = authenticationSuccessHandlerCustom;
+    }
 
     private static void commence(HttpServletRequest request,
                                  HttpServletResponse response,
@@ -55,13 +58,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable() // TODO : Enable CSRF protection for best security
                 .authorizeRequests()
-                    .mvcMatchers("/admin").hasRole("ADMIN")
-                    .mvcMatchers("/user").hasRole("USER")
+                    .mvcMatchers("/admin/**").hasRole("ADMIN")
+                    .mvcMatchers("/user/**").hasRole("USER")
+                    .mvcMatchers("/cart/**").hasRole("USER")
+                    .antMatchers("/api/orders/all").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.GET, "/api/orders/status/**").hasAnyRole("ADMIN", "USER")
+                    .antMatchers(HttpMethod.GET, "/api/orders/**").hasRole("USER")
+                    .antMatchers(HttpMethod.POST, "/api/orders/checkout").hasRole("USER")
+                    .antMatchers(HttpMethod.PUT, "/api/orders/{orderId}").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.DELETE, "/api/orders/{orderId}").hasRole("USER")
+                    .antMatchers(HttpMethod.GET, "/api/orders/payment/{orderId}").hasRole("USER")
+                    .mvcMatchers(HttpMethod.POST, "/api/products/**").hasRole("SHOP_OWNER")
+                    .mvcMatchers(HttpMethod.PUT, "/api/products").hasRole("SHOP_OWNER")
                     .mvcMatchers("/api/user/auth/verify-email").authenticated()
                     .mvcMatchers("/api/user/auth/verify-phone").authenticated()
+                    .mvcMatchers("/api/user/auth/change-password").authenticated()
                     .mvcMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
                     .mvcMatchers("/api/user/auth/**").permitAll()
                     .mvcMatchers("/api/products/**").permitAll()
+                    .mvcMatchers("/login/oauth2/code/google/**").permitAll()
                     .anyRequest().authenticated().and()
                 .formLogin()
                     .failureHandler(authenticationFailureHandlerCustom)
@@ -78,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Configure allowed origins
         List<String> allowedOrigins = new ArrayList<>();
         allowedOrigins.add("http://localhost:3000"); // React dev server SWP391
-
+        allowedOrigins.add("*");
         configuration.setAllowedOrigins(allowedOrigins);
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");

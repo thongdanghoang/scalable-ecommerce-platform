@@ -1,5 +1,6 @@
 package fptu.swp391.shoppingcart.user.authentication.service;
 
+import fptu.swp391.shoppingcart.user.authentication.dto.ChangePasswordDto;
 import fptu.swp391.shoppingcart.user.authentication.dto.UserRegisterDTO;
 import fptu.swp391.shoppingcart.user.authentication.exceptions.*;
 import fptu.swp391.shoppingcart.user.otp.exceptions.*;
@@ -19,4 +20,6 @@ public interface UserAuthService {
     void verifyPhone(String phone, String code) throws TwilioServiceException, DataValidationException, OtpSentException, OtpIncorrectException;
 
     String forgotPasswordByPhone(String phone, String code) throws DataValidationException, TwilioServiceException, OtpSentException, OtpIncorrectException, PhoneNotFound;
+
+    void changePassword(ChangePasswordDto dto) throws DataValidationException, PasswordIncorrectException;
 }

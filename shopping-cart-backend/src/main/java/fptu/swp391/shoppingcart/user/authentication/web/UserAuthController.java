@@ -28,4 +28,8 @@ public interface UserAuthController {
 
     ResponseEntity<ApiResponse<?>> forgotPasswordByPhone(@RequestBody PhoneOtpDto phoneOtpDto,
                                                         HttpServletResponse response);
+
+    ResponseEntity<ApiResponse<?>> changePassword(@RequestBody ChangePasswordDto changePasswordDto,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response);
 }
