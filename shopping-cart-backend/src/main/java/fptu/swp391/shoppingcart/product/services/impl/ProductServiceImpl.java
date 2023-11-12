@@ -3,12 +3,12 @@ package fptu.swp391.shoppingcart.product.services.impl;
 import fptu.swp391.shoppingcart.product.dto.*;
 import fptu.swp391.shoppingcart.product.entity.*;
 import fptu.swp391.shoppingcart.product.exceptions.ProductImageNotFoundException;
+import fptu.swp391.shoppingcart.product.exceptions.ProductNotFoundException;
 import fptu.swp391.shoppingcart.product.mapping.ProductDetailMapper;
 import fptu.swp391.shoppingcart.product.mapping.ProductMapper;
 import fptu.swp391.shoppingcart.product.repo.*;
 import fptu.swp391.shoppingcart.product.services.ImageService;
 import fptu.swp391.shoppingcart.product.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,37 +17,41 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private ColorRepository colorRepository;
+    private final ColorRepository colorRepository;
 
-    @Autowired
-    private ImageRepository imageRepository;
+    private final ImageRepository imageRepository;
 
-    @Autowired
-    private SizeRepository sizeRepository;
+    private final SizeRepository sizeRepository;
 
-    @Autowired
-    private QuantityRepository quantityRepository;
+    private final QuantityRepository quantityRepository;
 
-    @Autowired
-    private ProductMapper mapper;
+    private final ProductMapper mapper;
 
-    @Autowired
-    private ProductDetailMapper detailMapper;
+    private final ProductDetailMapper detailMapper;
 
-    @Autowired
-    private ImageService imageService;
+    private final ImageService imageService;
+
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, ColorRepository colorRepository, ImageRepository imageRepository, SizeRepository sizeRepository, QuantityRepository quantityRepository, ProductMapper mapper, ProductDetailMapper detailMapper, ImageService imageService) {
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+        this.colorRepository = colorRepository;
+        this.imageRepository = imageRepository;
+        this.sizeRepository = sizeRepository;
+        this.quantityRepository = quantityRepository;
+        this.mapper = mapper;
+        this.detailMapper = detailMapper;
+        this.imageService = imageService;
+    }
 
     @Override
     public Page<ProductDto> getAll(int page, int limit) {
@@ -84,6 +88,7 @@ public class ProductServiceImpl implements ProductService {
         product.setName(productDto.getName());
         product.setPrice(productDto.getPrice());
         product.setDiscount(productDto.getDiscount());
+        product.setDescription(productDto.getDescription());
         product.setCategory(categoryRepository.findById(productDto.getCategoryId()).orElseThrow());
         List<ClassifyClotheDto> classifyClothes = productDto.getClassifyClothes();
         classifyClothes.stream() // check if color is existed -> if not -> create and save
@@ -126,7 +131,20 @@ public class ProductServiceImpl implements ProductService {
                 imageRepository.save(image);
             });
         });
+        productDto.setId(saved.getId());
         return productDto;
+    }
+
+    @Override
+    @Transactional
+    public void deleteProductById(Long id) {
+        imageRepository.deleteByProductId(id);
+        quantityRepository.deleteByProductId(id);
+        Optional<Product> found = productRepository.findById(id);
+        if(found.isEmpty()){
+            throw new ProductNotFoundException(String.format("Product with id %d not found", id));
+        }
+        productRepository.deleteById(id);
     }
 
     @Override

@@ -12,16 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.IOException;
 
 public interface ProductController {
-    // pagination get all product
+
     ResponseEntity<ProductsResponse> getAll(@RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "30") int limit);
-    // pagination sort
-    // pagination filter
 
     ResponseEntity<ProductsResponse> searchByKeyword(@RequestParam String keyword, // pagination search by keyword
                                                      @RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "30") int limit);
-    // view product detail by id
+    // TODO : product detail field in this api
     ResponseEntity<ProductDetailDto> findProductById(@PathVariable Long id);
 
     ResponseEntity<Resource> serveImage(@PathVariable String fileName) throws IOException;
@@ -37,5 +35,8 @@ public interface ProductController {
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "30") int limit);
 
+    // TODO: add product detail field in this api
     ResponseEntity<ProductAddingDto> createProduct(@RequestBody ProductAddingDto productDto);
+
+    ResponseEntity<ProductAddingDto> updateProduct(@RequestBody ProductAddingDto productDto);
 }

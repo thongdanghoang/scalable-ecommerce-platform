@@ -3,15 +3,16 @@ package fptu.swp391.shoppingcart.product.repo.custom;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import fptu.swp391.shoppingcart.product.entity.Product;
-import fptu.swp391.shoppingcart.product.entity.QCategory;
 import fptu.swp391.shoppingcart.product.entity.QProduct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.support.PageableExecutionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
@@ -42,15 +43,15 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
             }
         }
 
-        if (category != null && !category.isEmpty()) {
-            QCategory present = product.category;
-            while (present != null) {
-                conditions = conditions == null ? present.name.containsIgnoreCase(category) :
-                        conditions.or(present.name.containsIgnoreCase(category));
-                present = present.parentCategory;
-            }
+//        if (category != null && !category.isEmpty()) {
+//            QCategory present = product.category;
+//            while (present != null) {
+//                conditions = conditions == null ? present.name.containsIgnoreCase(category) :
+//                        conditions.or(present.name.containsIgnoreCase(category));
+//                present = present.parentCategory;
+//            }
+//        }
 
-        }
         if (minPrice > 0) {
             conditions = conditions == null ? product.price.goe(minPrice) :
                     conditions.and(product.price.goe(minPrice));
@@ -116,7 +117,11 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-
+        if (!StringUtils.isEmpty(category)) {
+            results = results.stream()
+                    .filter(o -> o.getCategory().getFullName().contains(category.toUpperCase()))
+                    .collect(Collectors.toList());
+        }
         return PageableExecutionUtils.getPage(results, pageable, () -> totalCount);
     }
 }
