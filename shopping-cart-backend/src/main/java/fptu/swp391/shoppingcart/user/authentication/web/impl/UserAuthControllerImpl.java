@@ -165,10 +165,24 @@ public class UserAuthControllerImpl extends AbstractApplicationController implem
             apiResponse = new ApiResponse<>("Verification code sent via phone successfully", true, null);
         } catch (PhoneNotFound e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch( ApiException e){
+        } catch (ApiException e) {
             throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
+
+    @PostMapping("/change-password")
+    @Override
+    public ResponseEntity<ApiResponse<?>> changePassword(ChangePasswordDto changePasswordDto, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            userAuthService.changePassword(changePasswordDto);
+            ApiResponse<?> apiResponse = new ApiResponse<>("Password changed successfully", true, null);
+            return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+        } catch (DataValidationException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (PasswordIncorrectException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
     }
 
     @PostMapping("/reset-password")
@@ -216,7 +230,7 @@ public class UserAuthControllerImpl extends AbstractApplicationController implem
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<ApiResponse<?>> logout(){
+    public ResponseEntity<ApiResponse<?>> logout() {
         SecurityContextHolder.clearContext();
         ApiResponse<?> apiResponse = new ApiResponse<>("Logout successfully", true, null);
         return ResponseEntity
