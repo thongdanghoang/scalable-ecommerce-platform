@@ -1,12 +1,32 @@
 package fptu.swp391.shoppingcart.user.authentication.validator;
 
+import fptu.swp391.shoppingcart.admin.model.dto.UserReqDto;
 import fptu.swp391.shoppingcart.user.address.dto.AddressDto;
 import fptu.swp391.shoppingcart.user.authentication.dto.UserRegisterDTO;
 import fptu.swp391.shoppingcart.user.authentication.exceptions.DataValidationException;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 public class UserValidator {
+    private static void validateUsername(String username) throws DataValidationException {
+        // USERNAME from 6 to 20 characters
+        if (username.length() < 6)
+            throw new DataValidationException("Username must be at least 6 characters");
+        if (username.length() > 20)
+            throw new DataValidationException("Username must be at most 20 characters");
+        // Usernames must only contain certain characters, such as letters, numbers, and underscores.
+        String usernameRegex = "^\\w*$";
+        if (!username.matches(usernameRegex))
+            throw new DataValidationException("Username must only contain certain characters, such as letters, numbers, and underscores");
+    }
+
+    public void validateUser(UserReqDto user) throws DataValidationException {
+        if (StringUtils.isEmpty(user.getUsername())) {
+            throw new DataValidationException("Username must not be empty");
+        }
+    }
+
     public void validateRegisterDto(UserRegisterDTO userRegisterDTO) throws DataValidationException {
         // empty check
         if (userRegisterDTO.getUsername().isEmpty() || userRegisterDTO.getPassword().isEmpty() || userRegisterDTO.getEmail().isEmpty())
@@ -14,15 +34,7 @@ public class UserValidator {
 
         checkPassword(userRegisterDTO.getPassword());
 
-        // USERNAME from 6 to 20 characters
-        if (userRegisterDTO.getUsername().length() < 6)
-            throw new DataValidationException("Username must be at least 6 characters");
-        if (userRegisterDTO.getUsername().length() > 20)
-            throw new DataValidationException("Username must be at most 20 characters");
-        // Usernames must only contain certain characters, such as letters, numbers, and underscores.
-        String usernameRegex = "^\\w*$";
-        if (!userRegisterDTO.getUsername().matches(usernameRegex))
-            throw new DataValidationException("Username must only contain certain characters, such as letters, numbers, and underscores");
+        validateUsername(userRegisterDTO.getUsername());
 
         // RFC5322 standard for EMAIL address
         String emailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
@@ -31,7 +43,7 @@ public class UserValidator {
     }
 
     public void checkMail(String mail) throws DataValidationException {
-        if(mail == null){
+        if (mail == null) {
             throw new DataValidationException("Email must not be empty");
         }
         // RFC5322 standard for EMAIL address
@@ -53,7 +65,7 @@ public class UserValidator {
     }
 
     public void checkPhoneNumberE164(String phone) throws DataValidationException {
-        if(phone == null){
+        if (phone == null) {
             throw new DataValidationException("Phone number must not be empty");
         }
         // PHONE NUMBER must be in E.164 format
@@ -62,21 +74,21 @@ public class UserValidator {
             throw new DataValidationException("Phone number is invalid");
     }
 
-    public void checkAddress(AddressDto address) throws DataValidationException{
+    public void checkAddress(AddressDto address) throws DataValidationException {
         checkPhoneNumberE164(address.getPhone());
-        if(address.getFullName() == null || address.getFullName().isEmpty()){
+        if (address.getFullName() == null || address.getFullName().isEmpty()) {
             throw new DataValidationException("Full name must not be empty");
         }
-        if(address.getAddressDetail() == null || address.getAddressDetail().isEmpty()){
+        if (address.getAddressDetail() == null || address.getAddressDetail().isEmpty()) {
             throw new DataValidationException("Address detail must not be empty");
         }
-        if(address.getProvince() == null || address.getProvince().isEmpty()){
+        if (address.getProvince() == null || address.getProvince().isEmpty()) {
             throw new DataValidationException("City must not be empty");
         }
-        if(address.getDistrict() == null || address.getDistrict().isEmpty()){
+        if (address.getDistrict() == null || address.getDistrict().isEmpty()) {
             throw new DataValidationException("District must not be empty");
         }
-        if(address.getWard() == null || address.getWard().isEmpty()){
+        if (address.getWard() == null || address.getWard().isEmpty()) {
             throw new DataValidationException("Ward must not be empty");
         }
     }

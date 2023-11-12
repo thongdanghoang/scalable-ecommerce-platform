@@ -1,5 +1,6 @@
 package fptu.swp391.shoppingcart.user.authentication.service.impl;
 
+import fptu.swp391.shoppingcart.user.authentication.dto.ChangePasswordDto;
 import fptu.swp391.shoppingcart.user.authentication.dto.UserRegisterDTO;
 import fptu.swp391.shoppingcart.user.authentication.entity.Authority;
 import fptu.swp391.shoppingcart.user.authentication.entity.UserAuthEntity;
@@ -17,7 +18,6 @@ import fptu.swp391.shoppingcart.user.otp.utils.Generator;
 import fptu.swp391.shoppingcart.user.profile.entity.ProfileEntity;
 import fptu.swp391.shoppingcart.user.profile.exceptions.AuthorizationException;
 import fptu.swp391.shoppingcart.user.profile.repository.ProfileRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,28 +33,40 @@ import java.util.Set;
 @Service
 public class UserAuthServiceImpl implements UserAuthService {
 
-    @Autowired
+    final
     UserValidator validator;
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private UserRepository userRepository;
+    private final AuthenticationProvider authenticationProvider;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ProfileRepository profileRepository;
+    private final ProfileRepository profileRepository;
 
-    @Autowired
-    private MailOtpService mailOtpService;
+    private final MailOtpService mailOtpService;
 
-    @Autowired
-    private PhoneOtpService phoneOtpService;
+    private final PhoneOtpService phoneOtpService;
 
-    @Autowired
-    private VerificationRepo verificationRepo;
+    private final VerificationRepo verificationRepo;
+
+    public UserAuthServiceImpl(UserValidator validator,
+                               AuthenticationProvider authenticationProvider,
+                               BCryptPasswordEncoder bCryptPasswordEncoder,
+                               UserMapper userMapper,
+                               UserRepository userRepository,
+                               ProfileRepository profileRepository,
+                               MailOtpService mailOtpService,
+                               PhoneOtpService phoneOtpService,
+                               VerificationRepo verificationRepo) {
+        this.validator = validator;
+        this.authenticationProvider = authenticationProvider;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userMapper = userMapper;
+        this.userRepository = userRepository;
+        this.profileRepository = profileRepository;
+        this.mailOtpService = mailOtpService;
+        this.phoneOtpService = phoneOtpService;
+        this.verificationRepo = verificationRepo;
+    }
 
     @Override
     public String register(UserRegisterDTO userRegisterDTO)
@@ -167,6 +179,22 @@ public class UserAuthServiceImpl implements UserAuthService {
             return otpVerificationEntity.getVerificationToken();
         }
 
+    }
+
+    @Override
+    public void changePassword(ChangePasswordDto dto)
+            throws DataValidationException, PasswordIncorrectException {
+        validator.checkPassword(dto.getNewPassword());
+        userRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                .ifPresent(userAuthEntity -> {
+                            if (bCryptPasswordEncoder.matches(dto.getOldPassword(), userAuthEntity.getPassword())) {
+                                userAuthEntity.setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
+                                userRepository.save(userAuthEntity);
+                            } else {
+                                throw new PasswordIncorrectException("Old password incorrect");
+                            }
+                        }
+                );
     }
 
     @Override

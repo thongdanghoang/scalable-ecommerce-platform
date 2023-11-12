@@ -3,27 +3,35 @@ package fptu.swp391.shoppingcart.user.authentication.web;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fptu.swp391.shoppingcart.user.authentication.utils.RandomPasswordGenerator;
+import fptu.swp391.shoppingcart.product.services.ImageService;
+import fptu.swp391.shoppingcart.user.authentication.entity.Authority;
 import fptu.swp391.shoppingcart.user.authentication.entity.UserAuthEntity;
+import fptu.swp391.shoppingcart.user.authentication.exceptions.UsernameAlreadyExists;
 import fptu.swp391.shoppingcart.user.authentication.repository.UserRepository;
 import fptu.swp391.shoppingcart.user.authentication.service.GoogleAuthtication;
-import fptu.swp391.shoppingcart.user.authentication.service.UserAuthService;
+import fptu.swp391.shoppingcart.user.profile.entity.ProfileEntity;
 import fptu.swp391.shoppingcart.user.profile.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
@@ -38,7 +46,9 @@ public class GoogleLogin {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserAuthService userAuthService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private ImageService imageService;
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String clientId;
@@ -49,29 +59,42 @@ public class GoogleLogin {
     private String redirectUri = "http://localhost:8080/login/oauth2/code/google/callback";
 
     @GetMapping("/authorize")
-    public RedirectView getGoogleAuthUrl() {
+    public RedirectView getGoogleAuthUrl(HttpServletRequest request) {
+        // Generate a unique state value
+        String state = UUID.randomUUID().toString();
+
+        // Store the state in the user's session
+        HttpSession session = request.getSession();
+        session.setAttribute("google_oauth_state", state);
+        // store request url in session
+        session.setAttribute("request_url", request.getHeader("referer"));
+        Logger.getLogger("GoogleLogin").info("request url: " + request.getHeader("referer"));
+        Logger.getLogger("GoogleLogin").info("state: " + state);
+
+
         String url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + clientId +
-                "&redirect_uri=" + redirectUri + "&response_type=code&scope=" + scope;
+                "&redirect_uri=" + redirectUri + "&response_type=code&scope=" + scope + "&state=" + state;
         return new RedirectView(url);
     }
 
     //callback
     @GetMapping("/callback")
-    public RedirectView callback(@RequestParam String code, HttpServletRequest request) {
+    public RedirectView callback(@RequestParam String code,
+                                 @RequestParam String state,
+                                 HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String sessionState = (String) session.getAttribute("google_oauth_state");
+        String requestUrl = (String) session.getAttribute("request_url");
+        if(state == null || !state.equals(sessionState)) {
+            // return error page
+            return new RedirectView(requestUrl.concat("?error=state_mismatch"));
+        }
         // exchange code for access token and id token
         // use rest template to call google api
         String url = "https://oauth2.googleapis.com/token?code=" + code + "&client_id=" + clientId + "&client_secret="
                 + clientSecret + "&redirect_uri=" + redirectUri + "&grant_type=" + authorizationGrantType;
         String response = restTemplate.postForObject(url, null, String.class);
         // log response
-        Logger.getLogger("GoogleLogin").info(response);
-//        {
-//            "access_token": "VQhGGNkorNpX4itzZdzwmW22N22XmzDeYMTs0Z82c2KDgsEgTni04N0acPTdTGAiAuCf2DDnOnlEi_-9rdyPmxVm-aCgYKAbQSARISFQGOcNnC7or7s5PLIVf4OOlRzITwrQ0171",
-//                "expires_in": 3599,
-//                "scope": "https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/userinfo.email",
-//                "token_type": "Bearer",
-//                "id_token": "NDdmODM2OTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzMDkyMjMyMzk0OTctbTBiYzJkNWh2dmZ0cHZvMnRha2hvMnVkdnBrbjloOTAuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzMDkyMjMyMzk0OTctbTBiYzJkNWh2dmZ0cHZvMnRha2hvMnVkdnBrbjloOTAuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDgwNzUxNTExNTk2MDQ0NDI4MTEiLCJoZCI6ImZwdC5lZHUudm4iLCJlbWFpbCI6Im5nYW5udHFlMTcwMjM2QGZwdC5lZHUudm4iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IkVtN2tVd2RkVjR3b2JQbDFNRHJYMHciLCJuYW1lIjoiTmd1eWVuIFRodWMgTmdhbiAoSzE3IFFOKSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NMRVZmWXZxd1c1dDQzUmZrNXF4eHBCM2FkdVJCVl9mN2hRejBBYXBnekZNbGc9czk2LWMiLCJnaXZlbl9uYW1lIjoiTmd1eWVuIFRodWMgTmdhbiIsImZhbWlseV9uYW1lIjoiKEsxNyBRTikiLCJsb2NhbGUiOiJlbi1HQiIsImlhdCI6MTY5NzY4MzA4MSwiZXhwIjoxNjk3Njg2NjgxfQ.RPALrLmLVix2oHev_EAxL4fOTjbZ54cO13Re5XP6bT_MwjK7zGNJHrmDV91yIahMOX3lp1z7LURmbaAn89TzMqObcN69FRvIhEKLrrGYVhHKW6FJxHiYwRW2AQ42Gy_iSTY4X6oztmMjoIoBLwlE9Xy-CuWvdC3USn49DAkP_TGbF6MWPsQhrKjmeWGcuPPBWBInbrBfByrpCDLU9iFYy5Pdzk_I-lIns7mC8xDX3AKB6P6LgmhOsmZ8sq3FvFzp9T172U-8qh5dEC0ByKsEmZf0bbrQOJLSs_eoh9jcyQkqGtoWxxtIptsqYocSnflDYH7IZifieSZ_TEg8vsRo8A"
-//        }
         // Parse the JSON response to extract the access token
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> responseMap = null;
@@ -82,7 +105,7 @@ public class GoogleLogin {
             throw new RuntimeException(e);
         }
         String accessToken = (String) responseMap.get("access_token");
-        String idToken = (String) responseMap.get("id_token");
+//        String idToken = (String) responseMap.get("id_token");
 
         // Use the access token to get the user info
         HttpHeaders headers = new HttpHeaders();
@@ -105,19 +128,53 @@ public class GoogleLogin {
             throw new RuntimeException(e);
         }
 
+        Logger.getLogger("GoogleLogin").info("userInfo: " + userInfo);
         String email = (String) responseMap.get("email");
+        String avatar = (String) responseMap.get("picture");
+        String name = (String) responseMap.get("name");
 
         // login user with email
-        Optional<UserAuthEntity> userAuth = userRepository.findByProfileEmail(email);
+        var userAuth = userRepository.findByProfileEmail(email);
 
         if (userAuth.isPresent()) {
-            Authentication authentication = new GoogleAuthtication(userAuth.get().getUsername(), email, true, userAuth.get());
+            var userEntity = userAuth.get();
+            if (!userEntity.getProfile().isEmailVerified()) {
+                userEntity.getProfile().setEmailVerified(true);
+                profileRepository.save(userEntity.getProfile());
+            }
+            Authentication authentication = new GoogleAuthtication(userEntity.getUsername(), email, true, userEntity);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             request.getSession(true).setAttribute(SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
-            return new RedirectView("http://localhost:3000");
+            return new RedirectView(requestUrl);
         } else {
-            // TODO : create new user with email
+            UserAuthEntity register = new UserAuthEntity();
+            register.setUsername(email);
+            String randomPassword = RandomPasswordGenerator.generateRandomPassword(32);
+            register.setPassword(bCryptPasswordEncoder.encode(randomPassword));
+            register.setAuthorities(Set.of(new Authority("ROLE_USER")));
+            UserAuthEntity saved;
+            try {
+                saved = userRepository.save(register);
+            } catch (DataIntegrityViolationException e) {
+                throw new UsernameAlreadyExists("Username already exists");
+            } // created and saved user
+
+            ProfileEntity profileEntity = new ProfileEntity();
+            try {
+                profileEntity.setAvatar(imageService.uploadImageFromUrl(avatar));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            profileEntity.setEmail(email);
+            profileEntity.setEmailVerified(true);
+            profileEntity.setFullName(name);
+            profileEntity.setUser(saved);
+            profileRepository.save(profileEntity);
+
+            Authentication authentication = new GoogleAuthtication(saved.getUsername(), email, true, saved);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            request.getSession(true).setAttribute(SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+            return new RedirectView(requestUrl);
         }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Your email is not registered");
     }
 }

@@ -3,6 +3,7 @@ package fptu.swp391.shoppingcart.user.authentication.entity;
 import fptu.swp391.shoppingcart.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
