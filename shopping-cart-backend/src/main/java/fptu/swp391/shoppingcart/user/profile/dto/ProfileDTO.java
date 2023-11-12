@@ -8,8 +8,10 @@ import java.time.LocalDate;
 @Data
 public class ProfileDTO {
     private int version;
+    private String avatar;
     private String username;
     private String fullName;
+    private String role;
     private String email;
     private boolean isEmailVerified;
     private String phone;

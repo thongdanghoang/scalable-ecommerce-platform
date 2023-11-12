@@ -20,6 +20,9 @@ public class ProfileEntity extends BaseEntity implements Serializable {
     @Column(name = "FULL_NAME")
     private String fullName;
 
+    @Column(name = "AVATAR_URL")
+    private String avatar;
+
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email; // forgot password and each user has only one unregistered email
     @Column(name = "IS_EMAIL_VERIFIED", nullable = false)
