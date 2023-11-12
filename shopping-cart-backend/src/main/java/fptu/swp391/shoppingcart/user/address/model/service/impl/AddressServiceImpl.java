@@ -113,6 +113,17 @@ public class AddressServiceImpl implements AddressService {
         return true;
     }
 
+    @Override
+    public AddressDto getDefaultAddress(String username) {
+        return mapper.toDTO(userRepository.findUserByUsername(username)
+                .orElseThrow()
+                .getAddresses()
+                .stream()
+                .filter(AddressEntity::isDefault)
+                .findAny()
+                .orElseThrow());
+    }
+
     private UserAuthEntity validateAuthorization(AddressDto addressDto, String username) {
         UserAuthEntity user = userRepository.findUserByUsername(username).orElseThrow();
 
