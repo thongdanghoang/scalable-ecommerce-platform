@@ -1,16 +1,17 @@
 package fptu.swp391.shoppingcart.product.web;
 
+import fptu.swp391.shoppingcart.product.dto.ProductAddingDto;
 import fptu.swp391.shoppingcart.product.dto.ProductDetailDto;
-import fptu.swp391.shoppingcart.product.dto.ProductDto;
 import fptu.swp391.shoppingcart.product.dto.ProductsResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 
-public interface ProjectController {
+public interface ProductController {
     // pagination get all product
     ResponseEntity<ProductsResponse> getAll(@RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "30") int limit);
@@ -35,4 +36,6 @@ public interface ProjectController {
                                             @RequestParam(defaultValue = "-1") int maxPrice,
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "30") int limit);
+
+    ResponseEntity<ProductAddingDto> createProduct(@RequestBody ProductAddingDto productDto);
 }

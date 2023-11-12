@@ -15,4 +15,5 @@ public interface AddressService {
 
     boolean deleteAddress(AddressDto addressDto, String username) throws DataValidationException;
 
+    AddressDto getDefaultAddress(String username);
 }
