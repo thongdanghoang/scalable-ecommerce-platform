@@ -1,5 +1,5 @@
 import { AiOutlineUser } from 'react-icons/ai';
-import { constantMenuProfile } from '../../utils/utils'
+import { constantMenuProfile, toastMSGObject } from '../../utils/utils'
 import './UserProfile.css'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { BiMap } from 'react-icons/bi';
@@ -11,6 +11,7 @@ import { Upload } from 'antd';
 import { updateAvatarProfileService, uploadImageProfileService } from '../../services/userService';
 import { updateUser } from '../../redux/slides/userSlide';
 import { API_URL } from '../../utils/constants';
+import {toast} from 'react-toastify'
 
 
 export default function UserProfilePage() {
@@ -44,8 +45,16 @@ export default function UserProfilePage() {
                                                             }
                                                         })
                                                 }}
-                                                beforeUpload = {() => {
-                                                    return false
+                                                beforeUpload = {(file) => {
+                                                    switch (file.type) {
+                                                        case 'image/png':
+                                                        case 'image/jpg':
+                                                        case 'image/jpeg':    
+                                                            return false
+                                                        default:
+                                                            toast.error('Đuôi file ảnh phải là .png , .jpg , .jpeg' , toastMSGObject())
+                                                            return Upload.LIST_IGNORE
+                                                    }
                                                 }}
                                             >
                                                 <div className='upload-act'>

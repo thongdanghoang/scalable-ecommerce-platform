@@ -4,6 +4,7 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { FiShoppingCart } from "react-icons/fi";
 import { PiMoneyLight } from "react-icons/pi";
 import SimpleBarChart from "./BarChart";
+
 export default function AdminDashboard() {
   return (
     <div className="admin-dashboard" id="admin-dashboard">

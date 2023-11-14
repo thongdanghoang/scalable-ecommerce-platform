@@ -477,7 +477,15 @@ export default function AdminProduct() {
                               await uploadImageClothes(info.file);
                             }}
                             beforeUpload={(file) => {
-                              return false;
+                              switch (file.type) {
+                                case 'image/png':
+                                case 'image/jpg':
+                                case 'image/jpeg':    
+                                    return false
+                                default:
+                                    toast.error('Đuôi file ảnh phải là .png , .jpg , .jpeg' , toastMSGObject())
+                                    return Upload.LIST_IGNORE
+                              }
                             }}
                             listType="picture-card"
                           >

@@ -118,6 +118,11 @@ export default function AdminUserSystem() {
       }else{
         mutationDisabled.mutate(rowSelected.username)
       }
+    }else if(typeAction === Action.UPDATE){
+      getUserSystemService(rowSelected.username)
+        .then(res => form.setFieldsValue({
+          ...res
+        }))
     }
   },[rowSelected])
 
@@ -136,12 +141,12 @@ export default function AdminUserSystem() {
 
   const renderAction = () => {
     return (
-    <div>
-      <EditOutlined 
-        style={{ color: 'orange', fontSize: '30px', cursor: 'pointer' }} 
-        onClick={() => handleOpenModal(Action.UPDATE)}
-      />
-    </div>
+      <div>
+        <EditOutlined 
+          style={{ color: 'orange', fontSize: '30px', cursor: 'pointer' }} 
+          onClick={() => handleOpenModal(Action.UPDATE)}
+        />
+      </div>
     )
   }
 
@@ -151,14 +156,18 @@ export default function AdminUserSystem() {
       dataIndex: 'username',
       render: (text : string) => <span>{text}</span>,
       width : 200,
-      sorter: (a : any,b : any) => a.name.length - b.name.length,
+      sorter: (a : any,b : any) => a.username.length - b.username.length,
       isSearchProps : true
     },
     {
       title: 'Vai trò',
       dataIndex: 'role',
       render: (text : string) => <span>{text}</span>,
-      sorter: (a : any,b : any) => a.sku.length - b.sku.length,
+      filters: [
+        { text: 'ROLE_SHOP_OWNER', value: 'ROLE_SHOP_OWNER' },
+        { text: 'ROLE_ADMIN', value: 'ROLE_ADMIN' },
+      ],
+      onFilter: (value: string, record : any) => record.role.includes(value),
     },
     {
       title: 'Ngày tạo',
@@ -187,6 +196,11 @@ export default function AdminUserSystem() {
           <Switch defaultChecked={isActive} onClick={() => setTypeAction(Action.DELETE)} />
         </div>
       ),
+      filters: [
+        { text: 'Enable', value: true },
+        { text: 'Disable', value: false },
+      ],
+      onFilter: (value: boolean , record : any) => record.enabled === value,
     },
     {
       title: 'Action',
@@ -215,10 +229,6 @@ export default function AdminUserSystem() {
               return {
                   onClick : (event : any) => {
                     setRowSelected(record);
-                    typeAction === Action.UPDATE && getUserSystemService(record.username)
-                      .then(res => form.setFieldsValue({
-                        ...res
-                      }))
                   }
               }
           }} 

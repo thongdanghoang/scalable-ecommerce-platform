@@ -55,11 +55,12 @@ export default function SearchBarComponent() {
       >
         <AutoComplete
           options={searchOptions}
-          style={{ width: "80%", height: "100%" }}
+          style={{ width: "80%"}}
           bordered={false}
           onSelect={(selected) => handleSubmitSearch(selected)}
           onSearch={(text) => setSearchText(text)}
           placeholder="Nhập để tìm kiếm sản phẩm"
+          size="large"
         />
         <button className="header-search-btn border">
           <i className="header-search-btn-icon fa-solid fa-magnifying-glass"></i>
