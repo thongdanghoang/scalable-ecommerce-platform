@@ -10,6 +10,7 @@ import {
   Space,
   Cascader,
   Empty,
+  Alert,
 } from "antd";
 import "./ProductsFilter.css";
 import CardComponent from "../../components/CardComponent/CardComponent";
@@ -42,8 +43,6 @@ type Categories = {
   id: number;
   name: string;
 };
-
-const NotFound = <NotFoundClothesComponent></NotFoundClothesComponent>;
 
 // NOTE: get array data from api
 
@@ -100,7 +99,6 @@ function ClothesFilterPage(): React.ReactElement {
     sortOptionState ? (sortOptionState as string[]) : ["popular", "desc"]
   );
   const handleChangeSortOption = (value: any[]) => {
-    console.log(value);
     setSelectedOptions(() => {
       return value as string[];
     });
@@ -271,13 +269,16 @@ function ClothesFilterPage(): React.ReactElement {
           <>
             <Space wrap>
               {sizeNameList.map((sizeName) => (
-                <Button
-                  size="small"
-                  type={sizeName == sizeButtonActivated ? "primary" : "dashed"}
+                <button
+                  // size="small"
+                  // type={sizeName == sizeButtonActivated ? "primary" : "default"}
                   onClick={() => handleClickSizeButton(sizeName)}
+                  className={`btn btn-sm ${
+                    sizeName == sizeButtonActivated ? "btn-dark" : "btn-light"
+                  }`}
                 >
                   {sizeName}
-                </Button>
+                </button>
               ))}
             </Space>
           </>
@@ -293,13 +294,14 @@ function ClothesFilterPage(): React.ReactElement {
           <>
             <Space wrap>
               {colorNameList.map((color) => (
-                <Button
-                  size="small"
-                  type={color == colorButtonActivated ? "primary" : "dashed"}
+                <button
+                  className={`btn btn-sm ${
+                    color == colorButtonActivated ? "btn-dark" : "btn-light"
+                  }`}
                   onClick={() => handleClickColorButton(color)}
                 >
                   {color}
-                </Button>
+                </button>
               ))}
             </Space>
           </>
@@ -315,17 +317,16 @@ function ClothesFilterPage(): React.ReactElement {
           <>
             <Space wrap>
               {categoryNameList.map((category) => (
-                <Button
-                  size="small"
-                  type={
+                <button
+                  className={`btn btn-sm ${
                     category.name == categoryButtonActivated
-                      ? "primary"
-                      : "dashed"
-                  }
+                      ? "btn-dark"
+                      : "btn-light"
+                  }`}
                   onClick={() => handleClickCategoryButton(category.name)}
                 >
                   {category.name}
-                </Button>
+                </button>
               ))}
             </Space>
           </>
@@ -365,8 +366,8 @@ function ClothesFilterPage(): React.ReactElement {
 
   // update page on change
   useEffect(() => {
-    setProductRender([LoadingSpin]);
-    const productItems = async () => {
+    const handleSearchAndFilter = async () => {
+      setProductRender([LoadingSpin]);
       let filterAndOption: QuerySortParams = {
         keyword: searchText ? searchText : "",
         sort: `${selectedSortOption[0]}:${selectedSortOption[1]}`,
@@ -376,27 +377,40 @@ function ClothesFilterPage(): React.ReactElement {
         page: (pagination.currentPage - 1).toString(),
         limit: "12",
       };
+      let NotFound;
+      if (
+        filterAndOption.size.length == 0 &&
+        filterAndOption.colour.length == 0 &&
+        filterAndOption.category.length == 0
+      ) {
+        NotFound = (
+          <NotFoundClothesComponent
+            searchText={filterAndOption.keyword}
+          ></NotFoundClothesComponent>
+        );
+      } else {
+        NotFound = (
+          <Col span={24}>
+            <Alert
+              message="Không có sản phẩm nào trong danh mục này"
+              type="warning"
+            />
+          </Col>
+        );
+      }
 
       let productList = await getProductList(filterAndOption);
       let productItems = productList[0].map((item) => (
-        <Col
-          xs={24}
-          sm={12}
-          md={8}
-          lg={6}
-          // onClick={() => navigate(`/product-detail/`, {state: item.id})}
-        >
-          <Badge.Ribbon text="new" color="cyan">
-            <CardComponent
-              id={item.id}
-              image={item.image as string}
-              name={item.name}
-              price={item.price}
-              discount={item.discount as number}
-              rated={item.rated as number}
-              numberOfSold={item.numberOfSold as number}
-            />
-          </Badge.Ribbon>
+        <Col xs={24} sm={12} md={8} lg={6}>
+          <CardComponent
+            id={item.id}
+            image={item.image as string}
+            name={item.name}
+            price={item.price}
+            discount={item.discount as number}
+            rated={item.rated as number}
+            numberOfSold={item.numberOfSold as number}
+          />
         </Col>
       ));
       // handleChangePagination(productList[1]);
@@ -409,7 +423,7 @@ function ClothesFilterPage(): React.ReactElement {
       });
       setProductRender(productItems.length != 0 ? productItems : [NotFound]);
     };
-    productItems();
+    handleSearchAndFilter();
   }, [
     selectedSortOption,
     sizeButtonActivated,
@@ -444,7 +458,13 @@ function ClothesFilterPage(): React.ReactElement {
             </Row>
 
             {/* product list */}
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify={"center"}>
+            <Row
+              gutter={[
+                { xs: 8, sm: 16, md: 24, lg: 32 },
+                { xs: 8, sm: 16, md: 24, lg: 32 },
+              ]}
+              className="mt-2"
+            >
               {productRender}
             </Row>
           </Col>
