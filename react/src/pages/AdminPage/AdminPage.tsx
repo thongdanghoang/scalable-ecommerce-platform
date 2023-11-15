@@ -20,11 +20,12 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/img/n3tk-high-resolution-logo-white-transparent.png";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
+import { Role } from "../../model/UserModal";
 
 export default function AdminPage() {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
-  const [keySelected, setKeySelected] = useState("Thống kê");
+  const [keySelected, setKeySelected] = useState(user.role === Role["[ROLE_SHOP_OWNER]"] ? "Thống kê" : "Người dùng");
   const items = [
     getItem(
       <span>{"Thống kê"}</span>,
