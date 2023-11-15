@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import fptu.swp391.shoppingcart.ErrorResponse;
 import fptu.swp391.shoppingcart.user.authentication.entity.UserAuthEntity;
+import fptu.swp391.shoppingcart.user.authentication.exceptions.AccountDisabledException;
+import fptu.swp391.shoppingcart.user.authentication.exceptions.AccountLockedNotTimeout;
 import fptu.swp391.shoppingcart.user.authentication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -37,14 +40,17 @@ public class AuthenticationFailureHandlerCustom implements AuthenticationFailure
         Optional<UserAuthEntity> found = userRepository.findUserByUsername(request.getParameter("username"));
         if (found.isPresent()) {
             UserAuthEntity user = found.get();
-            if (!user.isEnabled() && user.getDisabledUntil().isBefore(LocalDateTime.now())){
-                // time out for disabled account
-                user.setNumberOfFailedLoginAttempts(0);
-                user.setDisabledUntil(null);
-                user.setEnabled(true);
+            if (!user.isEnabled()) {
+                var disabledUntil = Optional.ofNullable(user.getDisabledUntil());
+                if (disabledUntil.isPresent() && disabledUntil.get().isBefore(LocalDateTime.now())) {
+                    // time out for disabled account
+                    user.setNumberOfFailedLoginAttempts(0);
+                    user.setDisabledUntil(null);
+                    user.setEnabled(true);
+                }
             }
             if (user.getNumberOfFailedLoginAttempts() >= 5) {
-                if (user.isEnabled()){
+                if (user.isEnabled()) {
                     user.setDisabledUntil(LocalDateTime.now().plusMinutes(5));
                     user.setEnabled(false);
                     message = "Account is disabled, please try again later in 5 minutes";
@@ -61,6 +67,16 @@ public class AuthenticationFailureHandlerCustom implements AuthenticationFailure
         errorResponse.setError("Unauthorized");
         errorResponse.setMessage(message);
 
+        if (exception instanceof AccountDisabledException) {
+            errorResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        }
+        if (exception instanceof AccountLockedNotTimeout) {
+            errorResponse.setStatus(429);
+        }
+        if(exception instanceof BadCredentialsException) {
+            errorResponse.setMessage("Username or password is incorrect");
+            errorResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
 
         ObjectMapper objectMapper = new ObjectMapper();
 

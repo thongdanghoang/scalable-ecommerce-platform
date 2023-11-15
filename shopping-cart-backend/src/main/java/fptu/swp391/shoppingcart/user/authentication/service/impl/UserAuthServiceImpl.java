@@ -184,6 +184,8 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public void changePassword(ChangePasswordDto dto)
             throws DataValidationException, PasswordIncorrectException {
+        if (dto.getNewPassword().equals(dto.getOldPassword()))
+            throw new DataValidationException("New password must be different from old password");
         validator.checkPassword(dto.getNewPassword());
         userRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .ifPresent(userAuthEntity -> {
