@@ -13,6 +13,7 @@ import {useContext} from 'react'
 import { RootState } from "../../redux/store";
 import { createCartService } from "../../services/cartServices";
 import { API_URL } from "../../utils/constants";
+import parse from 'html-react-parser';
 
 export default function ProductDetailPage() {
 
@@ -246,17 +247,7 @@ export default function ProductDetailPage() {
             </>
           )}
           <div className="product-describe">
-            {productDetail?.description}
-            <h5>Mô tả sản phẩm</h5>
-            <ul>
-              <li>Sơ mi nam vải lụa nến lịch lãm, nam tính</li>
-              <li>Chất liệu 100% Polyester</li>
-              <li>
-                Form dáng cơ bản, chỉn chu, có túi ngực, thoải mái khi lên đồ
-              </li>
-              <li>Vải siêu mướt, thoáng khí, thấm hút mồ hôi hiệu quả</li>
-              <li>Áo bắt nhiệt nhanh tạo cảm giác mát mẻ cho người mặc</li>
-            </ul>
+            {productDetail?.description && parse(productDetail.description)}
           </div>
         </div>
       </div>

@@ -99,11 +99,12 @@ export default function AdminProduct() {
     return res;
   };
 
-  const { data: productDetail, isSuccess: isSuccessProduct } = useQuery(
+  const queryProductDetail = useQuery(
     ["product-detail-1", rowSelected.id],
     fetchGetProductById,
     { enabled: !!rowSelected.id }
   );
+  const { data: productDetail, isSuccess: isSuccessProduct } = queryProductDetail
 
   useEffect(() => {
     if (isSuccessProduct && typeAction === Action.UPDATE && isOpenDrawer) {
@@ -177,6 +178,7 @@ export default function AdminProduct() {
       },
       onSettled: () => {
         queryAllProducts.refetch();
+        queryProductDetail.refetch();
       },
     }
   );
