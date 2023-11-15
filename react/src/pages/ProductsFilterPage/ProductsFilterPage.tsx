@@ -21,6 +21,7 @@ import {
 import { API_URL } from "../../utils/constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { convertToSlug } from "../../utils/utils";
+import NotFoundClothesComponent from "../../components/NotFoundClothesComponent/NotFoundClothesComponent";
 
 interface Option {
   value: string;
@@ -42,16 +43,7 @@ type Categories = {
   name: string;
 };
 
-const NotFound = (<Empty
-  image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-  imageStyle={{ height: 300 }}
-  description={
-    <span>
-      Not found clothes
-    </span>
-  }
->
-</Empty>);
+const NotFound = <NotFoundClothesComponent></NotFoundClothesComponent>;
 
 // NOTE: get array data from api
 
@@ -77,7 +69,6 @@ async function getCategoriesList() {
 }
 
 function ClothesFilterPage(): React.ReactElement {
-
   let navigateState = useLocation().state;
   let searchText = navigateState?.searchText;
 
@@ -106,10 +97,8 @@ function ClothesFilterPage(): React.ReactElement {
   // sort options
   let sortOptionState = navigateState?.sortOption;
   const [selectedSortOption, setSelectedOptions] = useState(
-    sortOptionState ? sortOptionState as string[] : [
-    "popular",
-    "desc",
-  ]);
+    sortOptionState ? (sortOptionState as string[]) : ["popular", "desc"]
+  );
   const handleChangeSortOption = (value: any[]) => {
     console.log(value);
     setSelectedOptions(() => {
@@ -169,7 +158,7 @@ function ClothesFilterPage(): React.ReactElement {
         },
         {
           value: "desc",
-          
+
           label: "cũ nhất",
         },
       ],
@@ -203,7 +192,9 @@ function ClothesFilterPage(): React.ReactElement {
   };
 
   let categoryState = navigateState?.category;
-  const [categoryButtonActivated, setCategoryButtonActivated] = useState(categoryState ? categoryState as string : "");
+  const [categoryButtonActivated, setCategoryButtonActivated] = useState(
+    categoryState ? (categoryState as string) : ""
+  );
   const handleClickCategoryButton = (category: string) => {
     setCategoryButtonActivated((prev: any) => {
       if (prev == category) {
