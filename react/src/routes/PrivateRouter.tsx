@@ -19,7 +19,7 @@ export default function PrivateRouter({children , role} : {children : React.Reac
     }else{ // chưa đăng nhập
         if(location.pathname === '/order/payment' ||
            location.pathname === '/payment/success' ||
-           location.pathname === '/system/admin'){ // đây là những trang phải login mới truy cập được
+           location.pathname === '/system'){ // đây là những trang phải login mới truy cập được
             return <Navigate to={'/'} />
         }
         return children 
