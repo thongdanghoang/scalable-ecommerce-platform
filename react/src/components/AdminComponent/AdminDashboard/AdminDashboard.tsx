@@ -44,7 +44,7 @@ export default function AdminDashboard() {
               <FiUsers />
             </div>
             <div className="dashboard-item-content-info">
-              <h3>{statistics.countCustomer}</h3>
+              <h3>{statistics?.countCustomer}</h3>
               <div>Customer</div>
             </div>
           </div>
@@ -61,7 +61,7 @@ export default function AdminDashboard() {
               <HiOutlineShoppingBag />
             </div>
             <div className="dashboard-item-content-info">
-              <h3>{statistics.countOrder}</h3>
+              <h3>{statistics?.countOrder}</h3>
               <div>Orders</div>
             </div>
           </div>
@@ -78,7 +78,7 @@ export default function AdminDashboard() {
               <FiShoppingCart />
             </div>
             <div className="dashboard-item-content-info">
-              <h3>{statistics.countProduct}</h3>
+              <h3>{statistics?.countProduct}</h3>
               <div>Products</div>
             </div>
           </div>
@@ -95,7 +95,7 @@ export default function AdminDashboard() {
               <PiMoneyLight />
             </div>
             <div className="dashboard-item-content-info">
-              <h3>{convertPrice(statistics.earning)}</h3>
+              <h3>{convertPrice(statistics?.earning)}</h3>
               <div>Earnings</div>
             </div>
           </div>
