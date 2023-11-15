@@ -51,7 +51,7 @@ export default function AdminPage() {
   const customeItemsAuthorization = () => {
     switch (user.role) {
       case '[ROLE_ADMIN]':
-        return items.filter(item => item?.key === 'Người dùng' || item?.key === 'Thống kê')
+        return items.filter(item => item?.key === 'Người dùng')
       case '[ROLE_SHOP_OWNER]':
         return items.filter(item => item?.key !== 'Người dùng')
       default:

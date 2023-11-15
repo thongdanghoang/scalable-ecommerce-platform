@@ -511,23 +511,7 @@ export default function AdminProduct() {
                                       name={[subField.name, "size"]}
                                       initialValue={"M"}
                                     >
-                                      <Select>
-                                        <Select.Option value={"M"}>
-                                          M
-                                        </Select.Option>
-                                        <Select.Option value={"L"}>
-                                          L
-                                        </Select.Option>
-                                        <Select.Option value={"XL"}>
-                                          XL
-                                        </Select.Option>
-                                        <Select.Option value={"2XL"}>
-                                          2XL
-                                        </Select.Option>
-                                        <Select.Option value={"3XL"}>
-                                          3XL
-                                        </Select.Option>
-                                      </Select>
+                                      <Input />
                                     </Form.Item>
                                     <Form.Item
                                       noStyle

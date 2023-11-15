@@ -84,3 +84,20 @@ export async function getAllOrderService() {
     }
     return null;
 }
+
+export async function changeStatusOrderService(orderId : number , status : string) {
+    try {
+        const response = await fetch(
+            `${API_URL}/api/orders/${orderId}?status=${status}`,
+            {
+                method: "PUT",
+                credentials: "include",
+            }
+        );
+        const data = await response.json();
+        return data;
+    } catch (e) {
+        console.log(e);
+    }
+    return null;
+}

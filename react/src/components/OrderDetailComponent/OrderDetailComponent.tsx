@@ -89,11 +89,11 @@ export default function OrderDetailComponent(props : propsOrderDetail) {
                 </div>
                 <div className="OrderDetail-body row">
                     <div className="col-md-5">
-                        Trạng thái thanh toán : <span>Chưa thanh toán</span>
+                        Trạng thái đơn hàng : <span>{orderDetail.status}</span>
                     </div>
                     <div className="col-md-1"></div>
                     <div className="col-md-5">
-                        Trạng thái vận chuyển : <span>Chưa chuyển</span>
+                        Trạng thái thanh toán : <span>{orderDetail.paymentStatus}</span>
                     </div>
                 </div>
                 <div className="OrderDetail-body-content row">

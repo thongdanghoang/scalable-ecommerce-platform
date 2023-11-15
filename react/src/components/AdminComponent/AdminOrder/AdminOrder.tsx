@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import TableComponent from "../../TableComponent/TableComponent";
 import { useMemo , useEffect, useState } from 'react';
-import { getAllOrderService } from "../../../services/orderServices";
+import { changeStatusOrderService, getAllOrderService } from "../../../services/orderServices";
 import { EditOutlined } from '@ant-design/icons';
 import { convertDateAndTime } from "../../../utils/utils";
 import { Button, Drawer, Empty, Steps } from "antd";
@@ -13,6 +13,8 @@ import { statusOrder } from "../../../utils/constants";
 export default function AdminOrder() {
   const [rowSelected , setRowSelected] = useState<any>({});
   const [isOpenDrawer , setIsOpenDrawer] = useState(false);
+  const [statusCurrent , setStatusCurrent] = useState(1);
+  console.log(statusCurrent)
 
   const fetchGetAllOrder = async () => {
     const res = await getAllOrderService();
@@ -23,22 +25,28 @@ export default function AdminOrder() {
   const {data : listAllOrders , isLoading : isLoadingAllOrders} = queryAllOrder
   console.log(listAllOrders)
 
+  const handleChangeStatusOrder = async () => {
+    setStatusCurrent(statusCurrent+1);
+    const statusChange = statusOrder.find((status , index) => index === statusCurrent)?.key
+    await changeStatusOrderService(rowSelected.orderId , statusChange as string);
+    queryAllOrder.refetch();
+    setRowSelected({...rowSelected , status : statusChange})
+  }
+
   const items = useMemo(() => {
-    return statusOrder.map(status => {
-      if(status.key !== 'CANCELLED'){
-        return {
-          title : status.key
-        }
-      }
-    })
+    return statusOrder.map(status => ({
+      title : status.key
+    })).filter(status => status.title !== 'CANCELLED')
   },[])
   
   const renderAction = () => {
     return (
-      <div style={{ color: 'orange' , cursor: 'pointer' }}>
+      <div 
+        style={{ color: 'orange' , cursor: 'pointer' }}
+        onClick={() => setIsOpenDrawer(true)}
+      >
         <EditOutlined 
           style={{fontSize: '30px', marginRight:7}} 
-          onClick={() => setIsOpenDrawer(true)}
         />
         Chi tiết
       </div>
@@ -99,49 +107,56 @@ export default function AdminOrder() {
       <div id="AdminOrder">
         <div className="order-header">
           <div className="total-order">
-            Tổng số lượng đơn hàng của hệ thống : 3
+            {`Tổng số lượng đơn hàng của hệ thống : ${listAllOrders?.length}`}
           </div>
         </div>
 
         <TableComponent 
-            columns={columns} 
-            listData={listAllOrders} 
-            isLoading={isLoadingAllOrders}
-            onRow={(record : any, rowIndex : any) => {
-                return {
-                    onClick : (event : any) => {
-                      setRowSelected(record);
-                    }
-                }
-            }} 
-            isRowSelection={false}                   
+          columns={columns} 
+          listData={listAllOrders} 
+          isLoading={isLoadingAllOrders}
+          onRow={(record : any, rowIndex : any) => {
+              return {
+                  onClick : (event : any) => {
+                    setRowSelected(record);
+                    statusOrder.forEach((status , index) => {
+                      console.log('sss')
+                      if(status.key === record.status){
+                        setStatusCurrent(index+1)
+                      }                       
+                    })
+                  }
+              }
+          }} 
+          isRowSelection={false}                   
         />
       </div>
       <Drawer
         title="Thông tin chi tiết đơn hàng"
-        width={"80%"}
+        width={rowSelected?.status !== 'CANCELLED' ? "80%" : "60%"}
         onClose={() => setIsOpenDrawer(false)}
         open={isOpenDrawer}
       >
-        {/* <LoadingComponent isloading={rowSelected?.orderId}>
+        <LoadingComponent isloading={!rowSelected?.orderId}>
           {rowSelected?.orderId ? (
-            <OrderDetailComponent codeOrder={rowSelected?.orderId} />
+            <div className="order-detail-shopowner">
+              {rowSelected?.status !== 'CANCELLED' && (
+                <div className="status-order">
+                  <Steps
+                    size="small"
+                    direction="vertical"
+                    current={statusCurrent}
+                    items={items}
+                  />
+                  <Button disabled={rowSelected.status === 'COMPLETED'} onClick={handleChangeStatusOrder}>Change Status</Button>
+                </div>
+              ) }
+              <OrderDetailComponent codeOrder={rowSelected?.orderId} />
+            </div>
           ) : (
             <Empty/>
           )}
-        </LoadingComponent> */}
-        <div className="order-detail-shopowner">
-          <div className="status-order">
-            <Steps
-              size="small"
-              direction="vertical"
-              current={1}
-              items={items && []}
-            />
-            <Button>Change Status</Button>
-          </div>
-          <OrderDetailComponent codeOrder={rowSelected?.orderId} />
-        </div>
+        </LoadingComponent>
       </Drawer>    
     </>
   )
