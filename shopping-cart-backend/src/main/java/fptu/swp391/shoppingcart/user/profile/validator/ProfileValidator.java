@@ -21,8 +21,13 @@ public class ProfileValidator {
 
         // Check birthday, it cannot be in the future (after today)
         LocalDate birthday = profileDTO.getBirthday();
-        if (birthday != null && birthday.isAfter(LocalDate.now())) {
-            throw new DataValidationException("Birthday cannot be in the future.");
+        if (birthday != null) {
+            if (birthday.isAfter(LocalDate.now())) {
+                throw new DataValidationException("Birthday cannot be in the future.");
+            }
+            if(birthday.isAfter(LocalDate.now().minusYears(18))){
+                throw new DataValidationException("You must be at least 18 years old.");
+            }
         }
         // check birthday is not too far in the past
         if (birthday != null && birthday.isBefore(LocalDate.of(1900, 1, 1))) {

@@ -1,8 +1,7 @@
 package fptu.swp391.shoppingcart.product.web;
 
-import fptu.swp391.shoppingcart.product.dto.ProductAddingDto;
-import fptu.swp391.shoppingcart.product.dto.ProductDetailDto;
-import fptu.swp391.shoppingcart.product.dto.ProductsResponse;
+import fptu.swp391.shoppingcart.product.dto.*;
+import fptu.swp391.shoppingcart.user.authentication.dto.ApiResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface ProductController {
 
@@ -39,4 +39,8 @@ public interface ProductController {
     ResponseEntity<ProductAddingDto> createProduct(@RequestBody ProductAddingDto productDto);
 
     ResponseEntity<ProductAddingDto> updateProduct(@RequestBody ProductAddingDto productDto);
+
+    ResponseEntity<ApiResponse<List<ReportResponseDto>>> report();
+
+    ResponseEntity<ApiResponse<StatisticProductDto>> statistic();
 }

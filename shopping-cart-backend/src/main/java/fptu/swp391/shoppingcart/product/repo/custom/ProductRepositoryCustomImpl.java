@@ -3,72 +3,22 @@ package fptu.swp391.shoppingcart.product.repo.custom;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import fptu.swp391.shoppingcart.product.entity.Product;
+import fptu.swp391.shoppingcart.product.entity.QCategory;
 import fptu.swp391.shoppingcart.product.entity.QProduct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.support.PageableExecutionUtils;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     @PersistenceContext
     private EntityManager em;
 
-    @Override
-    public Page<Product> search(String keyword, String sort, String category, String size, String colour,
-                                int minPrice, int maxPrice,
-                                Pageable pageable) {
-        QProduct product = QProduct.product;
-        BooleanExpression conditions = null;
-        if (keyword != null && !keyword.isEmpty()) {
-            conditions = product.name.containsIgnoreCase(keyword);
-        }
-
-        if (size != null && !size.isEmpty()) {
-            for (String s : size.split(",")) {
-                conditions = conditions == null ? product.quantities.any().size.sizeName.containsIgnoreCase(s) :
-                        conditions.and(product.quantities.any().size.sizeName.containsIgnoreCase(s));
-            }
-        }
-
-        if (colour != null && !colour.isEmpty()) {
-            for (String c : colour.split(",")) {
-                conditions = conditions == null ? product.quantities.any().color.colorName.containsIgnoreCase(c) :
-                        conditions.and(product.quantities.any().color.colorName.containsIgnoreCase(c));
-            }
-        }
-
-//        if (category != null && !category.isEmpty()) {
-//            QCategory present = product.category;
-//            while (present != null) {
-//                conditions = conditions == null ? present.name.containsIgnoreCase(category) :
-//                        conditions.or(present.name.containsIgnoreCase(category));
-//                present = present.parentCategory;
-//            }
-//        }
-
-        if (minPrice > 0) {
-            conditions = conditions == null ? product.price.goe(minPrice) :
-                    conditions.and(product.price.goe(minPrice));
-        }
-        if (maxPrice > 0) {
-            conditions = conditions == null ? product.price.loe(maxPrice) :
-                    conditions.and(product.price.loe(maxPrice));
-        }
-
-        JPAQuery<Product> query = new JPAQuery<Product>(em)
-                .from(product)
-//                .join(product.quantities, qQuantity)
-//                .join(qQuantity.size, qSize)
-//                .join(qQuantity.color, qColor)
-                .where(conditions);
-
-        // Handle sorting
+    private static void sorting(String sort, JPAQuery<Product> query, QProduct product) {
         if (sort != null && !sort.isEmpty()) {
             String[] sortingFactors = sort.split(",");
             for (String sortingFactor : sortingFactors) {
@@ -111,17 +61,85 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 }
             }
         }
+    }
+
+    @Override
+    public Page<Product> search(String keyword, String sort, String category, String size, String colour,
+                                int minPrice, int maxPrice,
+                                Pageable pageable) {
+        QProduct product = QProduct.product;
+        BooleanExpression conditions = null;
+        if (keyword != null && !keyword.isEmpty()) {
+            conditions = product.name.containsIgnoreCase(keyword);
+        }
+
+        if (size != null && !size.isEmpty()) {
+            for (String s : size.split(",")) {
+                conditions = conditions == null ? product.quantities.any().size.sizeName.containsIgnoreCase(s) :
+                        conditions.and(product.quantities.any().size.sizeName.containsIgnoreCase(s));
+            }
+        }
+
+        if (colour != null && !colour.isEmpty()) {
+            for (String c : colour.split(",")) {
+                conditions = conditions == null ? product.quantities.any().color.colorName.containsIgnoreCase(c) :
+                        conditions.and(product.quantities.any().color.colorName.containsIgnoreCase(c));
+            }
+        }
+
+        if (minPrice > 0) {
+            conditions = conditions == null ? product.price.goe(minPrice) :
+                    conditions.and(product.price.goe(minPrice));
+        }
+        if (maxPrice > 0) {
+            conditions = conditions == null ? product.price.loe(maxPrice) :
+                    conditions.and(product.price.loe(maxPrice));
+        }
+
+        if (category != null && !category.isEmpty()) {
+            conditions = conditions == null ? getCategoryExpression(product.category, category) :
+                    conditions.and(getCategoryExpression(product.category, category));
+        }
+
+        JPAQuery<Product> query = new JPAQuery<Product>(em)
+                .from(product)
+                .where(conditions);
+
+        // Handle sorting
+        sorting(sort, query, product);
 
         long totalCount = query.fetchCount();
         List<Product> results = query
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-        if (!StringUtils.isEmpty(category)) {
-            results = results.stream()
-                    .filter(o -> o.getCategory().getFullName().contains(category.toUpperCase()))
-                    .collect(Collectors.toList());
-        }
         return PageableExecutionUtils.getPage(results, pageable, () -> totalCount);
+    }
+
+    private BooleanExpression getCategoryExpression(QCategory category, String inputKeyword) {
+        String[] keywords = inputKeyword.split(" ");
+        BooleanExpression resultExpression = null;
+
+        // Xử lý mỗi từ khóa và kết hợp chúng vào biểu thức truy vấn
+        for (String keyword : keywords) {
+            BooleanExpression currentExpression = getCategoryRecursiveExpression(category, keyword);
+            resultExpression = (resultExpression == null) ? currentExpression : resultExpression.and(currentExpression);
+        }
+
+        return resultExpression;
+    }
+
+    private BooleanExpression getCategoryRecursiveExpression(QCategory category, String categoryName) {
+        if (category == null) {
+            return null;
+        }
+
+        BooleanExpression currentExpression = category.name.containsIgnoreCase(categoryName);
+
+        // Thực hiện đệ quy cho parentCategory
+        BooleanExpression parentExpression = getCategoryRecursiveExpression(category.parentCategory, categoryName);
+
+        // Kết hợp biểu thức hiện tại với biểu thức đệ quy của parent
+        return currentExpression.or(parentExpression);
     }
 }

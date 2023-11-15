@@ -70,11 +70,22 @@ public class ProductControllerImpl extends AbstractApplicationController impleme
     @PutMapping
     public ResponseEntity<ProductAddingDto> updateProduct(ProductAddingDto productDto) {
         try {
-            productService.deleteProductById(productDto.getId());
-            return ResponseEntity.ok(productService.createProduct(productDto));
+            return ResponseEntity.ok(productService.update(productDto));
         } catch (ProductImageNotFoundException | ProductNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
+    }
+
+    @GetMapping("/report")
+    @Override
+    public ResponseEntity<ApiResponse<List<ReportResponseDto>>> report() {
+        return ResponseEntity.ok(new ApiResponse<>("Report generated successfully", true, productService.report()));
+    }
+
+    @Override
+    @GetMapping("/statistic")
+    public ResponseEntity<ApiResponse<StatisticProductDto>> statistic() {
+        return ResponseEntity.ok(new ApiResponse<>("Statistic generated successfully", true, productService.statistic()));
     }
 
     @GetMapping("/categories")

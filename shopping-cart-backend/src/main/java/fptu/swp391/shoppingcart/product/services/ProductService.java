@@ -1,9 +1,6 @@
 package fptu.swp391.shoppingcart.product.services;
 
-import fptu.swp391.shoppingcart.product.dto.CategoryDto;
-import fptu.swp391.shoppingcart.product.dto.ProductAddingDto;
-import fptu.swp391.shoppingcart.product.dto.ProductDetailDto;
-import fptu.swp391.shoppingcart.product.dto.ProductDto;
+import fptu.swp391.shoppingcart.product.dto.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -19,7 +16,13 @@ public interface ProductService {
 
     ProductAddingDto createProduct(ProductAddingDto productDto);
 
+    ProductAddingDto update(ProductAddingDto productDto);
+
     public void deleteProductById(Long id);
 
     List<CategoryDto> getAllCategory();
+
+    List<ReportResponseDto> report();
+
+    StatisticProductDto statistic();
 }
