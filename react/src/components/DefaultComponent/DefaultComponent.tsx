@@ -50,7 +50,7 @@ const DefaultComponent: React.FC<{ children: ReactNode }> = ({
 
   return (
     <CartContext.Provider value={{isHiddenCart , setIsHiddenCart}}>
-        {locate.pathname === '/system/admin' ? (
+        {locate.pathname === '/system' ? (
           children
         ) : (
           <>

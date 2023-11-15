@@ -135,7 +135,7 @@ export default function AddressShipComponent() {
   const handleCreateAddressShip = () => {
     mutationCreateAddress.mutate({
       ...addressShipping,
-      phone : `+84${addressShipping.phone}`
+      phone : `${formatVietnamesePhone(addressShipping.phone)}`
     } , {
       onSettled : () => {
         queryAddressShip.refetch();

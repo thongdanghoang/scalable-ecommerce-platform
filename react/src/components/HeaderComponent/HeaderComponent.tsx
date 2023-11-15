@@ -82,7 +82,7 @@ export default function HeaderComponent({
           ) : (
             <div
               className="menu-item"
-              onClick={() => navigate("/system/admin")}
+              onClick={() => navigate("/system")}
             >
               <AiOutlineGroup />
               Manage System

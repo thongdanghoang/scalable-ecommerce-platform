@@ -75,7 +75,7 @@ export const routes = [
     role: [Role['[ROLE_USER]']]
   },
   {
-    path: "/system/admin",
+    path: "/system",
     page: AdminPage,
     isShowHeaderFooter: true, // do trong admin có phần header
     role: [Role['[ROLE_ADMIN]'] , Role['[ROLE_SHOP_OWNER]']]
