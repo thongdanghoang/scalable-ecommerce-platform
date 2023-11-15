@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./register.css";
 import { useNavigate } from "react-router-dom";
 import { registerService } from "../../services/userService";
@@ -18,15 +18,18 @@ export default function RegisterPage() {
     password2: "",
   });
   const user = useSelector((state: RootState) => state.user);
-  console.log(user);
   const dispatch = useDispatch();
-
   const [error, setError] = useState({
     isInvalid: false,
     msg: "",
   });
 
-  console.log(formData);
+  useEffect(() => {
+    setError({
+      isInvalid: false,
+      msg: "",
+    })
+  },[formData])
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,7 +40,6 @@ export default function RegisterPage() {
       });
     } else {
       const res = await registerService(formData);
-      console.log(res);
       if (res?.success) {
         navigate("/");
         dispatch(updateUser({ ...user, username: res?.data }));
@@ -64,7 +66,7 @@ export default function RegisterPage() {
         <div className="register-form col-md-6">
           <h1>Đăng kí</h1>
           <form onSubmit={handleSignUp}>
-            <div className="form-control">
+            <div className={`form-control ${error.isInvalid && error?.msg?.includes("Username") ? 'error' : 'success'}`}>
               <input
                 required
                 type="text"
@@ -83,7 +85,7 @@ export default function RegisterPage() {
                   : ""}
               </small>
             </div>
-            <div className="form-control">
+            <div className={`form-control ${error.isInvalid && error?.msg?.includes("Email") ? 'error' : 'success'}`}>
               <input
                 required
                 name="email"
@@ -101,7 +103,7 @@ export default function RegisterPage() {
                   : ""}
               </small>
             </div>
-            <div className="form-control">
+            <div className={`form-control ${error.isInvalid && error?.msg?.includes("Password") ? 'error' : 'success'}`}>
               <input
                 required
                 type="password"
@@ -120,7 +122,7 @@ export default function RegisterPage() {
                   : ""}
               </small>
             </div>
-            <div className="form-control">
+            <div className={`form-control ${error.isInvalid && error?.msg?.includes("Confirm password") ? 'error' : 'success'}`}>
               <input
                 required
                 type="password"

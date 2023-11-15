@@ -63,17 +63,6 @@
   color: #e74c3c;
 }
 
-#RegisterPage .form-control span::before {
-  content: "";
-  position: absolute;
-  top: 40px;
-  left: 0;
-  width: 0%;
-  height: 2px;
-  background: #2691d9;
-  transition: 0.3s;
-}
-
 #RegisterPage .form-control input:focus ~ span::before {
   width: 100%;
 }

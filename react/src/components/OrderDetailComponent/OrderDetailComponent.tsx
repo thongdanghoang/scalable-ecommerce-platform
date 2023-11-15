@@ -187,7 +187,7 @@ export default function OrderDetailComponent(props: propsOrderDetail) {
           </div>
         </div>
       </div>
-      {user.role === Role["[ROLE_USER]"] && (
+      {user.role === Role["[ROLE_USER]"] && orderDetail?.status === "COMPLETED" && (
         <div
           className="content"
           onClick={

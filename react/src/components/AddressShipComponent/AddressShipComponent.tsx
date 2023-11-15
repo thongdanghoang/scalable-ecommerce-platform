@@ -25,7 +25,7 @@ export default function AddressShipComponent() {
     district : '',
     ward : '',
     addressDetail : '',
-    type : '',
+    type : 'HOME',
     default : false
   }
   const [addressShipping , setAddressShipping] = useState<AddressShipping>({
@@ -228,7 +228,7 @@ export default function AddressShipComponent() {
     <div id='AddressShipComponent'>
       <div className="add-address" onClick={handleShowFormAddressShip}>
         <AiOutlinePlus />
-        <span>Add new address</span>
+        <span>Thêm địa chỉ mới</span>
       </div>
       {listAddressShip && listAddressShip?.map((address : AddressShipping) => (
         <AddressShipItem 
@@ -259,54 +259,54 @@ export default function AddressShipComponent() {
           style={{ maxWidth: 600 }}         
           onFinish={isFormEdit ? handleEditAddressShip : handleCreateAddressShip}
         >
-          <Form.Item label="Họ và tên" name="fullName" rules={[{ required: true }]}>
+          <Form.Item label="Họ và tên" name="fullName" rules={[{ required: true , message: "Vui lòng nhập họ và tên"}]}>
             <Input placeholder='Nhập Họ và tên' name='fullName' value={addressShipping.fullName} onChange={handleOnChangeInput}/>
           </Form.Item>
 
-          <Form.Item label="Số điện thoại" name="phone" rules={[{ required: true }]}>
+          <Form.Item label="Số điện thoại" name="phone" rules={[{ required: true , message: "Vui lòng nhập số điện thoại"}]}>
             <Input placeholder='Nhập Số điện thoại' name='phone' value={addressShipping.phone} onChange={handleOnChangeInput}/>
           </Form.Item>
 
-          <Form.Item label="Province/city" name="province" rules={[{ required: true }]}>
+          <Form.Item label="Province/city" name="province" rules={[{ required: true , message: "Vui lòng chọn thành phố"}]}>
             <Select
-              defaultValue={'---Choice Province/city---'}
+              defaultValue={'---Chọn tỉnh/thành phố---'}
               onChange={handleOnChangeProvince}
             >
-              <Select.Option value = {""}>---Choice Province/city---</Select.Option>
+              <Select.Option value = {""}>---Chọn tỉnh/thành phố---</Select.Option>
               {listProvinces.map(p => (
                 <Select.Option key={p["province_id"]} value={p["province_name"]}>{p["province_name"]}</Select.Option>
               ))}
             </Select>
           </Form.Item>
 
-          <Form.Item label="District" name="district" rules={[{ required: true }]}>
+          <Form.Item label="District" name="district" rules={[{ required: true , message: "Vui lòng chọn quận huyện"}]}>
             <Select
               //value={addressShipping.district}
               disabled = {listDistricts.length === 0}
-              defaultValue={'---Choice District---'}
+              defaultValue={'---Chọn quận/huyện---'}
               onChange={handleOnChangeDistrict}
             >
-              <Select.Option value = {""}>---Choice District---</Select.Option>
+              <Select.Option value = {""}>---Chọn quận/huyện---</Select.Option>
               {listDistricts.map(d => (
                 <Select.Option key={d["district_id"]} value={d["district_name"]}>{d["district_name"]}</Select.Option>
               ))}
             </Select>
           </Form.Item>
 
-          <Form.Item label="Wards" name="ward" rules={[{ required: true }]}>
+          <Form.Item label="Wards" name="ward" rules={[{ required: true , message: "Vui lòng chọn phường xã"}]}>
             <Select
               disabled = {listWards.length === 0}
-              defaultValue={'---Choice Ward---'}
+              defaultValue={'---Chọn phường/xã---'}
               onChange={handleOnChangeWard}
             >
-              <Select.Option value={""}>---Choice Ward---</Select.Option>
+              <Select.Option value={""}>---Chọn phường/xã---</Select.Option>
               {listWards.map(w => (
                 <Select.Option key={w["ward_id"]} value={w["ward_name"]}>{w["ward_name"]}</Select.Option>
               ))}
             </Select>
           </Form.Item>
 
-          <Form.Item label="Address" name="addressDetail" rules={[{ required: true }]}>
+          <Form.Item label="Address" name="addressDetail" rules={[{ required: true , message: "Vui lòng nhập địa chỉ chi tiết"}]}>
             <Input.TextArea 
               placeholder='ví dụ : 52 Trần Hưng Đạo ...' 
               name='addressDetail'
@@ -316,7 +316,7 @@ export default function AddressShipComponent() {
           </Form.Item>
 
           <Form.Item label="Loại địa chỉ" name="type">
-            <Radio.Group name="type" onChange={handleOnChangeInput} value={addressShipping.type}>
+            <Radio.Group name="type" onChange={handleOnChangeInput} defaultValue={addressShipping.type}>
               <Radio value={"HOME"}>HOME</Radio>
               <Radio value={"WORK"}>WORK</Radio>
               <Radio value={"OTHER"}>OTHER</Radio>
