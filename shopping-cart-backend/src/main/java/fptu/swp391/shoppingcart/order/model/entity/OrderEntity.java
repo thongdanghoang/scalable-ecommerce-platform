@@ -2,8 +2,6 @@ package fptu.swp391.shoppingcart.order.model.entity;
 
 import fptu.swp391.shoppingcart.order.model.entity.enums.DeliveryMethod;
 import fptu.swp391.shoppingcart.order.model.entity.enums.OrderStatus;
-import fptu.swp391.shoppingcart.order.model.entity.enums.PaymentMethod;
-import fptu.swp391.shoppingcart.user.address.model.entity.AddressEntity;
 import fptu.swp391.shoppingcart.user.authentication.entity.UserAuthEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,12 +25,12 @@ public class OrderEntity {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false, updatable = false)
     private UserAuthEntity user;
 
-    @ManyToOne
-    @JoinColumn(name = "ADDRESS_ENTITY_ID")
-    private AddressEntity addressEntity;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "order_address_id", unique = true)
+    private OrderAddress orderAddress;
 
     @OneToMany
     @JoinColumn(name = "ORDER_ENTITY_ID")

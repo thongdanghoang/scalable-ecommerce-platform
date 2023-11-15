@@ -4,11 +4,16 @@ import fptu.swp391.shoppingcart.cart.model.dto.CartItemResponseDto;
 import fptu.swp391.shoppingcart.user.address.dto.AddressDto;
 import lombok.Data;
 
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Set;
 
 @Data
 public class OrderResponseDto {
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
+    public static final NumberFormat NUMBER_FORMAT = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     private long orderId;
     private String status;
     private AddressDto address;

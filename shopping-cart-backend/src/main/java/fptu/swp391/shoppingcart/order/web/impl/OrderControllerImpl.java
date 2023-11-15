@@ -1,5 +1,6 @@
 package fptu.swp391.shoppingcart.order.web.impl;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import fptu.swp391.shoppingcart.cart.model.exception.OutOfStockException;
 import fptu.swp391.shoppingcart.order.model.dto.CheckoutInfoResponseDto;
 import fptu.swp391.shoppingcart.order.model.dto.CheckoutRequestDto;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -49,32 +51,36 @@ public class OrderControllerImpl implements OrderController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (AddressNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnirestException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
         }
     }
 
     @Override
     @GetMapping("/user") // role user
     public ResponseEntity<ApiResponse<List<OrderResponseDto>>> getOrderByUserAuthenticated() {
-        return ResponseEntity.ok(new ApiResponse<>("Get order success", true, orderService.getOrderByUserAuthenticated()));
+        return ResponseEntity.ok(new ApiResponse<>("Get user's orders success", true, orderService.getOrderByUserAuthenticated()));
     }
 
     @Override
-    @GetMapping("/all") // role admin
+    @GetMapping("/all") // role shop owner
     public ResponseEntity<ApiResponse<List<OrderResponseDto>>> getAllOrder() {
-        return ResponseEntity.ok(new ApiResponse<>("Get order success", true, orderService.getAllOrder()));
+        return ResponseEntity.ok(new ApiResponse<>("Get all orders success", true, orderService.getAllOrder()));
     }
 
     @Override
-    @GetMapping("/status/{status}")  // role admin && role user
+    @GetMapping("/status/{status}")  // role shop owner && role user
     public ResponseEntity<ApiResponse<List<OrderResponseDto>>> getOrderByStatus(@PathVariable OrderStatusDto status) {
-        return ResponseEntity.ok(new ApiResponse<>("Get order success", true, orderService.getOrderByStatus(status)));
+        return ResponseEntity.ok(new ApiResponse<>("Get an order success", true, orderService.getOrderByStatus(status)));
     }
 
     @Override
-    @GetMapping("/{orderId}") // role admin && role user
+    @GetMapping("/{orderId}") // role shop owner && role user
     public ResponseEntity<ApiResponse<OrderResponseDto>> getOrderByOrderId(@PathVariable Long orderId) {
         try {
-            return ResponseEntity.ok(new ApiResponse<>("Get order success", true, orderService.getOrderByOrderId(orderId)));
+            return ResponseEntity.ok(new ApiResponse<>("Get order by id success", true, orderService.getOrderByOrderId(orderId)));
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
         }
@@ -91,6 +97,10 @@ public class OrderControllerImpl implements OrderController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (UnsupportedOperationException e) {
             throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, e.getMessage());
+        } catch (UnirestException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
         }
     }
 
@@ -104,7 +114,7 @@ public class OrderControllerImpl implements OrderController {
         }
     }
 
-    @PutMapping("/{orderId}") // role admin
+    @PutMapping("/{orderId}") // role shop owner
     @Override
     public ResponseEntity<ApiResponse<OrderResponseDto>> updateOrderStatus(@PathVariable Long orderId, @RequestParam OrderStatusDto status) {
         try {
