@@ -10,6 +10,7 @@ import {
 import "./BarChart.css";
 import { useState, useEffect } from "react";
 import { getAllClothes } from "../../../services/clothesService";
+import { getCategoriesReport } from "../../../services/dashboard";
 
 // const data = [
 //   {
@@ -55,62 +56,25 @@ import { getAllClothes } from "../../../services/clothesService";
 //     amt: 2100,
 //   },
 // ];
+// const { products } = await res?.json();
 
 export default function SimpleBarChart() {
-  const [numberOfSold, setNumberOfSold] = useState<
-    { name: string; sold: number }[]
-  >([]);
-
+  const [productData, setProductData] = useState([]);
   const getNumberOfSold = async () => {
     try {
-      const res = await getAllClothes();
-      const { products } = await res?.json();
-
-      if (products) {
-        const categories: string[] = [
-          "ÁO SƠ MI",
-          "QUẦN ÂU",
-          "ÁO THUN",
-          "QUẦN SHORT",
-          "ÁO KHOÁC",
-          "ÁO POLO",
-          "QUẦN JEAN",
-          "CHÂN VÁY",
-          "ÁO CHỐNG NẮNG",
-        ];
-        const data: { name: string; sold: number }[] = [];
-
-        categories.forEach((category) => {
-          const types = products.filter((item: any) =>
-            item.category.includes(category)
-          );
-
-          const sumOfSold = types.reduce(
-            (acc: any, item: any) => acc + (item.numberOfSold || 0),
-            0
-          );
-
-          data.push({ name: category, sold: sumOfSold });
-        });
-
-        setNumberOfSold(data);
-      } else {
-        console.error("Dữ liệu không hợp lệ hoặc không chứa numberOfSold");
-      }
+      const products = await getCategoriesReport();
+      //const { products } = await res?.json();
+      setProductData(products);
+      console.log(products);
     } catch (error) {
-      console.error("Đã xảy ra lỗi: ", error);
+      console.error("Error fetching data:", error);
     }
   };
-
-  useEffect(() => {
-    getNumberOfSold();
-  }, []);
 
   return (
     <BarChart
       width={1100}
       height={500}
-      data={numberOfSold}
       margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
     >
       <CartesianGrid strokeDasharray="3 3" />
