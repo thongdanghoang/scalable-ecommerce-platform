@@ -8,9 +8,6 @@ import fptu.swp391.shoppingcart.cart.model.exception.CartItemException;
 import fptu.swp391.shoppingcart.cart.model.exception.OutOfStockException;
 import fptu.swp391.shoppingcart.cart.service.CartService;
 import fptu.swp391.shoppingcart.cart.web.CartController;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +19,11 @@ import java.util.NoSuchElementException;
 @RequestMapping("/cart")
 public class CartControllerImpl extends AbstractApplicationController implements CartController {
 
-    private final Logger logger = LogManager.getLogger(CartControllerImpl.class);
+    private final CartService cartService;
 
-    @Autowired
-    private CartService cartService;
+    public CartControllerImpl(CartService cartService) {
+        this.cartService = cartService;
+    }
 
     @PostMapping
     @Override
@@ -33,7 +31,6 @@ public class CartControllerImpl extends AbstractApplicationController implements
         try {
             return ResponseEntity.ok(cartService.addToCart(cartItemDto));
         } catch (OutOfStockException | CartItemException | NoSuchElementException e) {
-            logger.error(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
@@ -44,7 +41,6 @@ public class CartControllerImpl extends AbstractApplicationController implements
         try {
             return ResponseEntity.ok(cartService.modifyCart(cartDto));
         } catch (OutOfStockException | CartItemException | NoSuchElementException e) {
-            logger.error(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
@@ -52,7 +48,11 @@ public class CartControllerImpl extends AbstractApplicationController implements
     @GetMapping
     @Override
     public ResponseEntity<CartResponseDto> viewCart() {
-        return ResponseEntity.ok(cartService.viewCart());
+        try {
+            return ResponseEntity.ok(cartService.viewCart());
+        } catch (OutOfStockException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
     }
 
     @DeleteMapping("/{quantityId}")

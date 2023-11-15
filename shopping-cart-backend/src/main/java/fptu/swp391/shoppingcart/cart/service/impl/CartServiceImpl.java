@@ -13,7 +13,6 @@ import fptu.swp391.shoppingcart.cart.service.CartService;
 import fptu.swp391.shoppingcart.product.entity.Quantity;
 import fptu.swp391.shoppingcart.product.repo.QuantityRepository;
 import fptu.swp391.shoppingcart.user.authentication.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -25,21 +24,38 @@ import java.util.stream.Collectors;
 @Service
 public class CartServiceImpl implements CartService {
 
-    @Autowired
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private QuantityRepository quantityRepository;
+    private final QuantityRepository quantityRepository;
 
-    @Autowired
-    private CartItemResponseMapper cartItemMapper;
+    private final CartItemResponseMapper cartItemMapper;
+
+    public CartServiceImpl(CartRepository cartRepository, UserRepository userRepository, QuantityRepository quantityRepository, CartItemResponseMapper cartItemMapper) {
+        this.cartRepository = cartRepository;
+        this.userRepository = userRepository;
+        this.quantityRepository = quantityRepository;
+        this.cartItemMapper = cartItemMapper;
+    }
 
     @Override
     public CartResponseDto viewCart() {
-        return mapCartToCartResponseDto(getUserCartFromDB());
+        Cart cart = getUserCartFromDB();
+        cart.getItems().forEach(item -> {
+            var inStock = quantityRepository.findById(item.getQuantity().getId()).orElseThrow();
+            if (inStock.getQuantityInStock() == 0) {
+                cart.getItems().remove(item);
+                cartRepository.save(cart);
+                throw new OutOfStockException(String.format("Product %s was out of stock", inStock.getProduct().getName()));
+            }
+            if (item.getAmount() > inStock.getQuantityInStock()) {
+                item.setAmount(inStock.getQuantityInStock());
+                cartRepository.save(cart);
+                throw new OutOfStockException(String.format("Product %s was out of stock, we have updated the amount to %d", inStock.getProduct().getName(), inStock.getQuantityInStock()));
+            }
+        });
+        return mapCartToCartResponseDto(cart);
     }
 
     @Override
@@ -67,7 +83,7 @@ public class CartServiceImpl implements CartService {
         }
 
         if (cartItem.getAmount() > inStock.getQuantityInStock()) {
-            throw new OutOfStockException(String.format("Product %s is out of stock", inStock.getProduct().getName()));
+            throw new OutOfStockException(String.format("Product %s was out of stock", inStock.getProduct().getName()));
         }
 
         return mapCartToCartResponseDto(cartRepository.save(userCart));
@@ -84,7 +100,7 @@ public class CartServiceImpl implements CartService {
                 throw new CartItemException("Amount must be greater than 0");
             }
             if (item.getAmount() > inStock.getQuantityInStock()) {
-                throw new OutOfStockException(String.format("Product %s is out of stock", inStock.getProduct().getName()));
+                throw new OutOfStockException(String.format("Product %s was out of stock", inStock.getProduct().getName()));
             }
             Optional<CartItem> found = entityItems.stream()
                     .filter(cartItem -> cartItem.getQuantity().getId().equals(item.getQuantityId()))
