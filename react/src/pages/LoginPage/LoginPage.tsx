@@ -19,9 +19,9 @@ export default function LoginPage() {
     username: "",
     password: "",
   });
-  const [showModal, setShowModal] = useState(false);
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
+  // const [showModal, setShowModal] = useState(false);
+  // const handleClose = () => setShowModal(false);
+  // const handleShow = () => setShowModal(true);
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   console.log(user);
@@ -56,7 +56,6 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams(formData);
-
     const response = await loginService(params);
     if (response) {
       if (response?.success) {
@@ -64,43 +63,13 @@ export default function LoginPage() {
         dispatch(updateUser({ ...user, username, role }));
         navigate("/");
       } else {
-        handleShow();
+        if (response?.status == 401) {
+        toast.error("Tài khoản hoặc mật khẩu không chính xác!");
+        } else {
+          toast.error("Tài khoản này đã bị vô hiệu hóa!");
+        }
       }
     }
-  };
-
-  const LoginModal = () => {
-    return (
-      <>
-        <Modal
-          show={showModal}
-          onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Đăng nhập thất bại</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p className="text-danger">
-              Tên tài khoản hoặc mật khẩu không hợp lệ!
-            </p>
-            <p>Quên mật khẩu?</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() => window.location.replace("/")}
-            >
-              Đặt lại mật khẩu
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
   };
 
   const handleLogInWithGoogle = async () => {
@@ -109,7 +78,7 @@ export default function LoginPage() {
 
   return (
     <div id="LoginPage" className="background h-100">
-      <LoginModal />
+      {/* <LoginModal /> */}
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-xl-10">

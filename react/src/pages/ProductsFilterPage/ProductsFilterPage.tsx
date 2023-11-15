@@ -73,12 +73,12 @@ function ClothesFilterPage(): React.ReactElement {
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
-    totalProduct: 0,
   });
+  const [totalProduct, setTotalProduct] = useState(0);
   const handleChangePagination = (value: number) => {
     setPagination((prev) => {
       let current = {
-        ...prev,
+        // ...prev,
         currentPage: value,
       };
       return current;
@@ -366,6 +366,15 @@ function ClothesFilterPage(): React.ReactElement {
 
   // update page on change
   useEffect(() => {
+    setPagination((prev) => ({ ...prev, currentPage: 1 }));
+  }, [
+    selectedSortOption,
+    sizeButtonActivated,
+    colorButtonActivated,
+    categoryButtonActivated,
+  ]);
+
+  useEffect(() => {
     const handleSearchAndFilter = async () => {
       setProductRender([LoadingSpin]);
       let filterAndOption: QuerySortParams = {
@@ -414,23 +423,11 @@ function ClothesFilterPage(): React.ReactElement {
         </Col>
       ));
       // handleChangePagination(productList[1]);
-      setPagination((prev) => {
-        let current = {
-          ...prev,
-          totalProduct: productList[1],
-        };
-        return current;
-      });
+      setTotalProduct(productList[1]);
       setProductRender(productItems.length != 0 ? productItems : [NotFound]);
     };
     handleSearchAndFilter();
-  }, [
-    selectedSortOption,
-    sizeButtonActivated,
-    colorButtonActivated,
-    categoryButtonActivated,
-    pagination.currentPage,
-  ]);
+  }, [pagination]);
 
   // NOTE: render page
   return (
@@ -473,12 +470,12 @@ function ClothesFilterPage(): React.ReactElement {
         {/* Pagiantion */}
         <div className="d-flex justify-content-center p-5">
           <Pagination
-            className="font-weight-normal"
             onChange={handleChangePagination}
             showSizeChanger={false}
             pageSize={12}
             defaultCurrent={1}
-            total={pagination.totalProduct}
+            current={pagination.currentPage}
+            total={totalProduct}
           />
         </div>
       </div>
