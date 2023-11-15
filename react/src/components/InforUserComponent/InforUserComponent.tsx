@@ -99,7 +99,7 @@ export default function InforUserComponent() {
         if(res?.success){
             toast.success(res?.message, toastMSGObject());
             dispatch(updateUser(
-                verifyField === "EMAIL" ? {...user, emailVerified : true} : {...user, phoneVerified : true}
+                verifyField === "EMAIL" ? {...user, email : userProfile?.email , emailVerified : true} : {...user, phone : userProfile?.phone , phoneVerified : true}
             ));
             handleCloseOTPForm();
         }else{

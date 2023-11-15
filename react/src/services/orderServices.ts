@@ -67,3 +67,20 @@ export async function cancelOrderService(orderId : string) {
     }
     return null;
 }
+
+export async function getAllOrderService() {
+    try {
+        const response = await fetch(
+            `${API_URL}/api/orders/all`,
+            {
+                method: "GET",
+                credentials: "include",
+            }
+        );
+        const data = await response.json();
+        return data;
+    } catch (e) {
+        console.log(e);
+    }
+    return null;
+}

@@ -25,7 +25,7 @@ export default function TableComponent(props : propsTable) {
         isRowSelection = true , 
     } = props;
 
-    const dataSource = listData?.map(data => ({...data, key : data.id}))
+    const dataSource = listData?.map((data , index) => ({...data, key : index}))
 
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');

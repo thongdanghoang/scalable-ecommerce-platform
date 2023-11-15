@@ -11,7 +11,7 @@ export interface clothes {
 export interface clothesOrder{
     id: number;
     name: string;
-    price: string;
+    price: number;
     category: string;
     discount: number;
     amountBuy: number;

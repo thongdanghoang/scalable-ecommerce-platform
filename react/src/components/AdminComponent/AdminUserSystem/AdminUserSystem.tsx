@@ -1,4 +1,4 @@
-import { DeleteOutlined , EditOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { Button , Form, Input, Modal, Radio, Switch } from 'antd';
 import { BiPlus } from 'react-icons/bi';
 import TableComponent from '../../TableComponent/TableComponent';
@@ -126,8 +126,6 @@ export default function AdminUserSystem() {
     }
   },[rowSelected])
 
-  console.log(form.getFieldsValue())
-
   // action modal
   const handleOpenModal = (typeAction : Action) => {
     setisOpenModal(true);
@@ -173,13 +171,13 @@ export default function AdminUserSystem() {
       title: 'Ngày tạo',
       dataIndex: 'createdAt',
       render: (createdAt : string) => <span>{convertDateAndTime(createdAt).date}</span>,
-      sorter: (a : any,b : any) => a.createdAt - b.createdAt,
+      sorter: (a : any,b : any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     },
     {
       title: 'Ngày chỉnh sửa',
       dataIndex: 'updatedAt',
       render: (updatedAt : string) => <span>{convertDateAndTime(updatedAt).date}</span>,
-      sorter: (a : any,b : any) => a.createdAt - b.createdAt,
+      sorter: (a : any,b : any) => new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime(),
     },
     {
       title: 'Trạng thái',

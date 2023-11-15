@@ -1,0 +1,10 @@
+.order-detail-shopowner{
+    display: flex;
+    align-items: start;
+}
+
+.order-detail-shopowner .status-order{
+    position: sticky;
+    top: 0;
+    flex: 1;
+}
