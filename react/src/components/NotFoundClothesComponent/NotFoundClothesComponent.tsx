@@ -2,7 +2,7 @@ import "./NotFoundClothes.css";
 
 export default function NotFoundClothesComponent({searchText}: any) {
   return (
-    <div id="NotFoundClothesComponen">
+    <div id="NotFoundClothesComponen" className="d-flex justify-content-center flex-column">
       <div>
         <span>Tìm kiếm</span>
       </div>
@@ -17,11 +17,11 @@ export default function NotFoundClothesComponent({searchText}: any) {
         />
       </div>
       <div>
-        Tìm kiếm <span>aaaaaaaaa</span> của bạn không có sản phẩm phù hợp
+        Tìm kiếm <span>{searchText}</span> của bạn không có sản phẩm phù hợp
       </div>
       <div>HÃY THỬ LẠI CÁCH KHÁC NHƯ</div>
-      <li>Sử dụng thuật ngữ chung nhiều hơn</li>
-      <li>Kiểm tra chính tả của bạn</li>
+      <div>Sử dụng thuật ngữ chung nhiều hơn</div>
+      <div>Kiểm tra chính tả của bạn</div>
     </div>
   );
 }
