@@ -4,8 +4,30 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { FiShoppingCart } from "react-icons/fi";
 import { PiMoneyLight } from "react-icons/pi";
 import SimpleBarChart from "./BarChart";
+import { getCategoriesStatistic } from "../../../services/dashboard";
+import { useState, useEffect } from "react";
 
 export default function AdminDashboard() {
+  const [statistics, setStatistics] = useState({
+    countCustomer: 0,
+    countProduct: 0,
+    countOrder: 0,
+    earning: 0,
+  });
+
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      try {
+        const res = await getCategoriesStatistic();
+        console.log(res.data);
+        setStatistics(res.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchStatistics();
+  }, []);
   return (
     <div className="admin-dashboard" id="admin-dashboard">
       <div className="dashboard-header">
@@ -21,7 +43,7 @@ export default function AdminDashboard() {
               <FiUsers />
             </div>
             <div className="dashboard-item-content-info">
-              <h3>3000</h3>
+              <h3>{statistics.countCustomer}</h3>
               <div>Customer</div>
             </div>
           </div>
@@ -38,7 +60,7 @@ export default function AdminDashboard() {
               <HiOutlineShoppingBag />
             </div>
             <div className="dashboard-item-content-info">
-              <h3>3000</h3>
+              <h3>{statistics.countOrder}</h3>
               <div>Orders</div>
             </div>
           </div>
@@ -55,7 +77,7 @@ export default function AdminDashboard() {
               <FiShoppingCart />
             </div>
             <div className="dashboard-item-content-info">
-              <h3>3000</h3>
+              <h3>{statistics.countProduct}</h3>
               <div>Products</div>
             </div>
           </div>
@@ -72,7 +94,7 @@ export default function AdminDashboard() {
               <PiMoneyLight />
             </div>
             <div className="dashboard-item-content-info">
-              <h3>3000</h3>
+              <h3>{statistics.earning}</h3>
               <div>Earnings</div>
             </div>
           </div>

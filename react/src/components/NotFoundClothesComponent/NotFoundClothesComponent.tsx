@@ -1,13 +1,13 @@
 import "./NotFoundClothes.css";
 
-export default function NotFoundClothesComponent() {
+export default function NotFoundClothesComponent({searchText}: any) {
   return (
     <div id="NotFoundClothesComponen">
       <div>
         <span>Tìm kiếm</span>
       </div>
       <div>
-        <h5>KẾT QUẢ TÌM KIẾM SẢN PHẨM "AAAAAAA"</h5>
+        <h5>KẾT QUẢ TÌM KIẾM SẢN PHẨM "{searchText}"</h5>
       </div>
 
       <div>
