@@ -76,7 +76,7 @@ public class MailOtpService {
             Unirest.post("https://api.mailgun.net/v3/"
                             + mailgunDomainName + "/messages")
                     .basicAuth("api", apiKey)
-                    .queryString("from", "Thống Đặng Hoàng<noreply@thongdanghoang.id.vn>")
+                    .queryString("from", "N3TK Shop<noreply@thongdanghoang.id.vn>")
                     .queryString("to", target)
                     .queryString("subject", "Your verification code")
                     .queryString("html", htmlContent)
