@@ -97,11 +97,11 @@ export default function HeaderComponent({
         <div>
           <div className="menu-item" onClick={() => navigate("/sign-in")}>
             <AiOutlineLogin />
-            Login
+            Đăng nhập
           </div>
           <div className="menu-item" onClick={() => navigate("/sign-up")}>
             <AiOutlineUserAdd />
-            Register
+            Đăng kí
           </div>
         </div>
       )}
@@ -151,7 +151,7 @@ export default function HeaderComponent({
                 </div>
               </div>
             ) : (
-              <div className="header_system">Quản lí hệ thống shop TTNTK</div>
+              <div className="header_system">Quản lí hệ thống shop N3TK</div>
             )}
           </div>
           <div className="col-md-7">

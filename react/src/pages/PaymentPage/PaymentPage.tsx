@@ -1,16 +1,23 @@
 import "./Payment.css";
-import { useState ,useEffect } from "react";
+import { useState, useEffect } from "react";
 import type { CollapseProps } from "antd";
 import { Collapse, Modal, Tag } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { calculatePriceFinal, convertPrice, toastMSGObject } from "../../utils/utils";
+import {
+  calculatePriceFinal,
+  convertPrice,
+  toastMSGObject,
+} from "../../utils/utils";
 import { getAddressShipsByUser } from "../../services/userService";
 import { useQuery } from "@tanstack/react-query";
 import { AddressShipping } from "../../model/UserModal";
 import AddressShipItem from "../../components/AddressShipComponent/AddressShipItem";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
-import { checkoutInfoService, checkoutService } from "../../services/checkoutServices";
+import {
+  checkoutInfoService,
+  checkoutService,
+} from "../../services/checkoutServices";
 import { useNavigate } from "react-router-dom";
 import { OrderCheckout, PaymentMethod } from "../../model/OrderModal";
 import { paymentImage, paymentName } from "../../utils/constants";
@@ -18,24 +25,30 @@ import { toast } from "react-toastify";
 import { resetOrder } from "../../redux/slides/orderSlide";
 
 export default function PaymentPage() {
-
-  const order = useSelector((state:RootState) => state.order); console.log(order);
+  const order = useSelector((state: RootState) => state.order);
+  console.log(order);
   const dispatch = useDispatch();
-  const [isOpenModalAddress , setIsOpenModalAddress] = useState(false);
-  const [paymentMethod , setPaymentMethod] = useState('CASH_ON_DELIVERY');
-  const [addressShipSelect , setAddressShipSelect] = useState<AddressShipping>({} as AddressShipping);
+  const [isOpenModalAddress, setIsOpenModalAddress] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("CASH_ON_DELIVERY");
+  const [addressShipSelect, setAddressShipSelect] = useState<AddressShipping>(
+    {} as AddressShipping
+  );
   const navigate = useNavigate();
 
   // handle Address ship api
   const fetchGetAddressShipByUser = async () => {
     const res = await getAddressShipsByUser();
-    return res.data
-  }
+    return res.data;
+  };
 
-  const queryAddressShip = useQuery({queryKey : ['addresses-ship-by-user-1'] , queryFn:fetchGetAddressShipByUser })
-  const {data : listAddressShip , isSuccess : isSuccessListAddressShip} = queryAddressShip
+  const queryAddressShip = useQuery({
+    queryKey: ["addresses-ship-by-user-1"],
+    queryFn: fetchGetAddressShipByUser,
+  });
+  const { data: listAddressShip, isSuccess: isSuccessListAddressShip } =
+    queryAddressShip;
   queryAddressShip.refetch();
-  console.log(listAddressShip)
+  console.log(listAddressShip);
 
   // const addressShipDefault : AddressShipping = useMemo(() => {
   //   console.log(listAddressShip)
@@ -43,68 +56,79 @@ export default function PaymentPage() {
   // },[isSuccessListAddressShip,listAddressShip])
 
   useEffect(() => {
-    isSuccessListAddressShip && setAddressShipSelect(listAddressShip?.find((as : AddressShipping) => as.default))
-  },[isSuccessListAddressShip, listAddressShip])
+    isSuccessListAddressShip &&
+      setAddressShipSelect(
+        listAddressShip?.find((as: AddressShipping) => as.default)
+      );
+  }, [isSuccessListAddressShip, listAddressShip]);
 
   useEffect(() => {
-    isSuccessListAddressShip && setIsOpenModalAddress(false)
-  },[addressShipSelect])
+    isSuccessListAddressShip && setIsOpenModalAddress(false);
+  }, [addressShipSelect]);
 
   //handle checkout info api
 
   const fetchCheckoutInfo = async () => {
-    const res : OrderCheckout = await checkoutInfoService();
-    return res
-  }
+    const res: OrderCheckout = await checkoutInfoService();
+    return res;
+  };
 
-  const queryCheckoutInfo = useQuery({queryKey : ['checkout-info'] , queryFn:fetchCheckoutInfo })
-  const {data : orderCheckout , isSuccess : isSuccessOrderCheckout} = queryCheckoutInfo
+  const queryCheckoutInfo = useQuery({
+    queryKey: ["checkout-info"],
+    queryFn: fetchCheckoutInfo,
+  });
+  const { data: orderCheckout, isSuccess: isSuccessOrderCheckout } =
+    queryCheckoutInfo;
 
-  console.log(orderCheckout)
+  console.log(orderCheckout);
 
   //handle checkout order api
 
   const handleCheckoutOrder = () => {
-    if(!addressShipSelect){
-      toast('🙁 Hiện tại sổ địa chỉ của bạn đang trống', toastMSGObject({theme : 'dark'}))
-    }else{
+    if (!addressShipSelect) {
+      toast(
+        "🙁 Hiện tại sổ địa chỉ của bạn đang trống",
+        toastMSGObject({ theme: "dark" })
+      );
+    } else {
       // console.log({
       //   addressId : addressShipSelect.id,
       //   paymentMethod,
       //   deliveryMethodDto : "STANDARD_DELIVERY"
       // })
       checkoutService({
-        addressId : addressShipSelect.id,
+        addressId: addressShipSelect.id,
         paymentMethod,
-        deliveryMethodDto : "STANDARD_DELIVERY"
-      })
-        .then(() => {
-          toast.success('Thanh toán đơn hàng thành công', toastMSGObject());
-          dispatch(resetOrder());
-          navigate('/payment/success' , 
-            { state : {
-              orderCheckout : {
-                ...orderCheckout,
-                paymentMethod,
-                deliveryMethod : orderCheckout?.availableDeliveryMethods && orderCheckout?.availableDeliveryMethods[0]
-              } , 
-              addressShipSelect
-            } }
-          )
-        })
-  
-      // navigate('/payment/success' , 
+        deliveryMethodDto: "STANDARD_DELIVERY",
+      }).then(() => {
+        toast.success("Thanh toán đơn hàng thành công", toastMSGObject());
+        dispatch(resetOrder());
+        navigate("/payment/success", {
+          state: {
+            orderCheckout: {
+              ...orderCheckout,
+              paymentMethod,
+              deliveryMethod:
+                orderCheckout?.availableDeliveryMethods &&
+                orderCheckout?.availableDeliveryMethods[0],
+            },
+            addressShipSelect,
+          },
+        });
+      });
+
+      // navigate('/payment/success' ,
       //   { state : {
       //     orderCheckout : {
       //       ...orderCheckout,
       //       paymentMethod,
       //       deliveryMethod : orderCheckout?.availableDeliveryMethods && orderCheckout?.availableDeliveryMethods[0]
-      //     } , 
+      //     } ,
       //     addressShipSelect
       //   } }
       // )
     }
-  }
+  };
 
   const CollapseItem = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -115,11 +139,18 @@ export default function PaymentPage() {
         label: isOpen ? "Thu nhỏ" : "Xem chi tiết",
         children: (
           <>
-            {orderCheckout?.items.map(item => (
+            {orderCheckout?.items.map((item) => (
               <div className="d-flex justify-content-between">
                 <div className="payment-product-quantity">{item.amount} x</div>
                 <div className="payment-product-info"> {item.product.name}</div>
-                <div className="payment-product-price">{convertPrice(calculatePriceFinal(item.product.price , item.product.discount))}</div>
+                <div className="payment-product-price">
+                  {convertPrice(
+                    calculatePriceFinal(
+                      item.product.price,
+                      item.product.discount
+                    )
+                  )}
+                </div>
               </div>
             ))}
           </>
@@ -141,7 +172,7 @@ export default function PaymentPage() {
     );
   };
 
-  console.log(addressShipSelect)
+  console.log(addressShipSelect);
 
   return (
     <div className="container" id="payment-page">
@@ -149,21 +180,25 @@ export default function PaymentPage() {
         <div className="col-md-9">
           <div className="payment-method">
             <div className="payment-text">Chọn hình thức thanh toán</div>
-            {orderCheckout?.availablePaymentMethods && 
-            orderCheckout?.availablePaymentMethods.map((availablePayM : PaymentMethod) => (
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="flexRadioDefault"
-                  onChange={e => setPaymentMethod(e.target.value)}
-                  value={availablePayM}
-                  checked = {paymentMethod === availablePayM}
-                />
-                <img src={paymentImage(availablePayM)} alt="" />
-                <label className="form-check-label">{paymentName(availablePayM)}</label>
-              </div>
-            ))}
+            {orderCheckout?.availablePaymentMethods &&
+              orderCheckout?.availablePaymentMethods.map(
+                (availablePayM: PaymentMethod) => (
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      value={availablePayM}
+                      checked={paymentMethod === availablePayM}
+                    />
+                    <img src={paymentImage(availablePayM)} alt="" />
+                    <label className="form-check-label">
+                      {paymentName(availablePayM)}
+                    </label>
+                  </div>
+                )
+              )}
           </div>
           <div className="payment-method">
             <div className="payment-text">Chọn hình thức vận chuyển</div>
@@ -174,7 +209,10 @@ export default function PaymentPage() {
                 name="sss"
                 checked
               />
-              <img src="https://cdn-icons-png.flaticon.com/512/6213/6213198.png" alt="" />
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/6213/6213198.png"
+                alt=""
+              />
               <label className="form-check-label">Vận chuyển tiêu chuẩn </label>
             </div>
           </div>
@@ -185,7 +223,12 @@ export default function PaymentPage() {
               {!addressShipSelect ? (
                 <div>
                   <div>Hiện tại sổ địa chỉ của bạn trống</div>
-                  <div onClick={() => navigate('/profile-user/address-ship-user')} >Thêm địa chỉ mới tại đây</div>
+                  <div
+                    style={{ cursor: "pointer", fontWeight: "700" }}
+                    onClick={() => navigate("/profile-user/address-ship-user")}
+                  >
+                    Thêm địa chỉ mới tại đây
+                  </div>
                 </div>
               ) : (
                 <>
@@ -193,19 +236,32 @@ export default function PaymentPage() {
                     <div>
                       <span>Giao tới</span>
                     </div>
-                    <div className="change-address" onClick={() => setIsOpenModalAddress(true)}>Thay đổi</div>
-                  </div>           
+                    <div
+                      className="change-address"
+                      onClick={() => setIsOpenModalAddress(true)}
+                    >
+                      Thay đổi
+                    </div>
+                  </div>
                   <div>
                     <div className="payment-customer-info">
-                      <div className="customer-name">{addressShipSelect?.fullName}</div>
+                      <div className="customer-name">
+                        {addressShipSelect?.fullName}
+                      </div>
                       <span>|</span>
-                      <div className="customer-phone">{addressShipSelect?.phone?.replace('+84', '0')}</div>
+                      <div className="customer-phone">
+                        {addressShipSelect?.phone?.replace("+84", "0")}
+                      </div>
                     </div>
                     <div className="payment-customer-address">
                       <Tag color="green">{addressShipSelect?.type}</Tag>
-                      {`${addressShipSelect?.addressDetail} , ${addressShipSelect?.ward} , ${addressShipSelect?.district?.split('-')[0]} , ${addressShipSelect?.province?.split('-')[0]}`}
+                      {`${addressShipSelect?.addressDetail} , ${
+                        addressShipSelect?.ward
+                      } , ${addressShipSelect?.district?.split("-")[0]} , ${
+                        addressShipSelect?.province?.split("-")[0]
+                      }`}
                     </div>
-                  </div>              
+                  </div>
                 </>
               )}
             </div>
@@ -220,9 +276,12 @@ export default function PaymentPage() {
             <div className="payment-bill-info">
               <div className="temporary-price">
                 <span className="price-text">Tạm tính</span>
-                <span>{
-                  orderCheckout?.total && convertPrice(orderCheckout?.total - orderCheckout?.discount)
-                }</span>
+                <span>
+                  {orderCheckout?.total &&
+                    convertPrice(
+                      orderCheckout?.total - orderCheckout?.discount
+                    )}
+                </span>
               </div>
               <div className="ship-promotion">
                 <span className="price-text">Giảm giá</span>
@@ -250,33 +309,39 @@ export default function PaymentPage() {
           </div>
         </div>
       </div>
-      <Modal 
-        title="List Address ship" 
-        open={isOpenModalAddress} 
-        footer={null} 
+      <Modal
+        title="List Address ship"
+        open={isOpenModalAddress}
+        footer={null}
         onCancel={() => setIsOpenModalAddress(false)}
         width={720}
       >
         <div id="AddressShipComponent">
-          <div className="instructor-address">Vui lòng chọn địa chỉ giao hàng có sẵn bên dưới</div>
-          {listAddressShip && listAddressShip?.map((address : AddressShipping) => (
-            <AddressShipItem 
-              key={address.id}
-              id={address.id}
-              fullName={address.fullName}
-              phone={address.phone}
-              province={address.province}
-              district={address.district}
-              ward={address.ward}
-              addressDetail={address.addressDetail}
-              type={address.type}
-              default={address.default}
-              setAddressShipSelect={setAddressShipSelect}
-            />
-          ))}
+          <div className="instructor-address">
+            Vui lòng chọn địa chỉ giao hàng có sẵn bên dưới
+          </div>
+          {listAddressShip &&
+            listAddressShip?.map((address: AddressShipping) => (
+              <AddressShipItem
+                key={address.id}
+                id={address.id}
+                fullName={address.fullName}
+                phone={address.phone}
+                province={address.province}
+                district={address.district}
+                ward={address.ward}
+                addressDetail={address.addressDetail}
+                type={address.type}
+                default={address.default}
+                setAddressShipSelect={setAddressShipSelect}
+              />
+            ))}
           <div className="redirect-profile">
             Bạn muốn giao hàng đến địa chỉ khác?
-            <span onClick={() => navigate('/profile-user/address-ship-user')}> Thêm địa chỉ mới tại đây</span>
+            <span onClick={() => navigate("/profile-user/address-ship-user")}>
+              {" "}
+              Thêm địa chỉ mới tại đây
+            </span>
           </div>
         </div>
       </Modal>
