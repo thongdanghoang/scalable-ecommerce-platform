@@ -67,11 +67,20 @@ export default function ChangePasswordComponent() {
       });
       return;
     }
+
+    if (password.oldPassword == password.newPassword) {
+      setInvalidPasswordMessage({
+        isInvalid: true,
+        invalidMessage: "Mật khẩu cũ và mật khẩu mới trùng nhau",
+      });
+      return;
+    }
+
     let response = await changePassword(password);
     if (response && response.status == undefined) {
       setPassword({
         oldPassword: "",
-        newPassword: ""
+        newPassword: "",
       });
       toast.success("Thay đổi mật khẩu thành công!");
     } else {

@@ -63,10 +63,11 @@ export default function LoginPage() {
         dispatch(updateUser({ ...user, username, role }));
         navigate("/");
       } else {
-        if (response?.status == 401) {
-        toast.error("Tài khoản hoặc mật khẩu không chính xác!");
-        } else {
+        console.log(response);
+        if (response?.status == 403) {
           toast.error("Tài khoản này đã bị vô hiệu hóa!");
+        } else {
+          toast.error("Tài khoản hoặc mật khẩu không chính xác!");
         }
       }
     }
