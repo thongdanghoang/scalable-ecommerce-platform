@@ -1,0 +1,74 @@
+#AdminPage {
+  display: flex;
+  background-color: #f8f8f8;
+}
+
+#AdminPage .menu {
+  width: 20%;
+}
+
+#AdminPage .menu .title-header {
+  background: #001529;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+#AdminPage .menu .title-header span:last-child {
+  color: #fff;
+  flex: 1;
+  padding: 0 45px 0 15px;
+  font-family: "Dancing Script", cursive;
+  font-size: 45px;
+}
+
+#AdminPage .menu span {
+  font-size: 16px;
+}
+
+#AdminPage .manage-objects {
+  width: 80%;
+  height: 100vh;
+}
+
+#AdminPage .manage-objects .kGwyCy {
+  padding: 10px !important;
+  justify-content: space-between !important;
+}
+
+#AdminPage
+  .manage-objects
+  .ant-col.ant-col-6.css-dev-only-do-not-override-17a39f8 {
+  padding: 0px !important;
+  justify-content: end;
+}
+
+#AdminPage .manage-objects .path-system {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+
+  .page-main:hover {
+    cursor: pointer;
+    color: blue;
+  }
+}
+
+#AdminPage .manage-objects .path-system .page-main:hover {
+  cursor: pointer;
+  color: blue;
+}
+
+#AdminPage .manage-objects .wrapper-body-admin {
+  padding: 0 8px;
+}
+#AdminPage .manage-objects button.custome-btn-excel {
+  color: #fff;
+  background: green;
+}
+
+#AdminPage .manage-objects button.custome-btn-add {
+  color: #fff;
+  background: #3434f5;
+}

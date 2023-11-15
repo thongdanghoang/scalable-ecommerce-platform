@@ -1,0 +1,37 @@
+#FooterComponent .footer {
+  height: 365px;
+  background: #000000;
+margin-top:30px;
+}
+
+#FooterComponent .row {
+  justify-content: space-between;
+  align-items: center;
+}
+#FooterComponent h4 {
+  color: #fff;
+}
+#FooterComponent .icon-connect {
+  color: #fff;
+}
+#FooterComponent .fa-brands {
+  font-size: 25px;
+  margin: 0 8px;
+}
+#FooterComponent .connect {
+  text-align: center;
+}
+#FooterComponent .company,
+.about,
+.contact {
+  color: #fff;
+}
+#FooterComponent .about {
+  margin-top: 50px;
+}
+
+#FooterComponent .map > iframe {
+  margin-top: 50px;
+  height: 200px;
+  width: 330px;
+}

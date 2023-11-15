@@ -1,0 +1,296 @@
+#UserProfilePage{
+  background: #f8f8f8;
+  min-height: 90vh;
+}
+#UserProfilePage .two-twelfths-avatar{
+    width: 30%;
+    align-items: center;
+}
+#UserProfilePage .account--sidebar {
+  box-sizing: border-box;
+  margin-top: 1rem;
+}
+
+#UserProfilePage .account--sidebar .account--sidebar-user{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#UserProfilePage .account--sidebar .account--sidebar-user .fullname{
+  font-size: 25px;
+  font-weight: 500;
+  padding: 15px 0;
+}
+
+#UserProfilePage .grid {
+    display: -webkit-flex;
+    -moz-flex-direction: row;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: -9px;
+    margin-right: -9px;
+    padding: 0;
+    position: relative;
+    float: none;
+  }
+#UserProfilePage .grid1 {
+    display: -webkit-flex;
+    -moz-flex-direction: row;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: -9px;
+    margin-right: -9px;
+    padding: 0;
+    position: relative;
+    float: none;
+    margin-bottom: 30px;
+    margin-top: 9px;
+  }
+#UserProfilePage .grid__column {
+    position: relative;
+    box-sizing: border-box;
+    min-height: 1px;
+    vertical-align: top;
+    padding: 9px;
+
+  }
+  
+#UserProfilePage .four-twelfths {
+    width: 33.33%;
+  }
+  
+#UserProfilePage .title-infouser {
+    font-size: 30px;
+    font-weight: 700;
+    font: 1.987em sans-serif;
+    margin: 1rem 0 1rem;
+    margin-right: 20px;
+  }
+#UserProfilePage .title-infouser-name{
+    font-size: 30px;
+    font-weight: 700;
+    font: 1.987em sans-serif;
+    margin: 1rem 0 1rem;
+    margin-right: 20px;
+    text-align: center;
+}
+
+#UserProfilePage  a[aria-current="page"] {
+  background-color: #000000 !important;
+  color: #fff !important;
+}
+#UserProfilePage .account--sidebar-item.active-menu{
+  
+}
+#UserProfilePage .account--sidebar-item:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+#UserProfilePage .account--sidebar-item {
+    margin-right: 25px;
+    line-height: 40px;
+    height: 40px;
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 0 20px;
+    transition: all 0.2s;
+    display: block;
+    border-radius: 16px;
+    text-decoration: none;
+    color: #000;
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+#UserProfilePage a.account--sidebar-item svg{
+  margin: 0 7px 7px 0;
+}
+
+#UserProfilePage .eigth-twelfths {
+    width: 66.66%;
+  }
+#UserProfilePage .two-twelfths {
+    width: 20%;
+  }
+#UserProfilePage .three-twelfths1 {
+    width: 20%;
+  }
+#UserProfilePage .seven-twelfths1 {
+    width: 35%;
+  }
+#UserProfilePage .form-info-user {
+    display: flex;
+  }
+#UserProfilePage .avatar_icon {
+    background-color: rgb(240, 248, 255);
+    border-radius: 50%;
+    width: 130px;
+    height: 130px;
+    border: 4px solid rgb(194, 225, 255);
+    position: relative;
+    -webkit-box-pack: center;
+    justify-content: center;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+#UserProfilePage .avatar_icon > img{
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#UserProfilePage .avatar_icon .upload-act{
+  display: flex;
+  align-items: center;
+  color: white;
+  background: black;
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+
+#UserProfilePage .avatar_icon .upload-act > i{
+  margin-right: 5px;
+}
+
+#UserProfilePage .avatar_icon > i {
+    font-size: 60px;
+  }
+#UserProfilePage .edit-act {
+    position: absolute;
+    color: #000;
+    border-radius: 12px;
+    right: -30px;
+    bottom: -5px;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    display: flex;
+  }
+#UserProfilePage .form-control {
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    border-radius: 16px;
+    height: 40px;
+    width: 100%;
+    padding: 5px 20px;
+    transition: 0.2s all;
+    margin-bottom: 10px;
+  }
+#UserProfilePage .form-control2 {
+    color: #fff;
+    background: #2f5acf;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    border-radius: 16px;
+    height: 40px;
+    width: 100%;
+    padding: 5px 20px;
+    transition: 0.2s all;
+    margin-bottom: 10px;
+  }
+#UserProfilePage .form-control1 {
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    border-radius: 16px;
+    height: 40px;
+    width: 100%;
+    padding: 5px 20px;
+    transition: 0.2s all;
+    margin-bottom: 35px;
+  }
+#UserProfilePage .hafl-hafl {
+    width: 50%;
+  }
+#UserProfilePage .three-twelfths {
+    width: 20%;
+    line-height: 38px;
+  }
+#UserProfilePage .seven-twelfths {
+    width: 60%;
+  }
+#UserProfilePage .custom-radio-label:not(:last-child) {
+    margin-right: 1rem;
+  }
+#UserProfilePage .seven-twelfths2 {
+    width: 22%;
+  }
+#UserProfilePage .bday-note {
+    color: #999;
+    font-size: 0.9rem;
+  }
+#UserProfilePage .grid--three-columns > .grid__column {
+    width: 36.3333333333%;
+  }
+#UserProfilePage .datetime-select .form-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+#UserProfilePage .twelfths4 {
+    width: 58.333%;
+  }
+#UserProfilePage .slider-group {
+    display: flex;
+  }
+#UserProfilePage .datetime-select {
+    position: relative;
+  }
+#UserProfilePage .datetime-select .form-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+  
+#UserProfilePage .date {
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
+    opacity: 0.66;
+  }
+#UserProfilePage .btn.btn-primary {
+    background-color: #2f5acf;
+    border: none;
+  }
+#UserProfilePage .btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    border-radius: 16px;
+    border: 2px solid #000;
+    background-color: #000;
+    color: #fff;
+    padding: 0 30px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+#UserProfilePage .three-twelfths1 {
+    width: 25%;
+  }
+#UserProfilePage .btn:hover {
+    background-color: #000;
+  }
+#UserProfilePage .btn1:hover {
+    cursor: pointer;
+    background-color: #000;
+  }
+.form-info-user-avatar{
+    margin-left: 137px;
+}
+
+#UserProfilePage .edit-act .ant-upload-list{
+  display: none !important;
+}

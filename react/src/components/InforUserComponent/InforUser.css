@@ -1,0 +1,7 @@
+.has-verified p{
+    color: #2f5acf;
+    text-align: center;
+    background: rgb(207, 207, 207);
+    border-radius: 16px;
+    padding: 7px 20px;
+}

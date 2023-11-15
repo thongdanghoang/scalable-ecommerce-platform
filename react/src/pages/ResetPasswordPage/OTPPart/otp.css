@@ -1,0 +1,58 @@
+#otp-form {
+  height: 100vh;
+    background-image: url("../../../assets/img/login.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+}
+#otp-form > div {
+  top: 10px;
+  font-size: 28px;
+  font-weight: 700;
+  background-color: rgba(248, 248, 248, 0.68);
+}
+
+#otp-form .otp-input-container {
+  font-size: 5rem;
+  width: 60%;
+}
+
+#otp-form .otp-input {
+  border: none;
+  background: "transparent";
+}
+/* Chrome, Safari, Edge, Opera */
+#otp-form input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  /* margin: 0; */
+}
+
+/* Firefox */
+#otp-form input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+#otp-form .otp-input {
+    width: 20% !important;
+    aspect-ratio: 1;
+    border-radius: 1rem;
+    background-color: whitesmoke;
+}
+#otp-form button {
+    cursor: pointer;
+    display: block;
+    font-size: 1.2rem;
+
+}
+
+#otp-form h3 {
+  font-family: "Montserrat", sans-serif;
+  
+}
+#otp-form p {
+  font-family: "Montserrat", sans-serif;
+}
