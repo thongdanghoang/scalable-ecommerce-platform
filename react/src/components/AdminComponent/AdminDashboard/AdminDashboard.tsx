@@ -4,8 +4,9 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { FiShoppingCart } from "react-icons/fi";
 import { PiMoneyLight } from "react-icons/pi";
 import SimpleBarChart from "./BarChart";
-import { getCategoriesStatistic } from "../../../services/dashboard";
+import { getCategoriesStatistic } from "../../../services/dashboardService";
 import { useState, useEffect } from "react";
+import { convertPrice } from "../../../utils/utils";
 
 export default function AdminDashboard() {
   const [statistics, setStatistics] = useState({
@@ -94,7 +95,7 @@ export default function AdminDashboard() {
               <PiMoneyLight />
             </div>
             <div className="dashboard-item-content-info">
-              <h3>{statistics.earning}</h3>
+              <h3>{convertPrice(statistics.earning)}</h3>
               <div>Earnings</div>
             </div>
           </div>

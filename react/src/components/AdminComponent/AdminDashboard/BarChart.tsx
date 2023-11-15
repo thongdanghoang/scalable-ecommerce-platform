@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -8,81 +9,91 @@ import {
   Legend,
 } from "recharts";
 import "./BarChart.css";
-import { useState, useEffect } from "react";
-import { getAllClothes } from "../../../services/clothesService";
-import { getCategoriesReport } from "../../../services/dashboard";
+import { getCategoriesReport } from "../../../services/dashboardService";
 
-// const data = [
-//   {
-//     name: "Page A",
-//     uv: 4000,
-//     pv: 2400,
-//     amt: 2400,
-//   },
-//   {
-//     name: "Page B",
-//     uv: 3000,
-//     pv: 1398,
-//     amt: 2210,
-//   },
-//   {
-//     name: "Page C",
-//     uv: 2000,
-//     pv: 9800,
-//     amt: 2290,
-//   },
-//   {
-//     name: "Page D",
-//     uv: 2780,
-//     pv: 3908,
-//     amt: 2000,
-//   },
-//   {
-//     name: "Page E",
-//     uv: 1890,
-//     pv: 4800,
-//     amt: 2181,
-//   },
-//   {
-//     name: "Page F",
-//     uv: 2390,
-//     pv: 3800,
-//     amt: 2500,
-//   },
-//   {
-//     name: "Page G",
-//     uv: 3490,
-//     pv: 4300,
-//     amt: 2100,
-//   },
-// ];
-// const { products } = await res?.json();
+interface CategorySoldReportDTO {
+  categoryName: string;
+  totalSold: number;
+}
+
+interface GenderData {
+  name: string;
+  categorySoldReportDTOS: CategorySoldReportDTO[];
+}
+
+interface ProductData {
+  message: string;
+  success: boolean;
+  data: GenderData[];
+}
 
 export default function SimpleBarChart() {
-  const [productData, setProductData] = useState([]);
+  const [productData, setProductData] = useState<GenderData[] | null>(null);
+
   const getNumberOfSold = async () => {
     try {
-      const products = await getCategoriesReport();
-      //const { products } = await res?.json();
-      setProductData(products);
+      const { data } = await getCategoriesReport();
+      console.log(data);
+      const products: GenderData[] = data;
       console.log(products);
+      setProductData(products);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
+  console.log(productData);
+
+  useEffect(() => {
+    getNumberOfSold();
+  }, []);
+
+  const transformDataForChart = () => {
+    const transformedData: any[] = [];
+
+    if (productData) {
+      console.log(productData);
+      productData.forEach((genderData) => {
+        if (genderData.categorySoldReportDTOS) {
+          genderData.categorySoldReportDTOS.forEach((category) => {
+            const existingCategory = transformedData.find(
+              (item) => item.categoryName === category.categoryName
+            );
+
+            if (existingCategory) {
+              existingCategory[genderData.name] = category.totalSold;
+            } else {
+              const newCategory = {
+                categoryName: category.categoryName,
+                [genderData.name]: category.totalSold,
+              };
+              transformedData.push(newCategory);
+            }
+          });
+        }
+      });
+    }
+    console.log(transformedData);
+    return transformedData;
+  };
+
+  const chartData = transformDataForChart();
+  console.log(chartData);
+
   return (
     <BarChart
       width={1100}
       height={500}
+      data={chartData}
       margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
+      <XAxis dataKey="categoryName" />
       <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey="sold" fill="#8884d8" />
+      <Bar dataKey="Nam" fill="#8884d8" />
+      <Bar dataKey="Nữ" fill="#82ca9d" />
     </BarChart>
   );
 }
