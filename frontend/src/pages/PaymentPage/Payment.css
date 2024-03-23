@@ -1,0 +1,100 @@
+#payment-page .payment-method {
+  margin-top: 30px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+}
+#payment-page .payment-method .payment-text {
+  font-size: x-large;
+  font-weight: 600;
+  padding-bottom: 20px;
+}
+#payment-page .payment-method .form-check {
+  font-size: larger;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+#payment-page .payment-method .form-check img {
+  min-width: 40px;
+  max-height: 35px;
+  max-width: 55px;
+  margin-right: 15px;
+}
+#payment-page .payment-address,
+#payment-page .payment-bill {
+  padding: 10px;
+  margin-top: 30px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+}
+
+#payment-page .payment-address .payment-address-header,
+.payment-customer-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#payment-page .payment-address .payment-customer-address {
+  color: rgb(116, 116, 119);
+  font-weight: normal;
+  padding-bottom: 10px;
+}
+#payment-page .payment-customer-info .customer-name,
+.customer-phone {
+  font-weight: 600;
+}
+#payment-page .payment-address-header .change-address {
+  color: rgb(11, 116, 229);
+}
+#payment-page .payment-address-header .change-address:hover {
+  cursor: pointer;
+}
+#payment-page .payment-bill .payment-bill-header,
+.payment-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#payment-page .payment-bill-info .temporary-price,
+.ship-fee,
+.ship-promotion {
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#payment-page .payment-bill-info button {
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+  height: 40px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #fcaf17;
+}
+#payment-page .price-text {
+  opacity: 0.7;
+}
+
+#payment-page .ant-collapse-content-box {
+  padding: 14px 0;
+}
+#payment-page :where(.css-dev-only-do-not-override-pr0fja).ant-collapse {
+  border: none;
+}
+#payment-page
+  :where(.css-dev-only-do-not-override-pr0fja).ant-collapse
+  > .ant-collapse-item:last-child,
+:where(.css-dev-only-do-not-override-pr0fja).ant-collapse
+  > .ant-collapse-item:last-child
+  > .ant-collapse-header {
+  border-radius: none;
+}
+.payment-product-info {
+  max-width: 140px;
+}
+.payment-product-price {
+  
+}

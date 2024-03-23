@@ -1,0 +1,40 @@
+# Java related
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.ser
+*.dat
+*.dat_old
+*.swp
+*.hprof
+*.heapdump
+
+# Maven related
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# IntelliJ IDEA related
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Visual Studio Code related
+.vscode/
+
+# Node.js related
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# React related
+/build/

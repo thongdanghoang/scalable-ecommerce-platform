@@ -1,0 +1,77 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+a {
+  font-weight: 500;
+  color: black;
+  font-size: 20px;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+img {
+  object-fit: cover;
+}
+
+.ant-form-item-label {
+  text-align: start !important;
+}
+
+.ant-form-item-required::before {
+  display: none !important;
+}
+
+.ant-modal button svg {
+  margin-bottom: 7px;
+}
+
+.ant-modal-title {
+  text-transform: uppercase;
+  margin-bottom: 15px !important;
+}
+
+#avatar-popover .avatar-name-user {
+  display: flex;
+  align-items: center;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #d1d1d1;
+}
+
+#avatar-popover .avatar-name-user img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin: 0 10px;
+  border-radius: 50%;
+}
+
+#avatar-popover .avatar-name-user .name-user {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.modal-cancel-order p {
+  text-align: left;
+}
+
+.modal-cancel-order button {
+  background-color: black;
+  color: white;
+  font-weight: 400;
+  width: 80%;
+}

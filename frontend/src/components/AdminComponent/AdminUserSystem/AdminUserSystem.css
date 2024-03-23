@@ -1,0 +1,14 @@
+#AdminUserSystem .user-act-btn{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+#AdminUserSystem .user-act-btn svg{
+    font-size: 18px;
+    margin: 0 5px 4px 0;
+}
+
+.des-field .ant-row{
+    display: block !important;
+}

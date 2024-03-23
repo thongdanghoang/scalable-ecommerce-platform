@@ -1,0 +1,20 @@
+
+#product-list #card {
+	margin: 1em auto;
+}
+
+#product-list #card img {
+	aspect-ratio: 4/5;
+	object-fit: cover;
+	/* object-position: 100% 0; */
+}
+
+#product-list .selection {
+	width: 100%;
+}
+#product-list .product-spin {
+  text-align: center;
+}
+/* #product-list .ant-card {
+	overflow: hidden;
+} */

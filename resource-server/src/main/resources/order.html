@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+
+        p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        strong {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<h2>Order Confirmation</h2>
+<p>Thank you for your order! Here are the details:</p>
+
+<p><strong>Order ID:</strong> ${orderResponseDto.orderId}</p>
+<p><strong>Status:</strong> ${orderResponseDto.status}</p>
+<p><strong>Address:</strong> ${orderResponseDto.address}</p>
+<p><strong>Payment Method:</strong> ${orderResponseDto.paymentMethod}</p>
+<p><strong>Payment Status:</strong> ${orderResponseDto.paymentStatus}</p>
+<p><strong>Delivery Method:</strong> ${orderResponseDto.deliveryMethod}</p>
+<p><strong>Total:</strong> ${orderResponseDto.total}</p>
+<p><strong>Shopping Fee:</strong> ${orderResponseDto.shoppingFee}</p>
+<p><strong>Discount:</strong> ${orderResponseDto.discount}</p>
+<p><strong>Grand Total:</strong> ${orderResponseDto.grandTotal}</p>
+
+<p><strong>Order Placed At:</strong> ${orderResponseDto.createdAt}</p>
+
+<p>Thank you for shopping with us!</p>
+</body>
+</html>
