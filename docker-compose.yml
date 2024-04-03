@@ -1,0 +1,58 @@
+version: "3.9"
+services:
+  database-old:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shopping_cart
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    ports:
+      - "3307:3306"
+  mysql-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shopping_cart
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    ports:
+      - "3306:3306"
+  n3tk-product:
+    build: n3tk-product
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db/shopping_cart
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+    ports:
+      - "8081:8080"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - mysql-db
+  spring-boot-app-old:
+    build: resource-server
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database-old/shopping_cart
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MAILGUN_DOMAIN_NAME: ${MAILGUN_DOMAIN_NAME}
+      MAILGUN_API_KEY: ${MAILGUN_API_KEY}
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
+      TWILIO_SERVICE_SID: ${TWILIO_SERVICE_SID}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+    ports:
+      - "8099:8080"
+    depends_on:
+      - database-old
