@@ -37,7 +37,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "src/styles/styles.sass"
             ],
             "scripts": []
           },
@@ -75,7 +75,11 @@
               "buildTarget": "frontend-v2:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "servePath": "/n3tk/core",
+            "proxyConfig": "proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -97,15 +101,27 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "src/styles/styles.sass"
             ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }
