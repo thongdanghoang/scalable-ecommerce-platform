@@ -1,8 +1,1 @@
-**/*.js
-**/*.spec.ts
-**/*demo*
-/src/index.html
-/src/environments/**
-/dist/**
-/src/main.ts
-/src/app/modules/dev/**
+**/*.js**/*.spec.ts**/*demo*/src/index.html/src/environments/**/dist/**/src/main.ts/src/app/modules/dev/**
