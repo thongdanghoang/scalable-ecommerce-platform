@@ -1,22 +1,23 @@
 version: "3.9"
 services:
-  database-old:
-    image: mysql:latest
+  n3tk-auth:
+    container_name: n3tk-auth
+    image: quay.io/keycloak/keycloak:24.0.2
+    command: ["start-dev", "--http-port", "8180"]
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: shopping_cart
-    healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      TZ: Asia/Ho_Chi_Minh
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
-      - "3307:3306"
-  mysql-db:
+      - "8180:8180"
+  n3tk-db:
+    container_name: n3tk-db
     image: mysql:8.0
     environment:
+      TZ: Asia/Ho_Chi_Minh
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: shopping_cart
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       interval: 30s
@@ -25,34 +26,46 @@ services:
     ports:
       - "3306:3306"
   n3tk-product:
+    container_name: n3tk-product
     build: n3tk-product
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db/shopping_cart
-#      MYSQL_USER: root
-#      MYSQL_PASSWORD: root
+    environment:
+      TZ: Asia/Ho_Chi_Minh
+      PORT: 8081
     ports:
-      - "8081:8080"
+      - "8081:8081"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
-      interval: 1m30s
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/n3tk/core/products/actuator/health" ]
+      interval: 30s
       timeout: 10s
       retries: 3
     depends_on:
-      - mysql-db
-  spring-boot-app-old:
-    build: resource-server
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://database-old/shopping_cart
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MAILGUN_DOMAIN_NAME: ${MAILGUN_DOMAIN_NAME}
-      MAILGUN_API_KEY: ${MAILGUN_API_KEY}
-      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
-      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
-      TWILIO_SERVICE_SID: ${TWILIO_SERVICE_SID}
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-    ports:
-      - "8099:8080"
-    depends_on:
-      - database-old
+      - n3tk-db
+#  database-old:
+#    image: mysql:latest
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: shopping_cart
+#    healthcheck:
+#      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
+#    ports:
+#      - "3307:3306"
+#  spring-boot-app-old:
+#    build: resource-server
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://database-old/shopping_cart
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+#      MAILGUN_DOMAIN_NAME: ${MAILGUN_DOMAIN_NAME}
+#      MAILGUN_API_KEY: ${MAILGUN_API_KEY}
+#      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
+#      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
+#      TWILIO_SERVICE_SID: ${TWILIO_SERVICE_SID}
+#      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+#      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+#    ports:
+#      - "8099:8080"
+#    depends_on:
+#      - database-old

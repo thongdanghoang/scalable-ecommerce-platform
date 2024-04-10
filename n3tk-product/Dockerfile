@@ -1,3 +1,3 @@
-FROM openjdk:21-jdk AS runstage
+FROM openjdk:21-jdk
 COPY target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
