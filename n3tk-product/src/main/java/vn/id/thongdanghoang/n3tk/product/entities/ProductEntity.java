@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import vn.id.thongdanghoang.n3tk.common.entities.AbstractAuditableEntity;
@@ -17,6 +18,7 @@ import java.util.HashSet;
 @Getter
 @Setter
 @NoArgsConstructor
+@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "product", schema = "n3tk_products")
 public class ProductEntity extends AbstractAuditableEntity {
@@ -76,7 +78,7 @@ public class ProductEntity extends AbstractAuditableEntity {
      * It can be used to identify whether the product is publicly available for shopping.
      */
     @Column(name = "shop", nullable = false)
-    private boolean publiclyAvailable;
+    private boolean shop;
 
     @Column(name = "publishedAt")
     private LocalDateTime publishedAt;

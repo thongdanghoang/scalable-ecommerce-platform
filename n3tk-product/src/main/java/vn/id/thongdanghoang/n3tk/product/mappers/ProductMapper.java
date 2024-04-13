@@ -10,8 +10,10 @@ import vn.id.thongdanghoang.n3tk.product.entities.ProductEntity;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ProductMapper {
 
+    @Mapping(source = "shop", target = "publiclyAvailable")
     ProductDto productEntityToProductDto(ProductEntity productEntity);
 
+    @Mapping(source = "publiclyAvailable", target = "shop")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "version", ignore = true)
     @Mapping(target = "transientHashCodeLeaked", ignore = true)
@@ -25,6 +27,7 @@ public interface ProductMapper {
     @Mapping(target = "productTags", ignore = true)
     ProductEntity toEntityForInsert(ProductDto productDto);
 
+    @Mapping(source = "publiclyAvailable", target = "shop")
     @Mapping(target = "transientHashCodeLeaked", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "creationDate", ignore = true)

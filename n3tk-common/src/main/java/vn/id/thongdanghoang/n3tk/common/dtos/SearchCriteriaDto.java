@@ -2,6 +2,8 @@ package vn.id.thongdanghoang.n3tk.common.dtos;
 
 import lombok.Data;
 
+import java.util.LinkedHashSet;
+
 /**
  * Base criteria wrapper class for search feature and table in UI.
  *
@@ -11,5 +13,5 @@ import lombok.Data;
 public class SearchCriteriaDto<T> {
     private SearchPageDto page;
     private T criteria;
-    private SortDto sort;
+    private LinkedHashSet<SortDto> sorts;
 }
