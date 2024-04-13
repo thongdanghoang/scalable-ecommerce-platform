@@ -9,7 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @RequiredArgsConstructor
-public class ProjectConfig {
+public class SecurityConfig {
 
     @Value("${jwks_uri}")
     private String keySetUri;

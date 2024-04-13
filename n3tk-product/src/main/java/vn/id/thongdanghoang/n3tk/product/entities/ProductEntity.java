@@ -76,7 +76,7 @@ public class ProductEntity extends AbstractAuditableEntity {
      * It can be used to identify whether the product is publicly available for shopping.
      */
     @Column(name = "shop", nullable = false)
-    private boolean shop;
+    private boolean publiclyAvailable;
 
     @Column(name = "publishedAt")
     private LocalDateTime publishedAt;
