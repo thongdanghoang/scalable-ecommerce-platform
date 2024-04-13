@@ -18,7 +18,7 @@ import java.util.HashSet;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "product", schema = "shopping_cart")
+@Table(name = "product", schema = "n3tk_products")
 public class ProductEntity extends AbstractAuditableEntity {
 
     /**

@@ -16,7 +16,7 @@ import java.util.HashSet;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "category", schema = "shopping_cart")
+@Table(name = "category", schema = "n3tk_products")
 public class CategoryEntity extends AbstractBaseEntity {
 
     @Basic

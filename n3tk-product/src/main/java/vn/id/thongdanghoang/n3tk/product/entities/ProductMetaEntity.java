@@ -14,7 +14,7 @@ import vn.id.thongdanghoang.n3tk.common.entities.AbstractBaseEntity;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "product_meta", schema = "shopping_cart")
+@Table(name = "product_meta", schema = "n3tk_products")
 public class ProductMetaEntity extends AbstractBaseEntity {
 
     @Column(name = "key", nullable = false, length = 50)
