@@ -12,10 +12,9 @@
     <artifactId>n3tk-product</artifactId>
 
     <properties>
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <n3tk-common.version>2.0.0</n3tk-common.version>
 
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>

@@ -10,13 +10,14 @@
     <packaging>pom</packaging>
 
     <properties>
+        <java.version>21</java.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <spring.platform.group-id>org.springframework.boot</spring.platform.group-id>
         <spring.platform.artifact-id>spring-boot-dependencies</spring.platform.artifact-id>
         <spring.platform.version>3.2.4</spring.platform.version>
-
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.compiler.source>21</maven.compiler.source>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencyManagement>

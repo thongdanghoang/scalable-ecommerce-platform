@@ -7,18 +7,18 @@ import lombok.Data;
  */
 @Data
 public class SearchPageDto {
-    private int offset;
-    private int limit;
+    private int pageNumber;
+    private int pageSize;
     
     /**
-     * @param offset offset of search result
-     * @param limit page size
+     * @param pageNumber zero-based page number, must not be negative.
+     * @param pageSize the size of the page to be returned, must be greater than 0.
      * @return new instance of SearchPageDto
      */
-    public static SearchPageDto of(int offset, int limit) {
+    public static SearchPageDto of(int pageNumber, int pageSize) {
         SearchPageDto searchPageDto = new SearchPageDto();
-        searchPageDto.setOffset(offset);
-        searchPageDto.setLimit(limit);
+        searchPageDto.setPageNumber(pageNumber);
+        searchPageDto.setPageNumber(pageSize);
         return searchPageDto;
     }
 }
