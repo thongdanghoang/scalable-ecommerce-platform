@@ -5,8 +5,8 @@ package vn.id.thongdanghoang.n3tk.common.utils;
  */
 public final class MDCContext {
 
+    public static final String CORRELATION_ID_HEADER_NAME = "X-Correlation-Id";
     public static final String CORRELATION_ID = "CorrelationId";
-    public static final String TOKEN_ID = "TokenId";
     private MDCContext() {
     }
 }
