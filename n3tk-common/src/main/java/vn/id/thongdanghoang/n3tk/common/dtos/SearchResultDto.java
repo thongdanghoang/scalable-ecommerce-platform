@@ -3,6 +3,7 @@ package vn.id.thongdanghoang.n3tk.common.dtos;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,5 +17,11 @@ import java.util.List;
 @AllArgsConstructor
 public class SearchResultDto<T> {
     private List<T> results;
-    private long total;
+    private long totalElements;
+    private int totalPages;
+
+    public static <T> SearchResultDto<T> of(Page<T> page) {
+        return new SearchResultDto<>(page.getContent(), page.getTotalElements(), page.getTotalPages());
+    }
+
 }

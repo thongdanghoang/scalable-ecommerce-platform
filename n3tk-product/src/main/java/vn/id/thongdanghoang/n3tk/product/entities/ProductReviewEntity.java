@@ -31,7 +31,7 @@ public class ProductReviewEntity extends AbstractAuditableEntity {
     @Column(name = "published", nullable = false)
     private boolean published;
 
-    @Column(name = "publishedAt")
+    @Column(name = "published_at")
     private LocalDateTime publishedAt;
 
     @Column(name = "content")

@@ -15,15 +15,15 @@ import java.time.LocalDateTime;
 @FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
 public abstract class AbstractAuditableEntity extends AbstractBaseEntity {
-    @Column(name = "createdBy")
+    @Column(name = "created_by")
     protected String createdBy;
 
-    @Column(name = "creationDate", nullable = false)
+    @Column(name = "creation_date", nullable = false)
     protected LocalDateTime creationDate;
 
-    @Column(name = "lastModificationDate")
+    @Column(name = "last_modification_date")
     protected LocalDateTime lastModificationDate;
 
-    @Column(name = "lastModifiedBy")
+    @Column(name = "last_modified_by")
     protected String lastModifiedBy;
 }

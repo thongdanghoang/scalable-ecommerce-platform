@@ -22,11 +22,11 @@ public abstract class AbstractBaseEntity {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
     
     @Version
     @Column(nullable = false)
-    private int version;
+    protected int version;
     
     @Transient
     private boolean transientHashCodeLeaked;

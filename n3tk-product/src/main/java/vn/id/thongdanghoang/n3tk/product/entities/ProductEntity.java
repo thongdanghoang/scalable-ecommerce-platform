@@ -32,7 +32,7 @@ public class ProductEntity extends AbstractAuditableEntity {
     /**
      * The meta title to be used for browser title and SEO.
      */
-    @Column(name = "metaTitle", length = 100)
+    @Column(name = "meta_title", length = 100)
     private String metaTitle;
 
     /**
@@ -80,19 +80,19 @@ public class ProductEntity extends AbstractAuditableEntity {
     @Column(name = "shop", nullable = false)
     private boolean shop;
 
-    @Column(name = "publishedAt")
+    @Column(name = "published_at")
     private LocalDateTime publishedAt;
 
     /**
      * It stores the date and time at which the product sale starts.
      */
-    @Column(name = "startsAt")
+    @Column(name = "starts_at")
     private LocalDateTime startsAt;
 
     /**
      * It stores the date and time at which the product sale ends.
      */
-    @Column(name = "endsAt")
+    @Column(name = "ends_at")
     private LocalDateTime endsAt;
 
     /**
@@ -110,14 +110,14 @@ public class ProductEntity extends AbstractAuditableEntity {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH}, targetEntity = CategoryEntity.class)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "product_category",
-            joinColumns = @JoinColumn(name = "productId"),
-            inverseJoinColumns = @JoinColumn(name = "categoryId"))
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Collection<CategoryEntity> productCategories = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH}, targetEntity = TagEntity.class)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "product_tag",
-            joinColumns = @JoinColumn(name = "productId"),
-            inverseJoinColumns = @JoinColumn(name = "tagId"))
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Collection<TagEntity> productTags = new HashSet<>();
 }

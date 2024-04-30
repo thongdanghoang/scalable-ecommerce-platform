@@ -27,7 +27,7 @@ public class CategoryEntity extends AbstractBaseEntity {
      * The meta title to be used for browser title and SEO.
      */
     @Basic
-    @Column(name = "metaTitle", length = 100)
+    @Column(name = "meta_title", length = 100)
     private String metaTitle;
 
     /**
