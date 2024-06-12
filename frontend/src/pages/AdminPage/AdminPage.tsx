@@ -17,7 +17,7 @@ import AdminProduct from "../../components/AdminComponent/AdminProduct/AdminProd
 import AdminOrder from "../../components/AdminComponent/AdminOrder/AdminOrder";
 import AdminDashboard from "../../components/AdminComponent/AdminDashboard/AdminDashboard";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/img/n3tk-high-resolution-logo-white-transparent.png";
+import logo from "@assets/img/n3tk-high-resolution-logo-white-transparent.png";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { Role } from "../../model/UserModal";

@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../redux/slides/userSlide";
 import { RootState } from "../../redux/store";
 import { userRegister } from "../../model/UserModal";
-import fashion from "../../assets/img/woman-and-man-fashion-models-vector-19842053.jpg";
-import logo from "../../assets/img/n3tk-high-resolution-logo-black-transparent.png";
+import fashion from "@assets/img/woman-and-man-fashion-models-vector-19842053.jpg";
+import logo from "@assets/img/n3tk-high-resolution-logo-black-transparent.png";
 
 export default function RegisterPage() {
   const navigate = useNavigate();

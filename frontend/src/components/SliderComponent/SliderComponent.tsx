@@ -3,8 +3,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CardComponent from "../CardComponent/CardComponent";
 import "../SliderComponent/Slider.css";
-import leftArrow from "../../assets/icons/left-arrow.svg";
-import rightArrow from "../../assets/icons/right-arrow.svg";
+import leftArrow from "@assets/icons/left-arrow.svg";
+import rightArrow from "@assets/icons/right-arrow.svg";
 import { getCategories } from "../../services/clothesService";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,13 +13,13 @@ import fakeData from "../../data/categories.json";
 interface PropsSlider {
   slidesToShow: number;
   listItems: Array<any>;
-  nameSlider: String;
+  nameSlider: string;
 }
 
 export default function SliderComponent(props: PropsSlider) {
   const navigate = useNavigate();
   const { slidesToShow = 1, listItems = [], nameSlider } = props;
-  let [typeCategory, setTypeCategory] = useState([] as any[]);
+  const [typeCategory, setTypeCategory] = useState([] as any[]);
 
   useEffect(() => {
     const handleTypeCategory = async () => {
@@ -59,7 +59,7 @@ export default function SliderComponent(props: PropsSlider) {
     }
   };
 
-  var settings = {
+  const settings = {
     dots: false,
     infinite: true,
     slidesToShow,
@@ -68,7 +68,7 @@ export default function SliderComponent(props: PropsSlider) {
     autoplaySpeed: 3000,
     ...arrowCustome(),
   };
-  var settings_nameSlider = {
+  const settings_nameSlider = {
     dots: false,
     infinite: true,
     slidesToShow,
@@ -77,7 +77,7 @@ export default function SliderComponent(props: PropsSlider) {
     autoplaySpeed: 5000,
     ...arrowCustome(),
   };
-  var settings_typeCategories_clothesFilter = {
+  const settings_typeCategories_clothesFilter = {
     dots: false,
     infinite: true,
     slidesToShow,

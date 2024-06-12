@@ -1,20 +1,17 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
-import {
-  getAllClothes,
-  getClothesOrderBy,
-} from "../../services/clothesService";
+import {getClothesOrderBy,} from "../../services/clothesService";
 import "./Home.css";
-import { clothes } from "../../model/ClothesModal";
-import { Navigate, useNavigate } from "react-router-dom";
-import banner from "../../assets/img/banner.png";
-import banner1 from "../../assets/img/Thiết kế chưa có tên.png";
-import { API_URL } from "../../utils/constants";
+import {clothes} from "../../model/ClothesModal";
+import {useNavigate} from "react-router-dom";
+import banner from "@assets/img/banner.png";
+import banner1 from "@assets/img/Thiết kế chưa có tên.png";
+import {API_URL} from "../../utils/constants";
 
 async function getProductOrderBy(order: string): Promise<clothes[]> {
-  let response = await getClothesOrderBy(order);
+  const response = await getClothesOrderBy(order);
   if (response != null) {
-    let jsonList = (await response.json()).products as clothes[];
+    const jsonList = (await response.json()).products as clothes[];
     console.table(jsonList);
     jsonList.forEach((product) => {
       product.image = `${API_URL}/api/products/images/` + product.image;

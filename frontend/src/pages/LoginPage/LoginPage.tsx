@@ -1,17 +1,15 @@
 import "./login.css";
-import logo from "../../assets/img/n3tk-high-resolution-logo-black-transparent.png";
+import logo from "@assets/img/n3tk-high-resolution-logo-black-transparent.png";
+import imagebackground from "@assets/img/19235643.jpg";
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import { loginService } from "../../services/userService";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { updateUser } from "../../redux/slides/userSlide";
-import { RootState } from "../../redux/store";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginService } from "../../services/userService";
+import { updateUser } from "../../redux/slides/userSlide";
+import { RootState } from "../../redux/store";
 import { toastMSGObject } from "../../utils/utils";
-import imagebackground from "../../assets/img/19235643.jpg";
 import { API_URL } from "../../utils/constants";
 
 export default function LoginPage() {
