@@ -2,6 +2,7 @@ version: "3.9"
 services:
   # mysql database
   mysql-db:
+    container_name: n3tk-db
     image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -10,6 +11,7 @@ services:
       - "3306:3306"
   # spring boot app
   spring-boot-app:
+    container_name: n3tk-app
     build: resource-server
     environment:
       MYSQL_USER: ${MYSQL_USER}

@@ -109,7 +109,7 @@ function App() {
   },[order.orderItems])
 
   return (
-    <Router>
+    <Router basename="/isc-301">
       <Routes>
         {routes.map((route) => {
           const Page = route.page
