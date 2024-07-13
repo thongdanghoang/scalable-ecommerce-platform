@@ -23,7 +23,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Path;
 
 @RestController
-@RequestMapping("/api/user/profile")
+@RequestMapping("/user/profile")
 public class ProfileController extends AbstractApplicationController {
 
     private final ProfileService service;
@@ -97,7 +97,7 @@ public class ProfileController extends AbstractApplicationController {
     public ApiResponse<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
         try {
             String fileName = imageService.uploadImage(file);
-            String imageUrl = "/api/user/profile/image/" + fileName;
+            String imageUrl = "/user/profile/image/" + fileName;
             return new ApiResponse<>("Image uploaded successfully", true, imageUrl);
         } catch (FileAlreadyExistsException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

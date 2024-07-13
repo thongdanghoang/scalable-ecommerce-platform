@@ -60,7 +60,7 @@ function App() {
         sku : item.product.sku,
         classifyClothes : {
           color : item.classification.colorName,
-          images : [`${API_URL}/api/products/images/${item.product.image}`],
+          images : [`${API_URL}/products/images/${item.product.image}`],
           quantities : {
             quantityId : item.classification.quantityId,
             size : item.classification.sizeName            
@@ -109,7 +109,7 @@ function App() {
   },[order.orderItems])
 
   return (
-    <Router>
+    <Router basename="/isc-301">
       <Routes>
         {routes.map((route) => {
           const Page = route.page

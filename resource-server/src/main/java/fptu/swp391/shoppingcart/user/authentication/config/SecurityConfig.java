@@ -61,23 +61,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .mvcMatchers("/admin/**").hasRole("ADMIN")
                     .mvcMatchers("/user/**").hasRole("USER")
                     .mvcMatchers("/cart/**").hasRole("USER")
-                    .antMatchers("/api/orders/all").hasRole("SHOP_OWNER")
-                    .antMatchers(HttpMethod.PUT, "/api/orders/{orderId}").hasRole("SHOP_OWNER")
-                    .antMatchers(HttpMethod.GET, "/api/orders/status/**").hasAnyRole( "USER", "SHOP_OWNER")
-                    .antMatchers(HttpMethod.GET, "/api/orders/**").hasAnyRole("USER", "SHOP_OWNER")
-                    .mvcMatchers(HttpMethod.POST, "/api/products/**").hasRole("SHOP_OWNER")
-                    .mvcMatchers(HttpMethod.PUT, "/api/products").hasRole("SHOP_OWNER")
-                    .mvcMatchers(HttpMethod.GET, "/api/products/report").hasRole("SHOP_OWNER")
-                    .mvcMatchers(HttpMethod.GET, "/api/products/statistic").hasRole("SHOP_OWNER")
-                    .antMatchers(HttpMethod.POST, "/api/orders/checkout").hasRole("USER")
-                    .antMatchers(HttpMethod.DELETE, "/api/orders/{orderId}").hasRole("USER")
-                    .antMatchers(HttpMethod.GET, "/api/orders/payment/{orderId}").hasRole("USER")
-                    .mvcMatchers("/api/user/auth/verify-email").authenticated()
-                    .mvcMatchers("/api/user/auth/verify-phone").authenticated()
-                    .mvcMatchers("/api/user/auth/change-password").authenticated()
+                    .antMatchers("/orders/all").hasRole("SHOP_OWNER")
+                    .antMatchers(HttpMethod.PUT, "/orders/{orderId}").hasRole("SHOP_OWNER")
+                    .antMatchers(HttpMethod.GET, "/orders/status/**").hasAnyRole( "USER", "SHOP_OWNER")
+                    .antMatchers(HttpMethod.GET, "/orders/**").hasAnyRole("USER", "SHOP_OWNER")
+                    .mvcMatchers(HttpMethod.POST, "/products/**").hasRole("SHOP_OWNER")
+                    .mvcMatchers(HttpMethod.PUT, "/products").hasRole("SHOP_OWNER")
+                    .mvcMatchers(HttpMethod.GET, "/products/report").hasRole("SHOP_OWNER")
+                    .mvcMatchers(HttpMethod.GET, "/products/statistic").hasRole("SHOP_OWNER")
+                    .antMatchers(HttpMethod.POST, "/orders/checkout").hasRole("USER")
+                    .antMatchers(HttpMethod.DELETE, "/orders/{orderId}").hasRole("USER")
+                    .antMatchers(HttpMethod.GET, "/orders/payment/{orderId}").hasRole("USER")
+                    .mvcMatchers("/user/auth/verify-email").authenticated()
+                    .mvcMatchers("/user/auth/verify-phone").authenticated()
+                    .mvcMatchers("/user/auth/change-password").authenticated()
                     .mvcMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
-                    .mvcMatchers("/api/user/auth/**").permitAll()
-                    .mvcMatchers("/api/products/**").permitAll()
+                    .mvcMatchers("/user/auth/**").permitAll()
+                    .mvcMatchers("/products/**").permitAll()
                     .mvcMatchers("/login/oauth2/code/google/**").permitAll()
                     .anyRequest().authenticated().and()
                 .formLogin()
@@ -94,7 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         // Configure allowed origins
         List<String> allowedOrigins = new ArrayList<>();
-        allowedOrigins.add("http://localhost:3000"); // React dev server SWP391
+        allowedOrigins.add("https://thongdanghoang.id.vn/isc-301"); // React dev server SWP391
         allowedOrigins.add("*");
         configuration.setAllowedOrigins(allowedOrigins);
         configuration.addAllowedMethod("*");

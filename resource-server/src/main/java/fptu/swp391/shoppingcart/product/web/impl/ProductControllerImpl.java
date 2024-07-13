@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/products")
 public class ProductControllerImpl extends AbstractApplicationController implements ProductController {
     private final ImageService imageService;
 
@@ -122,7 +122,7 @@ public class ProductControllerImpl extends AbstractApplicationController impleme
     public ApiResponse<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
         try {
             String fileName = imageService.uploadImage(file);
-            String imageUrl = "/api/products/images/" + fileName;
+            String imageUrl = "/products/images/" + fileName;
             return new ApiResponse<>("Image uploaded successfully", true, imageUrl);
         } catch (FileAlreadyExistsException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

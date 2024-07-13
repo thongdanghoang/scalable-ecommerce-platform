@@ -17,7 +17,7 @@ async function getProductOrderBy(order: string): Promise<clothes[]> {
     let jsonList = (await response.json()).products as clothes[];
     console.table(jsonList);
     jsonList.forEach((product) => {
-      product.image = `${API_URL}/api/products/images/` + product.image;
+      product.image = `${API_URL}/products/images/` + product.image;
     });
 
     return jsonList;

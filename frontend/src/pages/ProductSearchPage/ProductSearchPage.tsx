@@ -26,7 +26,7 @@ async function getProductList(
   let productList: clothes[] = data.products as clothes[];
   productList.forEach(
     (product) =>
-      (product.image = `${API_URL}/api/products/images/${product.image}`)
+      (product.image = `${API_URL}/products/images/${product.image}`)
   );
   return [productList, data.totalCount];
 }

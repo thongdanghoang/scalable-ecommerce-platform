@@ -81,7 +81,7 @@ export default function PaymentSuccessPage() {
               <div className="payment-order-image col-md-2">
                 <div className="image-product">
                   <img
-                    src={`${API_URL}/api/products/images/${item.product.image}`}
+                    src={`${API_URL}/products/images/${item.product.image}`}
                     alt=""
                     style={{ maxWidth: "100%", maxHeight: "100%" }}
                   />

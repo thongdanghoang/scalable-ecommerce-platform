@@ -29,7 +29,7 @@ export default function UserProfilePage() {
                                 <div className="account--sidebar-user">
                                     <div className="avatar_icon">
                                         {user.avatar ? (
-                                            <img  src={`${API_URL}/api/user/profile/image/${user.avatar}`} />
+                                            <img  src={`${API_URL}/user/profile/image/${user.avatar}`} />
                                         ) : (
                                             <i className="far fa-user"></i>
                                         )}

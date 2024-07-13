@@ -53,7 +53,7 @@ export default function OrderDetailComponent(props: propsOrderDetail) {
           price: item.product.price,
           classifyClothes: {
             color: item.classification.colorName,
-            images: `${API_URL}/api/products/images/${item.product.image}`,
+            images: `${API_URL}/products/images/${item.product.image}`,
             quantities: {
               quantityId: item.classification.quantityId,
               size: item.classification.sizeName,
@@ -136,7 +136,7 @@ export default function OrderDetailComponent(props: propsOrderDetail) {
             <div className="col-md-6 order-product-body-name">
               <div className="order-product-body-name-image">
                 <img
-                  src={`${API_URL}/api/products/images/${item.product.image}`}
+                  src={`${API_URL}/products/images/${item.product.image}`}
                   alt=""
                 />
               </div>

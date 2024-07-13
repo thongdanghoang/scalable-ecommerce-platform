@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/orders")
 public class OrderControllerImpl implements OrderController {
 
     private final OrderService orderService;

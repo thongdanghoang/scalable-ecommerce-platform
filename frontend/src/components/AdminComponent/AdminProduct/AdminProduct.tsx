@@ -117,7 +117,7 @@ export default function AdminProduct() {
           images: classify.images.map((img: string) => ({
             uid: -1,
             name: img,
-            url: `${API_URL}/api/products/images/${img}`,
+            url: `${API_URL}/products/images/${img}`,
           })),
         })),
       });

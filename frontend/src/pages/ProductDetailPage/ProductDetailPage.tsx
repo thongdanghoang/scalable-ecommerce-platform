@@ -38,7 +38,7 @@ export default function ProductDetailPage() {
   const handleGetSizesByColor = (classify : any) => {
     setActiveColor({
       ...classify,
-      images : classify?.images.map((img : string) => `${API_URL}/api/products/images/${img}`),      
+      images : classify?.images.map((img : string) => `${API_URL}/products/images/${img}`),
     });
   }
 

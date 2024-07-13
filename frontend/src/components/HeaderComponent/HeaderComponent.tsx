@@ -68,7 +68,7 @@ export default function HeaderComponent({
             <img
               src={
                 user.avatar
-                  ? `${API_URL}/api/user/profile/image/${user.avatar}`
+                  ? `${API_URL}/user/profile/image/${user.avatar}`
                   : "https://cdn-icons-png.flaticon.com/512/9385/9385289.png"
               }
             />

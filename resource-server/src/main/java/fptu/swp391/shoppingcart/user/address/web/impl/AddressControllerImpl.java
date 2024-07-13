@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/api/user/address")
+@RequestMapping("/user/address")
 public class AddressControllerImpl extends AbstractApplicationController implements AddressController {
 
     @Autowired
