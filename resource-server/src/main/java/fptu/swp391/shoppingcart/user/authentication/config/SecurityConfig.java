@@ -94,7 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         // Configure allowed origins
         List<String> allowedOrigins = new ArrayList<>();
-        allowedOrigins.add("http://localhost:3000"); // React dev server SWP391
+        allowedOrigins.add("https://thongdanghoang.id.vn/isc-301"); // React dev server SWP391
         allowedOrigins.add("*");
         configuration.setAllowedOrigins(allowedOrigins);
         configuration.addAllowedMethod("*");

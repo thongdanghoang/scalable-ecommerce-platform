@@ -56,7 +56,7 @@ public class GoogleLogin {
     private String clientSecret;
     private String scope = "openid%20profile%20email";
     private String authorizationGrantType = "authorization_code";
-    private String redirectUri = "http://localhost:8080/login/oauth2/code/google/callback";
+    private String redirectUri = "https://thongdanghoang.id.vn/isc-301/api/login/oauth2/code/google/callback";
 
     @GetMapping("/authorize")
     public RedirectView getGoogleAuthUrl(HttpServletRequest request) {

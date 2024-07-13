@@ -207,7 +207,7 @@ public class UserAuthControllerImpl extends AbstractApplicationController implem
     private void addResetPasswordVerificationToken(HttpServletResponse response, String value) {
         Cookie cookie = new Cookie("verificationResetPassword", value);
         cookie.setPath("/");
-        cookie.setDomain("localhost");
+        cookie.setDomain("thongdanghoang.id.vn");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(1800);
         response.addCookie(cookie);
