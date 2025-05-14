@@ -1,0 +1,31 @@
+quarkus:
+  datasource:
+    metrics:
+      enabled: true
+    username: postgres
+    password: prodcat
+    db-kind: postgresql
+    reactive:
+      url: vertx-reactive:postgresql://localhost:8079/prodcat
+  hibernate-orm:
+    log:
+      sql: false
+      format-sql: false
+    database:
+      generation: validate
+    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  log:
+    console:
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] %X (%t) %s%e%n"
+hibernate:
+  query:
+    fail_on_pagination_over_collection_fetch: true
+"%dev":
+  quarkus:
+    hibernate-orm:
+      log:
+        sql: true
+        format-sql: false
+      database:
+        generation: validate
+      dialect: org.hibernate.dialect.PostgreSQLDialect

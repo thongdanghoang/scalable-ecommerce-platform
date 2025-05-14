@@ -1,0 +1,10 @@
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: postgres
+    password: prodcat
+    jdbc:
+      url: jdbc:postgresql://localhost:8079/prodcat
+  liquibase:
+    migrate-at-start: true
+    change-log: db/changelogs/changelog-master.yml

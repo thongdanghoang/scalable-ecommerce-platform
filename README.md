@@ -1,6 +1,6 @@
 # Scalable E-Commerce Platform
 
-This project involves building a scalable e-commerce platform using a microservices architecture and Docker. The platform handles various aspects of an online store, such as product catalog management, user authentication, shopping cart, payment processing, and order management. Each feature is implemented as a separate microservice, allowing for independent development, deployment, and scaling.
+This project involves building a scalable e-commerce platform (scalable-ecommerce-platform) using a microservices architecture and Docker. The platform handles various aspects of an online store, such as product catalog management, user authentication, shopping cart, payment processing, and order management. Each feature is implemented as a separate microservice, allowing for independent development, deployment, and scaling.
 
 ## Core Microservices
 
