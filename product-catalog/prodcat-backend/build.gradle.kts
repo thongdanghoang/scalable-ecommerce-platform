@@ -27,9 +27,7 @@ dependencies {
     implementation(libs.mapstruct)
     annotationProcessor(libs.mapstruct.processor)
 
-//    implementation(libs.commons.lang)
-//    implementation(libs.commons.collection)
-    implementation("org.apache.commons:commons-collections4:4.5.0")
-    implementation("org.apache.commons:commons-lang3:3.17.0")
+    implementation(libs.commons.lang)
+    implementation(libs.commons.collection)
     testImplementation("org.mockito:mockito-core:5.18.0")
 }

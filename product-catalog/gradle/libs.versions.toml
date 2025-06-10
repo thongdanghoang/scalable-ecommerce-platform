@@ -44,5 +44,5 @@ lombok = { group = "org.projectlombok", name = "lombok", version = "1.18.38" }
 mapstruct = { group = "org.mapstruct", name = "mapstruct", version = "1.6.3" }
 mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version = "1.6.3" }
 
-commons-lang = { group = "org.apache.commons", name = "commons-collections4", version = "4.4" }
-commons-collection = { group = "org.apache.commons", name = "commons-collections4", version = "4.4" }
+commons-lang = { group = "org.apache.commons", name = "commons-lang3", version = "3.17.0" }
+commons-collection = { group = "org.apache.commons", name = "commons-collections4", version = "4.5.0" }
