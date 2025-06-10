@@ -2,8 +2,8 @@ quarkus:
   datasource:
     metrics:
       enabled: true
-    username: postgres
-    password: prodcat
+    username: ${QUARKUS_DATASOURCE_USERNAME}
+    password: ${QUARKUS_DATASOURCE_PASSWORD}
     db-kind: postgresql
     reactive:
       url: vertx-reactive:postgresql://localhost:8079/prodcat
@@ -22,10 +22,17 @@ hibernate:
     fail_on_pagination_over_collection_fetch: true
 "%dev":
   quarkus:
+    datasource:
+      username: quarkus
+      password: quarkus
+      devservices:
+        enabled: true
+        show-logs: true
+        port: 8079
+        db-name: prodcat
     hibernate-orm:
       log:
         sql: true
         format-sql: false
       database:
-        generation: validate
-      dialect: org.hibernate.dialect.PostgreSQLDialect
+        generation: update
