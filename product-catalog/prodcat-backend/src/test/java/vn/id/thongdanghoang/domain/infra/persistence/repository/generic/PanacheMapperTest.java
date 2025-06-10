@@ -1,14 +1,25 @@
 package vn.id.thongdanghoang.domain.infra.persistence.repository.generic;
 
-import vn.id.thongdanghoang.domain.repository.model.*;
-import vn.id.thongdanghoang.domain.repository.model.Filtering.*;
+import vn.id.thongdanghoang.sep.prodcat.domain.infra.persistence.repository.generic.PanacheMapper;
+import vn.id.thongdanghoang.sep.prodcat.domain.repository.model.Filtering;
+import vn.id.thongdanghoang.sep.prodcat.domain.repository.model.Paging;
+import vn.id.thongdanghoang.sep.prodcat.domain.repository.model.Sorting;
 
-import io.quarkus.panache.common.*;
-import io.quarkus.panache.common.Sort.*;
-import java.util.*;
-import java.util.function.*;
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Parameters;
+import io.quarkus.panache.common.Sort;
+import io.quarkus.panache.common.Sort.Direction;
+import io.quarkus.panache.common.Sort.NullPrecedence;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import org.apache.commons.collections4.CollectionUtils;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -520,8 +531,8 @@ class PanacheMapperTest {
     void shouldHandleSortingWithDifferentDirections() {
       // Given
       Sorting sorting = Sorting.by("name",
-              vn.id.thongdanghoang.domain.repository.model.Sorting.Direction.Ascending)
-          .and("price", vn.id.thongdanghoang.domain.repository.model.Sorting.Direction.Descending);
+              Sorting.Direction.Ascending)
+          .and("price", Sorting.Direction.Descending);
 
       // When
       Sort result = PanacheMapper.toSort(sorting);

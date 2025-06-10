@@ -1,8 +1,4 @@
 dependencies {
-//    implementation(enforcedPlatform(libs.quarkus.blaze.persistence.bom))
-//    implementation(libs.blaze.persistence.quarkus)
-//    runtimeOnly(libs.blaze.persistence.hibernate)
-
     implementation(libs.quarkus.hibernate.reactive.panache)
     implementation(libs.quarkus.reactive.pg.client)
 
