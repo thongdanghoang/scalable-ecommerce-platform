@@ -1,4 +1,4 @@
-package vn.id.thongdanghoang.sep.prodcat.domain.utils;
+package vn.id.thongdanghoang.sep.prodcat.utils;
 
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;

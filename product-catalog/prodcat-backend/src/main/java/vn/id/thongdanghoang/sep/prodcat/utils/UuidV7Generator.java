@@ -1,4 +1,4 @@
-package vn.id.thongdanghoang.sep.prodcat.domain.utils;
+package vn.id.thongdanghoang.sep.prodcat.utils;
 
 import java.util.EnumSet;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

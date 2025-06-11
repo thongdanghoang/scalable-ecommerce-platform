@@ -1,4 +1,4 @@
-package vn.id.thongdanghoang.sep.prodcat.domain.utils;
+package vn.id.thongdanghoang.sep.prodcat.utils;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

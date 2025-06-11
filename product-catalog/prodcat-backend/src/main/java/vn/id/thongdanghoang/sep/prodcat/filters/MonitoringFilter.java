@@ -1,6 +1,6 @@
 package vn.id.thongdanghoang.sep.prodcat.filters;
 
-import vn.id.thongdanghoang.sep.prodcat.domain.utils.UuidUtils;
+import vn.id.thongdanghoang.sep.prodcat.utils.UuidUtils;
 
 import jakarta.enterprise.context.control.ActivateRequestContext;
 import jakarta.ws.rs.container.ContainerRequestContext;

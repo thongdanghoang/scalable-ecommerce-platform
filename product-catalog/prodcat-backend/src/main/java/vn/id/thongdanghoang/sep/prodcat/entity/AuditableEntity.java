@@ -1,6 +1,6 @@
 package vn.id.thongdanghoang.sep.prodcat.entity;
 
-import vn.id.thongdanghoang.sep.prodcat.domain.utils.GeneratedUuidV7;
+import vn.id.thongdanghoang.sep.prodcat.utils.GeneratedUuidV7;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
