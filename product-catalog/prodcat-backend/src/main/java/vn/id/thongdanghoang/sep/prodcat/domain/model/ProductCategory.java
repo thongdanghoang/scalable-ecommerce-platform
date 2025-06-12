@@ -1,0 +1,22 @@
+package vn.id.thongdanghoang.sep.prodcat.domain.model;
+
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import java.util.UUID;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@RegisterForReflection
+public class ProductCategory {
+
+  private UUID id;
+  private long version;
+  private String name;
+  private String description;
+  private ProductCategory parent;
+
+  public ProductCategory(UUID id) {
+    this.id = id;
+  }
+}
