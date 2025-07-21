@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: user-service
+  security:
+    oauth2:
+      client:
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            redirect-uri: http://localhost:8080/login/oauth2/code/github
+            scope:
+              - read:user
+              - user:email
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            scope:
+              - openid
+      authorizationserver:
+        client:
+          oidc-client:
+            registration:
+              client-id: ${PUBLIC_CLIENT_ID:oidc-client}
+              client-authentication-methods:
+                - "none"
+              authorization-grant-types:
+                - "authorization_code"
+              redirect-uris: ${REDIRECT_URIS:http://localhost:4200}
+              post-logout-redirect-uris: ${POST_LOGOUT_REDIRECT_URIS:http://localhost:4200}
+              scopes:
+                - openid
+            require-authorization-consent: false
+            require-proof-key: true
+            token:
+              access-token-time-to-live: PT24H
