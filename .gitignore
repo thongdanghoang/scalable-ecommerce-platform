@@ -1,4 +1,46 @@
+**/.git
+**/.svn
+**/.hg
+**/.DS_Store
+**/Thumbs.db
+
+### IDE ###
 .idea
-.vscode
 *.iml
-.hintrc
+!.idea/runConfigurations
+.settings
+.project
+.classpath
+.run
+*~
+
+### Maven ###
+**/target/
+
+### Logs ###
+**/*.log
+
+### local files ###
+**/.java-version
+**/.cache
+**/.envrc
+**/.quarkus
+
+## Eclipse ##
+**/.factorypath
+
+### VSCode ###
+.vscode
+
+### AWS SAM CLI ###
+**/.aws-sam
+
+scripts/*.csv
+scripts/*.sql
+
+### Gradle ###
+.gradle/
+**/build/
+!src/**/build/
+# Cache of project
+.gradletasknamecache
