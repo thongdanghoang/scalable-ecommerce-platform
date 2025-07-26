@@ -35,7 +35,7 @@ dependencies {
     compileOnly libs.lombok
 
     annotationProcessor libs.lombok
-
+    annotationProcessor libs.hibernate.jpamodelgen
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
