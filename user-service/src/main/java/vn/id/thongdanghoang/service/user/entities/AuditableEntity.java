@@ -1,5 +1,7 @@
 package vn.id.thongdanghoang.service.user.entities;
 
+import vn.id.thongdanghoang.entities.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

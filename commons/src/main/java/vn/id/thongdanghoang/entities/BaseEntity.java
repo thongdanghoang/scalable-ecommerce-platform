@@ -1,8 +1,8 @@
-package vn.id.thongdanghoang.service.user.entities;
+package vn.id.thongdanghoang.entities;
+
+import vn.id.thongdanghoang.uuidv7.GeneratedUuidV7;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Transient;
@@ -20,7 +20,7 @@ public abstract class BaseEntity {
 
   @Id
   @Column(name = "id", nullable = false)
-  @GeneratedValue(strategy = GenerationType.UUID)
+  @GeneratedUuidV7
   private UUID id;
 
   @Version
@@ -66,7 +66,8 @@ public abstract class BaseEntity {
     }
 
     /*
-     * To check whether the class of the argument is equal (or compatible) to the implementing class before
+     * To check whether the class of the argument is equal (or compatible) to the implementing
+     * class before
      * casting it
      * */
     if (getClass() != obj.getClass()) {
@@ -92,7 +93,8 @@ public abstract class BaseEntity {
       return -super.hashCode();
     }
 
-    // Because hashcode has just been asked for when the object is in transient state at that time super.hashCode() is returned.
+    // Because hashcode has just been asked for when the object is in transient state at that
+    // time super.hashCode() is returned.
     // Now for consistency, we return the same value.
     if (transientHashCodeLeaked) {
       return -super.hashCode();
