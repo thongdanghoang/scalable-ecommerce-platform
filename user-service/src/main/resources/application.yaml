@@ -1,6 +1,26 @@
 spring:
   application:
-    name: user-service
+    name: user_service
+  datasource:
+    url: jdbc:postgresql://localhost:8081/user_service?serverTimezone=UTC
+    username: postgres
+    password: postgres
+  flyway:
+    output-query-results: true
+    create-schemas: false
+    clean-disabled: true
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: false
+        query:
+          fail_on_pagination_over_collection_fetch: true
   security:
     oauth2:
       client:
