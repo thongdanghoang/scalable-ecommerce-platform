@@ -1,5 +1,6 @@
 [versions]
 java = "21"
+quarkus = "3.20.2"
 
 [libraries]
 lombok = { group = "org.projectlombok", name = "lombok", version = "1.18.38" }
