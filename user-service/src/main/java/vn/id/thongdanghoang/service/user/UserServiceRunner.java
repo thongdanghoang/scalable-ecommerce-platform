@@ -13,6 +13,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
@@ -25,6 +26,7 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 @SpringBootApplication
 @EnableJpaAuditing
+@EnableMethodSecurity(jsr250Enabled = true)
 @RegisterReflectionForBinding(UUID[].class)
 public class UserServiceRunner {
 
@@ -36,9 +38,12 @@ public class UserServiceRunner {
   @Order(2)
   public SecurityFilterChain securityFilterChain(HttpSecurity http)
       throws Exception {
-    http.oauth2Login(Customizer.withDefaults());
-    http.authorizeHttpRequests(
-        c -> c.anyRequest().authenticated()
+    http.oauth2Login(oauth2 -> oauth2
+        .loginPage("/ui/login.html")
+    );
+    http.authorizeHttpRequests(authorize -> authorize
+        .requestMatchers("/ui/**").permitAll()
+        .anyRequest().authenticated()
     );
     return http.build();
   }
@@ -59,7 +64,7 @@ public class UserServiceRunner {
         // authorization endpoint
         .exceptionHandling(exceptions -> exceptions
             .defaultAuthenticationEntryPointFor(
-                new LoginUrlAuthenticationEntryPoint("/login"),
+                new LoginUrlAuthenticationEntryPoint("/ui/login.html"),
                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
             )
         );
