@@ -1,17 +1,14 @@
-package vn.id.thongdanghoang.service.user.entities;
-
+package vn.id.thongdanghoang.service.prodcat.entities;
 
 import vn.id.thongdanghoang.entities.BaseEntity;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 /**
  * <pre>{@code
@@ -25,17 +22,22 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  * }</pre>
  */
 @Getter
+@Setter
+@FieldNameConstants
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
 public abstract class AuditableEntity extends BaseEntity {
 
   @NotNull
   @Column(name = "created_date", nullable = false, updatable = false)
-  @CreatedDate
   private LocalDateTime createdDate;
 
   @NotNull
   @Column(name = "last_modified_date", nullable = false)
-  @LastModifiedDate
   private LocalDateTime lastModifiedDate;
+
+  @Column(name = "created_by", nullable = false, updatable = false)
+  private String createdBy;
+
+  @Column(name = "last_modified_by", nullable = false)
+  private String lastModifiedBy;
 }
