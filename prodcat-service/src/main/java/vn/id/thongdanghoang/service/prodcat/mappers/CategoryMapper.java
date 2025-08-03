@@ -38,12 +38,12 @@ public interface CategoryMapper {
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   Category partialUpdate(CategoryDto categoryDto, @MappingTarget Category category);
 
-  Category toEntity(UUID UUID);
+  Category toEntity(UUID id);
 
-  UUID toDto1(Category category);
+  UUID toUuid(Category category);
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-  Category partialUpdate(UUID UUID, @MappingTarget Category category);
+  Category partialUpdate(UUID id, @MappingTarget Category category);
 
   @Mapping(target = "childIds", source = "children")
   @Mapping(target = "parentId", source = "parent")

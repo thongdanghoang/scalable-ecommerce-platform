@@ -10,17 +10,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 
-/**
- * <pre>{@code
- *   @Column(name = "created_by", nullable = false, updatable = false)
- *   @CreatedBy
- *   private String createdBy;
- *
- *   @Column(name = "last_modified_by", nullable = false)
- *   @LastModifiedBy
- *   private String lastModifiedBy;
- * }</pre>
- */
 @Getter
 @Setter
 @FieldNameConstants
@@ -35,9 +24,11 @@ public abstract class AuditableEntity extends BaseEntity {
   @Column(name = "last_modified_date", nullable = false)
   private LocalDateTime lastModifiedDate;
 
+  @NotNull
   @Column(name = "created_by", nullable = false, updatable = false)
   private String createdBy;
 
+  @NotNull
   @Column(name = "last_modified_by", nullable = false)
   private String lastModifiedBy;
 }

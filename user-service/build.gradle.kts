@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    implementation("vn.id.thongdanghoang.sep:commons:1.0.1")
+    implementation("vn.id.thongdanghoang.sep:commons:1.0.2")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-authorization-server")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
@@ -32,9 +32,7 @@ dependencies {
     implementation("org.flywaydb:flyway-database-postgresql")
     runtimeOnly("org.postgresql:postgresql")
     compileOnly("org.projectlombok:lombok")
-    compileOnly("org.hibernate.orm:hibernate-jpamodelgen")
     annotationProcessor("org.projectlombok:lombok")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

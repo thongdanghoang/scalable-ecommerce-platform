@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation("vn.id.thongdanghoang.sep:commons:1.0.1")
+    implementation("vn.id.thongdanghoang.sep:commons:1.0.2")
 
     implementation(enforcedPlatform(rootProject.libs.quarkus.bom))
     implementation(libs.quarkus.hibernate.orm)
