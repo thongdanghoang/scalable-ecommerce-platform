@@ -1,0 +1,58 @@
+quarkus:
+  datasource:
+    db-kind: postgresql
+    metrics:
+      enabled: true
+  liquibase:
+    migrate-at-start: true
+    change-log: db/changelogs/changelog-master.yml
+  hibernate-orm:
+    log:
+      sql: false
+      format-sql: false
+    database:
+      generation: validate
+    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  log:
+    console:
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] %X (%t) %s%e%n"
+  http:
+    port: 8090
+    auth:
+      permission:
+        allowed:
+          paths: /q/*
+          policy: permit
+        authenticated:
+          paths: /*
+          policy: authenticated
+  oidc:
+    enabled: true
+    auth-server-url: http://localhost:8080
+    client-id: oidc-client
+    application-type: SERVICE
+    authentication:
+      user-info-required: true
+
+hibernate:
+  query:
+    fail_on_pagination_over_collection_fetch: true
+
+"%dev":
+  quarkus:
+    datasource:
+      username: quarkus
+      password: quarkus
+      devservices:
+        enabled: true
+        show-logs: true
+        port: 8091
+        db-name: prodcat
+      jdbc:
+        url: jdbc:postgresql://localhost:8091/prodcat
+    hibernate-orm:
+      log:
+        sql: true
+      database:
+        generation: validate
+#        generation: create-drop

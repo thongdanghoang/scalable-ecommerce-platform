@@ -1,3 +1,0 @@
-rootProject.name = 'scalable-commons-parent'
-include(":commons")
-include(":user-service")
