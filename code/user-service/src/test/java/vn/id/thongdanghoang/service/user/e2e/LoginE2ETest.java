@@ -1,0 +1,65 @@
+package vn.id.thongdanghoang.service.user.e2e;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+
+import org.junit.jupiter.api.*;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
+
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+class LoginE2ETest {
+
+    private static Playwright playwright;
+    private static Browser browser;
+    @LocalServerPort
+    private int port;
+    private Page page;
+
+    @BeforeAll
+    static void setupClass() {
+        playwright = Playwright.create();
+        // Use setHeadless(false) if you want to see the browser UI during tests
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+    }
+
+    @AfterAll
+    static void tearDownClass() {
+        if (browser != null) {
+            browser.close();
+        }
+        if (playwright != null) {
+            playwright.close();
+        }
+    }
+
+    @BeforeEach
+    void setup() {
+        page = browser.newPage();
+    }
+
+    @AfterEach
+    void tearDown() {
+        if (page != null) {
+            page.close();
+        }
+    }
+
+    @Test
+    void loginPageShouldRenderCorrectly() {
+        // Navigate to the login page
+        page.navigate("http://localhost:" + port + "/ui/login.html");
+
+        // TDD Verification: Ensure elements exist before checking logic
+        assertThat(page.title()).isEqualTo("Login - User Service");
+
+        // Check for login buttons
+        assertThat(page.isVisible("text=Login with GitHub")).isTrue();
+        assertThat(page.isVisible("text=Login with Google")).isTrue();
+    }
+}
