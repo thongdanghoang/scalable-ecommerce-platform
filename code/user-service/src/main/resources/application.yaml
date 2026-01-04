@@ -2,7 +2,7 @@ spring:
   application:
     name: user_service
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:8081/user_service?serverTimezone=UTC}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/user_service?serverTimezone=UTC}
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:postgres}
   flyway:

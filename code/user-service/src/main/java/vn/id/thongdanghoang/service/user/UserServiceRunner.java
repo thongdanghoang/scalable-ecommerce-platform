@@ -58,6 +58,7 @@ public class UserServiceRunner {
     @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.oauth2Login(oauth2 -> oauth2.loginPage("/ui/login.html"));
+        http.logout(logout -> logout.logoutSuccessUrl("/ui/login.html?logout"));
         http.authorizeHttpRequests(
                 authorize -> authorize
                         .requestMatchers("/ui/**").permitAll()
