@@ -35,25 +35,6 @@ public class UserServiceRunner {
         SpringApplication.run(UserServiceRunner.class, args);
     }
 
-    private static void extracted(
-            UserService userInfoService,
-            JwtEncodingContext context,
-            OAuth2AuthenticationToken token) {
-        userInfoService.findByProviderLinksId(token.getPrincipal().getName()).ifPresentOrElse(user -> {
-            var claims = OidcUserInfo.builder().subject(user.getId().toString()).build().getClaims();
-            context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(claims));
-        }, () -> {
-            var user = new User();
-            var userAuthenticationProvider = new UserAuthenticationProvider();
-            userAuthenticationProvider.setProviderId(token.getPrincipal().getName());
-            userAuthenticationProvider.setProviderName(token.getAuthorizedClientRegistrationId());
-            user.setProviderLinks(Set.of(userAuthenticationProvider));
-            var claims = OidcUserInfo.builder().subject(userInfoService.insert(user).getId().toString())
-                    .build().getClaims();
-            context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(claims));
-        });
-    }
-
     @Bean
     @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -91,5 +72,24 @@ public class UserServiceRunner {
                 extracted(userInfoService, context, token);
             }
         };
+    }
+
+    private void extracted(
+            UserService userInfoService,
+            JwtEncodingContext context,
+            OAuth2AuthenticationToken token) {
+        userInfoService.findByProviderLinksId(token.getPrincipal().getName()).ifPresentOrElse(user -> {
+            var claims = OidcUserInfo.builder().subject(user.getId().toString()).build().getClaims();
+            context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(claims));
+        }, () -> {
+            var user = new User();
+            var userAuthenticationProvider = new UserAuthenticationProvider();
+            userAuthenticationProvider.setProviderId(token.getPrincipal().getName());
+            userAuthenticationProvider.setProviderName(token.getAuthorizedClientRegistrationId());
+            user.setProviderLinks(Set.of(userAuthenticationProvider));
+            var claims = OidcUserInfo.builder().subject(userInfoService.insert(user).getId().toString())
+                    .build().getClaims();
+            context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(claims));
+        });
     }
 }

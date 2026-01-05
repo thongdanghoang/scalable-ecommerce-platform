@@ -47,18 +47,16 @@ spring:
               - openid
       authorizationserver:
         client:
-          oidc-client:
+          postman:
             registration:
-              client-id: ${PUBLIC_CLIENT_ID:oidc-client}
+              client-id: postman
               client-authentication-methods:
                 - "none"
               authorization-grant-types:
                 - "authorization_code"
-              redirect-uris: ${REDIRECT_URIS:http://localhost:4200}
-              post-logout-redirect-uris: ${POST_LOGOUT_REDIRECT_URIS:http://localhost:4200}
+              redirect-uris: https://oauth.pstmn.io/v1/callback
+              post-logout-redirect-uris: https://oauth.pstmn.io/v1/callback
               scopes:
                 - openid
             require-authorization-consent: false
             require-proof-key: true
-            token:
-              access-token-time-to-live: PT24H

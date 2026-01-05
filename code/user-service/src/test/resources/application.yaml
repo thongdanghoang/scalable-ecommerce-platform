@@ -32,18 +32,16 @@ spring:
               - openid
       authorizationserver:
         client:
-          oidc-client:
+          playright:
             registration:
-              client-id: ${PUBLIC_CLIENT_ID:oidc-client}
+              client-id: playright
               client-authentication-methods:
                 - "none"
               authorization-grant-types:
                 - "authorization_code"
-              redirect-uris: ${REDIRECT_URIS:http://localhost:4200}
-              post-logout-redirect-uris: ${POST_LOGOUT_REDIRECT_URIS:http://localhost:4200}
+              redirect-uris: http://localhost:3000
+              post-logout-redirect-uris: http://localhost:3000
               scopes:
                 - openid
             require-authorization-consent: false
-            require-proof-key: true
-            token:
-              access-token-time-to-live: PT24H
+            require-proof-key: false
