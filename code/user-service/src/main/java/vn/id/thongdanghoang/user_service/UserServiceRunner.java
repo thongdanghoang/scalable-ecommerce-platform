@@ -26,6 +26,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableMethodSecurity(jsr250Enabled = true)
@@ -79,16 +82,22 @@ public class UserServiceRunner {
             UserService userInfoService,
             JwtEncodingContext context,
             OAuth2AuthenticationToken token) {
+        log.debug("Customizing token claims for provider: {}, principal: {}",
+                token.getAuthorizedClientRegistrationId(), token.getPrincipal().getName());
         userInfoService.findByProviderLinksId(token.getPrincipal().getName()).ifPresentOrElse(user -> {
+            log.debug("Found existing user: {}", user.getId());
             var claims = OidcUserInfo.builder().subject(user.getId().toString()).build().getClaims();
             context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(claims));
         }, () -> {
+            log.info("Creating new user for provider: {}", token.getAuthorizedClientRegistrationId());
             var user = new User();
             var userAuthenticationProvider = new UserAuthenticationProvider();
             userAuthenticationProvider.setProviderId(token.getPrincipal().getName());
             userAuthenticationProvider.setProviderName(token.getAuthorizedClientRegistrationId());
             user.setProviderLinks(new LinkedHashSet<>(Set.of(userAuthenticationProvider)));
-            var claims = OidcUserInfo.builder().subject(userInfoService.insert(user).getId().toString())
+            User savedUser = userInfoService.insert(user);
+            log.info("Created new user with ID: {}", savedUser.getId());
+            var claims = OidcUserInfo.builder().subject(savedUser.getId().toString())
                     .build().getClaims();
             context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(claims));
         });
