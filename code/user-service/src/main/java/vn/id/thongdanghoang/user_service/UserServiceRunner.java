@@ -69,12 +69,12 @@ public class UserServiceRunner {
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(UserService userInfoService) {
         return context -> {
             if (context.getPrincipal() instanceof OAuth2AuthenticationToken token) {
-                extracted(userInfoService, context, token);
+                customizeTokenClaims(userInfoService, context, token);
             }
         };
     }
 
-    private void extracted(
+    private void customizeTokenClaims(
             UserService userInfoService,
             JwtEncodingContext context,
             OAuth2AuthenticationToken token) {
