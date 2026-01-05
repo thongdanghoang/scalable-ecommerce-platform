@@ -3,6 +3,7 @@ package vn.id.thongdanghoang.user_service;
 import vn.id.thongdanghoang.user_service.entities.User;
 import vn.id.thongdanghoang.user_service.entities.UserAuthenticationProvider;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -86,7 +87,7 @@ public class UserServiceRunner {
             var userAuthenticationProvider = new UserAuthenticationProvider();
             userAuthenticationProvider.setProviderId(token.getPrincipal().getName());
             userAuthenticationProvider.setProviderName(token.getAuthorizedClientRegistrationId());
-            user.setProviderLinks(Set.of(userAuthenticationProvider));
+            user.setProviderLinks(new LinkedHashSet<>(Set.of(userAuthenticationProvider)));
             var claims = OidcUserInfo.builder().subject(userInfoService.insert(user).getId().toString())
                     .build().getClaims();
             context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(claims));
