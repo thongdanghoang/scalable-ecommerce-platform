@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  flyway:
+    enabled: false
+  security:
+    oauth2:
+      client:
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            redirect-uri: ${GITHUB_REDIRECT_URI:http://localhost:8080/login/oauth2/code/github}
+            scope:
+              - read:user
+              - user:email
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: ${GOOGLE_REDIRECT_URI:http://localhost:8080/login/oauth2/code/google}
+            scope:
+              - openid
+      authorizationserver:
+        client:
+          playwright:
+            registration:
+              client-id: playwright
+              client-authentication-methods:
+                - "none"
+              authorization-grant-types:
+                - "authorization_code"
+              redirect-uris: http://localhost:3000
+              post-logout-redirect-uris: http://localhost:3000
+              scopes:
+                - openid
+            require-authorization-consent: false
+            require-proof-key: false
