@@ -32,9 +32,9 @@ spring:
               - openid
       authorizationserver:
         client:
-          playright:
+          playwright:
             registration:
-              client-id: playright
+              client-id: playwright
               client-authentication-methods:
                 - "none"
               authorization-grant-types:
