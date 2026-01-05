@@ -1,9 +1,16 @@
-package vn.id.thongdanghoang.service.user.entities;
+package vn.id.thongdanghoang.user_service.entities;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;

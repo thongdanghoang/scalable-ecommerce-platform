@@ -1,4 +1,4 @@
-package vn.id.thongdanghoang.service.user.entities;
+package vn.id.thongdanghoang.user_service.entities;
 
 import java.time.LocalDateTime;
 

@@ -1,9 +1,13 @@
-package vn.id.thongdanghoang.service.user.e2e;
+package vn.id.thongdanghoang.user_service.e2e;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
@@ -25,7 +29,7 @@ class LoginE2ETest {
     static void setupClass() {
         playwright = Playwright.create();
         // Use setHeadless(false) if you want to see the browser UI during tests
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
     }
 
     @AfterAll

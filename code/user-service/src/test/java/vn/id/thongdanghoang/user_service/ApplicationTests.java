@@ -1,4 +1,4 @@
-package vn.id.thongdanghoang.service.user;
+package vn.id.thongdanghoang.user_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,7 +1,7 @@
-package vn.id.thongdanghoang.service.user;
+package vn.id.thongdanghoang.user_service;
 
-import vn.id.thongdanghoang.service.user.entities.User;
-import vn.id.thongdanghoang.service.user.entities.UserAuthenticationProvider;
+import vn.id.thongdanghoang.user_service.entities.User;
+import vn.id.thongdanghoang.user_service.entities.UserAuthenticationProvider;
 
 import java.util.Set;
 import java.util.UUID;
