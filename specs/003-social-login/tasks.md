@@ -85,7 +85,8 @@ description: "Task list template for feature implementation"
 - [ ] T015 [US2] Update SecurityConfig to add GitHub registration in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
 - [ ] T016 [US2] Implement GitHubUserInfoMapper to map attributes (handle null email) in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/mapper/GitHubUserInfoMapper.java
 - [ ] T017 [US2] Update CustomOAuth2UserService to handle GitHub provider specifics in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/CustomOAuth2UserService.java
-- [ ] T018 [US2] Create Playwright E2E Test using Testcontainers and Keycloak to simulate GitHub login in code/user-service/src/test/java/vn/id/thongdanghoang/user_service/e2e/SocialLoginE2ETest.java
+- [ ] T018 [P] [US2] Configure Keycloak realm (realm.json) and Testcontainers setup for E2E tests in code/user-service/src/test/resources/keycloak/realm.json
+- [ ] T019 [US2] Create Playwright E2E Test using Testcontainers and Keycloak to simulate GitHub login in code/user-service/src/test/java/vn/id/thongdanghoang/user_service/e2e/SocialLoginE2ETest.java
 
 **Checkpoint**: User can login via GitHub, account created even if email is missing.
 
@@ -95,8 +96,8 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T019 Clean up legacy password authentication code (UserService, AuthController)
-- [ ] T020 Update README.md with OAuth2 setup instructions
+- [ ] T020 Clean up legacy password authentication code (UserService, AuthController)
+- [ ] T021 Update README.md with OAuth2 setup instructions
 
 ---
 
