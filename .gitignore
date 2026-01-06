@@ -42,5 +42,8 @@ scripts/*.sql
 .gradle/
 **/build/
 !src/**/build/
+
 # Cache of project
 .gradletasknamecache
+
+.gemini/
