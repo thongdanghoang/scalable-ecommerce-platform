@@ -44,3 +44,5 @@ scripts/*.sql
 !src/**/build/
 # Cache of project
 .gradletasknamecache
+
+.gemini/
