@@ -19,7 +19,7 @@ Implement Social Login (OAuth2) for Google and GitHub, replacing the password-ba
 **Storage**: PostgreSQL
 **Testing**: 
 - MockWebServer (IdP simulation)
-- Playwright (UI Flow)
+- Playwright + Testcontainers + Keycloak (E2E UI Flow)
 **Performance Goals**: OAuth callback processing < 1s (SC-002)
 **Constraints**: 
 - Disable Password Auth completely.

@@ -18,10 +18,10 @@
 - **Migration**: Existing `email` column becomes nullable and non-unique index (or secondary index).
 
 ### 3. Testing Strategy
-- **Decision**: MockWebServer for IdP responses + Playwright for UI flow
+- **Decision**: MockWebServer for IdP responses + Playwright for UI flow with Testcontainers & Keycloak
 - **Rationale**: 
   - **Unit/Integration**: Use `MockWebServer` (or WireMock) to simulate Google/GitHub token and user-info endpoints. This ensures tests don't rely on real external network calls (Constitution II - Reliability).
-  - **E2E**: Playwright will interact with the "Login with X" buttons. (Real social login testing in CI is brittle/blocked; will use a test-mode flag or mock IdP for E2E).
+  - **E2E**: Use `Testcontainers` to spin up a `Keycloak` instance in the test environment. Keycloak will be configured as a mock Identity Provider for Google and GitHub. Playwright will interact with the "Login with X" buttons and handle the redirection to/from Keycloak. This provides a hermetic, reproducible E2E environment.
 
 ## Best Practices (Constitution Alignment)
 

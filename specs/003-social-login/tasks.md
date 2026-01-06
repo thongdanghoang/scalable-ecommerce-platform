@@ -39,7 +39,7 @@ description: "Task list template for feature implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Create Flyway V2 migration to update users table (provider cols, null email, drop pwd) in code/user-service/src/main/resources/db/migration/V2__social_login_schema.sql
+- [ ] T004 Create Flyway V2 migration to update users table (add provider cols, drop unique constraint on email, make email nullable, drop password column) in code/user-service/src/main/resources/db/migration/V2__social_login_schema.sql
 - [ ] T005 Update User Entity with provider composite key and nullable email in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/User.java
 - [ ] T006 Update UserProfile Entity with avatarUrl and locale fields in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/UserProfile.java
 - [ ] T007 [P] Create CustomOAuth2User model for mapping IdP attributes in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/security/CustomOAuth2User.java
@@ -85,7 +85,7 @@ description: "Task list template for feature implementation"
 - [ ] T015 [US2] Update SecurityConfig to add GitHub registration in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
 - [ ] T016 [US2] Implement GitHubUserInfoMapper to map attributes (handle null email) in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/mapper/GitHubUserInfoMapper.java
 - [ ] T017 [US2] Update CustomOAuth2UserService to handle GitHub provider specifics in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/CustomOAuth2UserService.java
-- [ ] T018 [US2] Create Playwright E2E Test for "Login with GitHub" button in code/user-service/src/test/java/vn/id/thongdanghoang/user_service/e2e/SocialLoginE2ETest.java
+- [ ] T018 [US2] Create Playwright E2E Test using Testcontainers and Keycloak to simulate GitHub login in code/user-service/src/test/java/vn/id/thongdanghoang/user_service/e2e/SocialLoginE2ETest.java
 
 **Checkpoint**: User can login via GitHub, account created even if email is missing.
 
