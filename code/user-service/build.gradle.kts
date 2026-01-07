@@ -60,10 +60,17 @@ spotless {
 
         eclipse("4.26")
             .configFile("../eclipse-format.xml")
+            // Optional: Enable the Sort Members feature globally. (default: false)
             .sortMembersEnabled(true)
+            // Optional: Specify the sort order of the member categories. (default: T,SF,SI,SM,F,I,C,M)
+            //   SF,SI,SM,F,I,C,M,T = Static Fields, Static Initializers, Static Methods, Fields, Initializers, Constructors, Methods, (Nested) Types
             .sortMembersOrder("SF,SI,SM,F,I,C,M,T")
+            // Optional: Enable the reordering of fields, enum constants, and initializers. (default: true)
             .sortMembersDoNotSortFields(false)
+            // Optional: Enable reordering of members of the same category by the visibility within the category. (default: false)
             .sortMembersVisibilityOrderEnabled(true)
+            // Optional: Specify the ordering of members of the same category by the visibility within the category. (default: B,V,R,D)
+            //   B,R,D,V = Public, Protected, Package, Private
             .sortMembersVisibilityOrder("B,R,D,V")
 
         formatAnnotations()
