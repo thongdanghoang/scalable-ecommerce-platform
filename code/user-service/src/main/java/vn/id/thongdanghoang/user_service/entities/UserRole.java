@@ -17,9 +17,7 @@ import lombok.Setter;
 @Table(name = "user_roles")
 public class UserRole extends AuditableEntity {
 
-    @NotBlank
-    @Size(max = 255)
-    @Column(name = "name", nullable = false, unique = true)
+    @NotBlank @Size(max = 255) @Column(name = "name", nullable = false, unique = true)
     private String name;
 
 }

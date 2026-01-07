@@ -1,4 +1,6 @@
-package vn.id.thongdanghoang.user_service;
+package vn.id.thongdanghoang.user_service.api;
+
+import vn.id.thongdanghoang.user_service.services.UserService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

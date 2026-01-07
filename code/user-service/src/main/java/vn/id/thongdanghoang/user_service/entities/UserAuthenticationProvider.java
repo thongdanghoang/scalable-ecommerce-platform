@@ -17,14 +17,10 @@ import lombok.Setter;
 @Table(name = "user_authentication_providers")
 public class UserAuthenticationProvider extends AuditableEntity {
 
-    @NotBlank
-    @Size(max = 255)
-    @Column(name = "provider_id", nullable = false, unique = true)
+    @NotBlank @Size(max = 255) @Column(name = "provider_id", nullable = false, unique = true)
     private String providerId;
 
-    @NotBlank
-    @Size(max = 255)
-    @Column(name = "provider_name", nullable = false)
+    @NotBlank @Size(max = 255) @Column(name = "provider_name", nullable = false)
     private String providerName;
 
 }

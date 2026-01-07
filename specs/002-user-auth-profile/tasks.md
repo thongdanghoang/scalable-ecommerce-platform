@@ -27,10 +27,10 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Configure build.gradle.kts with Spring Boot 3, Security, JPA, Flyway, MapStruct, Lombok dependencies in code/user-service/build.gradle.kts
+- [x] T001 Configure build.gradle.kts with Spring Boot 3, Security, JPA, Flyway, MapStruct, Lombok dependencies in code/user-service/build.gradle.kts
 - [ ] T002 [P] Configure Checkstyle and Eclipse Formatter in code/user-service/config/checkstyle/checkstyle.xml and eclipse-format.xml
-- [ ] T003 Configure Docker Compose for PostgreSQL in code/user-service/docker-compose.yml
-- [ ] T004 Configure application.yml with Datasource and Flyway settings in code/user-service/src/main/resources/application.yaml
+- [x] T003 Configure Docker Compose for PostgreSQL in code/user-service/docker-compose.yml
+- [x] T004 Configure application.yml with Datasource and Flyway settings in code/user-service/src/main/resources/application.yaml
 
 ---
 
@@ -40,11 +40,11 @@ description: "Task list template for feature implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Create BaseEntity with auditing in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/BaseEntity.java
+- [x] T005 Create BaseEntity with auditing in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/BaseEntity.java
 - [ ] T006 Create User and UserProfile Entities in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/
-- [ ] T007 Create Flyway V1 migration script for users and profiles tables in code/user-service/src/main/resources/db/migration/V1__init_schema.sql
+- [x] T007 Create Flyway V1 migration script for users and profiles tables in code/user-service/src/main/resources/db/migration/V1__init_schema.sql
 - [ ] T008 [P] Implement Global Exception Handler and ErrorResponse DTO in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/exception/GlobalExceptionHandler.java
-- [ ] T009 Set up SecurityConfig skeleton (PasswordEncoder, SecurityFilterChain) in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
+- [x] T009 Set up SecurityConfig skeleton (PasswordEncoder, SecurityFilterChain) in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
 
 **Checkpoint**: Foundation ready - DB accessible, Security basic config in place.
 

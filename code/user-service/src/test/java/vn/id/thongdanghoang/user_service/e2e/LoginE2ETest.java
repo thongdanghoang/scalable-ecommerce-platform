@@ -19,11 +19,8 @@ import com.microsoft.playwright.Playwright;
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 class LoginE2ETest {
 
-    private static Playwright playwright;
     private static Browser browser;
-    @LocalServerPort
-    private int port;
-    private Page page;
+    private static Playwright playwright;
 
     @BeforeAll
     static void setupClass() {
@@ -42,17 +39,10 @@ class LoginE2ETest {
         }
     }
 
-    @BeforeEach
-    void setup() {
-        page = browser.newPage();
-    }
+    private Page page;
 
-    @AfterEach
-    void tearDown() {
-        if (page != null) {
-            page.close();
-        }
-    }
+    @LocalServerPort
+    private int port;
 
     @Test
     void loginPageShouldRenderCorrectly() {
@@ -65,5 +55,17 @@ class LoginE2ETest {
         // Check for login buttons
         assertThat(page.isVisible("text=Login with GitHub")).isTrue();
         assertThat(page.isVisible("text=Login with Google")).isTrue();
+    }
+
+    @BeforeEach
+    void setup() {
+        page = browser.newPage();
+    }
+
+    @AfterEach
+    void tearDown() {
+        if (page != null) {
+            page.close();
+        }
     }
 }

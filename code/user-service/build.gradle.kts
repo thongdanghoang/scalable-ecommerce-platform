@@ -3,6 +3,7 @@ plugins {
     id("org.springframework.boot") version "3.5.9"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.graalvm.buildtools.native") version "0.11.0"
+    id("com.diffplug.spotless") version "8.1.0"
 }
 
 group = "vn.id.thongdanghoang.sep"
@@ -42,4 +43,29 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+spotless {
+    // optional: limit format enforcement to just the files changed by this feature branch
+    // ratchetFrom("origin/main")
+
+    java {
+        target("src/*/java/**/*.java")
+
+        importOrderFile("../eclipse.importorder")
+
+        removeUnusedImports()
+        forbidWildcardImports()
+        forbidModuleImports()
+
+        eclipse("4.26")
+            .configFile("../eclipse-format.xml")
+            .sortMembersEnabled(true)
+            .sortMembersOrder("SF,SI,SM,F,I,C,M,T")
+            .sortMembersDoNotSortFields(false)
+            .sortMembersVisibilityOrderEnabled(true)
+            .sortMembersVisibilityOrder("B,R,D,V")
+
+        formatAnnotations()
+    }
 }

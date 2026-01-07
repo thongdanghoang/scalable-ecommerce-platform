@@ -1,6 +1,7 @@
-package vn.id.thongdanghoang.user_service;
+package vn.id.thongdanghoang.user_service.services;
 
 import vn.id.thongdanghoang.user_service.entities.User;
+import vn.id.thongdanghoang.user_service.repositories.UserRepository;
 
 import java.util.Optional;
 
@@ -18,12 +19,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User insert(User user) {
-        return userRepository.save(user);
-    }
-
     public Optional<User> findByProviderLinksId(String providerLinkId) {
         return userRepository.findByProviderLinksProviderId(providerLinkId);
+    }
+
+    public User insert(User user) {
+        return userRepository.save(user);
     }
 
 }

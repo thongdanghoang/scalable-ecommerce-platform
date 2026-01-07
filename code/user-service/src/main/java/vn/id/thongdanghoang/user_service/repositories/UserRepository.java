@@ -1,4 +1,4 @@
-package vn.id.thongdanghoang.user_service;
+package vn.id.thongdanghoang.user_service.repositories;
 
 import vn.id.thongdanghoang.user_service.entities.User;
 
