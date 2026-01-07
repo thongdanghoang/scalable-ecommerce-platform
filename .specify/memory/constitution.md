@@ -15,6 +15,10 @@ Sync Impact Report:
 
 # Scalable E-Commerce Platform Constitution
 
+This Constitution defines the fundamental architectural and coding principles for the Scalable E-Commerce Platform. Developers MUST adhere to these principles to ensure the system's long-term maintainability, security, and performance.
+
+Specific coding standards referenced as **BPXXX** (e.g., BP201) are detailed in the [Generic Coding Best Practices](../../Generic-Coding-Best-Practices.md) document, which serves as the primary reference for implementation details.
+
 ## Core Principles
 
 ### I. Code Quality & Consistency
