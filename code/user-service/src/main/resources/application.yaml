@@ -47,6 +47,8 @@ spring:
             redirect-uri: ${GOOGLE_REDIRECT_URI:http://localhost:8080/login/oauth2/code/google}
             scope:
               - openid
+              - profile
+              - email
       authorizationserver:
         client:
           postman:

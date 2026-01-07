@@ -1,6 +1,7 @@
 package vn.id.thongdanghoang.user_service.securities;
 
 import vn.id.thongdanghoang.user_service.entities.User;
+import vn.id.thongdanghoang.user_service.entities.UserProfile;
 import vn.id.thongdanghoang.user_service.repositories.UserRepository;
 import vn.id.thongdanghoang.user_service.services.UserService;
 
@@ -36,7 +37,9 @@ public class FederatedIdentityTokenCustomizer implements OAuth2TokenCustomizer<J
         var user = new User();
         user.setProviderId(providerId);
         user.setProviderName(providerName);
-        return userService.insert(user);
+        var userProfile = new UserProfile();
+        userProfile.setUser(userService.insert(user));
+        return userService.insert(userProfile).getUser();
     }
 
     private Map<String, Object> extractClaimsForUser(OAuth2AuthenticationToken token) {
