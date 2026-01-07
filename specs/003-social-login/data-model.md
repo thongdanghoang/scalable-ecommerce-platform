@@ -35,13 +35,15 @@ Changes to support social profile sync.
 ### `User.java` (Updated)
 
 ```java
-
 @Entity
 @Table(name = "users",
         uniqueConstraints = @UniqueConstraint(columnNames = {"provider", "provider_id"}))
 @Data
-public class User extends BaseEntity {
-    // ... id (UUID) remains ...
+public class User extends AuditableEntity {
+    // Inherits: 
+    // - UUID id (PK) from BaseEntity
+    // - int version (Optimistic Lock) from BaseEntity
+    // - createdDate, lastModifiedDate from AuditableEntity
 
     @Column(nullable = true) // Changed from nullable=false, unique=true
     private String email;
@@ -53,7 +55,7 @@ public class User extends BaseEntity {
     private AuthProvider provider; // GOOGLE, GITHUB
 
     @Column(nullable = false)
-    private String providerId;
+    private String providerId; // External Subject ID (Logical Key Part)
 
     // ... enabled ...
 }
