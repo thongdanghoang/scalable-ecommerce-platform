@@ -1,50 +1,70 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version Change: 1.0.0 -> 1.1.0
+- Modified Principles:
+  - Code Quality & Standards -> Code Quality & Consistency (Expanded with specific BPs)
+  - Performance & Scalability (Added DTOs/StringBuilder rules)
+- Added Principles:
+  - Reliability & Resource Management
+  - Security
+- Templates Status:
+  - .specify/templates/plan-template.md: ✅ (Compatible)
+  - .specify/templates/spec-template.md: ✅ (Compatible)
+  - .specify/templates/tasks-template.md: ✅ (Compatible)
+-->
+
+# Scalable E-Commerce Platform Constitution
+
+This Constitution defines the fundamental architectural and coding principles for the Scalable E-Commerce Platform. Developers MUST adhere to these principles to ensure the system's long-term maintainability, security, and performance.
+
+Specific coding standards referenced as **BPXXX** (e.g., BP201) are detailed in the [Generic Coding Best Practices](../../Generic-Coding-Best-Practices.md) document, which serves as the primary reference for implementation details.
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Code Quality & Consistency
+Code must be clean, readable, and free of "traps".
+- **Formatting**: Strict adherence to `eclipse-format.xml` and `eclipse.importorder`.
+- **Logic**: Prefer for-each loops (BP201), use `.equals()` over `==` (BP204), and minimize variable scope (BP206).
+- **Constants**: Avoid hard-coded values (BP207); prefer Enums over integer constants (BP506).
+- **Maintenance**: TODOs must include Who, When, Why, and What (BP203). Classes/methods should be `final` unless designed for extension (BP503).
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Reliability & Resource Management
+The system must be robust against failures and resource leaks.
+- **Exceptions**: Never swallow exceptions (empty catch blocks forbidden - BP301). Throw specific, meaningful exceptions with context (BP302, BP303). Always log with appropriate severity (BP305).
+- **Resources**: All external resources (streams, connections) MUST be closed in a `finally` block or try-with-resources (BP401, BP304).
+- **Transactions**: Single business unit-of-work = Single Database Transaction (BP602). Avoid DDL within transactions (BP601).
+- **Assertions**: Do NOT use `assert` for business logic; use standard validation instead (BP202).
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Security
+Security is baked in, not bolted on.
+- **Data Access**: MUST use parameterized queries or ORM criteria to prevent SQL Injection (BP801). String concatenation for SQL is strictly prohibited.
+- **Input Validation**: Validate all external inputs at the boundary.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Performance & Scalability
+Designed for high volume and low latency.
+- **Communication**: Limit remote invocations between layers; use DTOs to transfer data in bulk (BP701).
+- **Optimization**: Use `StringBuilder` for string concatenation inside loops (BP702). Avoid lazy initialization in multi-threaded contexts unless double-checked locking is correctly implemented (BP402, BP403).
+- **Architecture**: Services MUST be stateless (BP501), containerized (Docker), and independently scalable.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
-
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Comprehensive Testing
+Testing is mandatory for all features.
+- **Scope**: Unit tests for logic, Integration tests for contracts, E2E for critical journeys.
+- **Constraint**: Test code is the ONLY place where `assert` keyword is acceptable (BP202).
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This Constitution supersedes all other project practices.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+### Amendments
+Any changes to this constitution require:
+1.  A documented reason for the change.
+2.  Approval from project maintainers.
+3.  A migration plan if the change invalidates existing code or practices.
+
+### Versioning
+This document follows Semantic Versioning (MAJOR.MINOR.PATCH).
+-   **MAJOR**: Backward incompatible governance or principle changes.
+-   **MINOR**: New principles added or material expansion of guidance.
+-   **PATCH**: Clarifications, wording fixes.
+
+**Version**: 1.1.0 | **Ratified**: 2026-01-06 | **Last Amended**: 2026-01-06
