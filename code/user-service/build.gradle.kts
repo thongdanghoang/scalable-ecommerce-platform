@@ -47,7 +47,7 @@ tasks.withType<Test> {
 
 spotless {
     // optional: limit format enforcement to just the files changed by this feature branch
-    // ratchetFrom("origin/main")
+    ratchetFrom("origin/main")
 
     java {
         target("src/*/java/**/*.java")

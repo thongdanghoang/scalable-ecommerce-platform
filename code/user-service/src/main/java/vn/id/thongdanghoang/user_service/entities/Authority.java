@@ -1,5 +1,7 @@
 package vn.id.thongdanghoang.user_service.entities;
 
+import vn.id.thongdanghoang.user_service.entities.generic.AuditableEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -14,8 +16,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "user_roles")
-public class UserRole extends AuditableEntity {
+@Table(name = "authorities")
+public class Authority extends AuditableEntity {
 
     @NotBlank @Size(max = 255) @Column(name = "name", nullable = false, unique = true)
     private String name;

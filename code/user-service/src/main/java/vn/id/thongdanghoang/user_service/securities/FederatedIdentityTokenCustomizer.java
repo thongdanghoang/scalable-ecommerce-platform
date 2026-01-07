@@ -1,12 +1,10 @@
 package vn.id.thongdanghoang.user_service.securities;
 
 import vn.id.thongdanghoang.user_service.entities.User;
-import vn.id.thongdanghoang.user_service.entities.UserAuthenticationProvider;
+import vn.id.thongdanghoang.user_service.repositories.UserRepository;
 import vn.id.thongdanghoang.user_service.services.UserService;
 
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
@@ -22,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class FederatedIdentityTokenCustomizer implements OAuth2TokenCustomizer<JwtEncodingContext> {
 
+    private final UserRepository userRepository;
     private final UserService userService;
 
     @Override
@@ -35,12 +34,8 @@ public class FederatedIdentityTokenCustomizer implements OAuth2TokenCustomizer<J
     private User createNewUser(String providerId, String providerName) {
         log.info("Creating new user for provider: {}", providerName);
         var user = new User();
-        var authProvider = new UserAuthenticationProvider();
-        authProvider.setProviderId(providerId);
-        authProvider.setProviderName(providerName);
-
-        user.setProviderLinks(new LinkedHashSet<>(Set.of(authProvider)));
-
+        user.setProviderId(providerId);
+        user.setProviderName(providerName);
         return userService.insert(user);
     }
 
@@ -50,7 +45,7 @@ public class FederatedIdentityTokenCustomizer implements OAuth2TokenCustomizer<J
 
         log.debug("Customizing token for provider: {}, principal: {}", providerName, providerId);
 
-        var user = userService.findByProviderLinksId(providerId)
+        var user = userRepository.findByProviderId(providerId)
                 .orElseGet(() -> createNewUser(providerId, providerName));
 
         return OidcUserInfo.builder()

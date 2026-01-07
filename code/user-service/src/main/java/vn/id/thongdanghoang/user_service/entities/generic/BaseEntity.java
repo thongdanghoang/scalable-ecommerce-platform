@@ -1,4 +1,4 @@
-package vn.id.thongdanghoang.user_service.entities;
+package vn.id.thongdanghoang.user_service.entities.generic;
 
 import java.util.Objects;
 import java.util.UUID;

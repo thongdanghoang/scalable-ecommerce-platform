@@ -28,7 +28,7 @@ description: "Task list template for feature implementation"
 **Purpose**: Project initialization and basic structure
 
 - [x] T001 Configure build.gradle.kts with Spring Boot 3, Security, JPA, Flyway, MapStruct, Lombok dependencies in code/user-service/build.gradle.kts
-- [ ] T002 [P] Configure Checkstyle and Eclipse Formatter in code/user-service/config/checkstyle/checkstyle.xml and eclipse-format.xml
+- [x] T002 [P] Configure Checkstyle and Eclipse Formatter in code/user-service/config/checkstyle/checkstyle.xml and eclipse-format.xml
 - [x] T003 Configure Docker Compose for PostgreSQL in code/user-service/docker-compose.yml
 - [x] T004 Configure application.yml with Datasource and Flyway settings in code/user-service/src/main/resources/application.yaml
 
