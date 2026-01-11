@@ -24,4 +24,9 @@ public class UserContextData implements UserDetails {
     private final User user;
     @Deprecated
     private final String username;
+
+    @Override
+    public boolean isEnabled() {
+        return !user.isDisabled();
+    }
 }
