@@ -1,4 +1,4 @@
-package vn.id.thongdanghoang.user_service.entities;
+package vn.id.thongdanghoang.user_service.entities.generic;
 
 import java.time.LocalDateTime;
 
@@ -14,28 +14,29 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.Getter;
 
 /**
- * <pre>{@code
- *   @Column(name = "created_by", nullable = false, updatable = false)
- *   @CreatedBy
- *   private String createdBy;
+ * <pre>
+ * {
+ *     &#64;code
+ *     &#64;Column(name = "created_by", nullable = false, updatable = false)
+ *     &#64;CreatedBy
+ *     private String createdBy;
  *
- *   @Column(name = "last_modified_by", nullable = false)
- *   @LastModifiedBy
- *   private String lastModifiedBy;
- * }</pre>
+ *     &#64;Column(name = "last_modified_by", nullable = false)
+ *     @LastModifiedBy
+ *     private String lastModifiedBy;
+ * }
+ * </pre>
  */
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditableEntity extends BaseEntity {
 
-    @NotNull
-    @Column(name = "created_date", nullable = false, updatable = false)
+    @NotNull @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
     private LocalDateTime createdDate;
 
-    @NotNull
-    @Column(name = "last_modified_date", nullable = false)
+    @NotNull @Column(name = "last_modified_date", nullable = false)
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 }

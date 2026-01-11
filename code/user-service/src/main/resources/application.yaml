@@ -1,6 +1,8 @@
 spring:
   application:
     name: user_service
+  config:
+    import: logging.yaml
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/user_service?serverTimezone=UTC}
     username: ${DATABASE_USERNAME:postgres}
@@ -45,6 +47,8 @@ spring:
             redirect-uri: ${GOOGLE_REDIRECT_URI:http://localhost:8080/login/oauth2/code/google}
             scope:
               - openid
+              - profile
+              - email
       authorizationserver:
         client:
           postman:

@@ -1,8 +1,9 @@
-package vn.id.thongdanghoang.user_service;
+package vn.id.thongdanghoang.user_service.services;
 
 import vn.id.thongdanghoang.user_service.entities.User;
-
-import java.util.Optional;
+import vn.id.thongdanghoang.user_service.entities.UserProfile;
+import vn.id.thongdanghoang.user_service.repositories.UserProfileRepository;
+import vn.id.thongdanghoang.user_service.repositories.UserRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,14 +17,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final UserProfileRepository userProfileRepository;
     private final UserRepository userRepository;
 
     public User insert(User user) {
         return userRepository.save(user);
     }
 
-    public Optional<User> findByProviderLinksId(String providerLinkId) {
-        return userRepository.findByProviderLinksProviderId(providerLinkId);
+    public UserProfile insert(UserProfile userProfile) {
+        return userProfileRepository.save(userProfile);
     }
 
 }

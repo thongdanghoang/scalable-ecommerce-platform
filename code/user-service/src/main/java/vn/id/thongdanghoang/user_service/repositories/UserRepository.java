@@ -1,4 +1,4 @@
-package vn.id.thongdanghoang.user_service;
+package vn.id.thongdanghoang.user_service.repositories;
 
 import vn.id.thongdanghoang.user_service.entities.User;
 
@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    Optional<User> findByProviderLinksProviderId(String providerId);
+    Optional<User> findByProviderId(String providerId);
 
 }

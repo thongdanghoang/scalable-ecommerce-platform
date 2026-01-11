@@ -1,0 +1,5 @@
+logging:
+  level:
+    root: ${LOGGING_ROOT_LEVEL:info}
+  pattern:
+    console: "${LOGGING_PATTERN:%d -%5p [%t] %X %logger : %m %kvp%n%ex}"

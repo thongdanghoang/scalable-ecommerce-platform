@@ -93,9 +93,8 @@ creation.
 
 ### Key Entities
 
-- **User**: Updated to include `auth_provider` (ENUM) and `provider_id` (String) as a composite unique key. `email`
-  becomes nullable/optional. `password_hash` removed.
-- **OAuth2Session**: Temporary state for the authentication flow (managed by framework/library).
+- **User**: Updated to include `provider_name` (String) and `provider_id` (String) as a composite unique key. Account status is tracked via `disabled`.
+- **UserProfile**: Includes user's `email` (nullable for social providers), synchronized from IdP if available.
 
 ## Success Criteria *(mandatory)*
 

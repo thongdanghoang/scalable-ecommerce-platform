@@ -6,6 +6,18 @@ spring:
     password:
   flyway:
     enabled: false
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+      ddl-auto: create-drop
+    open-in-view: false
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        query:
+          fail_on_pagination_over_collection_fetch: true
   security:
     oauth2:
       client:

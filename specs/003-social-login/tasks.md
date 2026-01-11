@@ -27,9 +27,9 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Configure Spring Security OAuth2 Client dependency in code/user-service/build.gradle.kts
-- [ ] T002 [P] Update application.yml with Google/GitHub client placeholders in code/user-service/src/main/resources/application.yaml
-- [ ] T003 [P] Create AuthProvider Enum in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/AuthProvider.java
+- [x] T001 Configure Spring Security OAuth2 Client dependency in code/user-service/build.gradle.kts
+- [x] T002 [P] Update application.yml with Google/GitHub client placeholders in code/user-service/src/main/resources/application.yaml
+- [x] T003 [P] Create AuthProvider Enum (Cancelled: using String providerName)
 
 ---
 
@@ -39,11 +39,11 @@ description: "Task list template for feature implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Create Flyway V2 migration to update users table (add provider cols, drop unique constraint on email, make email nullable, drop password column) in code/user-service/src/main/resources/db/migration/V2__social_login_schema.sql
-- [ ] T005 Update User Entity with provider composite key and nullable email in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/User.java
+- [x] T004 Create Flyway V2 migration to update users table (Merged into V1) in code/user-service/src/main/resources/db/migration/V1__init_schema.sql
+- [x] T005 Update User Entity with provider composite key in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/User.java
 - [ ] T006 Update UserProfile Entity with avatarUrl and locale fields in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/UserProfile.java
-- [ ] T007 [P] Create CustomOAuth2User model for mapping IdP attributes in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/security/CustomOAuth2User.java
-- [ ] T008 [P] Implement CustomOAuth2UserService for user provisioning logic in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/CustomOAuth2UserService.java
+- [x] T007 [P] Create CustomOAuth2User model (Replaced by FederatedIdentityTokenCustomizer logic)
+- [x] T008 [P] Implement CustomOAuth2UserService (Replaced by FederatedIdentityTokenCustomizer logic)
 
 **Checkpoint**: DB schema updated, basic OAuth2 user mapping logic ready.
 
@@ -61,10 +61,10 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Update SecurityConfig to enable oauth2Login() with Google registration in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
-- [ ] T011 [US1] Implement GoogleUserInfoMapper to map attributes to User entity in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/mapper/GoogleUserInfoMapper.java
-- [ ] T012 [US1] Update CustomOAuth2UserService to handle Google provider specifics in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/CustomOAuth2UserService.java
-- [ ] T013 [US1] Implement SuccessHandler to issue internal JWT after Google login in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/security/OAuth2LoginSuccessHandler.java
+- [x] T010 [US1] Update SecurityConfig to enable oauth2Login() with Google registration in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
+- [ ] T011 [US1] Implement GoogleUserInfoMapper to map attributes to User entity (Pending integration with TokenCustomizer)
+- [x] T012 [US1] Update CustomOAuth2UserService (Replaced by FederatedIdentityTokenCustomizer)
+- [ ] T013 [US1] Implement SuccessHandler to issue internal JWT after Google login (Handled by Auth Server flow)
 
 **Checkpoint**: User can login via Google, account created, JWT issued.
 
@@ -82,9 +82,9 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T015 [US2] Update SecurityConfig to add GitHub registration in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
-- [ ] T016 [US2] Implement GitHubUserInfoMapper to map attributes (handle null email) in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/mapper/GitHubUserInfoMapper.java
-- [ ] T017 [US2] Update CustomOAuth2UserService to handle GitHub provider specifics in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/CustomOAuth2UserService.java
+- [x] T015 [US2] Update SecurityConfig to add GitHub registration in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
+- [ ] T016 [US2] Implement GitHubUserInfoMapper to map attributes (handle null email) (Pending integration with TokenCustomizer)
+- [x] T017 [US2] Update CustomOAuth2UserService (Replaced by FederatedIdentityTokenCustomizer)
 - [ ] T018 [P] [US2] Configure Keycloak realm (realm.json) and Testcontainers setup for E2E tests in code/user-service/src/test/resources/keycloak/realm.json
 - [ ] T019 [US2] Create Playwright E2E Test using Testcontainers and Keycloak to simulate GitHub login in code/user-service/src/test/java/vn/id/thongdanghoang/user_service/e2e/SocialLoginE2ETest.java
 
