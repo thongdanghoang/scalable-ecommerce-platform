@@ -41,7 +41,7 @@ description: "Task list template for feature implementation"
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
 - [x] T005 Create BaseEntity with auditing in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/BaseEntity.java
-- [ ] T006 Create User and UserProfile Entities in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/
+- [x] T006 Create User and UserProfile Entities in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/
 - [x] T007 Create Flyway V1 migration script for users and profiles tables in code/user-service/src/main/resources/db/migration/V1__init_schema.sql
 - [ ] T008 [P] Implement Global Exception Handler and ErrorResponse DTO in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/exception/GlobalExceptionHandler.java
 - [x] T009 Set up SecurityConfig skeleton (PasswordEncoder, SecurityFilterChain) in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
@@ -54,18 +54,13 @@ description: "Task list template for feature implementation"
 
 **Goal**: Allow users to sign up with email/password.
 
-**Independent Test**: Contract test for /auth/register and Integration test for successful registration.
-
-### Tests for User Story 1 ⚠️
+**Note**: Traditional password registration is replaced by Social Login (Feature 003).
 
 - [ ] T010 [P] [US1] Create Contract Test for registration endpoint in code/user-service/src/test/java/vn/id/thongdanghoang/user_service/contract/AuthContractTest.java
-
-### Implementation for User Story 1
-
 - [ ] T011 [P] [US1] Create RegistrationRequest and AuthResponse DTOs in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/dto/
-- [ ] T012 [P] [US1] Create UserRepository interface in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/repository/UserRepository.java
+- [x] T012 [P] [US1] Create UserRepository interface in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/repository/UserRepository.java
 - [ ] T013 [P] [US1] Create UserMapper using MapStruct in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/mapper/UserMapper.java
-- [ ] T014 [US1] Implement UserService.registerUser logic (hashing, saving) in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/UserService.java
+- [x] T014 [US1] Implement UserService logic (adapted for social login) in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/UserService.java
 - [ ] T015 [US1] Implement AuthController.register endpoint in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/api/AuthController.java
 - [ ] T016 [US1] Create Integration Test for Registration Flow in code/user-service/src/test/java/vn/id/thongdanghoang/user_service/it/RegistrationIntegrationTest.java
 
@@ -77,14 +72,9 @@ description: "Task list template for feature implementation"
 
 **Goal**: Allow users to login and receive JWT.
 
-**Independent Test**: E2E Login Flow.
-
-### Tests for User Story 2 ⚠️
+**Note**: Traditional password login is replaced by Social Login (Feature 003).
 
 - [ ] T017 [P] [US2] Create Contract Test for login endpoint in code/user-service/src/test/java/vn/id/thongdanghoang/user_service/contract/AuthContractTest.java
-
-### Implementation for User Story 2
-
 - [ ] T018 [P] [US2] Create LoginRequest DTO in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/dto/LoginRequest.java
 - [ ] T019 [US2] Implement JwtService for token generation/validation in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/JwtService.java
 - [ ] T020 [US2] Implement UserService.authenticate logic in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/UserService.java
@@ -100,16 +90,9 @@ description: "Task list template for feature implementation"
 
 **Goal**: View and update user profile.
 
-**Independent Test**: Integration test for Profile update.
-
-### Tests for User Story 3 ⚠️
-
 - [ ] T024 [P] [US3] Create Contract Test for /users/me endpoints in code/user-service/src/test/java/vn/id/thongdanghoang/user_service/contract/ProfileContractTest.java
-
-### Implementation for User Story 3
-
 - [ ] T025 [P] [US3] Create UserProfileResponse and UpdateProfileRequest DTOs in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/dto/
-- [ ] T026 [P] [US3] Create UserProfileRepository in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/repository/UserProfileRepository.java
+- [x] T026 [P] [US3] Create UserProfileRepository in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/repository/UserProfileRepository.java
 - [ ] T027 [US3] Implement UserService.getProfile/updateProfile in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/UserService.java
 - [ ] T028 [US3] Implement ProfileController endpoints in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/api/ProfileController.java
 - [ ] T029 [US3] Update SecurityConfig to secure /users/** endpoints in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
