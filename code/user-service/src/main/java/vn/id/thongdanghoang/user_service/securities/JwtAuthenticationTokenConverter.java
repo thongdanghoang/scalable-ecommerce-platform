@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -24,7 +23,6 @@ public class JwtAuthenticationTokenConverter implements Converter<Jwt, JwtAuthen
         this.userRepository = userRepository;
     }
 
-    @Nullable
     @Override
     @Transactional(readOnly = true)
     public JwtAuthenticationTokenDecorator convert(Jwt source) {
