@@ -16,13 +16,13 @@ create table user_profiles
     version            integer      not null,
     created_date       timestamp(6) not null,
     last_modified_date timestamp(6) not null,
-    user_id            uuid         not null,
+    user_id            uuid         not null unique,
     first_name         varchar(255),
     last_name          varchar(255),
     phone_number       varchar(255),
     address            varchar(255),
     email              varchar(255),
-    primary key (user_id)
+    primary key (id)
 );
 alter table if exists user_profiles
     add constraint fk_users_user_profile foreign key (user_id) references users;

@@ -17,7 +17,8 @@ erDiagram
         Timestamp updated_at
     }
     USER_PROFILES {
-        UUID user_id FK, PK
+        UUID id PK
+        UUID user_id FK
         String email UK
         String first_name
         String last_name
@@ -53,7 +54,8 @@ Personal information separate from credentials. 1:1 relationship with `users`.
 
 | Column         | Type         | Constraints        | Description   |
 |:---------------|:-------------|:-------------------|:--------------|
-| `user_id`      | UUID         | PK, FK(`users.id`) | Links to User |
+| `id`           | UUID         | PK, Not Null       | Unique identifier |
+| `user_id`      | UUID         | FK(`users.id`)     | Links to User |
 | `email`        | VARCHAR(255) | UK, Not Null       | User login handle |
 | `first_name`   | VARCHAR(100) | Nullable           |               |
 | `last_name`    | VARCHAR(100) | Nullable           |               |
@@ -68,11 +70,13 @@ Personal information separate from credentials. 1:1 relationship with `users`.
 
 ```java
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "users", uniqueConstraints = {
     @UniqueConstraint(name = "uq_users_provider", columnNames = {"provider_id", "provider_name"})
 })
-@Data // Lombok
 public class User extends AuditableEntity {
     private String providerName; // LOCAL, GOOGLE, GITHUB
 
@@ -88,13 +92,14 @@ public class User extends AuditableEntity {
 
 ```java
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "user_profiles")
-@Data
 public class UserProfile extends AuditableEntity {
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(unique = true, nullable = false)
