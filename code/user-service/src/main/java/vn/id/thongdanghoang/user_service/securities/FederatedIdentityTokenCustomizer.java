@@ -1,5 +1,6 @@
 package vn.id.thongdanghoang.user_service.securities;
 
+import vn.id.thongdanghoang.user_service.entities.OidcProvider;
 import vn.id.thongdanghoang.user_service.entities.User;
 import vn.id.thongdanghoang.user_service.entities.UserProfile;
 import vn.id.thongdanghoang.user_service.repositories.UserRepository;
@@ -37,23 +38,24 @@ public class FederatedIdentityTokenCustomizer implements OAuth2TokenCustomizer<J
         var providerId = token.getPrincipal().getName();
         var providerName = token.getAuthorizedClientRegistrationId();
         var attributes = token.getPrincipal().getAttributes();
+        var oidcProvider = OidcProvider.fromValue(providerName);
 
         log.info("Creating new user for provider: {}", providerName);
         var user = new User();
         user.setProviderId(providerId);
-        user.setProviderName(providerName);
+        user.setProviderName(oidcProvider);
 
         var userProfile = new UserProfile();
         userProfile.setUser(userService.insert(user));
 
-        if ("google".equals(providerName)) {
-            userProfile.setEmail((String) attributes.get("email"));
-            userProfile.setFirstName((String) attributes.get("given_name"));
-            userProfile.setLastName((String) attributes.get("family_name"));
-        } else if ("github".equals(providerName)) {
-            userProfile.setEmail((String) attributes.get("email"));
-            userProfile.setAddress((String) attributes.get("location"));
-            String name = (String) attributes.get("name");
+        if (OidcProvider.GOOGLE == oidcProvider) {
+            userProfile.setEmail((String) attributes.get(OidcProvider.ATTRIBUTE_EMAIL));
+            userProfile.setFirstName((String) attributes.get(OidcProvider.ATTRIBUTE_GOOGLE_GIVEN_NAME));
+            userProfile.setLastName((String) attributes.get(OidcProvider.ATTRIBUTE_GOOGLE_FAMILY_NAME));
+        } else if (OidcProvider.GITHUB == oidcProvider) {
+            userProfile.setEmail((String) attributes.get(OidcProvider.ATTRIBUTE_EMAIL));
+            userProfile.setAddress((String) attributes.get(OidcProvider.ATTRIBUTE_GITHUB_LOCATION));
+            String name = (String) attributes.get(OidcProvider.ATTRIBUTE_GITHUB_NAME);
             if (name != null && !name.isBlank()) {
                 String[] parts = name.trim().split(" ", 2);
                 userProfile.setFirstName(parts[0]);
@@ -61,7 +63,7 @@ public class FederatedIdentityTokenCustomizer implements OAuth2TokenCustomizer<J
                     userProfile.setLastName(parts[1]);
                 }
             } else {
-                userProfile.setFirstName((String) attributes.get("login"));
+                userProfile.setFirstName((String) attributes.get(OidcProvider.ATTRIBUTE_GITHUB_LOGIN));
             }
         }
 

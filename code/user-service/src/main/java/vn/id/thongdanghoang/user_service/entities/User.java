@@ -13,6 +13,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import org.hibernate.annotations.Fetch;
@@ -42,6 +43,6 @@ public class User extends AuditableEntity {
     @NotBlank @Size(max = 255) @Column(name = "provider_id", nullable = false)
     private String providerId;
 
-    @NotBlank @Size(max = 255) @Column(name = "provider_name", nullable = false)
-    private String providerName;
+    @NotNull @Column(name = "provider_name", nullable = false)
+    private OidcProvider providerName;
 }
