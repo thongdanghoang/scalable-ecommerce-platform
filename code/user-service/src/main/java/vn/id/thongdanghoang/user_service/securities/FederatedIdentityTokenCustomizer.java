@@ -7,6 +7,7 @@ import vn.id.thongdanghoang.user_service.services.UserService;
 
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
@@ -49,7 +50,16 @@ public class FederatedIdentityTokenCustomizer implements OAuth2TokenCustomizer<J
         log.debug("Customizing token for provider: {}, principal: {}", providerName, providerId);
 
         var user = userRepository.findByProviderId(providerId)
-                .orElseGet(() -> createNewUser(providerId, providerName));
+                .orElseGet(() -> {
+                    try {
+                        return createNewUser(providerId, providerName);
+                    } catch (DataIntegrityViolationException e) {
+                        log.debug("Concurrent creation detected for providerId: {}. Retrying find.", providerId);
+                        return userRepository.findByProviderId(providerId)
+                                .orElseThrow(
+                                        () -> new RuntimeException("User creation failed and user not found after retry", e));
+                    }
+                });
 
         return OidcUserInfo.builder()
                 .subject(user.getId().toString())
