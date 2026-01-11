@@ -33,13 +33,38 @@ public class FederatedIdentityTokenCustomizer implements OAuth2TokenCustomizer<J
         }
     }
 
-    private User createNewUser(String providerId, String providerName) {
+    private User createNewUser(OAuth2AuthenticationToken token) {
+        var providerId = token.getPrincipal().getName();
+        var providerName = token.getAuthorizedClientRegistrationId();
+        var attributes = token.getPrincipal().getAttributes();
+
         log.info("Creating new user for provider: {}", providerName);
         var user = new User();
         user.setProviderId(providerId);
         user.setProviderName(providerName);
+
         var userProfile = new UserProfile();
         userProfile.setUser(userService.insert(user));
+
+        if ("google".equals(providerName)) {
+            userProfile.setEmail((String) attributes.get("email"));
+            userProfile.setFirstName((String) attributes.get("given_name"));
+            userProfile.setLastName((String) attributes.get("family_name"));
+        } else if ("github".equals(providerName)) {
+            userProfile.setEmail((String) attributes.get("email"));
+            userProfile.setAddress((String) attributes.get("location"));
+            String name = (String) attributes.get("name");
+            if (name != null && !name.isBlank()) {
+                String[] parts = name.trim().split(" ", 2);
+                userProfile.setFirstName(parts[0]);
+                if (parts.length > 1) {
+                    userProfile.setLastName(parts[1]);
+                }
+            } else {
+                userProfile.setFirstName((String) attributes.get("login"));
+            }
+        }
+
         return userService.insert(userProfile).getUser();
     }
 
@@ -52,7 +77,7 @@ public class FederatedIdentityTokenCustomizer implements OAuth2TokenCustomizer<J
         var user = userRepository.findByProviderId(providerId)
                 .orElseGet(() -> {
                     try {
-                        return createNewUser(providerId, providerName);
+                        return createNewUser(token);
                     } catch (DataIntegrityViolationException e) {
                         log.debug("Concurrent creation detected for providerId: {}. Retrying find.", providerId);
                         return userRepository.findByProviderId(providerId)
