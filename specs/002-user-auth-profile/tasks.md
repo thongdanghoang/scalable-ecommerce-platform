@@ -91,11 +91,11 @@ description: "Task list template for feature implementation"
 **Goal**: View and update user profile.
 
 - [ ] T024 [P] [US3] Create Contract Test for /users/me endpoints in code/user-service/src/test/java/vn/id/thongdanghoang/user_service/contract/ProfileContractTest.java
-- [ ] T025 [P] [US3] Create UserProfileResponse and UpdateProfileRequest DTOs in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/dto/
+- [x] T025 [P] [US3] Create UserProfileResponse and UpdateProfileRequest DTOs in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/dto/
 - [x] T026 [P] [US3] Create UserProfileRepository in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/repository/UserProfileRepository.java
-- [ ] T027 [US3] Implement UserService.getProfile/updateProfile in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/UserService.java
-- [ ] T028 [US3] Implement ProfileController endpoints in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/api/ProfileController.java
-- [ ] T029 [US3] Update SecurityConfig to secure /users/** endpoints in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
+- [x] T027 [US3] Implement UserService.getProfile/updateProfile in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/UserService.java
+- [x] T028 [US3] Implement ProfileController endpoints in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/api/ProfileController.java
+- [x] T029 [US3] Update SecurityConfig to secure /users/** endpoints in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/config/SecurityConfig.java
 - [ ] T030 [US3] Create Integration Test for Profile Operations in code/user-service/src/test/java/vn/id/thongdanghoang/user_service/it/ProfileIntegrationTest.java
 
 **Checkpoint**: User can view/update profile using JWT.

@@ -41,7 +41,7 @@ description: "Task list template for feature implementation"
 
 - [x] T004 Create Flyway V2 migration to update users table (Merged into V1) in code/user-service/src/main/resources/db/migration/V1__init_schema.sql
 - [x] T005 Update User Entity with provider composite key in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/User.java
-- [ ] T006 Update UserProfile Entity with avatarUrl and locale fields in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/UserProfile.java
+- [ ] T006 Update UserProfile Entity fields in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/UserProfile.java
 - [x] T007 [P] Create CustomOAuth2User model (Replaced by FederatedIdentityTokenCustomizer logic)
 - [x] T008 [P] Implement CustomOAuth2UserService (Replaced by FederatedIdentityTokenCustomizer logic)
 

@@ -1,5 +1,6 @@
 package vn.id.thongdanghoang.user_service.it;
 
+import vn.id.thongdanghoang.user_service.entities.OidcProvider;
 import vn.id.thongdanghoang.user_service.entities.User;
 import vn.id.thongdanghoang.user_service.repositories.UserRepository;
 
@@ -18,7 +19,11 @@ public class UserEntityTest {
 
     @Test
     void equalsAndHashCodeTest() {
-        var saved = userRepository.save(new User());
+        var newUser = new User();
+        newUser.setProviderId("google-123");
+        newUser.setProviderName(OidcProvider.GOOGLE);
+
+        var saved = userRepository.save(newUser);
 
         var savedId = saved.getId();
         var user = userRepository.findById(savedId).orElseThrow();
