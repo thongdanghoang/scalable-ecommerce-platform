@@ -1,7 +1,7 @@
 quarkus:
   datasource:
     jdbc:
-      url: 'jdbc:postgresql://localhost:5432/payment_service?serverTimezone=UTC'
+      url: 'jdbc:postgresql://localhost:5432/promotion_service?serverTimezone=UTC'
     db-kind: postgresql
     metrics:
       enabled: true
@@ -18,7 +18,7 @@ quarkus:
       format-sql: false
     physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
   http:
-    port: 8081
+    port: 8083
     auth:
       permission:
         authenticated:
@@ -36,13 +36,18 @@ quarkus:
       console:
         console:
           format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] %X (%t) %s%e%n"
-
 kafka:
   bootstrap:
     servers: localhost:9092
 
 mp:
   messaging:
-    outgoing:
-      payment-initiated-topic:
+    incoming:
+      payment-in:
         topic: "payment.initiated"
+        auto:
+          offset:
+            reset: "earliest"
+    outgoing:
+      promotion-out:
+        topic: "promotion.applied"
