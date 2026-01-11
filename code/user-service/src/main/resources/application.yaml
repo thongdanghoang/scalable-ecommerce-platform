@@ -64,3 +64,5 @@ spring:
                 - openid
             require-authorization-consent: false
             require-proof-key: true
+            token:
+              access-token-time-to-live: PT2H

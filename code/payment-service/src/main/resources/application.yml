@@ -1,0 +1,68 @@
+quarkus:
+  datasource:
+    jdbc:
+      url: 'jdbc:postgresql://localhost:5432/payment_service?serverTimezone=UTC'
+    db-kind: postgresql
+    metrics:
+      enabled: true
+    password: postgres
+    username: postgres
+  hibernate-orm:
+    query:
+      fail-on-pagination-over-collection-fetch: true
+    schema-management:
+      strategy: drop-and-create
+    second-level-caching-enabled: false
+    log:
+      sql: false
+      format-sql: false
+    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  http:
+    port: 8081
+    auth:
+      permission:
+        authenticated:
+          paths: /*
+          policy: authenticated
+  oidc:
+    enabled: true
+    auth-server-url: http://localhost:8080
+    client-id: postman
+    application-type: SERVICE
+    authentication:
+      user-info-required: true
+  log:
+    category:
+      "vn.id.thongdanghoang":
+        level: DEBUG
+        handlers: console
+        use-parent-handlers: false
+      "vn.id.thongdanghoang.apilog":
+        level: INFO
+        handlers: access
+        use-parent-handlers: false
+    handler:
+      syslog:
+        access:
+          enable: true
+          app-name: payment-service
+          format: "%s%n"
+      console:
+        console:
+          format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] %X (%t) %s%e%n"
+
+kafka:
+  bootstrap:
+    servers: localhost:9092
+
+mp:
+  messaging:
+    outgoing:
+      words-out:
+        topic: "words"
+    incoming:
+      words-in:
+        topic: "words"
+        auto:
+          offset:
+            reset: "earliest"
