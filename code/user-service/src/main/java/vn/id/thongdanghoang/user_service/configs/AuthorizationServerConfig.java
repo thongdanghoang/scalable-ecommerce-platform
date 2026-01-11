@@ -44,7 +44,7 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    @Order(2)
+    @Order(3)
     public SecurityFilterChain restSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher(RestResourceConfiguration.REST_PATH_PREFIX_PATTERN)

@@ -8,6 +8,7 @@ import vn.id.thongdanghoang.user_service.services.UserProfileService;
 import java.util.UUID;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -42,10 +43,7 @@ public class UserProfileResource {
         return ResponseEntity.ok(userProfileService.updateProfile(userId, request));
     }
 
-    private UUID getUserIdFromAuthentication(Authentication authentication) {
-        if (authentication == null) {
-            return null;
-        }
+    private UUID getUserIdFromAuthentication(@NotNull Authentication authentication) {
         var principal = authentication.getPrincipal();
         if (!(principal instanceof UserContextData currentUser)) {
             throw new IllegalArgumentException("Unsupported authentication principal type");
