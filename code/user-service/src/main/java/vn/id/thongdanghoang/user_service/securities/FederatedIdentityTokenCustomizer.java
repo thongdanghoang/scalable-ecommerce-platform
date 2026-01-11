@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
@@ -38,7 +40,15 @@ public class FederatedIdentityTokenCustomizer implements OAuth2TokenCustomizer<J
         var providerId = token.getPrincipal().getName();
         var providerName = token.getAuthorizedClientRegistrationId();
         var attributes = token.getPrincipal().getAttributes();
-        var oidcProvider = OidcProvider.fromValue(providerName);
+
+        OidcProvider oidcProvider;
+        try {
+            oidcProvider = OidcProvider.fromValue(providerName);
+        } catch (IllegalArgumentException e) {
+            log.error("Unsupported OAuth provider: {}", providerName);
+            throw new OAuth2AuthenticationException(
+                    new OAuth2Error("invalid_provider", "Unsupported OAuth provider: " + providerName, null));
+        }
 
         log.info("Creating new user for provider: {}", providerName);
         var user = new User();
