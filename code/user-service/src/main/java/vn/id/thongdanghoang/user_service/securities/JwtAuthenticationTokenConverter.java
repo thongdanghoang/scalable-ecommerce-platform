@@ -24,11 +24,14 @@ public class JwtAuthenticationTokenConverter implements Converter<Jwt, JwtAuthen
         this.userRepository = userRepository;
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     @Transactional(readOnly = true)
     public JwtAuthenticationTokenDecorator convert(Jwt source) {
+        var sub = Objects.requireNonNull(source.getClaims().get("sub"), "JWT 'sub' claim is required");
+        var userId = UUID.fromString(sub.toString());
         var retrievedUser = userRepository
-                .findById(UUID.fromString(Objects.requireNonNull(source.getClaims().get("sub")).toString()))
+                .findById(userId)
                 .map(user -> JpaUtils.initialize(user, User_.AUTHORITIES))
                 .orElseThrow();
         var authorities = retrievedUser.getAuthorities()
