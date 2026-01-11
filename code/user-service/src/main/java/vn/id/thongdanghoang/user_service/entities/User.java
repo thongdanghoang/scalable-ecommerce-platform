@@ -26,7 +26,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @jakarta.persistence.UniqueConstraint(name = "uq_users_provider", columnNames = { "provider_id", "provider_name" })
+})
 public class User extends AuditableEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -37,7 +39,7 @@ public class User extends AuditableEntity {
     @Column(name = "disabled")
     private boolean disabled;
 
-    @NotBlank @Size(max = 255) @Column(name = "provider_id", nullable = false, unique = true)
+    @NotBlank @Size(max = 255) @Column(name = "provider_id", nullable = false)
     private String providerId;
 
     @NotBlank @Size(max = 255) @Column(name = "provider_name", nullable = false)

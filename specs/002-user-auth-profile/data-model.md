@@ -10,7 +10,7 @@ erDiagram
     USERS ||--|| USER_PROFILES: "has"
     USERS {
         UUID id PK
-        String provider
+        String provider_name
         String provider_id
         Boolean enabled
         Timestamp created_at
@@ -37,13 +37,15 @@ Core identity table. Handles authentication credentials and account status.
 | Column          | Type         | Constraints  | Description                           |
 |:----------------|:-------------|:-------------|:--------------------------------------|
 | `id`            | UUID         | PK, Not Null | Unique identifier                     |
-| `provider`      | VARCHAR(50)  | Not Null     | Auth provider (LOCAL, GOOGLE, GITHUB) |
-| `provider_id`   | VARCHAR(255) | Nullable     | ID from external provider             |
+| `provider_name` | VARCHAR(50)  | Not Null     | Auth provider (LOCAL, GOOGLE, GITHUB) |
+| `provider_id`   | VARCHAR(255) | Not Null     | ID from external provider             |
 | `enabled`       | BOOLEAN      | Default TRUE | Account active status                 |
 | `created_at`    | TIMESTAMP    | Not Null     | Audit timestamp                       |
 | `updated_at`    | TIMESTAMP    | Not Null     | Audit timestamp                       |
 
 **Indexes**:
+
+- `idx_users_provider_identity` (Unique: provider_id, provider_name)
 
 ### 2. Table: `user_profiles`
 
@@ -67,15 +69,16 @@ Personal information separate from credentials. 1:1 relationship with `users`.
 ```java
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+    @UniqueConstraint(name = "uq_users_provider", columnNames = {"provider_id", "provider_name"})
+})
 @Data // Lombok
 public class User extends AuditableEntity {
-    @Enumerated(EnumType.STRING)
-    private AuthProvider provider; // LOCAL, GOOGLE, GITHUB
+    private String providerName; // LOCAL, GOOGLE, GITHUB
 
     private String providerId;
 
-    private boolean enabled = true;
+    private boolean disabled = false;
 
     // BaseEntity handles created/updated_at with @PrePersist/@PreUpdate
 }

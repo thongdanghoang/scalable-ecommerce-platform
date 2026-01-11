@@ -4,10 +4,11 @@ create table users
     version            integer      not null,
     created_date       timestamp(6) not null,
     last_modified_date timestamp(6) not null,
-    provider_id        varchar(255) not null unique,
+    provider_id        varchar(255) not null,
     provider_name      varchar(255) not null,
     disabled           boolean      not null,
-    primary key (id)
+    primary key (id),
+    unique (provider_id, provider_name)
 );
 create table user_profiles
 (
