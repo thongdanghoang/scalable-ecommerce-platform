@@ -1,0 +1,27 @@
+package vn.id.thongdanghoang.user_service.securities;
+
+import vn.id.thongdanghoang.user_service.entities.User;
+
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+@Builder
+public class UserContextData implements UserDetails {
+
+    private final List<GrantedAuthority> authorities;
+
+    @Deprecated
+    private final String password;
+
+    private final User user;
+    @Deprecated
+    private final String username;
+}
