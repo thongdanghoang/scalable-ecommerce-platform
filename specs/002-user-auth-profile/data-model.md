@@ -10,7 +10,6 @@ erDiagram
     USERS ||--|| USER_PROFILES: "has"
     USERS {
         UUID id PK
-        String email UK
         String provider
         String provider_id
         Boolean enabled
@@ -19,6 +18,7 @@ erDiagram
     }
     USER_PROFILES {
         UUID user_id FK, PK
+        String email UK
         String first_name
         String last_name
         String phone_number
@@ -37,7 +37,6 @@ Core identity table. Handles authentication credentials and account status.
 | Column          | Type         | Constraints  | Description                           |
 |:----------------|:-------------|:-------------|:--------------------------------------|
 | `id`            | UUID         | PK, Not Null | Unique identifier                     |
-| `email`         | VARCHAR(255) | UK, Not Null | User login handle                     |
 | `provider`      | VARCHAR(50)  | Not Null     | Auth provider (LOCAL, GOOGLE, GITHUB) |
 | `provider_id`   | VARCHAR(255) | Nullable     | ID from external provider             |
 | `enabled`       | BOOLEAN      | Default TRUE | Account active status                 |
@@ -46,8 +45,6 @@ Core identity table. Handles authentication credentials and account status.
 
 **Indexes**:
 
-- `idx_users_email` (Unique)
-
 ### 2. Table: `user_profiles`
 
 Personal information separate from credentials. 1:1 relationship with `users`.
@@ -55,6 +52,7 @@ Personal information separate from credentials. 1:1 relationship with `users`.
 | Column         | Type         | Constraints        | Description   |
 |:---------------|:-------------|:-------------------|:--------------|
 | `user_id`      | UUID         | PK, FK(`users.id`) | Links to User |
+| `email`        | VARCHAR(255) | UK, Not Null       | User login handle |
 | `first_name`   | VARCHAR(100) | Nullable           |               |
 | `last_name`    | VARCHAR(100) | Nullable           |               |
 | `phone_number` | VARCHAR(20)  | Nullable           |               |
