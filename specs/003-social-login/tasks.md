@@ -39,8 +39,8 @@ description: "Task list template for feature implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Create Flyway V2 migration to update users table (add provider cols, drop unique constraint on email, make email nullable, drop password column) in code/user-service/src/main/resources/db/migration/V2__social_login_schema.sql
-- [ ] T005 Update User Entity with provider composite key and nullable email in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/User.java
+- [ ] T004 Create Flyway V2 migration to update users table (add provider cols, drop email column, drop password column) in code/user-service/src/main/resources/db/migration/V2__social_login_schema.sql
+- [ ] T005 Update User Entity with provider composite key in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/User.java
 - [ ] T006 Update UserProfile Entity with avatarUrl and locale fields in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/model/UserProfile.java
 - [ ] T007 [P] Create CustomOAuth2User model for mapping IdP attributes in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/security/CustomOAuth2User.java
 - [ ] T008 [P] Implement CustomOAuth2UserService for user provisioning logic in code/user-service/src/main/java/vn/id/thongdanghoang/user_service/domain/CustomOAuth2UserService.java

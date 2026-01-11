@@ -14,8 +14,9 @@
 
 ### 2. Identity Model Changes
 - **Decision**: Composite Key (`provider` + `provider_id`)
-- **Rationale**: Emails are no longer guaranteed unique or present (GitHub privacy). `provider` (ENUM) + `provider_id` (String) will strictly identify a user account.
-- **Migration**: Existing `email` column becomes nullable and non-unique index (or secondary index).
+- **Rationale**: Emails are no longer guaranteed unique or present (GitHub privacy). `provider_name` (String) + `provider_id` (String) will strictly identify a user account.
+- **Migration**: Existing `email` column is moved to `UserProfile` table.
+- **Email Handling**: Email is strictly "info-only" and synced to `UserProfile` if available. It is NOT the login handle anymore.
 
 ### 3. Testing Strategy
 - **Decision**: MockWebServer for IdP responses + Playwright for UI flow with Testcontainers & Keycloak

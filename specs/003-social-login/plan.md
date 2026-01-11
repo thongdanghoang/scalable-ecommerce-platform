@@ -43,7 +43,7 @@ Implement Social Login (OAuth2) for Google and GitHub, replacing the password-ba
 specs/003-social-login/
 ├── plan.md              # This file
 ├── research.md          # Tech decisions (OAuth2 Client, IdP Behavior)
-├── data-model.md        # Schema delta (Composite Key, Nullable Email)
+├── data-model.md        # Schema delta (Composite Key, Email moved to UserProfile)
 ├── quickstart.md        # OAuth setup instructions
 ├── contracts/           # OpenAPI (Updated)
 │   └── openapi.yaml

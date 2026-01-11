@@ -12,7 +12,7 @@ erDiagram
         UUID id PK
         String provider_name
         String provider_id
-        Boolean enabled
+        Boolean disabled
         Timestamp created_at
         Timestamp updated_at
     }
@@ -40,7 +40,7 @@ Core identity table. Handles authentication credentials and account status.
 | `id`            | UUID         | PK, Not Null | Unique identifier                     |
 | `provider_name` | VARCHAR(50)  | Not Null     | Auth provider (LOCAL, GOOGLE, GITHUB) |
 | `provider_id`   | VARCHAR(255) | Not Null     | ID from external provider             |
-| `enabled`       | BOOLEAN      | Default TRUE | Account active status                 |
+| `disabled`      | BOOLEAN      | Default FALSE| Account disabled status               |
 | `created_at`    | TIMESTAMP    | Not Null     | Audit timestamp                       |
 | `updated_at`    | TIMESTAMP    | Not Null     | Audit timestamp                       |
 

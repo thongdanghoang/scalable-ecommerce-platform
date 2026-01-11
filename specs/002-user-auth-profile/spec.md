@@ -74,8 +74,8 @@ As a logged-in user, I want to view and update my profile information so that my
 
 ### Key Entities
 
-- **User**: Represents the account credential identity (Email, Password Hash, Account Status).
-- **UserProfile**: Represents the personal details linked to a User (First Name, Last Name, Phone Number, Address).
+- **User**: Represents the account credential identity (Provider Info, Account Status - disabled).
+- **UserProfile**: Represents the personal details linked to a User (Email, First Name, Last Name, Phone Number, Address).
 
 ## Success Criteria *(mandatory)*
 
