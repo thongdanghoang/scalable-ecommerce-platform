@@ -18,7 +18,7 @@ quarkus:
       format-sql: false
     physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
   http:
-    port: 8081
+    port: 8083
     auth:
       permission:
         authenticated:
@@ -26,7 +26,7 @@ quarkus:
           policy: authenticated
   oidc:
     enabled: true
-    auth-server-url: http://localhost:8080
+    auth-server-url: http://localhost:8180
     client-id: postman
     application-type: SERVICE
     authentication:
