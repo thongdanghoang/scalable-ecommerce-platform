@@ -23,6 +23,10 @@ jobs:
       contents: read
       packages: write
 
+    defaults:
+      run:
+        working-directory: code/payment-service
+    
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 21
@@ -37,12 +41,12 @@ jobs:
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
     - name: Build with Gradle
-      run: ./code/payment-service/gradlew build
+      run: ./gradlew build
 
     # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
     # the publishing section of your build.gradle
     - name: Publish to GitHub Packages
-      run: ./code/payment-service/gradlew publish
+      run: ./gradlew publish
       env:
         USERNAME: ${{ github.actor }}
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
