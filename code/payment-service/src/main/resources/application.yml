@@ -8,8 +8,6 @@ quarkus:
     password: postgres
     username: postgres
   hibernate-orm:
-    query:
-      fail-on-pagination-over-collection-fetch: true
     schema-management:
       strategy: drop-and-create
     second-level-caching-enabled: false
@@ -40,7 +38,7 @@ quarkus:
         console:
           format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] %X (%t) %s%e%n"
   smallrye-openapi:
-    store-schema-directory: build
+    store-schema-directory: build/generated
 
 kafka:
   bootstrap:
@@ -48,15 +46,7 @@ kafka:
 
 mp:
   messaging:
-    connector:
-      smallrye-kafka:
-        schema:
-          registry:
-            url: http://localhost:8081
     outgoing:
       payment-initiated-topic:
         topic: "payment.initiated"
         connector: smallrye-kafka
-        apicurio:
-          registry:
-            auto-register: true

@@ -48,6 +48,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+quarkus {
+    quarkusBuildProperties.put("quarkus.hibernate-orm.query.fail-on-pagination-over-collection-fetch", "true")
+}
+
 tasks.withType<Test> {
     systemProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager")
     jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")

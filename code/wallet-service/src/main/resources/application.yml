@@ -8,8 +8,6 @@ quarkus:
     password: postgres
     username: postgres
   hibernate-orm:
-    query:
-      fail-on-pagination-over-collection-fetch: true
     schema-management:
       strategy: drop-and-create
     second-level-caching-enabled: false
