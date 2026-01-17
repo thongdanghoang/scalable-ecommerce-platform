@@ -1,17 +1,18 @@
 package vn.id.thongdanghoang.sep.payment_service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
 
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 
-import io.quarkus.runtime.StartupEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,23 +27,17 @@ public class PaymentResource {
     @Channel("payment-initiated-topic")
     Emitter<PaymentInitiated> emitter;
 
-    /**
-     * Sends message to the "words-out" channel, can be used from a JAX-RS resource or any bean of your application.
-     * Messages are sent to the broker.
-     **/
-    void onStart(@Observes StartupEvent ev) throws InterruptedException, JsonProcessingException {
-        while (true) {
-            var min = 1000;
-            var max = 5000;
-            var delayMillis = random.nextInt(max - min + 1) + min;
-            Thread.sleep(delayMillis);
-            var txId = UUID.randomUUID().toString();
-            var amount = delayMillis * 100; // 100k - 500k
-            var voucher = random.nextBoolean() ? "SAVE50" : "FREESHIP"; // Random voucher
+    @Scheduled(every = "1s", delayed = "1s")
+    void sendPaymentEvent() throws JsonProcessingException {
+        var min = 1000;
+        var max = 2000;
+        var delayMillis = random.nextInt(max - min + 1) + min;
+        var txId = UUID.randomUUID().toString();
+        var amount = delayMillis * 100; // 100k - 200k
+        var voucher = random.nextBoolean() ? "SAVE50" : "FREESHIP"; // Random voucher
 
-            var event = new PaymentInitiated(txId, "user-" + random.nextInt(100), amount, voucher);
-            log.info(">> [PAYMENT] Init: {}", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(event));
-            emitter.send(event);
-        }
+        var event = new PaymentInitiated(txId, "user-" + Instant.now(), amount, voucher);
+        log.info(">> [PAYMENT] Init: {}", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(event));
+        emitter.send(event);
     }
 }
