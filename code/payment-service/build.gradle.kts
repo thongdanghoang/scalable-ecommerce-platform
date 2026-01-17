@@ -60,7 +60,11 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/octocat/hello-world")
+            url = uri(
+                System.getenv("GITHUB_REPOSITORY")?.let {
+                    "https://maven.pkg.github.com/$it"
+                } ?: "https://maven.pkg.github.com/thongdanghoang/scalable-ecommerce-platform"
+            )
 
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
