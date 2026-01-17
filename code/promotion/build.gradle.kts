@@ -13,26 +13,31 @@ val quarkusPlatformArtifactId: String by project
 val quarkusPlatformVersion: String by project
 
 dependencies {
-    implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
-    implementation("io.quarkus:quarkus-rest")
-    implementation("io.quarkus:quarkus-smallrye-openapi")
-    implementation("io.quarkus:quarkus-rest-jackson")
-    implementation("io.quarkus:quarkus-messaging-kafka")
-    implementation("io.quarkus:quarkus-oidc")
-    implementation("io.quarkus:quarkus-config-yaml")
-    implementation("io.quarkus:quarkus-hibernate-orm-panache")
-    implementation("io.quarkus:quarkus-smallrye-health")
-    implementation("io.quarkus:quarkus-smallrye-context-propagation")
-    implementation("io.quarkus:quarkus-jdbc-postgresql")
-    implementation("io.quarkus:quarkus-arc")
-    implementation("io.quarkus:quarkus-hibernate-orm")
-    testImplementation("io.quarkus:quarkus-junit5")
-    testImplementation("io.rest-assured:rest-assured")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
 
     compileOnly("org.projectlombok:lombok:1.18.42")
-    annotationProcessor("org.projectlombok:lombok:1.18.42")
-    testCompileOnly("org.projectlombok:lombok:1.18.42")
+
+    implementation("io.quarkus:quarkus-arc")
+    implementation("io.quarkus:quarkus-config-yaml")
+    implementation("io.quarkus:quarkus-hibernate-orm")
+    implementation("io.quarkus:quarkus-hibernate-orm-panache")
+    implementation("io.quarkus:quarkus-jdbc-postgresql")
+    implementation("io.quarkus:quarkus-messaging-kafka")
+    implementation("io.quarkus:quarkus-oidc")
+    implementation("io.quarkus:quarkus-quartz")
+    implementation("io.quarkus:quarkus-rest")
+    implementation("io.quarkus:quarkus-rest-jackson")
+    implementation("io.quarkus:quarkus-smallrye-context-propagation")
+    implementation("io.quarkus:quarkus-smallrye-health")
+    implementation("io.quarkus:quarkus-smallrye-openapi")
+    implementation(enforcedPlatform("$quarkusPlatformGroupId:$quarkusPlatformArtifactId:$quarkusPlatformVersion"))
+
     testAnnotationProcessor("org.projectlombok:lombok:1.18.42")
+
+    testCompileOnly("org.projectlombok:lombok:1.18.42")
+
+    testImplementation("io.quarkus:quarkus-junit5")
+    testImplementation("io.rest-assured:rest-assured")
 }
 
 group = "vn.id.thongdanghoang.sep"

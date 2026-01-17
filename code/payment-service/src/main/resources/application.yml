@@ -24,6 +24,9 @@ quarkus:
         authenticated:
           paths: /*
           policy: authenticated
+        permit:
+          paths: /q/*
+          policy: permit
   oidc:
     enabled: true
     auth-server-url: http://localhost:8180
@@ -36,6 +39,8 @@ quarkus:
       console:
         console:
           format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] %X (%t) %s%e%n"
+  smallrye-openapi:
+    store-schema-directory: build
 
 kafka:
   bootstrap:
@@ -43,6 +48,15 @@ kafka:
 
 mp:
   messaging:
+    connector:
+      smallrye-kafka:
+        schema:
+          registry:
+            url: http://localhost:8081
     outgoing:
       payment-initiated-topic:
         topic: "payment.initiated"
+        connector: smallrye-kafka
+        apicurio:
+          registry:
+            auto-register: true

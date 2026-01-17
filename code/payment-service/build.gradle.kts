@@ -30,7 +30,7 @@ dependencies {
     implementation("io.quarkus:quarkus-smallrye-context-propagation")
     implementation("io.quarkus:quarkus-smallrye-health")
     implementation("io.quarkus:quarkus-smallrye-openapi")
-    implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
+    implementation(enforcedPlatform("$quarkusPlatformGroupId:$quarkusPlatformArtifactId:$quarkusPlatformVersion"))
 
     testAnnotationProcessor("org.projectlombok:lombok:1.18.42")
 
