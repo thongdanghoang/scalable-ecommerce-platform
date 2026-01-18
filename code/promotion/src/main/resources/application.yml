@@ -1,3 +1,7 @@
+avro:
+  codegen:
+    enableDecimalLogicalType: true
+    optionalGettersForNullableFieldsOnly: true
 quarkus:
   datasource:
     jdbc:
@@ -8,6 +12,8 @@ quarkus:
     password: postgres
     username: postgres
   hibernate-orm:
+    query:
+      fail-on-pagination-over-collection-fetch: true
     schema-management:
       strategy: drop-and-create
     second-level-caching-enabled: false
@@ -37,12 +43,19 @@ quarkus:
 kafka:
   bootstrap:
     servers: localhost:9092
+  apicurio:
+    registry:
+      auto-register: true
+      url: http://localhost:8081/apis/registry/v2
 
 mp:
   messaging:
     incoming:
       payment-in:
         topic: "payment.initiated"
+        enable:
+          auto:
+            commit: false
         auto:
           offset:
             reset: "earliest"

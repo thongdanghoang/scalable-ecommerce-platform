@@ -12,6 +12,11 @@ import io.smallrye.mutiny.Uni;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import vn.id.thongdanghoang.sep.schemas.PaymentInitiated;
+import vn.id.thongdanghoang.sep.schemas.PromotionApplied;
+
+import java.math.BigDecimal;
+
 @ApplicationScoped
 @RequiredArgsConstructor
 @Slf4j
@@ -27,21 +32,21 @@ public class PromotionProcessor {
         // Simulate Async Logic (e.g., Calling Redis)
         return Uni.createFrom().item(payload)
                 .map(p -> {
-                    double discount = 0.0;
+                    var discount = BigDecimal.ZERO;
                     String status = "NONE";
 
                     // Simple Logic Engine
-                    if ("SAVE50".equals(p.voucherCode())) {
-                        discount = p.originalAmount() * 0.5;
+                    if ("SAVE50".equals(p.getVoucherCode())) {
+                        discount = p.getOriginalAmount().multiply(BigDecimal.valueOf(0.5));
                         status = "APPLIED";
                     }
 
-                    double finalAmount = p.originalAmount() - discount;
+                    var finalAmount = p.getOriginalAmount().subtract(discount);
 
                     var result = new PromotionApplied(
-                            p.transactionId(),
-                            p.userId(),
-                            p.originalAmount(),
+                            p.getTransactionId(),
+                            p.getUserId(),
+                            p.getOriginalAmount(),
                             discount,
                             finalAmount,
                             status);

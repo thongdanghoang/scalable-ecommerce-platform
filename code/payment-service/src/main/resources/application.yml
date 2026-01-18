@@ -53,6 +53,7 @@ kafka:
     registry:
       auto-register: true
       url: http://localhost:8081/apis/registry/v2
+
 mp:
   messaging:
     outgoing:
