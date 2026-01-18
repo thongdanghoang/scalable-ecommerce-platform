@@ -1,3 +1,6 @@
+server:
+  port: 8180
+
 spring:
   application:
     name: user_service
