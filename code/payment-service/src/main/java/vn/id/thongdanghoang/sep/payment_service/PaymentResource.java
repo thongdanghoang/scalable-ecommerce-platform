@@ -9,6 +9,7 @@ public class PaymentResource {
     @POST
     @Path("/initiate")
     public PromotionApplied initiatePayment(PaymentInitiated payload) {
+        new vn.id.thongdanghoang.sep.schemas.Movie();
         return null;
     }
 }

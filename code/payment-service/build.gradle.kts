@@ -1,3 +1,6 @@
+import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.Delete
+
 plugins {
     java
     id("io.quarkus")
@@ -17,7 +20,9 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok:1.18.42")
 
+    implementation("io.quarkus:quarkus-apicurio-registry-avro")
     implementation("io.quarkus:quarkus-arc")
+    implementation("io.quarkus:quarkus-avro")
     implementation("io.quarkus:quarkus-config-yaml")
     implementation("io.quarkus:quarkus-hibernate-orm")
     implementation("io.quarkus:quarkus-hibernate-orm-panache")
@@ -59,4 +64,18 @@ tasks.withType<Test> {
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
     options.compilerArgs.add("-parameters")
+}
+
+val avroTempDir = file("src/main/avro")
+val copyAvroSchemas by tasks.registering(Copy::class) {
+    from("../schemas/avro")
+    into(avroTempDir)
+    include("**/*.avsc")
+}
+val deleteAvroSchemas by tasks.registering(Delete::class) {
+    delete(avroTempDir)
+}
+tasks.named("quarkusGenerateCode") {
+    dependsOn(copyAvroSchemas)
+    finalizedBy(deleteAvroSchemas)
 }
