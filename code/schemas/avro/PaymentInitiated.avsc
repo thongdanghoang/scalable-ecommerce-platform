@@ -1,0 +1,29 @@
+{
+  "namespace": "vn.id.thongdanghoang.sep.schemas",
+  "type": "record",
+  "name": "PaymentInitiated",
+  "fields": [
+    {
+      "name": "transactionId",
+      "type": "string"
+    },
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "originalAmount",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 20,
+        "scale": 2
+      }
+    },
+    {
+      "name": "voucherCode",
+      "type": ["null", "string"],
+      "default": null
+    }
+  ]
+}

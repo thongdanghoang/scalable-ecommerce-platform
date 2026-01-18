@@ -1,3 +1,8 @@
+avro:
+  codegen:
+    enableDecimalLogicalType: true
+    optionalGettersForNullableFieldsOnly: true
+
 quarkus:
   datasource:
     jdbc:
@@ -18,51 +23,40 @@ quarkus:
       format-sql: false
     physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
   http:
-    port: 8081
+    port: 8083
     auth:
       permission:
         authenticated:
           paths: /*
           policy: authenticated
+        permit:
+          paths: /q/*
+          policy: permit
   oidc:
     enabled: true
-    auth-server-url: http://localhost:8080
+    auth-server-url: http://localhost:8180
     client-id: postman
     application-type: SERVICE
     authentication:
       user-info-required: true
   log:
-    category:
-      "vn.id.thongdanghoang":
-        level: DEBUG
-        handlers: console
-        use-parent-handlers: false
-      "vn.id.thongdanghoang.apilog":
-        level: INFO
-        handlers: access
-        use-parent-handlers: false
     handler:
-      syslog:
-        access:
-          enable: true
-          app-name: payment-service
-          format: "%s%n"
       console:
         console:
           format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] %X (%t) %s%e%n"
+  smallrye-openapi:
+    store-schema-directory: target
 
 kafka:
   bootstrap:
     servers: localhost:9092
+  apicurio:
+    registry:
+      auto-register: true
+      url: http://localhost:8081/apis/registry/v2
 
 mp:
   messaging:
     outgoing:
-      words-out:
-        topic: "words"
-    incoming:
-      words-in:
-        topic: "words"
-        auto:
-          offset:
-            reset: "earliest"
+      payment-initiated-topic:
+        topic: "payment.initiated"

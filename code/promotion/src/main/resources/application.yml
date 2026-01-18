@@ -1,0 +1,64 @@
+avro:
+  codegen:
+    enableDecimalLogicalType: true
+    optionalGettersForNullableFieldsOnly: true
+quarkus:
+  datasource:
+    jdbc:
+      url: 'jdbc:postgresql://localhost:5432/promotion_service?serverTimezone=UTC'
+    db-kind: postgresql
+    metrics:
+      enabled: true
+    password: postgres
+    username: postgres
+  hibernate-orm:
+    query:
+      fail-on-pagination-over-collection-fetch: true
+    schema-management:
+      strategy: drop-and-create
+    second-level-caching-enabled: false
+    log:
+      sql: false
+      format-sql: false
+    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  http:
+    port: 8080
+    auth:
+      permission:
+        authenticated:
+          paths: /*
+          policy: authenticated
+  oidc:
+    enabled: true
+    auth-server-url: http://localhost:8180
+    client-id: postman
+    application-type: SERVICE
+    authentication:
+      user-info-required: true
+  log:
+    handler:
+      console:
+        console:
+          format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] %X (%t) %s%e%n"
+kafka:
+  bootstrap:
+    servers: localhost:9092
+  apicurio:
+    registry:
+      auto-register: true
+      url: http://localhost:8081/apis/registry/v2
+
+mp:
+  messaging:
+    incoming:
+      payment-in:
+        topic: "payment.initiated"
+        enable:
+          auto:
+            commit: false
+        auto:
+          offset:
+            reset: "earliest"
+    outgoing:
+      promotion-out:
+        topic: "promotion.applied"
