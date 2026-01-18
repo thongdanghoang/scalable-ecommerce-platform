@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.scheduler.Scheduled;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import vn.id.thongdanghoang.sep.schemas.PaymentInitiated;
 
 @ApplicationScoped
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class PaymentEventPublisher {
      * Sends message to the "words-out" channel, can be used from a JAX-RS resource or any bean of your application.
      * Messages are sent to the broker.
      **/
-    @Scheduled(every = "10s")
+    @Scheduled(every = "5s", delayed = "5s")
     void onStart() throws JsonProcessingException {
         var min = 1000;
         var max = 5000;

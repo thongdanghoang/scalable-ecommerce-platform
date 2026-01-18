@@ -178,6 +178,7 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
+                    <!-- Grab the latest schemas from the central schemas folder -->
                     <execution>
                         <id>copy-avro-schemas</id>
                         <phase>initialize</phase>
@@ -195,6 +196,7 @@
                             </target>
                         </configuration>
                     </execution>
+                    <!-- Clean up the copied schemas so the src folder remains tidy -->
                     <execution>
                         <id>clean-avro-schemas</id>
                         <phase>compile</phase>
