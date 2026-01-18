@@ -1,3 +1,8 @@
+avro:
+  codegen:
+    enableDecimalLogicalType: true
+    optionalGettersForNullableFieldsOnly: true
+
 quarkus:
   datasource:
     jdbc:
@@ -8,6 +13,8 @@ quarkus:
     password: postgres
     username: postgres
   hibernate-orm:
+    query:
+      fail-on-pagination-over-collection-fetch: true
     schema-management:
       strategy: drop-and-create
     second-level-caching-enabled: false
@@ -22,6 +29,9 @@ quarkus:
         authenticated:
           paths: /*
           policy: authenticated
+        permit:
+          paths: /q/*
+          policy: permit
   oidc:
     enabled: true
     auth-server-url: http://localhost:8180
@@ -34,13 +44,22 @@ quarkus:
       console:
         console:
           format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] %X (%t) %s%e%n"
+  smallrye-openapi:
+    store-schema-directory: target
 
 kafka:
   bootstrap:
     servers: localhost:9092
+  apicurio:
+    registry:
+      auto-register: true
+      url: http://localhost:8081/apis/registry/v2
 
 mp:
   messaging:
     incoming:
       promotion-in:
         topic: "promotion.applied"
+        auto:
+          offset:
+            reset: "earliest"

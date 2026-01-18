@@ -2,6 +2,7 @@ avro:
   codegen:
     enableDecimalLogicalType: true
     optionalGettersForNullableFieldsOnly: true
+
 quarkus:
   datasource:
     jdbc:
