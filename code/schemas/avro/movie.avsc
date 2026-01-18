@@ -1,5 +1,5 @@
 {
-  "namespace": "vn.id.thongdanghoang.sep.schemas",
+  "namespace": "vn.id.thongdanghoang.sep.payment_service",
   "type": "record",
   "name": "Movie",
   "fields": [

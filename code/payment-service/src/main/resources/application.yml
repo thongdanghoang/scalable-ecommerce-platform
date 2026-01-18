@@ -46,6 +46,11 @@ kafka:
 
 mp:
   messaging:
+    connector:
+      smallrye-kafka:
+        schema:
+          registry:
+            url: http://localhost:8081
     outgoing:
       payment-initiated-topic:
         topic: "payment.initiated"
