@@ -2,7 +2,7 @@ spring:
   application:
     name: user_service
   config:
-    import: logging.yaml
+    import: logging.yml
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/user_service?serverTimezone=UTC}
     username: ${DATABASE_USERNAME:postgres}
