@@ -1,0 +1,45 @@
+{
+  "namespace": "vn.id.thongdanghoang.sep.schemas",
+  "type": "record",
+  "name": "PaymentFailed",
+  "doc": "The Wallet Service failed to trigger Compensation (Saga).",
+  "fields": [
+    {
+      "name": "transactionId",
+      "type": "string",
+      "doc": "The most important key to recovering old transactions."
+    },
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "amount",
+      "type": ["null", {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 20,
+        "scale": 2
+      }],
+      "default": null
+    },
+    {
+      "name": "reason",
+      "type": ["null", "string"],
+      "default": null,
+      "doc": "Reason for failure: INSUFFICIENT_FUNDS, SYSTEM_ERROR..."
+    },
+    {
+      "name": "voucherCode",
+      "type": ["null", "string"],
+      "default": null,
+      "doc": "Please provide the applied voucher code (if any) so that Promotion Service knows to issue a refund."
+    },
+    {
+      "name": "promotionStatus",
+      "type": ["null", "string"],
+      "default": null,
+      "doc": "Application status: APPLIED or NONE. Rollback is only required if the status is APPLIED."
+    }
+  ]
+}

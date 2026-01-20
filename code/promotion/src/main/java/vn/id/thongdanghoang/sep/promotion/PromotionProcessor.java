@@ -1,7 +1,11 @@
 package vn.id.thongdanghoang.sep.promotion;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import vn.id.thongdanghoang.sep.promotion.service.PromotionService;
+import vn.id.thongdanghoang.sep.schemas.PaymentFailed;
+import vn.id.thongdanghoang.sep.schemas.PaymentInitiated;
+import vn.id.thongdanghoang.sep.schemas.PaymentSuccess;
+import vn.id.thongdanghoang.sep.schemas.PromotionApplied;
+
 import jakarta.enterprise.context.ApplicationScoped;
 
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -12,52 +16,51 @@ import io.smallrye.mutiny.Uni;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import vn.id.thongdanghoang.sep.schemas.PaymentInitiated;
-import vn.id.thongdanghoang.sep.schemas.PromotionApplied;
-
-import java.math.BigDecimal;
-
+/**
+ * An application that acts as both a consumer and a producer, consuming messages from one topic, applying business logic or
+ * transformation, and then producing a new message to a different topic or queue.
+ */
 @ApplicationScoped
 @RequiredArgsConstructor
 @Slf4j
 public class PromotionProcessor {
 
-    private final ObjectMapper objectMapper;
+    private final PromotionService promotionService;
 
-    @Incoming("payment-in")
-    @Outgoing("promotion-out")
+    @Incoming(Channels.PAYMENT_IN)
+    @Outgoing(Channels.PROMOTION_OUT)
     public Uni<Message<PromotionApplied>> process(Message<PaymentInitiated> msg) {
-        PaymentInitiated payload = msg.getPayload();
+        var payload = msg.getPayload();
 
-        // Simulate Async Logic (e.g., Calling Redis)
-        return Uni.createFrom().item(payload)
-                .map(p -> {
-                    var discount = BigDecimal.ZERO;
-                    String status = "NONE";
+        log.info(">>Received Tx: {}", payload.getTransactionId());
 
-                    // Simple Logic Engine
-                    if ("SAVE50".equals(p.getVoucherCode())) {
-                        discount = p.getOriginalAmount().multiply(BigDecimal.valueOf(0.5));
-                        status = "APPLIED";
-                    }
+        return promotionService.applyPromotion(payload)
+                .invoke(PromotionProcessor::logAppliedPromoStatus)
+                .map(Message::of)
+                .invoke(() -> msg.ack());
+    }
 
-                    var finalAmount = p.getOriginalAmount().subtract(discount);
+    private static void logAppliedPromoStatus(PromotionApplied result) {
+        log.info(
+                "||Applied: status={}, voucher={}, final={}",
+                result.getStatus(), result.getAppliedVoucher(), result.getFinalAmount()
+        );
+    }
 
-                    var result = new PromotionApplied(
-                            p.getTransactionId(),
-                            p.getUserId(),
-                            p.getOriginalAmount(),
-                            discount,
-                            finalAmount,
-                            status);
+    @Incoming(Channels.PAYMENT_FAILED_IN)
+    public Uni<Void> onPaymentFailed(Message<PaymentFailed> msg) {
+        var payload = msg.getPayload();
+        log.warn("<<Compensation trigger for Tx: {}", payload.getTransactionId());
+        return promotionService.compensateTransaction(payload)
+                .onFailure().invoke(e -> log.error("Failed to compensate tx: {}", payload.getTransactionId(), e))
+                .invoke(() -> msg.ack());
+    }
 
-                    try {
-                        log.info("|| [PROMO] Processed: {}", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
-                    } catch (JsonProcessingException e) {
-                        log.error("Error processing transaction: {}", e.getMessage(), e);
-                    }
-                    return Message.of(result);
-                })
-                .onItem().invoke(() -> msg.ack());
+    @Incoming(Channels.PAYMENT_SUCCESS_IN)
+    public Uni<Void> onPaymentSuccess(Message<PaymentSuccess> msg) {
+        var txId = msg.getPayload().getTransactionId();
+        return promotionService.confirmTransaction(txId)
+                .onFailure().invoke(e -> log.error("Failed to confirm tx: {}", txId, e))
+                .invoke(() -> msg.ack());
     }
 }

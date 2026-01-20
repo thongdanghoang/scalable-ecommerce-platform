@@ -40,8 +40,36 @@
     },
     {
       "name": "appliedVoucher",
-      "type": ["null", "string"],
+      "type": [
+        "null",
+        "string"
+      ],
       "default": null
+    },
+    {
+      "name": "status",
+      "type": {
+        "type": "enum",
+        "name": "PromotionProcessStatus",
+        "symbols": [
+          "APPLIED",
+          "NOT_FOUND",
+          "EXPIRED",
+          "OUT_OF_STOCK",
+          "CONDITION_NOT_MET",
+          "SKIPPED"
+        ]
+      },
+      "doc": "The processing results of Promotion Engine"
+    },
+    {
+      "name": "failureReason",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null,
+      "doc": "Detailed reason if status != APPLIED"
     }
   ]
 }

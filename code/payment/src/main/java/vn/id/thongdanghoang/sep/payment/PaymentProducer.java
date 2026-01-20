@@ -1,8 +1,11 @@
 package vn.id.thongdanghoang.sep.payment;
 
+import vn.id.thongdanghoang.sep.schemas.PaymentInitiated;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -16,12 +19,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.scheduler.Scheduled;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import vn.id.thongdanghoang.sep.schemas.PaymentInitiated;
 
+/**
+ * An application that sends messages or events to a message broker topic or queue.
+ */
 @ApplicationScoped
 @RequiredArgsConstructor
 @Slf4j
-public class PaymentEventPublisher {
+public class PaymentProducer {
 
     private final Random random = new Random();
     private final ObjectMapper objectMapper;
@@ -29,19 +34,23 @@ public class PaymentEventPublisher {
     @Channel("payment-initiated-topic")
     Emitter<PaymentInitiated> emitter;
 
-    /**
-     * Sends message to the "words-out" channel, can be used from a JAX-RS resource or any bean of your application.
-     * Messages are sent to the broker.
-     **/
-    @Scheduled(every = "5s", delayed = "5s")
+    @Scheduled(every = "1s", delayed = "5s")
     void onStart() throws JsonProcessingException {
+        var vounchers = Set.of("SAVE50", "FREESHIP", "SAVE10", "NOT_FOUND");
         var min = 1000;
         var max = 5000;
         var delayMillis = random.nextInt(max - min + 1) + min;
         var txId = UUID.randomUUID().toString();
-        var amount = delayMillis * 100; // 100k - 500k
-        var voucher = random.nextBoolean() ? "SAVE50" : "FREESHIP"; // Random voucher
-        var event = new PaymentInitiated(txId, "user-" + Instant.now().toEpochMilli(), BigDecimal.valueOf(amount), voucher);
+        var amount = delayMillis * 100;
+        var applyVouncher = random.nextBoolean();
+        var builder = PaymentInitiated.newBuilder()
+                .setTransactionId(txId)
+                .setUserId("user-" + Instant.now().toEpochMilli())
+                .setOriginalAmount(BigDecimal.valueOf(amount));
+        if (applyVouncher) {
+            builder.setVoucherCode(vounchers.stream().findAny().orElseThrow());
+        }
+        var event = builder.build();
         log.info(">> [PAYMENT] Init: {}", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(event));
         emitter.send(event);
     }

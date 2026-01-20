@@ -60,3 +60,10 @@ mp:
     outgoing:
       payment-initiated-topic:
         topic: "payment.initiated"
+        connector: smallrye-kafka
+        value:
+          serializer: io.apicurio.registry.serde.avro.AvroKafkaSerializer
+        apicurio:
+          registry:
+            url: http://localhost:8081/apis/registry/v2
+            auto-register: true
