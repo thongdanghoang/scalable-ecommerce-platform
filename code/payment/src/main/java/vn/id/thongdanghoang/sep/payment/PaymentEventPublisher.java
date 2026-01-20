@@ -1,4 +1,4 @@
-package vn.id.thongdanghoang.sep.payment_service;
+package vn.id.thongdanghoang.sep.payment;
 
 import java.math.BigDecimal;
 import java.time.Instant;
