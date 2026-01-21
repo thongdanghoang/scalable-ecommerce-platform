@@ -3,6 +3,7 @@ package vn.id.thongdanghoang.sep.wallet;
 import vn.id.thongdanghoang.sep.schemas.PaymentFailed;
 import vn.id.thongdanghoang.sep.schemas.PaymentSuccess;
 import vn.id.thongdanghoang.sep.schemas.PromotionApplied;
+import vn.id.thongdanghoang.sep.schemas.PromotionProcessStatus;
 
 import java.time.Instant;
 import java.util.Random;
@@ -43,6 +44,16 @@ public class WalletConsumer {
     public CompletionStage<Void> processTransaction(Message<PromotionApplied> msg) {
         PromotionApplied event = msg.getPayload();
         log.info("<< [WALLET] Receiving Request for User: {}, Amount: {}", event.getUserId(), event.getFinalAmount());
+
+        if (event.getStatus() != PromotionProcessStatus.APPLIED) {
+            log.info(
+                    "Skipping wallet charge for user {}, because promotion was not applied. Status: {}, Reason: {}",
+                    event.getUserId(),
+                    event.getStatus(),
+                    event.getFailureReason()
+            );
+            return msg.ack();
+        }
 
         if (shouldFail()) {
             return processFailure(event, msg);
