@@ -52,7 +52,7 @@ public class PromotionProcessor {
         return promotionService.compensateTransaction(payload)
                 .invoke(() -> msg.ack())
                 .onFailure().recoverWithUni(e -> {
-                    log.error("Failed to confirm tx: {}", payload.getTransactionId(), e);
+                    log.error("Failed to compensate tx: {}", payload.getTransactionId(), e);
                     return Uni.createFrom().completionStage(msg.nack(e));
                 });
     }
