@@ -88,14 +88,26 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     private BigDecimal calculateDiscount(Promotion p, BigDecimal amount) {
-        if (p.getDiscountType() == DiscountType.PERCENTAGE) {
-            return amount.multiply(
-                    p.getDiscountValue().divide(
-                            BigDecimal.valueOf(100),
-                            4,
-                            RoundingMode.HALF_UP));
+        var discount = p.getDiscountType() == DiscountType.FIXED_AMOUNT
+                ? p.getDiscountValue()
+                : amount.multiply(p.getDiscountValue().divide(
+                        BigDecimal.valueOf(100),
+                        4,
+                        RoundingMode.HALF_UP));
+
+        if (p.getMaxDiscountAmount() != null && discount.compareTo(p.getMaxDiscountAmount()) > 0) {
+            discount = p.getMaxDiscountAmount();
         }
-        return p.getDiscountValue();
+
+        if (discount.compareTo(BigDecimal.ZERO) < 0) {
+            discount = BigDecimal.ZERO;
+        }
+
+        if (discount.compareTo(amount) > 0) {
+            discount = amount;
+        }
+
+        return discount;
     }
 
     @WithTransaction
