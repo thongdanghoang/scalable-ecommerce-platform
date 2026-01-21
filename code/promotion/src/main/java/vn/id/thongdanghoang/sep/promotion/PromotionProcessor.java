@@ -36,15 +36,13 @@ public class PromotionProcessor {
 
         return promotionService.applyPromotion(payload)
                 .invoke(PromotionProcessor::logAppliedPromoStatus)
-                .map(Message::of)
-                .invoke(() -> msg.ack());
+                .map(result -> Message.of(result).withAck(msg::ack));
     }
 
     private static void logAppliedPromoStatus(PromotionApplied result) {
         log.info(
                 "||Applied: status={}, voucher={}, final={}",
-                result.getStatus(), result.getAppliedVoucher(), result.getFinalAmount()
-        );
+                result.getStatus(), result.getAppliedVoucher(), result.getFinalAmount());
     }
 
     @Incoming(Channels.PAYMENT_FAILED_IN)
@@ -52,8 +50,11 @@ public class PromotionProcessor {
         var payload = msg.getPayload();
         log.warn("<<Compensation trigger for Tx: {}", payload.getTransactionId());
         return promotionService.compensateTransaction(payload)
-                .onFailure().invoke(e -> log.error("Failed to compensate tx: {}", payload.getTransactionId(), e))
-                .invoke(() -> msg.ack());
+                .invoke(() -> msg.ack())
+                .onFailure().recoverWithUni(e -> {
+                    log.error("Failed to confirm tx: {}", payload.getTransactionId(), e);
+                    return Uni.createFrom().completionStage(msg.nack(e));
+                });
     }
 
     @Incoming(Channels.PAYMENT_SUCCESS_IN)

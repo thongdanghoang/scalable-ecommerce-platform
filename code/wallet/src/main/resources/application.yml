@@ -60,6 +60,7 @@ mp:
     incoming:
       promotion-in:
         topic: "promotion.applied"
+        connector: smallrye-kafka
         group:
           id: "wallet-service-group"
         value:

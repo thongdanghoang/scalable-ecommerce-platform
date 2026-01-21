@@ -44,12 +44,6 @@ public class WalletConsumer {
         PromotionApplied event = msg.getPayload();
         log.info("<< [WALLET] Receiving Request for User: {}, Amount: {}", event.getUserId(), event.getFinalAmount());
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
         if (shouldFail()) {
             return processFailure(event, msg);
         } else {
@@ -73,7 +67,15 @@ public class WalletConsumer {
                 .setPromotionStatus(event.getStatus() != null ? event.getStatus().toString() : "NONE")
                 .build();
 
-        return failedEmitter.send(failedEvent).thenRun(msg::ack);
+        return failedEmitter.send(failedEvent)
+                .handle((ignored, ex) -> {
+                    if (ex != null) {
+                        log.error("Failed to emit PaymentFailed", ex);
+                        return msg.nack(ex);
+                    }
+                    return msg.ack();
+                })
+                .thenCompose(stage -> stage);
     }
 
     private CompletionStage<Void> processSuccess(PromotionApplied event, Message<PromotionApplied> msg) {
@@ -86,6 +88,14 @@ public class WalletConsumer {
                 .setTimestamp(Instant.now())
                 .build();
 
-        return successEmitter.send(successEvent).thenRun(msg::ack);
+        return successEmitter.send(successEvent)
+                .handle((ignored, ex) -> {
+                    if (ex != null) {
+                        log.error("Failed to emit PaymentSuccess", ex);
+                        return msg.nack(ex);
+                    }
+                    return msg.ack();
+                })
+                .thenCompose(stage -> stage);
     }
 }

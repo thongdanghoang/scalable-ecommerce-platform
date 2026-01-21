@@ -60,6 +60,7 @@
           "SKIPPED"
         ]
       },
+      "default": "APPLIED",
       "doc": "The processing results of Promotion Engine"
     },
     {
