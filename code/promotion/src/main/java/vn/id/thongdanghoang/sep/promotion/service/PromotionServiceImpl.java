@@ -5,6 +5,7 @@ import vn.id.thongdanghoang.sep.promotion.entity.PromotionRedemption;
 import vn.id.thongdanghoang.sep.promotion.repository.PromotionRedemptionRepository;
 import vn.id.thongdanghoang.sep.promotion.repository.PromotionRepository;
 import vn.id.thongdanghoang.sep.promotion.type.DiscountType;
+import vn.id.thongdanghoang.sep.promotion.type.PromotionStatus;
 import vn.id.thongdanghoang.sep.promotion.type.RedemptionStatus;
 import vn.id.thongdanghoang.sep.schemas.PaymentFailed;
 import vn.id.thongdanghoang.sep.schemas.PaymentInitiated;
@@ -13,10 +14,12 @@ import vn.id.thongdanghoang.sep.schemas.PromotionProcessStatus;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+
 import io.smallrye.mutiny.Uni;
 import lombok.RequiredArgsConstructor;
 
@@ -44,6 +47,22 @@ public class PromotionServiceImpl implements PromotionService {
                                 BigDecimal.ZERO,
                                 PromotionProcessStatus.NOT_FOUND,
                                 "Code not found"));
+                    }
+
+                    if (promotion.getStatus() != PromotionStatus.ACTIVE) {
+                        return Uni.createFrom().item(createResponse(
+                                request,
+                                BigDecimal.ZERO,
+                                PromotionProcessStatus.CONDITION_NOT_MET,
+                                "Promotion is not active"));
+                    }
+
+                    if (LocalDate.now().isAfter(promotion.getEndDate())) {
+                        return Uni.createFrom().item(createResponse(
+                                request,
+                                BigDecimal.ZERO,
+                                PromotionProcessStatus.EXPIRED,
+                                "Promotion has expired"));
                     }
 
                     if (promotion.getCurrentUsageCount() >= promotion.getTotalUsageLimit()) {
