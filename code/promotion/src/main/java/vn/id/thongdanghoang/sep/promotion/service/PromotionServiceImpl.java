@@ -104,13 +104,13 @@ public class PromotionServiceImpl implements PromotionService {
         var transactionId = failureEvent.getTransactionId();
         return redemptionRepo.findByTransactionId(transactionId)
                 .chain(redemption -> {
-                    if (redemption == null) {
+                    if (redemption == null || redemption.getStatus() != RedemptionStatus.PENDING) {
                         return Uni.createFrom().voidItem();
                     }
 
                     redemption.setStatus(RedemptionStatus.CANCELLED);
                     var promo = redemption.getPromotion();
-                    promo.setCurrentUsageCount(promo.getCurrentUsageCount() - 1);
+                    promo.setCurrentUsageCount(Math.max(0, promo.getCurrentUsageCount() - 1));
 
                     return Uni.combine().all().unis(
                             redemptionRepo.persist(redemption),
