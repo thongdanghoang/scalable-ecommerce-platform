@@ -50,16 +50,47 @@ quarkus:
 kafka:
   bootstrap:
     servers: localhost:9092
-  apicurio:
-    registry:
-      auto-register: true
-      url: http://localhost:8081/apis/registry/v2
 
 mp:
   messaging:
+    connector:
+      smallrye-kafka:
+        apicurio:
+          registry:
+            url: http://localhost:8081/apis/registry/v2
     incoming:
       promotion-in:
         topic: "promotion.applied"
+        connector: smallrye-kafka
+        group:
+          id: "wallet-service-group"
+        value:
+          deserializer: io.apicurio.registry.serde.avro.AvroKafkaDeserializer
+        apicurio:
+          registry:
+            url: http://localhost:8081/apis/registry/v2
+        enable:
+          auto:
+            commit: false
         auto:
           offset:
             reset: "earliest"
+    outgoing:
+      payment-success-out:
+        connector: smallrye-kafka
+        topic: "payment.success"
+        value:
+          serializer: io.apicurio.registry.serde.avro.AvroKafkaSerializer
+        apicurio:
+          registry:
+            url: http://localhost:8081/apis/registry/v2
+            auto-register: true
+      payment-failed-out:
+        connector: smallrye-kafka
+        topic: "payment.failed"
+        value:
+          serializer: io.apicurio.registry.serde.avro.AvroKafkaSerializer
+        apicurio:
+          registry:
+            url: http://localhost:8081/apis/registry/v2
+            auto-register: true

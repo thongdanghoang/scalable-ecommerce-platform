@@ -1,0 +1,33 @@
+{
+  "namespace": "vn.id.thongdanghoang.sep.schemas",
+  "type": "record",
+  "name": "PaymentSuccess",
+  "doc": "The event is triggered when the Wallet successfully deducts money.",
+  "fields": [
+    {
+      "name": "transactionId",
+      "type": "string"
+    },
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "finalAmount",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 20,
+        "scale": 2
+      }
+    },
+    {
+      "name": "timestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      },
+      "doc": "Time of transaction completion"
+    }
+  ]
+}

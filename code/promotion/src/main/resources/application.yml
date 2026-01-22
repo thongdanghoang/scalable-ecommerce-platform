@@ -4,8 +4,8 @@ avro:
     optionalGettersForNullableFieldsOnly: true
 quarkus:
   datasource:
-    jdbc:
-      url: 'jdbc:postgresql://localhost:5432/promotion_service?serverTimezone=UTC'
+    reactive:
+      url: 'vertx-reactive:postgresql://localhost:5432/promotion_service'
     db-kind: postgresql
     metrics:
       enabled: true
@@ -43,22 +43,62 @@ quarkus:
 kafka:
   bootstrap:
     servers: localhost:9092
-  apicurio:
-    registry:
-      auto-register: true
-      url: http://localhost:8081/apis/registry/v2
 
 mp:
   messaging:
+    connector:
+      smallrye-kafka:
+        apicurio:
+          registry:
+            url: http://localhost:8081/apis/registry/v2
     incoming:
       payment-in:
         topic: "payment.initiated"
+        connector: smallrye-kafka
+        value:
+          deserializer: io.apicurio.registry.serde.avro.AvroKafkaDeserializer
+        apicurio:
+          registry:
+            url: http://localhost:8081/apis/registry/v2
         enable:
           auto:
             commit: false
         auto:
           offset:
             reset: "earliest"
+      payment-failed-in:
+        topic: "payment.failed"
+        connector: smallrye-kafka
+        group:
+          id: "promotion-saga-group"
+        value:
+          deserializer: io.apicurio.registry.serde.avro.AvroKafkaDeserializer
+        apicurio:
+          registry:
+            url: http://localhost:8081/apis/registry/v2
+        auto:
+          offset:
+            reset: "latest"
+      payment-success-in:
+        topic: "payment.success"
+        connector: smallrye-kafka
+        group:
+          id: "promotion-confirmation-group"
+        value:
+          deserializer: io.apicurio.registry.serde.avro.AvroKafkaDeserializer
+        apicurio:
+          registry:
+            url: http://localhost:8081/apis/registry/v2
+        auto:
+          offset:
+            reset: "latest"
     outgoing:
       promotion-out:
         topic: "promotion.applied"
+        connector: smallrye-kafka
+        value:
+          serializer: io.apicurio.registry.serde.avro.AvroKafkaSerializer
+        apicurio:
+          registry:
+            url: http://localhost:8081/apis/registry/v2
+            auto-register: true
