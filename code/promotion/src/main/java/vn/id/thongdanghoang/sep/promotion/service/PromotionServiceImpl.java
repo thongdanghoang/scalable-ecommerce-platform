@@ -73,23 +73,31 @@ public class PromotionServiceImpl implements PromotionService {
                                 "Voucher exhausted"));
                     }
 
-                    var discount = calculateDiscount(promotion, request.getOriginalAmount());
+                    return promotionRepo.incrementUsageCountIfAvailable(promotion.getId())
+                            .chain(updatedRows -> {
+                                if (updatedRows == 0) {
+                                    return Uni.createFrom().item(createResponse(
+                                            request,
+                                            BigDecimal.ZERO,
+                                            PromotionProcessStatus.OUT_OF_STOCK,
+                                            "Voucher exhausted"));
+                                }
 
-                    promotion.setCurrentUsageCount(promotion.getCurrentUsageCount() + 1);
+                                var discount = calculateDiscount(promotion, request.getOriginalAmount());
+                                var redemption = PromotionRedemption.builder()
+                                        .transactionId(request.getTransactionId())
+                                        .userId(request.getUserId())
+                                        .promotion(promotion)
+                                        .originalAmount(request.getOriginalAmount())
+                                        .discountAmount(discount)
+                                        .finalAmount(request.getOriginalAmount().subtract(discount))
+                                        .status(RedemptionStatus.PENDING)
+                                        .build();
 
-                    var redemption = PromotionRedemption.builder()
-                            .transactionId(request.getTransactionId())
-                            .userId(request.getUserId())
-                            .promotion(promotion)
-                            .originalAmount(request.getOriginalAmount())
-                            .discountAmount(discount)
-                            .finalAmount(request.getOriginalAmount().subtract(discount))
-                            .status(RedemptionStatus.PENDING)
-                            .build();
-
-                    return redemptionRepo
-                            .persist(redemption)
-                            .map(ignore -> createResponse(request, discount, PromotionProcessStatus.APPLIED, null));
+                                return redemptionRepo
+                                        .persist(redemption)
+                                        .map(ignore -> createResponse(request, discount, PromotionProcessStatus.APPLIED, null));
+                            });
                 });
     }
 
@@ -115,7 +123,12 @@ public class PromotionServiceImpl implements PromotionService {
                         RoundingMode.HALF_UP));
 
         if (p.getMaxDiscountAmount() != null && discount.compareTo(p.getMaxDiscountAmount()) > 0) {
-            discount = p.getMaxDiscountAmount();
+            discount = p.getDiscountType() == DiscountType.FIXED_AMOUNT
+                    ? p.getMaxDiscountAmount()
+                    : amount.multiply(p.getMaxDiscountAmount().divide(
+                            BigDecimal.valueOf(100),
+                            4,
+                            RoundingMode.HALF_UP));
         }
 
         if (discount.compareTo(BigDecimal.ZERO) < 0) {
