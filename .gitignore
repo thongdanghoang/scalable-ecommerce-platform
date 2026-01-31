@@ -47,3 +47,4 @@ scripts/*.sql
 .gradletasknamecache
 
 .gemini/
+.mvn/
