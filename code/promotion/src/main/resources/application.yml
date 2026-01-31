@@ -76,6 +76,9 @@ mp:
         apicurio:
           registry:
             url: http://localhost:8081/apis/registry/v2
+        enable:
+          auto:
+            commit: false
         auto:
           offset:
             reset: "latest"
@@ -89,6 +92,9 @@ mp:
         apicurio:
           registry:
             url: http://localhost:8081/apis/registry/v2
+        enable:
+          auto:
+            commit: false
         auto:
           offset:
             reset: "latest"
