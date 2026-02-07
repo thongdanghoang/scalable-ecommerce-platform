@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>vn.id.thongdanghoang.sep</groupId>
     <artifactId>payment</artifactId>
@@ -97,6 +96,11 @@
             <artifactId>quarkus-arc</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.quarkiverse.pact</groupId>
+            <artifactId>quarkus-pact-provider</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
@@ -166,8 +170,7 @@
                 <configuration>
                     <argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
                     <systemPropertyVariables>
-                        <native.image.path>${project.build.directory}/${project.build.finalName}-runner
-                        </native.image.path>
+                        <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                         <maven.home>${maven.home}</maven.home>
                     </systemPropertyVariables>
@@ -187,10 +190,10 @@
                         </goals>
                         <configuration>
                             <target>
-                                <mkdir dir="${project.basedir}/src/main/avro"/>
+                                <mkdir dir="${project.basedir}/src/main/avro" />
                                 <copy todir="${project.basedir}/src/main/avro" overwrite="true">
                                     <fileset dir="${project.basedir}/../schemas/avro">
-                                        <include name="**/*.avsc"/>
+                                        <include name="**/*.avsc" />
                                     </fileset>
                                 </copy>
                             </target>
@@ -205,7 +208,7 @@
                         </goals>
                         <configuration>
                             <target>
-                                <delete dir="${project.basedir}/src/main/avro"/>
+                                <delete dir="${project.basedir}/src/main/avro" />
                             </target>
                         </configuration>
                     </execution>
