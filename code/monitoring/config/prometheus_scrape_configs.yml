@@ -1,87 +1,49 @@
 global:
   scrape_interval: 10s
   external_labels:
-    system: quarkus-super-heroes
+    system: scalable-ecommerce-platform
 
 scrape_configs:
   - job_name: prometheus
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: apicurio
-    honor_labels: true
-    static_configs:
-      - targets: ['apicurio:8086']
-        labels:
-          app: apicurio
-          application: fights-service
-          system: quarkus-super-heroes
-
-  - job_name: heroes
+  - job_name: users
     metrics_path: /q/metrics
     honor_labels: true
     static_configs:
-      - targets: ['rest-heroes:8083']
+      - targets: ['rest-users:8180']
         labels:
-          app: rest-heroes
-          application: heroes-service
-          system: quarkus-super-heroes
+          app: rest-users
+          application: users-service
+          system: scalable-ecommerce-platform
 
-  - job_name: villains
+  - job_name: payments
     metrics_path: /q/metrics
     honor_labels: true
     static_configs:
-      - targets: ['rest-villains:8084']
+      - targets: ['rest-payments:8083']
         labels:
-          app: rest-villains
-          application: villains-service
-          system: quarkus-super-heroes
+          app: rest-payments
+          application: payments-service
+          system: scalable-ecommerce-platform
 
-  - job_name: fights
+  - job_name: promotions
     metrics_path: /q/metrics
     honor_labels: true
     static_configs:
-      - targets: ['rest-fights:8082']
+      - targets: ['rest-promotions:8080']
         labels:
-          app: rest-fights
-          application: fights-service
-          system: quarkus-super-heroes
+          app: rest-promotions
+          application: promotions-service
+          system: scalable-ecommerce-platform
 
-  - job_name: event-stats
+  - job_name: wallets
     metrics_path: /q/metrics
     honor_labels: true
     static_configs:
-      - targets: ['event-statistics:8085']
+      - targets: ['rest-wallets:8082']
         labels:
-          app: event-statistics
-          application: event-stats
-          system: quarkus-super-heroes
-
-  - job_name: narration
-    metrics_path: /q/metrics
-    honor_labels: true
-    static_configs:
-      - targets: ['rest-narration:8087']
-        labels:
-          app: rest-narration
-          application: narration-service
-          system: quarkus-super-heroes
-
-  - job_name: locations
-    metrics_path: /q/metrics
-    honor_labels: true
-    static_configs:
-      - targets: [ 'grpc-locations:8089' ]
-        labels:
-          app: grpc-locations
-          application: location-service
-          system: quarkus-super-heroes
-
-  - job_name: ui-super-heroes
-    honor_labels: true
-    static_configs:
-      - targets: ['ui-super-heroes:8080']
-        labels:
-          app: ui-super-heroes
-          application: super-heroes
-          system: quarkus-super-heroes
+          app: rest-wallets
+          application: wallets-service
+          system: scalable-ecommerce-platform
