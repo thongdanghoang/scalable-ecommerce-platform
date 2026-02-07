@@ -28,6 +28,9 @@ quarkus:
         authenticated:
           paths: /*
           policy: authenticated
+        permit:
+          paths: /q/*
+          policy: permit
   oidc:
     enabled: true
     auth-server-url: http://localhost:8180
