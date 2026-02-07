@@ -48,3 +48,4 @@ scripts/*.sql
 
 .gemini/
 .mvn/
+**/node_modules/
