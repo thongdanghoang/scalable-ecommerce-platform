@@ -18,7 +18,6 @@ java {
 
 rewrite() {
     // OpenRewrite Extension Configuration
-    activeRecipe("org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0")
 }
 
 repositories {
@@ -41,7 +40,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:7.2.1.Final")
+    annotationProcessor("org.hibernate.orm:hibernate-processor")
 
     testImplementation("com.microsoft.playwright:playwright:1.57.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
