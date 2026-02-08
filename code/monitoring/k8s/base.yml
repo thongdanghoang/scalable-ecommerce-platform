@@ -16,7 +16,7 @@ kind: ConfigMap
 metadata:
   name: prometheus-config
   labels:
-    system: quarkus-super-heroes
+    system: scalable-ecommerce-platform
     app: prometheus
     role: monitoring
 data:
@@ -24,7 +24,7 @@ data:
     global:
       scrape_interval: 10s
       external_labels:
-        system: quarkus-super-heroes
+        system: scalable-ecommerce-platform
     
     scrape_configs:
       - job_name: prometheus
@@ -68,7 +68,7 @@ kind: ConfigMap
 metadata:
   name: otel-collector-config
   labels:
-    system: quarkus-super-heroes
+    system: scalable-ecommerce-platform
     app: otel-collector
     role: monitoring
 data:
@@ -109,7 +109,7 @@ kind: Deployment
 metadata:
   name: prometheus
   labels:
-    system: quarkus-super-heroes
+    system: scalable-ecommerce-platform
     name: prometheus
     app: prometheus
     role: monitoring
@@ -125,7 +125,7 @@ spec:
   template:
     metadata:
       labels:
-        system: quarkus-super-heroes
+        system: scalable-ecommerce-platform
         name: prometheus
         app: prometheus
         role: monitoring
@@ -157,7 +157,7 @@ kind: Deployment
 metadata:
   name: jaeger
   labels:
-    system: quarkus-super-heroes
+    system: scalable-ecommerce-platform
     name: jaeger
     app: jaeger
     role: monitoring
@@ -171,7 +171,7 @@ spec:
   template:
     metadata:
       labels:
-        system: quarkus-super-heroes
+        system: scalable-ecommerce-platform
         name: jaeger
         app: jaeger
         role: monitoring
@@ -195,7 +195,7 @@ kind: Deployment
 metadata:
   name: otel-collector
   labels:
-    system: quarkus-super-heroes
+    system: scalable-ecommerce-platform
     name: otel-collector
     app: otel-collector
     role: monitoring
@@ -211,7 +211,7 @@ spec:
   template:
     metadata:
       labels:
-        system: quarkus-super-heroes
+        system: scalable-ecommerce-platform
         name: otel-collector
         app: otel-collector
         role: monitoring

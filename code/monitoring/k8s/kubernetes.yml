@@ -5,7 +5,7 @@ metadata:
   name: prometheus
   labels:
     name: prometheus
-    system: quarkus-super-heroes
+    system: scalable-ecommerce-platform
     app: prometheus
     role: monitoring
 spec:
@@ -24,7 +24,7 @@ metadata:
   name: jaeger
   labels:
     name: jaeger
-    system: quarkus-super-heroes
+    system: scalable-ecommerce-platform
     app: jaeger
     role: monitoring
 spec:
@@ -51,7 +51,7 @@ metadata:
   name: otel-collector
   labels:
     name: otel-collector
-    system: quarkus-super-heroes
+    system: scalable-ecommerce-platform
     app: otel-collector
     role: monitoring
 spec:

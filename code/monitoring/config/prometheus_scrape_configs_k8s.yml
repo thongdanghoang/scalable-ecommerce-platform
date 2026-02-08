@@ -7,7 +7,7 @@
 global:
   scrape_interval: 10s
   external_labels:
-    system: quarkus-super-heroes
+    system: scalable-ecommerce-platform
 
 scrape_configs:
   - job_name: prometheus
