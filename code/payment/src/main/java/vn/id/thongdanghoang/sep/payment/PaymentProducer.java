@@ -40,19 +40,22 @@ public class PaymentProducer {
     @Scheduled(every = "1s", delayed = "5s")
     @WithSpan("payment-producer-scheduled")
     void onStart() throws JsonProcessingException {
-        var vounchers = List.of("SAVE50", "FREESHIP", "SAVE10", "NOT_FOUND");
-        var min = 1000;
-        var max = 5000;
-        var delayMillis = random.nextInt(max - min + 1) + min;
-        var txId = UUID.randomUUID().toString();
-        var amount = delayMillis * 100;
-        var builder = PaymentInitiated.newBuilder()
-                .setTransactionId(txId)
-                .setUserId("user-" + Instant.now().toEpochMilli())
-                .setOriginalAmount(BigDecimal.valueOf(amount));
-        builder.setVoucherCode(vounchers.get(random.nextInt(vounchers.size())));
-        var event = builder.build();
-        log.info(">> [PAYMENT] Init: {}", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(event));
-        emitter.send(event);
+        for (int i = 0; i < 1; i++) {
+            var vounchers = List.of("SAVE50", "FREESHIP", "SAVE10", "NOT_FOUND");
+            var min = 1000;
+            var max = 5000;
+            var delayMillis = random.nextInt(max - min + 1) + min;
+            var txId = UUID.randomUUID().toString();
+            var amount = delayMillis * 100;
+            var builder = PaymentInitiated.newBuilder()
+                    .setTransactionId(txId)
+                    .setUserId("user-" + Instant.now().toEpochMilli())
+                    .setOriginalAmount(BigDecimal.valueOf(amount));
+            builder.setVoucherCode(vounchers.get(random.nextInt(vounchers.size())));
+            var event = builder.build();
+            log.info(">> [PAYMENT] Init: {}", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(event));
+            emitter.send(event);
+            Span.current().setAttribute("txId", txId); // not propagate, put it in Baggage current context to propagate
+        }
     }
 }

@@ -8,16 +8,6 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: users
-    metrics_path: /q/metrics
-    honor_labels: true
-    static_configs:
-      - targets: ['rest-users:8180']
-        labels:
-          app: rest-users
-          application: users-service
-          system: scalable-ecommerce-platform
-
   - job_name: payments
     metrics_path: /q/metrics
     honor_labels: true
