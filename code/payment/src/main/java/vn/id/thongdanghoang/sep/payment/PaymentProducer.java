@@ -46,6 +46,7 @@ public class PaymentProducer {
             var max = 5000;
             var delayMillis = random.nextInt(max - min + 1) + min;
             var txId = UUID.randomUUID().toString();
+            Span.current().setAttribute("txId", txId); // not propagate, put it in Baggage current context to propagate
             var amount = delayMillis * 100;
             var builder = PaymentInitiated.newBuilder()
                     .setTransactionId(txId)
@@ -55,7 +56,6 @@ public class PaymentProducer {
             var event = builder.build();
             log.info(">> [PAYMENT] Init: {}", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(event));
             emitter.send(event);
-            Span.current().setAttribute("txId", txId); // not propagate, put it in Baggage current context to propagate
         }
     }
 }
