@@ -45,10 +45,6 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-messaging-kafka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-quartz</artifactId>
         </dependency>
         <dependency>
@@ -71,9 +67,11 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-hibernate-orm-panache</artifactId>
         </dependency>
+
+        <!--    Monitoring    -->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-avro</artifactId>
+            <artifactId>quarkus-smallrye-context-propagation</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -87,14 +85,21 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-opentelemetry</artifactId>
         </dependency>
+
+        <!--    Messaging    -->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-context-propagation</artifactId>
+            <artifactId>quarkus-messaging-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-avro</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-apicurio-registry-avro</artifactId>
         </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-postgresql</artifactId>

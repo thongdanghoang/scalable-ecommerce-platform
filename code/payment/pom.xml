@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>vn.id.thongdanghoang.sep</groupId>
     <artifactId>payment</artifactId>
@@ -46,10 +45,6 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-messaging-kafka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-quartz</artifactId>
         </dependency>
         <dependency>
@@ -72,9 +67,11 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-hibernate-orm-panache</artifactId>
         </dependency>
+
+        <!--    Monitoring    -->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-avro</artifactId>
+            <artifactId>quarkus-smallrye-context-propagation</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -88,14 +85,21 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-opentelemetry</artifactId>
         </dependency>
+
+        <!--    Messaging    -->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-context-propagation</artifactId>
+            <artifactId>quarkus-messaging-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-avro</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-apicurio-registry-avro</artifactId>
         </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-postgresql</artifactId>
@@ -174,8 +178,7 @@
                 <configuration>
                     <argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
                     <systemPropertyVariables>
-                        <native.image.path>${project.build.directory}/${project.build.finalName}-runner
-                        </native.image.path>
+                        <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                         <maven.home>${maven.home}</maven.home>
                     </systemPropertyVariables>
@@ -195,10 +198,10 @@
                         </goals>
                         <configuration>
                             <target>
-                                <mkdir dir="${project.basedir}/src/main/avro"/>
+                                <mkdir dir="${project.basedir}/src/main/avro" />
                                 <copy todir="${project.basedir}/src/main/avro" overwrite="true">
                                     <fileset dir="${project.basedir}/../schemas/avro">
-                                        <include name="**/*.avsc"/>
+                                        <include name="**/*.avsc" />
                                     </fileset>
                                 </copy>
                             </target>
@@ -213,7 +216,7 @@
                         </goals>
                         <configuration>
                             <target>
-                                <delete dir="${project.basedir}/src/main/avro"/>
+                                <delete dir="${project.basedir}/src/main/avro" />
                             </target>
                         </configuration>
                     </execution>

@@ -18,6 +18,8 @@ import org.eclipse.microprofile.reactive.messaging.Emitter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +38,7 @@ public class PaymentProducer {
     Emitter<PaymentInitiated> emitter;
 
     @Scheduled(every = "1s", delayed = "5s")
+    @WithSpan("payment-producer-scheduled")
     void onStart() throws JsonProcessingException {
         var vounchers = List.of("SAVE50", "FREESHIP", "SAVE10", "NOT_FOUND");
         var min = 1000;
