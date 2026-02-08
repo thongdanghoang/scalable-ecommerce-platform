@@ -3,6 +3,12 @@ avro:
     enableDecimalLogicalType: true
     optionalGettersForNullableFieldsOnly: true
 quarkus:
+  otel:
+    metrics:
+      enabled: true
+    exporter:
+      otlp:
+        endpoint: http://localhost:4317
   datasource:
     reactive:
       url: 'vertx-reactive:postgresql://localhost:5432/promotion_service'
@@ -28,6 +34,11 @@ quarkus:
         authenticated:
           paths: /*
           policy: authenticated
+        permit:
+          paths: /q/*
+          policy: permit
+    access-log:
+      pattern: "...traceId=%{X,traceId} spanId=%{X,spanId}"
   oidc:
     enabled: true
     auth-server-url: http://localhost:8180
@@ -36,16 +47,17 @@ quarkus:
     authentication:
       user-info-required: true
   log:
-    handler:
-      console:
-        console:
-          format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] %X (%t) %s%e%n"
+    console:
+      #format: "%d{HH:mm:ss} %-5p traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] %X (%t) %s%e%n"
 kafka:
   bootstrap:
     servers: localhost:9092
 
 mp:
   messaging:
+    metrics:
+      enabled: true
     connector:
       smallrye-kafka:
         apicurio:

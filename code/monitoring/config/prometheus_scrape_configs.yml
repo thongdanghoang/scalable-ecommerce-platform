@@ -1,0 +1,39 @@
+global:
+  scrape_interval: 5s
+  external_labels:
+    system: scalable-ecommerce-platform
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: payments
+    metrics_path: /q/metrics
+    honor_labels: true
+    static_configs:
+      - targets: ['rest-payments:8083']
+        labels:
+          app: rest-payments
+          application: payments-service
+          system: scalable-ecommerce-platform
+
+  - job_name: promotions
+    metrics_path: /q/metrics
+    honor_labels: true
+    static_configs:
+      - targets: ['rest-promotions:8080']
+        labels:
+          app: rest-promotions
+          application: promotions-service
+          system: scalable-ecommerce-platform
+
+  - job_name: wallets
+    metrics_path: /q/metrics
+    honor_labels: true
+    static_configs:
+      - targets: ['rest-wallets:8082']
+        labels:
+          app: rest-wallets
+          application: wallets-service
+          system: scalable-ecommerce-platform
