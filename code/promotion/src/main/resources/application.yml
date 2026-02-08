@@ -49,6 +49,8 @@ kafka:
 
 mp:
   messaging:
+    metrics:
+      enabled: true
     connector:
       smallrye-kafka:
         apicurio:
