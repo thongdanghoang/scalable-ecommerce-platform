@@ -1,9 +1,10 @@
 plugins {
     id("java")
-    id("org.springframework.boot") version "3.5.9"
+    id("org.springframework.boot") version "4.0.2"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.graalvm.buildtools.native") version "0.11.0"
     id("com.diffplug.spotless") version "8.1.0"
+    id("org.openrewrite.rewrite") version("latest.release")
 }
 
 group = "vn.id.thongdanghoang.sep"
@@ -11,8 +12,12 @@ version = "1.0.1"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
+}
+
+rewrite() {
+    // OpenRewrite Extension Configuration
 }
 
 repositories {
@@ -21,6 +26,8 @@ repositories {
 }
 
 dependencies {
+    rewrite("org.openrewrite.recipe:rewrite-spring:latest.release")
+
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-authorization-server")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
@@ -33,7 +40,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
+    annotationProcessor("org.hibernate.orm:hibernate-processor")
 
     testImplementation("com.microsoft.playwright:playwright:1.57.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

@@ -37,12 +37,15 @@ public class User extends AuditableEntity {
     @Fetch(FetchMode.SUBSELECT)
     private Set<Authority> authorities = new LinkedHashSet<>();
 
-    @Column(name = "disabled")
+    @Column(name = "disabled", nullable = false)
     private boolean disabled;
 
-    @NotBlank @Size(max = 255) @Column(name = "provider_id", nullable = false)
+    @NotBlank
+    @Size(max = 255)
+    @Column(name = "provider_id", nullable = false)
     private String providerId;
 
-    @NotNull @Column(name = "provider_name", nullable = false)
+    @NotNull
+    @Column(name = "provider_name", nullable = false)
     private OidcProvider providerName;
 }
