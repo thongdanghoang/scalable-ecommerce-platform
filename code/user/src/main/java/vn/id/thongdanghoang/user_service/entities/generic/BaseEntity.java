@@ -36,11 +36,11 @@ public abstract class BaseEntity {
         if (o == null) {
             return false;
         }
-        var oEffectiveClass = o instanceof HibernateProxy
-                ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+        var oEffectiveClass = o instanceof HibernateProxy hp
+                ? hp.getHibernateLazyInitializer().getPersistentClass()
                 : o.getClass();
-        var thisEffectiveClass = this instanceof HibernateProxy
-                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+        var thisEffectiveClass = this instanceof HibernateProxy hp
+                ? hp.getHibernateLazyInitializer().getPersistentClass()
                 : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) {
             return false;
@@ -51,8 +51,8 @@ public abstract class BaseEntity {
 
     @Override
     public final int hashCode() {
-        return this instanceof HibernateProxy
-                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
+        return this instanceof HibernateProxy hp
+                ? hp.getHibernateLazyInitializer().getPersistentClass().hashCode()
                 : getClass().hashCode();
     }
 

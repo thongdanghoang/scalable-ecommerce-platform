@@ -37,8 +37,7 @@ class OidcE2ETest {
             var page = browser.newPage();
 
             // TDD: Construct a dummy authorization request
-            String authUrl = String.format(
-                    "http://localhost:%d/oauth2/authorize?response_type=code&client_id=playwright&scope=openid&redirect_uri=http://localhost:3000",
+            String authUrl = "http://localhost:%d/oauth2/authorize?response_type=code&client_id=playwright&scope=openid&redirect_uri=http://localhost:3000".formatted(
                     port);
 
             page.navigate(authUrl);
