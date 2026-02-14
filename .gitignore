@@ -46,6 +46,6 @@ scripts/*.sql
 # Cache of project
 .gradletasknamecache
 
-.gemini/
+.opencode/
 .mvn/
 **/node_modules/
