@@ -10,8 +10,7 @@
         // A complete list of supported settings is also available through auto-completion
       },
       plugins: [
-        // "com.intellij.ml.llm",
-        "dev.sweep.assistant.cloud",
+        "com.intellij.ml.llm",
         "com.mallowigi",
         "com.haulmont.jpab",
         "dev.turingcomplete.intellijdevelopertoolsplugins",
