@@ -54,10 +54,6 @@ This project offers a comprehensive approach to building a modern, scalable e-co
 hands-on experience with Docker, microservices, and related technologies. After completing this project, you’ll have a
 solid understanding of how to design, develop, and deploy complex distributed systems.
 
-## Additional Resources
-
-- [Scalable E-Commerce Platform Roadmap](https://roadmap.sh/projects/scalable-ecommerce-platform)
-
 ## Tags
 
 #Microservices
